@@ -102,7 +102,7 @@ export interface IInput {
   /**
    * The component to use in place of `input`
    */
-  as?: React.ElementType;
+  as?: React.ReactType;
   /**
    * Accessibility label to use, in scenarios where the input as no visible label
    * A11y: It's useful for screen readers

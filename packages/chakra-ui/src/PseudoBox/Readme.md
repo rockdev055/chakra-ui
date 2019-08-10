@@ -3,13 +3,13 @@
 PseudoBox composes `Box` component and provides props to style common CSS pseudo
 selectors.
 
-To style `&:hover`, use the `_hover` prop. We use the underscore `_` notation to
-visually separate pseudo props from regular props. All styles support the
+To style `&:hover`, use the `_hover` prop. We use the underscore "\_" notation
+to visually separate pseudo props from regular props. All styles support the
 shorthand notation of the `Box` component.
 
-<br />
+Here's how it works:
 
-## Usage
+---
 
 Let's say you want to create a Button, here's how to do so with `PseudoBox`
 
@@ -19,14 +19,10 @@ Let's say you want to create a Button, here's how to do so with `PseudoBox`
   bg="green.500"
   height="40px"
   px="24px"
-  rounded="md"
-  color="white"
   _hover={{ bg: "green.600" }}
   _active={{ bg: "green.700" }}
   _disabled={{ bg: "green.50" }}
->
-  Button
-</PseudoBox>
+/>
 ```
 
 It was created to help reduce the need to pass `css` prop or use `styled(...)`
@@ -38,16 +34,12 @@ Let's say you want to create an Input, here's how to do so with `PseudoBox`
 <PseudoBox
   as="input"
   height="40px"
-  px="12px"
-  border="1px"
-  rounded="md"
+  px="24px"
+  border="2px"
   borderColor="gray.200"
-  placeholder="Input"
-  _focus={{ borderColor: "green.500", boxShadow: "outline" }}
+  _focus={{ borderColor: "green.700", boxShadow: "outline" }}
 />
 ```
-
-## Selectors and Props
 
 PseudoBox can be used to style any interactive component. You can apply styles
 to the following selectors. The selectors are also ARIA-friendly to help you
