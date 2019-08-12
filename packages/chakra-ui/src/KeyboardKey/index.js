@@ -13,7 +13,7 @@ const Keyboard = props => {
       rounded="md"
       border="1px"
       borderColor="inherit"
-      borderBottomWidth="3px"
+      // font="mono"
       fontSize="0.85em"
       fontWeight="bold"
       lineHeight="normal"

@@ -43,10 +43,3 @@ stories.add("Styled List with Spacing", () => (
     <span>Woah!</span>
   </List>
 ));
-
-/* 
-  <List type="ordered" spacing="12px" icon={FaCheck}>
-    <ListItem icon={FaPhone}>Item 1</ListItem>
-    <ListItem>Item 2</ListItem>
-  </List>
-*/

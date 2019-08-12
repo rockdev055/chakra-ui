@@ -1,117 +1,30 @@
 import React from "react";
-import {
-  Box,
-  Flex,
-  Heading,
-  IconButton,
-  List,
-  useColorMode,
-} from "@chakra-ui/core";
-import NavLink from "./NavLink";
+import { Box, Flex, Heading, IconButton, List } from "@chakra-ui/core";
+import NavigationLink from "./NavigationLink";
 
-const NavLinks = ({ links, ...props }) => {
-  return (
-    <List {...props}>
-      {links.map(link => (
-        <NavLink
-          px={6}
-          key={link.label}
-          py={1}
-          as="a"
-          href={link.href}
-          passHref
-          display="block"
-          textDecoration="none"
-          fontSize="sm"
-          transition="all 0.2s"
-          _hover={{ bg: "gray.100" }}
-        >
-          {link.label}
-        </NavLink>
-      ))}
-    </List>
-  );
-};
-
-const topLinks = [
-  {
-    label: "Installation",
-    href: "/",
-  },
-  {
-    label: "Theming",
-    href: "/",
-  },
-  {
-    label: "Responsive design",
-    href: "/",
-  },
-  {
-    label: "Pseudo styles",
-    href: "/",
-  },
-];
-
-const componentLinks = [
-  {
-    label: "Alert",
-    href: "/alert",
-  },
-  {
-    label: "Box",
-    href: "/box",
-  },
-  {
-    label: "Button",
-    href: "/button",
-  },
-  {
-    label: "ControlBox",
-    href: "/controlbox",
-  },
-  {
-    label: "FormControl",
-    href: "/formcontrol",
-  },
-  {
-    label: "PseudoBox",
-    href: "/pseudobox",
-  },
-  {
-    label: "AlertDialog",
-    href: "/alertdialog",
-  },
-  {
-    label: "Avatar",
-    href: "/avatar",
-  },
-];
-
-const NavGroupHeading = props => (
-  <Heading
-    fontSize="xs"
-    px={6}
-    color="gray.500"
-    letterSpacing="wide"
-    mb={2}
-    textTransform="uppercase"
-    {...props}
-  />
-);
+const componentsRegister = {
+  "alert": "Alert",
+  "box": "Box",
+  "button": "Button",
+  "controlbox": "ControlBox",
+  "formcontrol": "FormControl",
+  "inputgroup": "InputGroup",
+  "pseudobox": "PseudBox",
+}
 
 export default function NavigationBox() {
-  const { toggle } = useColorMode();
   return (
     <Box
       position={["relative", "fixed"]}
       width={["full", "260px"]}
-      height="100vh"
-      borderRightWidth="1px"
+      height="screenHeight"
+      bg="gray.100"
     >
       <Flex
         px={6}
         mb="16px"
         zIndex={10}
+        bg="gray.100"
         minHeight="60px"
         position="fixed"
         alignItems="center"
@@ -120,23 +33,94 @@ export default function NavigationBox() {
         justifyContent="space-between"
       >
         <Heading>Chakra UI</Heading>
-        <IconButton
-          variant="ghost"
-          onClick={toggle}
-          aria-label="Change theme"
-          icon="sun"
-        />
+        <IconButton icon="sun" />
       </Flex>
 
       <Box pt="76px" height="100vh" overflowY="auto">
-        <Box pb="16px" mb="16px">
-          <NavGroupHeading>Getting started</NavGroupHeading>
-          <NavLinks links={topLinks} />
+        <Box borderBottomWidth="1px" pb="16px" mb="16px">
+          <Heading size="xs" px={6} py={2} textTransform="uppercase">
+            Getting started
+          </Heading>
+
+          <List type="none">
+            <NavigationLink
+              px={6}
+              py={1}
+              as="a"
+              href="/"
+              passHref
+              display="block"
+              color="gray.600"
+              textDecoration="none"
+              _hover={{ bg: "gray.200" }}
+            >
+              Installation
+            </NavigationLink>
+            <NavigationLink
+              as="a"
+              // href="/alert"
+              passHref
+              display="block"
+              color="gray.600"
+              textDecoration="none"
+              _hover={{ bg: "gray.200" }}
+              px={6}
+              py={1}
+            >
+              Theming
+            </NavigationLink>
+            <NavigationLink
+              as="a"
+              // href="/"
+              passHref
+              display="block"
+              color="gray.600"
+              textDecoration="none"
+              _hover={{ bg: "gray.200" }}
+              px={6}
+              py={1}
+            >
+              Responsive design
+            </NavigationLink>
+            <NavigationLink
+              as="a"
+              display="block"
+              color="gray.600"
+              textDecoration="none"
+              _hover={{ bg: "gray.200" }}
+              px={6}
+              py={1}
+              // href="/"
+              passHref
+            >
+              Pseudo styles
+            </NavigationLink>
+          </List>
         </Box>
 
-        <Box pb="16px" mb="16px">
-          <NavGroupHeading>Components</NavGroupHeading>
-          <NavLinks links={componentLinks} />
+        <Box borderBottomWidth="1px" pb="16px" mb="16px">
+          <Heading size="xs" px={6} py={2} textTransform="uppercase">
+            Components
+          </Heading>
+
+          <List type="none">
+            {Object.keys(componentsRegister).map(component => (
+              <NavigationLink
+                px={6}
+                py={1}
+                as="a"
+                href={`/${component}`}
+                passHref
+                display="block"
+                color="gray.600"
+                textDecoration="none"
+                textTransform="capitalize"
+                _hover={{ bg: "gray.200" }}
+              >
+                {componentsRegister[component]}
+              </NavigationLink>
+            ))}
+          </List>
         </Box>
       </Box>
     </Box>

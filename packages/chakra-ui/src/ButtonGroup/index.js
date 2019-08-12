@@ -5,9 +5,9 @@ import { Children, cloneElement } from "react";
 import Box from "../Box";
 
 const ButtonGroup = ({
-  size,
-  variantColor,
-  variant,
+  size = "md",
+  color = "gray",
+  variant = "solid",
   isAttached,
   spacing = 2,
   children,
@@ -19,7 +19,7 @@ const ButtonGroup = ({
 
     return cloneElement(child, {
       size: size || child.props.size,
-      variantColor: child.props.variantColor || variantColor,
+      color: child.props.color || color,
       variant: child.props.variant || variant,
       _focus: { boxShadow: "outline", zIndex: 1 },
 

@@ -12,11 +12,11 @@ export interface IButton {
    */
   isLoading?: boolean;
   /**
-   * The color scheme of the button vaint. Use the color keys passed in `theme.colors`.
+   * The color of the button. Use the color keys passed in `theme.colors`.
    * @example
-   * variantColor = "green" | "purple" | "orange"
+   * color="green" | "purple" | "orange"
    */
-  variantColor?: string;
+  color?: string;
   /**
    * The variant of the button style to use.
    */

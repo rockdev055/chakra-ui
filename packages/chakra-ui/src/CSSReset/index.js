@@ -17,10 +17,6 @@ const getThemedStyle = ({ colors }) => {
   };
 };
 
-/* 
-  customStyle Prop
-*/
-
 const CSSReset = () => {
   const { mode } = useColorMode();
 

@@ -5,7 +5,7 @@ import IconButton from ".";
 
 const stories = storiesOf("IconButton", module);
 stories.add("Default", () => (
-  <IconButton aria-label="Call us" icon="phone" color="green" variant="solid" />
+  <IconButton icon="phone" color="green" variant="solid" />
 ));
 
 const AddCircle = props => (
@@ -23,5 +23,5 @@ const AddCircle = props => (
 );
 
 stories.add("with custom Icon", () => (
-  <IconButton aria-label="custom icon" size="sm" icon={AddCircle} />
+  <IconButton size="sm" icon={AddCircle} />
 ));

@@ -9,8 +9,6 @@ const CodeEditor = ({
     fontSize: 14,
     marginBottom: 40,
     marginTop: 24,
-    overflow: "auto",
-    fontFamily: `SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace`,
   },
   theme,
   disabled,
@@ -35,14 +33,7 @@ const CodeEditor = ({
             borderColor="inherit"
             rounded="md"
           />
-          <Chakra.Box
-            as={LiveError}
-            overflowX="auto"
-            fontSize="sm"
-            px={3}
-            py={4}
-            bg="red.50"
-          />
+          <Chakra.Box as={LiveError} fontSize="sm" px={3} py={4} bg="red.50" />
         </>
       )}
       <Chakra.Box position="relative">
@@ -54,7 +45,7 @@ const CodeEditor = ({
           textTransform="uppercase"
           rounded="0"
           fontSize="xs"
-          variantColor="purple"
+          color="purple"
           height="24px"
           top={0}
           right={0}

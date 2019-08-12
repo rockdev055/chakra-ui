@@ -9,7 +9,6 @@ import { PopoverTransition, popperStyle } from "../Popover/components";
 import { useColorMode } from "../ColorModeProvider";
 import Box from "../Box";
 import useDisclosure from "../useDisclosure";
-import { useId } from "@reach/auto-id";
 
 const TooltipContent = styled(Box)`
   ${popperStyle}
@@ -40,7 +39,7 @@ const Tooltip = ({
     setTimeout(onClose, timeout);
   };
 
-  const tooltipId = `tooltip-${useId()}`;
+  const tooltipId = genId("tooltip");
 
   const handleOpen = () => {
     !isControlled && openWithDelay();
@@ -61,14 +60,11 @@ const Tooltip = ({
   const bgColor = bg || _bg;
   const textColor = color || _color;
 
-  const child =
-    typeof children === "string" ? children : Children.only(children);
-
   return (
     <Manager>
       <Reference>
-        {({ ref: referenceRef }) => {
-          const referenceProps = {
+        {({ ref: referenceRef }) =>
+          cloneElement(Children.only(children), {
             "aria-labelledby": tooltipId,
             ref: node => {
               assignRef(referenceRef, node);
@@ -77,22 +73,12 @@ const Tooltip = ({
             onMouseLeave: handleClose,
             onClick: event => {
               closeOnClick && closeWithDelay();
-              child.props.onClick && child.props.onClick(event);
+              children.props.onClick && children.props.onClick(event);
             },
             onFocus: handleOpen,
             onBlur: handleClose,
-          };
-
-          if (typeof child === "string") {
-            return (
-              <Box as="span" {...referenceProps}>
-                {child}
-              </Box>
-            );
-          }
-
-          return cloneElement(child, { ...referenceProps });
-        }}
+          })
+        }
       </Reference>
       <Popper placement={placement}>
         {({ ref: popperRef, style, arrowProps, placement }) => (
