@@ -1,0 +1,75 @@
+# Alert Dialog
+
+AlertDialog component is used interrupt the user with a mandatory confirmation
+or action. It typically doesn't contain a close button.
+
+Based on
+[WAI-ARIA specifications](https://www.w3.org/TR/wai-aria-practices-1.1/examples/dialog-modal/alertdialog.html),
+focus should be placed on the least destructive element when the `AlertDialog`
+opens, to prevent users from accidentally taking the destructive action.
+
+> AlertDialog requires that you provide the `leastDestructiveRef` prop, based on
+> the explanation above.
+
+## Usage
+
+```jsx
+function AlertDialogExample() {
+  const [isOpen, setIsOpen] = React.useState();
+  const onClose = () => setIsOpen(false);
+  const cancelRef = React.useRef();
+
+  return (
+    <>
+      <Button variantColor="red" onClick={() => setIsOpen(true)}>
+        Delete Customer
+      </Button>
+
+      <AlertDialog
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+        isCentered
+      >
+        <AlertDialogHeader fontSize="lg" fontWeight="bold">
+          Delete Customer
+        </AlertDialogHeader>
+
+        <AlertDialogBody>
+          Are you sure? You can't undo this action afterwards.
+        </AlertDialogBody>
+
+        <AlertDialogFooter>
+          <Button ref={cancelRef} onClick={onClose}>
+            Cancel
+          </Button>
+          <Button variantColor="red" onClick={onClose} ml={3}>
+            Delete
+          </Button>
+        </AlertDialogFooter>
+      </AlertDialog>
+    </>
+  );
+}
+```
+
+## Accessibility
+
+- AlertDialog has role `alertdialog`, and `aria-modal` set to true.
+- When the dialog opens, focus is automatically set to the least destructive
+  element.
+- When the dialog opens, the content in the `AlertDialogHeader` and
+  `AlertDialogBody` are announced by screen readers via `aria-labelledby` and
+  `aria-describedby` attributes.
+- Clicking on the overlay closes the AlertDialog.
+- Pressing <kbd>esc</kbd> closes the dialog.
+
+## Props
+
+| Name                           | Type                   | Default  | Description                                                   |
+| ------------------------------ | ---------------------- | -------- | ------------------------------------------------------------- |
+| isOpen                         | `boolean`              | `info`   | If true, the `AlertDialog` will open                          |
+| onClose                        | `function`             |          | The function to close the `AlertDialog`                       |
+| size                           | `xs`, `sm`, `md`, `lg` | `subtle` | The maximum width of the AlertDialog                          |
+| isCentered                     | `boolean`              | `false`  | If `true`, the `AlertDialog` will be centered on screen       |
+| leastDestructiveRef (required) | `React.Ref`            | `false`  | The least destructive action to get focus when dialog is open |
