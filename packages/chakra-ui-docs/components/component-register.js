@@ -10,11 +10,12 @@ const componentRegister = [
   "Avatar",
   "AvatarGroup",
   "Badge",
+  "Icon",
+  "IconButton",
+  "InputAddon",
+  "InputGroup",
   "Heading",
   "Breadcrumb",
   "Radio",
-  "Spinner",
-  "Progress",
-  "CircularProgress",
 ];
 export default componentRegister;

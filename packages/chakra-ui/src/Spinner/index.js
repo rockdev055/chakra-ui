@@ -1,7 +1,8 @@
 /** @jsx jsx */
-import { jsx, keyframes } from "@emotion/core";
-import { forwardRef } from "react";
+import { css, jsx, keyframes } from "@emotion/core";
 import Box from "../Box";
+import Icon from "../Icon";
+import { forwardRef } from "react";
 import VisuallyHidden from "../VisuallyHidden";
 
 const spin = keyframes`
@@ -25,11 +26,9 @@ const Spinner = forwardRef(
   (
     {
       size = "md",
-      label = "Loading...",
+      loadingText = "Loading...",
       thickness = "2px",
       speed = "0.45s",
-      color,
-      emptyColor = "transparent",
       ...props
     },
     ref,
@@ -40,20 +39,34 @@ const Spinner = forwardRef(
       <Box
         ref={ref}
         display="inline-block"
-        borderWidth={thickness}
+        border={`${thickness} solid`}
         borderColor="currentColor"
-        borderBottomColor={emptyColor}
-        borderLeftColor={emptyColor}
+        borderBottomColor="transparent"
+        borderLeftColor="transparent"
         rounded="full"
-        color={color}
         animation={`${spin} ${speed} linear infinite`}
         size={_size}
         {...props}
       >
-        {label && <VisuallyHidden>{label}</VisuallyHidden>}
+        {loadingText && <VisuallyHidden>{loadingText}</VisuallyHidden>}
       </Box>
     );
   },
 );
 
+const spinCSS = speed => css`
+  animation: ${spin} ${speed || "1s"} linear infinite;
+`;
+
 export default Spinner;
+
+/* Alt Spinner, just a lil more fancy :) */
+export const Spinner2 = ({
+  color = "rgba(164, 164, 164, 1)",
+  size = "24px",
+  speed,
+}) => (
+  <Box display="inline-block">
+    <Icon color={color} name="spinner" size={size} css={spinCSS(speed)} />
+  </Box>
+);
