@@ -12,11 +12,15 @@ const componentRegister = [
   "Badge",
   "Icon",
   "IconButton",
+  "Input",
   "InputAddon",
   "InputGroup",
   "Link",
   "Heading",
   "Breadcrumb",
   "Radio",
+  "Spinner",
+  "Progress",
+  "CircularProgress",
 ];
 export default componentRegister;
