@@ -9,7 +9,7 @@ import { useTheme } from "../ThemeProvider";
 
 const InputGroup = ({ children, size = "md", ...props }) => {
   const { sizes } = useTheme();
-  const height = inputSizes[size] && inputSizes[size]["height"];
+  const { height } = inputSizes[size];
   let pl = null;
   let pr = null;
   return (

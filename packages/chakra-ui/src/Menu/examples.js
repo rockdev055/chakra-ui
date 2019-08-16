@@ -12,13 +12,13 @@ import Box from "../Box";
 import Button from "../Button";
 
 const stories = storiesOf("Menu", module).addDecorator(story => (
-  <Box maxWidth="md" mx="auto" mt="600px">
+  <Box maxWidth="md" mx="auto" mt={4}>
     {story()}
   </Box>
 ));
 
 stories.add("Default", () => (
-  <Menu closeOnBlur={false} placement="auto">
+  <Menu autoSelect>
     <MenuButton as={Button}>Open Menu</MenuButton>
 
     <MenuList minWidth="200px">
