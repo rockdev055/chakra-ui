@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as ReactPopper from "react-popper";
 import { BoxProps } from "../Box";
+import { PseudoBoxProps } from "../PseudoBox";
 
 interface IRenderProps {
   isOpen?: boolean;
@@ -25,28 +26,59 @@ export type MenuProps = IMenu & ChildrenProp;
 declare const Menu: React.FC<MenuProps>;
 export default Menu;
 
-export type MenuButtonProps = { as?: React.ElementType } & React.RefAttributes<
-  HTMLButtonElement
->;
+////////////////////////////////////////////////////////////////////////
+
+export interface IMenuButton {
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  onKeyDown?: React.KeyboardEventHandler<HTMLButtonElement>;
+}
+
+export type MenuButtonProps = React.RefAttributes<HTMLButtonElement> &
+  PseudoBoxProps &
+  IMenuButton;
+
 export const MenuButton: React.ForwardRefExoticComponent<MenuButtonProps>;
 
-export type MenuListProps = {
+////////////////////////////////////////////////////////////////////////
+
+export interface IMenuList {
   onKeydown: React.KeyboardEventHandler<HTMLDivElement>;
   onBlur: React.FocusEventHandler<HTMLDivElement>;
-} & BoxProps;
+}
+
+export type MenuListProps = IMenuList & BoxProps;
+
 export const MenuList: React.FC<MenuListProps>;
+
+////////////////////////////////////////////////////////////////////////
 
 interface IMenuItem {
   isDisabled?: boolean;
   role?: "menuitem" | "menuitemradio" | "menuitemcheckbox";
-  onClick?: React.KeyboardEventHandler;
-  onMouseLeave?: React.MouseEventHandler;
-  onKeyDown?: React.KeyboardEventHandler;
-  onMouseMove?: React.MouseEventHandler;
+  onClick?: React.KeyboardEventHandler<HTMLButtonElement>;
+  onMouseLeave?: React.MouseEventHandler<HTMLButtonElement>;
+  onKeyDown?: React.KeyboardEventHandler<HTMLButtonElement>;
+  onMouseMove?: React.MouseEventHandler<HTMLButtonElement>;
 }
 export type MenuItemProps = IMenuItem &
-  BoxProps &
+  PseudoBoxProps &
   React.RefAttributes<HTMLButtonElement>;
+
 export const MenuItem: React.ForwardRefExoticComponent<MenuItemProps>;
 
+////////////////////////////////////////////////////////////////////////
+
+interface IMenuGroup {
+  title?: string;
+  children: React.ReactNode;
+}
+
+export type MenuGroupProps = IMenuGroup & BoxProps;
+
+export const MenuGroup: React.FC<MenuGroupProps>;
+
+////////////////////////////////////////////////////////////////////////
+
 export const MenuDivider: React.FC<BoxProps>;
+
+export * from "./MenuOption";
