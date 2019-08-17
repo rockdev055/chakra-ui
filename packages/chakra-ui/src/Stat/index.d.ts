@@ -9,11 +9,7 @@ export const StatHelpText: React.FC<BoxProps>;
 
 export const StatNumber: React.FC<BoxProps>;
 
-type StatArrowProps = IconProps & {
-  type?: "increase" | "decrease";
-  "aria-label"?: string;
-};
-export const StatArrow: React.FC<StatArrowProps>;
+export const StatArrow: React.FC<IconProps>;
 
 export const Stat: React.FC<BoxProps>;
 

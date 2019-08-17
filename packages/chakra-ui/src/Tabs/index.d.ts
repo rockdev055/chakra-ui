@@ -1,22 +1,12 @@
 import * as React from "react";
 import { BoxProps } from "../Box";
 import { FlexProps } from "../Flex";
-import { PseudoBoxProps } from "../PseudoBox";
 
 export interface ITabs {
   /**
    * The alignment of the tabs
    */
   align?: "start" | "center" | "end";
-  /**
-   * The style of the tabs to use
-   */
-  variant?:
-    | "line"
-    | "enclosed"
-    | "enclosed-colored"
-    | "soft-rounded"
-    | "solid-rounded";
   /**
    * If `true`, tabs will stretch to width of the tablist.
    */
@@ -44,14 +34,8 @@ export interface ITabs {
   /**
    * Callback when the index (controlled or un-controlled) changes.
    */
-  onChange?: (index: number) => void;
+  onChange?: () => void;
 }
-
-export type TabsProps = ITabs & BoxProps;
-declare const Tabs: React.ForwardRefExoticComponent<TabsProps>;
-export default Tabs;
-
-////////////////////////////////////////////////////////////////////////
 
 export interface ITabList {
   /**
@@ -59,11 +43,6 @@ export interface ITabList {
    */
   children: React.ReactNode;
 }
-
-export type TabListProps = ITabList & FlexProps;
-export const TabList: React.ForwardRefExoticComponent<TabListProps>;
-
-////////////////////////////////////////////////////////////////////////
 
 export interface ITabPanel {
   /**
@@ -83,10 +62,6 @@ export interface ITabPanel {
    */
   selectedPanelRef: React.RefAttributes<HTMLDivElement>;
 }
-export type TabPanelProps = ITabPanel & BoxProps;
-export const TabPanel: React.ForwardRefExoticComponent<TabPanelProps>;
-
-////////////////////////////////////////////////////////////////////////
 
 export interface ITabPanels {
   /**
@@ -95,9 +70,22 @@ export interface ITabPanels {
   children: React.ReactNode;
 }
 
+export type TabsProps = ITabs & BoxProps;
+
+export type TabListProps = ITabList & FlexProps;
+
+export type TabPanelProps = ITabPanel & BoxProps;
+
 export type TabPanelsProps = ITabPanels & BoxProps;
+
+export const Tab: React.ForwardRefExoticComponent<BoxProps>;
+
+export const TabList: React.ForwardRefExoticComponent<TabListProps>;
+
+export const TabPanel: React.ForwardRefExoticComponent<TabPanelProps>;
+
 export const TabPanels: React.ForwardRefExoticComponent<TabPanelsProps>;
 
-////////////////////////////////////////////////////////////////////////
+declare const Tabs: React.ForwardRefExoticComponent<TabsProps>;
 
-export const Tab: React.ForwardRefExoticComponent<PseudoBoxProps>;
+export default Tabs;

@@ -1,25 +1,11 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import { forwardRef } from "react";
-import Box from "../Box";
-import { useColorMode } from "../ColorModeProvider";
 import ControlBox from "../ControlBox";
+import { useTheme } from "../ThemeProvider";
+import { useColorMode } from "../ColorModeProvider";
 import VisuallyHidden from "../VisuallyHidden";
-
-const switchSizes = {
-  sm: {
-    width: "1.375rem",
-    height: "0.75rem",
-  },
-  md: {
-    width: "1.875rem",
-    height: "1rem",
-  },
-  lg: {
-    width: "2.875rem",
-    height: "1.5rem",
-  },
-};
+import Box from "../Box";
 
 const Switch = forwardRef(
   (
@@ -44,7 +30,9 @@ const Switch = forwardRef(
     ref,
   ) => {
     const { mode } = useColorMode();
-    const { width, height } = switchSizes[size];
+    const theme = useTheme();
+
+    let { width, height } = theme.sizes.switch[size];
 
     const stylesProps = {
       rounded: "full",

@@ -42,7 +42,7 @@ const Tab = forwardRef((props, ref) => {
 ////////////////////////////////////////////////////////////////////////
 
 const TabList = forwardRef((props, ref) => {
-  const { children, onKeyDown, onClick, ...rest } = props;
+  const { children, ...rest } = props;
 
   const {
     id,
@@ -74,24 +74,20 @@ const TabList = forwardRef((props, ref) => {
 
   const handleKeyDown = event => {
     if (event.key === "ArrowRight") {
-      event.preventDefault();
       const nextIndex = (enabledSelectedIndex + 1) % count;
       updateIndex(nextIndex);
     }
 
-    if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
-      event.preventDefault();
+    if (event.key === "ArrowLeft") {
       const nextIndex = (enabledSelectedIndex - 1 + count) % count;
       updateIndex(nextIndex);
     }
 
     if (event.key === "Home") {
-      event.preventDefault();
       updateIndex(0);
     }
 
     if (event.key === "End") {
-      event.preventDefault();
       updateIndex(count - 1);
     }
 
@@ -99,26 +95,18 @@ const TabList = forwardRef((props, ref) => {
       event.preventDefault();
       onFocusPanel && onFocusPanel();
     }
-
-    if (onKeyDown) {
-      onKeyDown(event);
-    }
   };
 
   const clones = Children.map(children, (child, index) => {
     let isSelected = isManual ? index === manualIndex : index === selectedIndex;
 
-    const handleClick = event => {
+    const handleClick = () => {
       // Hack for Safari. Buttons don't receive focus on click on Safari
       // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#Clicking_and_focus
       allNodes.current[index].focus();
 
       onManualTabChange(index);
       onChangeTab(index);
-
-      if (onClick) {
-        onClick(event);
-      }
     };
 
     return cloneElement(child, {
@@ -200,11 +188,11 @@ const Tabs = forwardRef(
       index: controlledIndex,
       defaultIndex,
       isManual,
-      variant = "line",
-      variantColor = "blue",
-      align = "left",
-      size = "md",
-      orientation = "horizontal",
+      color,
+      align,
+      size,
+      orientation,
+      variant,
       isFitted,
       ...props
     },
@@ -262,9 +250,7 @@ const Tabs = forwardRef(
     };
 
     const onFocusPanel = () => {
-      if (selectedPanelRef.current) {
-        selectedPanelRef.current.focus();
-      }
+      if (selectedPanelRef.current) selectedPanelRef.current.focus();
     };
 
     const id = useId();
@@ -278,7 +264,7 @@ const Tabs = forwardRef(
       onChangeTab,
       selectedPanelRef,
       onFocusPanel,
-      color: variantColor,
+      color,
       size,
       align,
       variant,
@@ -295,6 +281,14 @@ const Tabs = forwardRef(
     );
   },
 );
+
+Tabs.defaultProps = {
+  size: "sm",
+  variant: "line",
+  align: "center",
+  orientation: "horizontal",
+  color: "blue",
+};
 
 Tabs.propTypes = {
   /**

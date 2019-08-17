@@ -11,10 +11,8 @@ const Collapse = forwardRef(
       animateOpacity,
       onAnimationStart,
       onAnimationEnd,
-      duration,
-      easing = "ease-in-out",
-      startingHeight = 0,
-      endingHeight = "auto",
+      duration = 200,
+      collapsedHeight = 0,
       ...rest
     },
     ref,
@@ -22,9 +20,9 @@ const Collapse = forwardRef(
     return (
       <AnimateHeight
         duration={duration}
-        easing={easing}
         animateOpacity={animateOpacity}
-        height={isOpen ? endingHeight : startingHeight}
+        easing="ease-in-out"
+        height={isOpen ? "auto" : collapsedHeight}
         {...{ onAnimationStart, onAnimationEnd }}
       >
         <Box ref={ref} {...rest} />
