@@ -1,19 +1,14 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
-import { useId } from "@reach/auto-id";
+import { Children, cloneElement, forwardRef, useRef, useState } from "react";
 import propTypes from "prop-types";
-import { createContext, forwardRef, useContext, useRef, useState } from "react";
 import Box from "../Box";
 import Collapse from "../Collapse";
 import PseudoBox from "../PseudoBox";
-
-const AccordionContext = createContext();
+import { genId } from "../utils";
 
 const Accordion = forwardRef(
-  (
-    { isOpen, defaultIsOpen, isDisabled, onOpenChange, children, ...rest },
-    ref,
-  ) => {
+  ({ isOpen, defaultIsOpen, onOpenChange, children, ...rest }, ref) => {
     const [isExpanded, setIsExpanded] = useState(defaultIsOpen || false);
     const { current: isControlled } = useRef(isOpen != null);
     let _isExpanded = isControlled ? isOpen : isExpanded;
@@ -23,19 +18,20 @@ const Accordion = forwardRef(
       !isControlled && setIsExpanded(!isExpanded);
     };
 
-    const headerId = `accordion-header:${useId()}`;
-    const panelId = `accordion-panel:${useId()}`;
+    const headerId = genId("header");
+    const panelId = genId("panel");
 
     return (
-      <AccordionContext.Provider
-        value={{ isExpanded: _isExpanded, headerId, panelId, onToggle }}
-      >
-        <Box ref={ref} {...rest}>
-          {typeof children === "function"
-            ? children({ isExpanded, isDisabled })
-            : children}
-        </Box>
-      </AccordionContext.Provider>
+      <Box ref={ref} {...rest}>
+        {Children.map(children, child => {
+          return cloneElement(child, {
+            headerId,
+            panelId,
+            onToggle,
+            isExpanded: _isExpanded,
+          });
+        })}
+      </Box>
     );
   },
 );
@@ -49,11 +45,20 @@ Accordion.propTypes = {
 
 /////////////////////////////////////////////////////////////
 
-const AccordionHeader = forwardRef((props, ref) => {
-  const { isExpanded, panelId, headerId, isDisabled, onToggle } = useContext(
-    AccordionContext,
-  );
-  return (
+const AccordionHeader = forwardRef(
+  (
+    {
+      isExpanded,
+      isDisabled,
+      size,
+      panelId,
+      headerId,
+      onToggle,
+      children,
+      ...rest
+    },
+    ref,
+  ) => (
     <PseudoBox
       ref={ref}
       display="flex"
@@ -69,16 +74,19 @@ const AccordionHeader = forwardRef((props, ref) => {
       onClick={onToggle}
       id={headerId}
       aria-controls={panelId}
-      {...props}
-    ></PseudoBox>
-  );
-});
+      {...rest}
+    >
+      {typeof children === "function"
+        ? children({ isExpanded, isDisabled })
+        : children}
+    </PseudoBox>
+  ),
+);
 
 /////////////////////////////////////////////////////////////
 
-const AccordionPanel = forwardRef((props, ref) => {
-  const { isExpanded, panelId, headerId } = useContext(AccordionContext);
-  return (
+const AccordionPanel = forwardRef(
+  ({ isExpanded, onToggle, headerId, panelId, ...rest }, ref) => (
     <Collapse
       role="region"
       id={panelId}
@@ -86,9 +94,9 @@ const AccordionPanel = forwardRef((props, ref) => {
       ref={ref}
       aria-hidden={!isExpanded}
       isOpen={isExpanded}
-      {...props}
+      {...rest}
     />
-  );
-});
+  ),
+);
 export default Accordion;
 export { AccordionHeader, AccordionPanel };

@@ -1,7 +1,6 @@
 // Dear maintainers, please arrange components alphabetically. Thanks :)
 
-const components = [
-  "Accordion",
+const componentRegister = [
   "Alert",
   "AlertDialog",
   "Avatar",
@@ -12,10 +11,11 @@ const components = [
   "Button",
   "Checkbox",
   "CircularProgress",
+  "CloseButton",
+  "Code",
   "Collapse",
   "ControlBox",
   "Drawer",
-  "Editable",
   "FormControl",
   "Heading",
   "Icon",
@@ -34,8 +34,9 @@ const components = [
   "Spinner",
   "Stat",
   "Tabs",
+  "Tag",
   "Textarea",
   "Toast",
   "Tooltip",
 ];
-export default components;
+export default componentRegister;
