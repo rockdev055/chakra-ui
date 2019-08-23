@@ -10,46 +10,31 @@ Tag component is used for items that need to be labeled, categorized, or
 organized using keywords that describe them. Use tags when content is mapped to
 multiple categories, and the user needs a way to differentiate between them.
 
-This component exports 4 Alert related components:
-
-- **Tag**: The wrapper component that uses provides context, state, and focus
-  management for the other components. It composes the `PseudoBox` component.
-- **TagLabel**: The label for tag component. It composes the `Box` component
-- **TagAddon**: This handles the placement of custom elements on either side of
-  the tag component . It composes the `Box` component.
-- **TagCloseButton**: The close button for the tag component.
-
 ## Installation
 
 ```bash
-npm install @chakra-ui/core
-# or
-yarn add @chakra-ui/core
-```
-
-And then import the components you need.
-
-```bash
-import {
-  Tag,
-  TagAddon,
-  TagLabel,
-  TagCloseButton,
-} from "@chakra-ui/core";
-
+import { Tag } from "@chakra-ui/core";
 ```
 
 ## Usage
 
 ```jsx
 function Example() {
+  const props = {
+    color: "gray",
+  };
+
   return (
-    <List spacing={4} inline>
-      {["sm", "md", "lg"].map(size => (
-        <Tag size={size} color="gray">
-          <TagLabel>Gray</TagLabel>
-        </Tag>
-      ))}
+    <List isInline>
+      <Tag size="sm" {...props}>
+        <TagLabel>Gray</TagLabel>
+      </Tag>
+      <Tag size="md" {...props}>
+        <TagLabel>Gray</TagLabel>
+      </Tag>
+      <Tag size="lg" {...props}>
+        <TagLabel>Gray</TagLabel>
+      </Tag>
     </List>
   );
 }
@@ -60,7 +45,7 @@ function Example() {
 ```jsx
 function Example() {
   return (
-    <List spacing={4} inline>
+    <List isInline>
       {["sm", "md", "lg"].map(size => (
         <Tag size={size} color="cyan">
           <TagAddon placement="left">
@@ -79,7 +64,7 @@ function Example() {
 ```jsx
 function Example() {
   return (
-    <List spacing={4} inline>
+    <List isInline>
       {["sm", "md", "lg"].map(size => (
         <Tag size={size} color="cyan">
           <TagLabel>Green</TagLabel>
@@ -98,7 +83,7 @@ function Example() {
 ```jsx
 function Example() {
   return (
-    <List spacing={4} inline>
+    <List isInline>
       {["sm", "md", "lg"].map(size => (
         <Tag size={size} rounded="full" variant="solid" color="cyan">
           <TagLabel>Green</TagLabel>
@@ -115,11 +100,11 @@ function Example() {
 ```jsx
 function Example() {
   return (
-    <List spacing={4} inline>
+    <List isInline>
       <Tag color="red" rounded="full">
-        <TagAddon placement="left">
+        <TagAddon placement="left" mr="1">
           <Avatar
-            src="https://www.dropbox.com/s/nd8z3hxuo3ahauk/segun_adebayo.jpg?dl=1"
+            src="http://bit.ly/sage-adebayo"
             size="xs"
             name="Segun Adebayo"
           />
@@ -133,8 +118,8 @@ function Example() {
 
 ## Props
 
-| Name      | Type                         | Default | Description                              |
-| --------- | ---------------------------- | ------- | ---------------------------------------- |
-| `variant` | `solid`, `subtle`, `outline` | `solid` | The variant of the tag component.        |
-| `size`    | `sm`, `md`, `lg`             | `md`    | The size of the tag component.           |
-| `color`   | `string`                     |         | The background color of the tag variant. |
+| Name      | Type                         | Default | Description                             |
+| --------- | ---------------------------- | ------- | --------------------------------------- |
+| `variant` | `solid`, `subtle`, `outline` | `solid` | The variant style of the tag component. |
+| `size`    | `sm`, `md`, `lg`             | `md`    | The size of the tag component.          |
+| `color`   | `string`                     |         | The color scheme of the tag variant.    |

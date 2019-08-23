@@ -35,7 +35,6 @@ const components = [
   "Slider",
   "Spinner",
   "Stat",
-  "Switch",
   "Tabs",
   "Tag",
   "Textarea",
