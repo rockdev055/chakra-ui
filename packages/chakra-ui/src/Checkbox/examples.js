@@ -3,7 +3,7 @@ import React from "react";
 import Box from "../Box";
 import Checkbox from "../Checkbox";
 import Stack from "../Stack";
-import FormValidationText from "../FormErrorMessage";
+import FormValidationText from "../FormValidationText";
 
 const stories = storiesOf("Checkbox", module);
 

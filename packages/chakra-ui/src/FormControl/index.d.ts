@@ -10,6 +10,14 @@ interface IFormLabel extends BoxProps {
 
 interface IFormControl {
   /**
+   * Id of the form control.
+   */
+  id?: string;
+  /**
+   * Name of the form control.
+   */
+  name?: string;
+  /**
    * Content of the form control.
    */
   children?: React.ReactNode;
@@ -36,7 +44,22 @@ export const RequiredIndicator: React.FC<BoxProps>;
 export const ValidationText: React.FC<BoxProps>;
 
 /**
- * FormControl provides context such as `isInvalid`, `isRequired`, `isDisabled` to it's children.
+ * FormControl provides context such as `id`, `isInvalid`, `isRequired`, `isDisabled` to it's children.
+ * This context is used by:
+ * - `FormLabel`
+ * - `FormHelperText`,
+ * - `FormValidationText`,
+ * - `Input`
+ *
+ * @example
+ * ```jsx
+ * <FormControl>
+ *   <FormLabel htmlFor="my-input">Email address</FormLabel>
+ *   <Input id="my-input" aria-describedby="my-helper-text" />
+ *   <FormHelperText id="my-helper-text">We'll never share your email.</FormHelperText>
+ * </FormControl>
+ * ```
+ *
  */
 declare const FormControl: React.FC<FormControlProps>;
 

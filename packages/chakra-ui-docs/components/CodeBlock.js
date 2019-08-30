@@ -5,7 +5,6 @@ import { LiveProvider, LiveEditor, LiveError, LivePreview } from "react-live";
 import Highlight, { defaultProps } from "prism-react-renderer";
 import { mdx } from "@mdx-js/react";
 import * as Chakra from "@chakra-ui/core";
-import * as Formik from "formik";
 
 const { Box, Button, useClipboard, useColorMode } = Chakra;
 
@@ -108,7 +107,7 @@ const StarIcon = props => {
 const CodeBlock = ({ className, live = true, render, children, ...props }) => {
   const [editorCode, setEditorCode] = useState(children.trim());
 
-  const language = className && className.replace(/language-/, "");
+  const language = className.replace(/language-/, "");
   const { onCopy, hasCopied } = useClipboard(editorCode);
 
   const { colorMode } = useColorMode();
@@ -120,7 +119,7 @@ const CodeBlock = ({ className, live = true, render, children, ...props }) => {
     language,
     code: editorCode,
     transformCode: code => "/** @jsx mdx */" + code,
-    scope: { ...Chakra, ...Formik, mdx, StarIcon },
+    scope: { ...Chakra, mdx, StarIcon },
     ...props,
   };
 

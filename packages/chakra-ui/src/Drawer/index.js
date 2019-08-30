@@ -1,24 +1,13 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
+import { oneOf } from "prop-types";
 import { DrawerContent, DrawerOverlay, DrawerTransition } from "./components";
-
-/**
- * Mapping the maxWidth tokens in `theme.sizes` to the size prop.
- */
-const drawerSizes = {
-  xs: "xs",
-  sm: "md",
-  md: "lg",
-  lg: "2xl",
-  xl: "4xl",
-  full: "100vw",
-};
 
 const Drawer = ({
   isOpen,
   onClose,
   children,
-  size = "md",
+  size = "lg",
   isFullHeight,
   initialFocusRef,
   placement = "right",
@@ -26,8 +15,6 @@ const Drawer = ({
   zIndex,
   ...rest
 }) => {
-  const maxWidth = size in drawerSizes ? drawerSizes[size] : size;
-
   return (
     <DrawerTransition {...{ isOpen, placement, isFullHeight }}>
       {({ reactSpringStyles, transformStyle, placementStyle }) => (
@@ -41,7 +28,7 @@ const Drawer = ({
           <DrawerContent
             position="fixed"
             transform={transformStyle}
-            maxWidth={maxWidth}
+            maxWidth={size}
             {...placementStyle}
             {...rest}
           >
@@ -51,6 +38,23 @@ const Drawer = ({
       )}
     </DrawerTransition>
   );
+};
+
+Drawer.propTypes = {
+  size: oneOf([
+    "xs",
+    "sm",
+    "md",
+    "lg",
+    "xl",
+    "2xl",
+    "3xl",
+    "4xl",
+    "5xl",
+    "6xl",
+    "full",
+  ]),
+  placement: oneOf(["top", "left", "right", "bottom"]),
 };
 
 export default Drawer;

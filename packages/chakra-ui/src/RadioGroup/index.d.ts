@@ -9,10 +9,10 @@ export interface IRadioGroup {
   defaultValue?: string | number;
   value?: string | number;
   onChange?: (
-    event?: React.ChangeEventHandler<HTMLInputElement>,
+    event?: React.ChangeEvent<HTMLInputElement>,
     value?: string | number,
   ) => void;
-  spacing?: StyledSystem.MarginProps;
+  spacing?: StyledSystem.MarginRightProps;
   isInline?: boolean;
 }
 
