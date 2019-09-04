@@ -47,7 +47,7 @@ const Feature = ({ title, icon, children, ...props }) => {
 };
 
 const sampleCode = `
-// Sample component from airbnb.com
+// Sample component from airbnb
 
 <Box>
   <Image rounded="md" src="http://bit.ly/2k1H1t6"/>
@@ -171,15 +171,15 @@ export default () => {
                 padding={20}
                 style={{
                   fontFamily: "Menlo,monospace",
-                  borderRadius: 10,
-                  flex: 2,
+                  borderRadius: 4,
+                  flex: 1,
                 }}
               />
               <Box size={8} />
               <Box
                 p={6}
                 flex="1"
-                rounded="10px"
+                rounded="4px"
                 as={LivePreview}
                 borderWidth="1px"
               />

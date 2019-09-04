@@ -13,7 +13,6 @@ import React from "react";
 import DocsHeader from "../components/DocsHeader";
 import MDXComponents from "../components/MDXComponents";
 import SideNav from "../components/SideNav";
-import seo from "../seo.config";
 
 const Main = props => <Box as="main" mx="auto" mb="3rem" {...props} />;
 
@@ -71,7 +70,10 @@ export default ({ Component, pageProps }) => {
         <CSSReset />
         <MDXProvider components={MDXComponents}>
           <Layout>
-            <DefaultSeo {...seo} />
+            <DefaultSeo
+              title="Chakra Design System"
+              description="Simple, Modular and Accessible UI Components for your React Applications. Built with Styled System"
+            />
             <Component {...pageProps} />
           </Layout>
         </MDXProvider>
