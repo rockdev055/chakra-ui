@@ -1,40 +1,67 @@
-import React, {
-  forwardRef,
-  useRef,
-  useState,
-  useEffect,
-  useCallback,
-} from "react";
+import React, { forwardRef, useRef, useState } from "react";
 import Flex from "../Flex";
+import Icon from "../Icon";
 import Input from "../Input";
-import Spinner from "./Spinner";
+import PseudoBox from "../PseudoBox";
+import { useColorMode } from "../ColorModeProvider";
 
-function useLongPress(callback = () => {}, speed = 200) {
-  const [startLongPress, setStartLongPress] = useState(false);
+const themedProps = {
+  light: {
+    borderColor: "inherit",
+    _active: {
+      bg: "gray.200",
+    },
+    _last: {
+      roundedBottomRight: 3,
+      mt: "-1px",
+      borderTopWidth: 1,
+    },
+  },
+  dark: {
+    color: "whiteAlpha.800",
+    borderColor: "whiteAlpha.300",
+    _last: {
+      roundedBottomRight: 3,
+      mt: "-1px",
+      borderTopWidth: 1,
+    },
+    _active: {
+      bg: "whiteAlpha.300",
+    },
+  },
+};
 
-  useEffect(() => {
-    let timerId;
-    if (startLongPress) {
-      timerId = setTimeout(callback, speed);
-    } else {
-      clearTimeout(timerId);
-    }
+const styleProps = ({ colorMode }) => ({
+  borderLeft: "1px",
+  _first: {
+    roundedTopRight: 1,
+  },
+  _disabled: {
+    opacity: 0.4,
+    cursor: "not-allowed",
+  },
+  ...themedProps[colorMode],
+});
 
-    return () => {
-      clearTimeout(timerId);
-    };
-  }, [startLongPress, callback, speed]);
+const SpinButton = ({ isDisabled, ...props }) => {
+  const { colorMode } = useColorMode();
 
-  const start = useCallback(() => {
-    setStartLongPress(true);
-  }, []);
-
-  const stop = useCallback(() => {
-    setStartLongPress(false);
-  }, []);
-
-  return { start, stop };
-}
+  return (
+    <PseudoBox
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      flex="1"
+      cursor="pointer"
+      transition="all 0.3s"
+      role="button"
+      tabindex="-1"
+      aria-disabled={isDisabled}
+      {...styleProps({ colorMode })}
+      {...props}
+    />
+  );
+};
 
 const NumberInput = forwardRef(
   (
@@ -68,109 +95,56 @@ const NumberInput = forwardRef(
       isRequired,
       focusBorderColor,
       inputProps,
-      focusOnUpDown = true,
       ...rest
     },
     ref,
   ) => {
     const [val, setVal] = useState(defaultValue || 0);
+
     const { current: isControlled } = useRef(valueProp != null);
     const _value = isControlled ? valueProp : val;
 
-    const isEditable = !isReadOnly && !isDisabled;
-    const ownRef = useRef();
-    const _ref = ref || ownRef;
-
-    const clampValue = nextVal => {
-      let output = nextVal;
-
+    const getNextValue = nextVal => {
       if (nextVal > max) {
-        output = nextVal;
+        return nextVal;
       }
       if (nextVal < min) {
-        output = min;
+        return min;
       }
-      return output;
+      return nextVal;
     };
 
-    const focusInput = () => {
-      if (focusOnUpDown && _ref.current) {
-        _ref.current.focus();
+    const handleIncrement = () => {
+      const nextValue = getNextValue(_value + step);
+      if (max == null) {
+        !isControlled && setVal(nextValue);
+        onChange && onChange(nextValue);
+      }
+      if (max != null && max >= nextValue) {
+        !isControlled && setVal(nextValue);
+        onChange && onChange(nextValue);
       }
     };
 
-    const updateValue = value => {
-      !isControlled && setVal(value);
-      onChange && onChange(value);
-    };
-
-    const handleIncrement = (unitStep = step) => {
-      let nextValue = Math.round((_value + unitStep) * 1e12) / 1e12;
-      nextValue = clampValue(nextValue);
-
-      const maxExists = max != null;
-
-      if (!maxExists || (maxExists && max >= nextValue)) {
-        updateValue(nextValue);
+    const handleDecrement = () => {
+      const nextValue = getNextValue(_value - step);
+      if (min == null) {
+        !isControlled && setVal(nextValue);
+        onChange && onChange(nextValue);
       }
-
-      focusInput();
-    };
-
-    const handleDecrement = (unitStep = step) => {
-      let nextValue = Math.round((_value - unitStep) * 1e12) / 1e12;
-      nextValue = clampValue(nextValue);
-
-      const minExists = min != null;
-      if (!minExists || (minExists && min <= nextValue)) {
-        updateValue(nextValue);
+      if (min != null && min <= nextValue) {
+        !isControlled && setVal(nextValue);
+        onChange && onChange(nextValue);
       }
-
-      focusInput();
     };
 
     const handleChange = event => {
-      const nextValue = Number(event.target.value);
-      updateValue(nextValue);
-    };
-
-    const getIncrementFactor = event => {
-      let ratio = 1;
-      if (event.metaKey || event.ctrlKey) {
-        ratio = 0.1;
-      } else if (event.shiftKey) {
-        ratio = 10;
-      }
-      return ratio;
-    };
-
-    const handleKeyDown = event => {
-      if (!isEditable) {
-        return;
-      }
-
-      if (event.key === "ArrowUp") {
-        event.preventDefault();
-        const ratio = getIncrementFactor(event);
-        handleIncrement(ratio * step);
-      }
-
-      if (event.key === "ArrowDown") {
-        event.preventDefault();
-        // BUG: ratio becomes undefined for some reason
-        const ratio = getIncrementFactor(event);
-        handleDecrement(ratio * step);
-      }
-
-      if (onKeyDown) {
-        onKeyDown(event);
-      }
+      const newValue = Number(event.target.value);
+      !isControlled && setVal(newValue);
+      onChange && onChange(newValue);
     };
 
     const iconSize = size === "sm" ? "11px" : "15px";
-
-    const increment = useLongPress(handleIncrement);
-    const decrement = useLongPress(handleDecrement);
 
     return (
       <Flex
@@ -180,7 +154,7 @@ const NumberInput = forwardRef(
         {...rest}
       >
         <Input
-          ref={_ref}
+          ref={ref}
           size={size}
           type="number"
           role="spinbutton"
@@ -189,16 +163,16 @@ const NumberInput = forwardRef(
           aria-valuenow={_value}
           onChange={handleChange}
           value={_value}
-          onKeyDown={handleKeyDown}
           {...{
             form,
             pattern,
             min,
             placeholder,
+            onBlur,
+            onKeyDown,
             onKeyUp,
             onKeyPress,
             onFocus,
-            onBlur,
             autoFocus,
             max,
             step,
@@ -215,27 +189,28 @@ const NumberInput = forwardRef(
           }}
           {...inputProps}
         />
-        <Spinner
-          incrementProps={{
-            onMouseDown: increment.start,
-            onMouseUp: increment.stop,
-            onMouseLeave: increment.stop,
-            onTouchStart: increment.start,
-            onTouchEnd: increment.stop,
-            onClick: () => handleIncrement(),
-            isDisabled: !isEditable,
-          }}
-          decrementProps={{
-            onMouseDown: decrement.start,
-            onMouseUp: decrement.stop,
-            onMouseLeave: decrement.stop,
-            onTouchStart: decrement.start,
-            onTouchEnd: decrement.stop,
-            onClick: () => handleDecrement(),
-            isDisabled: !isEditable,
-          }}
-          iconSize={iconSize}
-        />
+        <Flex
+          flexDirection="column"
+          aria-hidden
+          width="24px"
+          m="1px"
+          position="absolute"
+          right="0px"
+          height="calc(100% - 2px)"
+        >
+          <SpinButton
+            isDisabled={isDisabled}
+            onClick={isDisabled ? undefined : handleIncrement}
+          >
+            <Icon name="chevron-up" size={iconSize} />
+          </SpinButton>
+          <SpinButton
+            isDisabled={isDisabled}
+            onClick={isDisabled ? undefined : handleDecrement}
+          >
+            <Icon name="chevron-down" size={iconSize} />
+          </SpinButton>
+        </Flex>
       </Flex>
     );
   },
