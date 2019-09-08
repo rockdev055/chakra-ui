@@ -27,7 +27,6 @@ const components = [
   "Link",
   "List",
   "Menu",
-  "Modal",
   "NumberInput",
   "Popover",
   "Progress",

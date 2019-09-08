@@ -176,7 +176,7 @@ const sizes = {
   xs: {
     height: 6,
     minWidth: 6,
-    fontSize: "xs",
+    fontSize: "sm",
     px: 2,
   },
 };
