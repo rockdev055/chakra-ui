@@ -1,84 +1,39 @@
-import Portal from "@reach/portal";
 import { storiesOf } from "@storybook/react";
-import React, { useRef } from "react";
-import FocusLock from "react-focus-lock";
-import Popover, { PopoverCloseButton, PopoverContent, PopoverTrigger } from ".";
+import React, { Fragment } from "react";
+import Popover, { PopoverBody, PopoverFooter, PopoverHeader } from ".";
 import Button from "../Button";
-import { PopoverBody, PopoverFooter, PopoverHeader } from "./components";
+import Box from "../Box";
 
 const stories = storiesOf("Popover", module);
 
-const Example = () => {
-  const initRef = useRef();
+stories.addDecorator(story => {
   return (
-    <Popover initialFocusRef={initRef}>
-      <PopoverTrigger>
-        <Button style={{ float: "right" }}>Trigger</Button>
-      </PopoverTrigger>
-      <PopoverContent>
-        <PopoverHeader>Header</PopoverHeader>
-        <PopoverCloseButton />
-        <PopoverBody>
-          <Button variantColor="blue" ref={initRef}>
-            Close
-          </Button>
-        </PopoverBody>
-        <PopoverFooter>This is the footer</PopoverFooter>
-      </PopoverContent>
-    </Popover>
+    <Box maxWidth="lg" mx="auto" mt={6} p={6}>
+      {story()}
+    </Box>
   );
-};
+});
 
-stories.add("Default", () => <Example />);
-
-const PortalEx = () => {
-  const initRef = useRef();
-  return (
-    <Popover initialFocusRef={initRef}>
-      <PopoverTrigger>
-        <Button style={{ float: "right" }}>Trigger</Button>
-      </PopoverTrigger>
-      <Portal>
-        <PopoverContent>
+stories.add("Default", () => (
+  <Fragment>
+    <Popover
+      trigger={<Button>Trigger</Button>}
+      placement="bottom"
+      showCloseButton
+      // showArrow
+    >
+      {({ onClose }) => (
+        <Fragment>
           <PopoverHeader>Header</PopoverHeader>
-          <PopoverCloseButton />
           <PopoverBody>
-            <Button variantColor="blue" ref={initRef}>
+            <Button variantColor="blue" onClick={onClose}>
               Close
             </Button>
           </PopoverBody>
           <PopoverFooter>This is the footer</PopoverFooter>
-        </PopoverContent>
-      </Portal>
+        </Fragment>
+      )}
     </Popover>
-  );
-};
-
-stories.add("with portal", () => <PortalEx />);
-
-const PortalAndFocusLockEx = () => {
-  const initRef = useRef();
-  return (
-    <Popover initialFocusRef={initRef}>
-      <PopoverTrigger>
-        <Button style={{ float: "right" }}>Trigger</Button>
-      </PopoverTrigger>
-      <Portal>
-        <PopoverContent>
-          <FocusLock returnFocus>
-            <PopoverHeader>Header</PopoverHeader>
-            <PopoverCloseButton />
-            <PopoverBody>
-              <Button variantColor="blue" ref={initRef}>
-                Close
-              </Button>
-            </PopoverBody>
-            <PopoverFooter>This is the footer</PopoverFooter>
-          </FocusLock>
-        </PopoverContent>
-      </Portal>
-    </Popover>
-  );
-};
-
-stories.add("with focus lock", () => <PortalAndFocusLockEx />);
+    <Button>Close</Button>
+  </Fragment>
+));

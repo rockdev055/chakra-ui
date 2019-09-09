@@ -1,15 +1,13 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
-import {
-  Children,
-  cloneElement,
-  useState,
-  useRef,
-  forwardRef,
-  useImperativeHandle,
-} from "react";
+import { Children, cloneElement, useState, useRef, forwardRef } from "react";
 import { useId } from "@reach/auto-id";
 import Box from "../Box";
+
+/* 
+  TODO:
+  - Calling focus() on the radiogroup should focus on the selected option or first enabled option
+*/
 
 const RadioGroup = forwardRef(
   (
@@ -31,16 +29,10 @@ const RadioGroup = forwardRef(
     const [value, setValue] = useState(defaultValue || null);
     const _value = isControlled ? valueProp : value;
 
-    const rootRef = useRef();
-
     const _onChange = event => {
-      if (!isControlled) {
-        setValue(event.target.value);
-      }
-
-      if (onChange) {
-        onChange(event, event.target.value);
-      }
+      const { value: _val } = event.target;
+      !isControlled && setValue(_val);
+      onChange && onChange(event, _val);
     };
 
     // If no name is passed, we'll generate a random, unique name
@@ -67,29 +59,8 @@ const RadioGroup = forwardRef(
       );
     });
 
-    // Calling focus() on the radiogroup should focus on the selected option or first enabled option
-    useImperativeHandle(
-      ref,
-      () => ({
-        focus: () => {
-          let input = rootRef.current.querySelector(
-            "input:not(:disabled):checked",
-          );
-
-          if (!input) {
-            input = rootRef.current.querySelector("input:not(:disabled)");
-          }
-
-          if (input) {
-            input.focus();
-          }
-        },
-      }),
-      [],
-    );
-
     return (
-      <Box ref={rootRef} role="radiogroup" {...rest}>
+      <Box role="radiogroup" {...rest}>
         {clones}
       </Box>
     );
