@@ -10,7 +10,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { Manager, Popper, Reference } from "react-popper";
 import Box from "../Box";
 import PseudoBox from "../PseudoBox";
 import Text from "../Text";
@@ -19,29 +18,44 @@ import usePrevious from "../usePrevious";
 import { getFocusables, mergeRefs } from "../utils";
 import { useMenuItemStyle, useMenuListStyle } from "./styles";
 import Divider from "../Divider";
+import usePopper from "../usePopper";
 
 const MenuContext = createContext();
 
 const Menu = ({
   children,
-  isOpen,
+  isOpen: isOpenProp,
+  defaultIsOpen,
+  onOpenChange,
   autoSelect = true,
   closeOnBlur = true,
   closeOnSelect = true,
+  placement: placementProp,
 }) => {
   const { colorMode } = useColorMode();
 
-  const [state, setState] = useState({
-    isOpen: isOpen || false,
-    index: -1,
-  });
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const [isOpen, setIsOpen] = useState(defaultIsOpen || false);
+  const { current: isControlled } = useRef(isOpenProp != null);
+
+  const _isOpen = isControlled ? isOpenProp : isOpen;
 
   const menuId = `menu-${useId()}`;
   const buttonId = `menubutton-${useId()}`;
 
-  const menuRef = useRef(null);
-  const buttonRef = useRef(null);
   const focusableItems = useRef(null);
+
+  const {
+    placement,
+    referenceRef: buttonRef,
+    popoverRef: menuRef,
+    arrowRef,
+    arrowStyles,
+    popoverStyles,
+  } = usePopper({
+    placement: placementProp,
+    isOpen: _isOpen,
+  });
 
   useEffect(() => {
     let focusables = getFocusables(menuRef.current).filter(node =>
@@ -51,7 +65,7 @@ const Menu = ({
     );
     focusableItems.current = menuRef.current ? focusables : [];
     initTabIndex();
-  }, []);
+  }, [menuRef]);
 
   const updateTabIndex = index => {
     if (focusableItems.current.length > 0) {
@@ -75,44 +89,58 @@ const Menu = ({
     );
   };
 
-  const wasPreviouslyOpen = usePrevious(state.isOpen);
+  const wasPreviouslyOpen = usePrevious(_isOpen);
 
   useEffect(() => {
-    if (state.index !== -1) {
-      focusableItems.current[state.index].focus();
-      updateTabIndex(state.index);
+    if (activeIndex !== -1) {
+      focusableItems.current[activeIndex].focus();
+      updateTabIndex(activeIndex);
     }
-    if (state.index === -1 && !state.isOpen && wasPreviouslyOpen) {
+    if (activeIndex === -1 && !_isOpen && wasPreviouslyOpen) {
       buttonRef.current && buttonRef.current.focus();
     }
-    if (state.index === -1 && state.isOpen) {
+    if (activeIndex === -1 && _isOpen) {
       menuRef.current && menuRef.current.focus();
     }
-  }, [state, wasPreviouslyOpen]);
+  }, [activeIndex, _isOpen, buttonRef, menuRef, wasPreviouslyOpen]);
 
   const focusOnFirstItem = () => {
-    setState({ isOpen: true, index: 0 });
+    if (!isControlled) {
+      setActiveIndex(0);
+      setIsOpen(true);
+    }
   };
 
   const openMenu = () => {
-    setState({ ...state, isOpen: true });
+    if (!isControlled) {
+      setIsOpen(true);
+    }
   };
 
   const focusAtIndex = index => {
-    setState({ ...state, index });
+    if (!isControlled) {
+      setActiveIndex(index);
+    }
   };
 
   const focusOnLastItem = () => {
-    setState({ isOpen: true, index: focusableItems.current.length - 1 });
+    if (!isControlled) {
+      setIsOpen(true);
+      setActiveIndex(focusableItems.current.length - 1);
+    }
   };
 
   const closeMenu = () => {
-    setState({ isOpen: false, index: -1 });
+    if (!isControlled) {
+      setIsOpen(false);
+      setActiveIndex(-1);
+    }
     resetTabIndex();
   };
 
   const context = {
-    state,
+    activeIndex,
+    isOpen: _isOpen,
     focusAtIndex,
     focusOnLastItem,
     focusOnFirstItem,
@@ -127,15 +155,17 @@ const Menu = ({
     closeOnSelect,
     closeOnBlur,
     colorMode,
+    placement,
+    arrowRef,
+    arrowStyles,
+    popoverStyles,
   };
 
   return (
     <MenuContext.Provider value={context}>
-      <Manager>
-        {typeof children === "function"
-          ? children({ isOpen: state.isOpen, onClose: closeMenu })
-          : children}
-      </Manager>
+      {typeof children === "function"
+        ? children({ isOpen: _isOpen, onClose: closeMenu })
+        : children}
     </MenuContext.Provider>
   );
 };
@@ -159,7 +189,7 @@ const PseudoButton = forwardRef((props, ref) => (
 const MenuButton = forwardRef(
   ({ onClick, onKeyDown, as: Comp = PseudoButton, ...rest }, ref) => {
     const {
-      state: { isOpen },
+      isOpen,
       focusOnLastItem,
       focusOnFirstItem,
       closeMenu,
@@ -171,44 +201,40 @@ const MenuButton = forwardRef(
     } = useMenuContext();
 
     return (
-      <Reference>
-        {({ ref: referenceRef }) => (
-          <Comp
-            aria-haspopup="menu"
-            aria-expanded={isOpen}
-            aria-controls={menuId}
-            id={buttonId}
-            role="button"
-            ref={node => mergeRefs([buttonRef, referenceRef, ref], node)}
-            onClick={event => {
-              if (isOpen) {
-                closeMenu();
-              } else {
-                autoSelect ? focusOnFirstItem() : openMenu();
-              }
-              if (onClick) {
-                onClick(event);
-              }
-            }}
-            onKeyDown={event => {
-              if (event.key === "ArrowDown") {
-                event.preventDefault();
-                focusOnFirstItem();
-              }
+      <Comp
+        aria-haspopup="menu"
+        aria-expanded={isOpen}
+        aria-controls={menuId}
+        id={buttonId}
+        role="button"
+        ref={node => mergeRefs([buttonRef, ref], node)}
+        onClick={event => {
+          if (isOpen) {
+            closeMenu();
+          } else {
+            autoSelect ? focusOnFirstItem() : openMenu();
+          }
+          if (onClick) {
+            onClick(event);
+          }
+        }}
+        onKeyDown={event => {
+          if (event.key === "ArrowDown") {
+            event.preventDefault();
+            focusOnFirstItem();
+          }
 
-              if (event.key === "ArrowUp") {
-                event.preventDefault();
-                focusOnLastItem();
-              }
+          if (event.key === "ArrowUp") {
+            event.preventDefault();
+            focusOnLastItem();
+          }
 
-              if (onKeyDown) {
-                onKeyDown(event);
-              }
-            }}
-            {...rest}
-          />
-        )}
-      </Reference>
+          if (onKeyDown) {
+            onKeyDown(event);
+          }
+        }}
+        {...rest}
+      />
     );
   },
 );
@@ -216,7 +242,8 @@ const MenuButton = forwardRef(
 
 const MenuList = ({ onKeyDown, onBlur, placement, ...props }) => {
   const {
-    state: { index, isOpen },
+    activeIndex: index,
+    isOpen,
     focusAtIndex,
     focusOnFirstItem,
     focusOnLastItem,
@@ -227,6 +254,7 @@ const MenuList = ({ onKeyDown, onBlur, placement, ...props }) => {
     buttonId,
     menuRef,
     closeOnBlur,
+    popoverStyles,
   } = useMenuContext();
 
   const handleKeyDown = event => {
@@ -285,28 +313,24 @@ const MenuList = ({ onKeyDown, onBlur, placement, ...props }) => {
   const styleProps = useMenuListStyle();
 
   return (
-    <Popper placement={placement}>
-      {({ ref, style: popperStyle }) => (
-        <Box
-          minW="3xs"
-          rounded="md"
-          role="menu"
-          ref={node => mergeRefs([menuRef, ref], node)}
-          id={menuId}
-          py={2}
-          pos="absolute"
-          aria-labelledby={buttonId}
-          onKeyDown={handleKeyDown}
-          onBlur={handleBlur}
-          tabIndex={-1}
-          zIndex="1"
-          hidden={!isOpen}
-          css={popperStyle}
-          {...styleProps}
-          {...props}
-        />
-      )}
-    </Popper>
+    <Box
+      minW="3xs"
+      rounded="md"
+      role="menu"
+      ref={menuRef}
+      id={menuId}
+      py={2}
+      pos="absolute"
+      aria-labelledby={buttonId}
+      onKeyDown={handleKeyDown}
+      onBlur={handleBlur}
+      tabIndex={-1}
+      zIndex="1"
+      hidden={!isOpen}
+      css={popoverStyles}
+      {...styleProps}
+      {...props}
+    />
   );
 };
 
