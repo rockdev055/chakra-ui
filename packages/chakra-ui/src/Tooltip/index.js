@@ -2,66 +2,31 @@
 import { jsx } from "@emotion/core";
 import styled from "@emotion/styled";
 import Portal from "@reach/portal";
-import { cloneElement, useRef, Children, Fragment } from "react";
-import { popperStyle } from "../Popover/components";
+import { cloneElement, useRef, Children } from "react";
+import { Manager, Popper, Reference } from "react-popper";
+import { assignRef, genId } from "../utils";
+import { PopoverTransition, popperStyle } from "../Popover/components";
 import { useColorMode } from "../ColorModeProvider";
 import Box from "../Box";
 import useDisclosure from "../useDisclosure";
 import { useId } from "@reach/auto-id";
-import CSSTransition from "react-transition-group/CSSTransition";
-import usePopper from "../usePopper";
-
-export const Fade = ({ in: inProp, timeout = 200, children, ...props }) => {
-  const child = Children.only(children);
-
-  const fadeStyle = {
-    "&.fade-enter": {
-      opacity: 0.01,
-    },
-    "&.fade-enter-active": {
-      opacity: 1,
-      transition: `opacity ${timeout}ms ease`,
-    },
-    "&.fade-exit": {
-      opacity: 1,
-    },
-    "&.fade-exit-active": {
-      opacity: 0.01,
-      transition: `opacity ${timeout}ms ease`,
-    },
-  };
-
-  return (
-    <CSSTransition
-      in={inProp}
-      timeout={timeout}
-      appear
-      unmountOnExit
-      classNames="fade"
-      {...props}
-    >
-      {cloneElement(child, { css: [child.props.css, fadeStyle] })}
-    </CSSTransition>
-  );
-};
 
 const TooltipContent = styled(Box)`
-  ${popperStyle()}
+  ${popperStyle}
 `;
 
 const Tooltip = ({
+  bg,
   color,
   label,
   showDelay = 100,
   hideDelay = 100,
   transitionDuration = 50,
-  placement: placementProp = "auto",
+  placement = "auto",
   children,
   showArrow,
   closeOnClick,
   defaultIsOpen,
-  gutter,
-  shouldWrapChildren,
   isOpen: controlledIsOpen,
   onOpenChange,
   ...rest
@@ -69,19 +34,6 @@ const Tooltip = ({
   const { isOpen, onClose, onOpen } = useDisclosure(defaultIsOpen || false);
   const { current: isControlled } = useRef(controlledIsOpen != null);
   const _isOpen = isControlled ? controlledIsOpen : isOpen;
-
-  const {
-    placement,
-    referenceRef,
-    popoverRef,
-    arrowRef,
-    arrowStyles,
-    popoverStyles,
-  } = usePopper({
-    placement: placementProp,
-    isOpen: _isOpen,
-    gutter,
-  });
 
   const openWithDelay = () => {
     setTimeout(onOpen, showDelay);
@@ -94,98 +46,105 @@ const Tooltip = ({
   const tooltipId = `tooltip-${useId()}`;
 
   const handleOpen = () => {
-    if (!isControlled) {
-      openWithDelay();
-    }
-
-    if (onOpenChange) {
-      onOpenChange(true);
-    }
+    !isControlled && openWithDelay();
+    onOpenChange && onOpenChange();
   };
 
   const handleClose = () => {
-    if (!isControlled) {
-      closeWithDelay();
-    }
-
-    onOpenChange && onOpenChange(false);
+    !isControlled && closeWithDelay();
+    onOpenChange && onOpenChange();
   };
 
   const { colorMode } = useColorMode();
   const _bg = colorMode === "dark" ? "gray.300" : "gray.700";
   const _color = colorMode === "dark" ? "gray.900" : "whiteAlpha.900";
 
-  const bgColor = rest.bg || rest.backgroundColor || _bg;
+  const bgColor = bg || _bg;
   const textColor = color || _color;
 
+  const child =
+    typeof children === "string" ? children : Children.only(children);
+
   const handleClick = event => {
-    if (closeOnClick) {
-      closeWithDelay();
-    }
-
+    closeOnClick && closeWithDelay();
     if (typeof children !== "string") {
-      if (children.props.onClick) {
-        children.props.onClick(event);
-      }
+      child.props.onClick && child.props.onClick(event);
     }
   };
-
-  const referenceProps = {
-    "aria-labelledby": tooltipId,
-    ref: referenceRef,
-    onMouseEnter: handleOpen,
-    onMouseLeave: handleClose,
-    onClick: handleClick,
-    onFocus: handleOpen,
-    onBlur: handleClose,
-  };
-
-  const clone =
-    typeof children === "string" || shouldWrapChildren ? (
-      <Box as="span" tabIndex="0" {...referenceProps}>
-        {children}
-      </Box>
-    ) : (
-      cloneElement(Children.only(children), referenceProps)
-    );
 
   return (
-    <Fragment>
-      {clone}
+    <Manager>
+      <Reference>
+        {({ ref: referenceRef }) => {
+          // Props for the reference element.
+          const referenceProps = {
+            "aria-labelledby": tooltipId,
+            ref: node => {
+              assignRef(referenceRef, node);
+            },
+            onMouseEnter: handleOpen,
+            onMouseLeave: handleClose,
+            onClick: handleClick,
+            onFocus: handleOpen,
+            onBlur: handleClose,
+          };
 
-      <Portal>
-        <Fade duration={transitionDuration} in={_isOpen}>
-          <TooltipContent
-            ref={popoverRef}
-            px="8px"
-            py="2px"
-            id={tooltipId}
-            role="tooltip"
-            bg={bgColor}
-            borderRadius="sm"
-            fontWeight="medium"
-            pointerEvents="none"
-            color={textColor}
-            css={popoverStyles}
-            data-placement={placement}
-            fontSize="sm"
-            boxShadow="md"
-            maxWidth="320px"
-            {...rest}
-          >
-            {label}
-            {showArrow && (
-              <Box
-                borderColor={bgColor}
-                data-arrow=""
-                ref={arrowRef}
-                style={arrowStyles}
-              />
+          // If you pass just a string to the Tooltip children,
+          // let's wrap it in a span as a fallback
+          if (typeof child === "string") {
+            return (
+              <Box as="span" {...referenceProps}>
+                {child}
+              </Box>
+            );
+          }
+
+          return cloneElement(child, { ...referenceProps });
+        }}
+      </Reference>
+
+      <Popper placement={placement}>
+        {({ ref: popperRef, style, arrowProps, placement }) => (
+          <PopoverTransition duration={transitionDuration} isOpen={_isOpen}>
+            {styles => (
+              <Portal>
+                <TooltipContent
+                  ref={popperRef}
+                  px="8px"
+                  py="2px"
+                  id={tooltipId}
+                  role="tooltip"
+                  bg={bgColor}
+                  borderRadius="sm"
+                  fontWeight="medium"
+                  color={textColor}
+                  css={{
+                    ...style,
+                    transform: `${style.transform}`,
+                    opacity: styles.opacity,
+                  }}
+                  data-placement={placement}
+                  fontSize="sm"
+                  boxShadow="md"
+                  maxWidth="320px"
+                  {...rest}
+                >
+                  {label}
+                  {showArrow && (
+                    <Box
+                      borderColor={bgColor}
+                      data-arrow=""
+                      ref={arrowProps.ref}
+                      style={arrowProps.style}
+                    />
+                  )}
+                </TooltipContent>
+              </Portal>
             )}
-          </TooltipContent>
-        </Fade>
-      </Portal>
-    </Fragment>
+          </PopoverTransition>
+        )}
+      </Popper>
+    </Manager>
   );
 };
 

@@ -1,416 +1,144 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import { useId } from "@reach/auto-id";
-import {
-  Children,
-  cloneElement,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  useRef,
-} from "react";
+import Portal from "@reach/portal";
+import { cloneElement, Fragment, useEffect, useRef } from "react";
+import { Manager, Popper, Reference } from "react-popper";
 import Box from "../Box";
-import CloseButton from "../CloseButton";
 import { useColorMode } from "../ColorModeProvider";
-import usePopper from "../usePopper";
-import usePrevious from "../usePrevious";
-import { PopoverContent as PopoverContentBase } from "./components";
-import CSSTransition from "react-transition-group/CSSTransition";
-
-/**
- * Hook based idea:
- * const {referenceProps, popoverProps, arrowProps, state, actions} = usePopover(props).
- *
- * The popover must meet the AA Success Criterion
- * https://www.w3.org/WAI/WCAG21/Understanding/content-on-hover-or-focus.html
- * https://www.w3.org/WAI/WCAG21/Techniques/client-side-script/SCR39
- */
-
-const PopoverContext = createContext();
-const usePopoverContext = () => {
-  const context = useContext(PopoverContext);
-  if (context == null) {
-    throw Error("usePopoverContext must be used within <Popover/>");
-  }
-  return context;
-};
-
-// Should Chakra support multiple triggers? maybe hover and click?
-export const PopoverTrigger = ({ children }) => {
-  const {
-    referenceRef,
-    popoverId,
-    onToggle,
-    trigger,
-    onOpen,
-    isOpen,
-    onClose,
-    isHoveringRef,
-  } = usePopoverContext();
-
-  const child = Children.only(children);
-  let eventHandlers = {};
-
-  if (trigger === "click") {
-    eventHandlers = {
-      onClick: event => {
-        onToggle();
-        if (child.props.onClick) {
-          child.props.onClick(event);
-        }
-      },
-    };
-  }
-
-  if (trigger === "hover") {
-    eventHandlers = {
-      onFocus: event => {
-        onOpen();
-        if (child.props.onFocus) {
-          child.props.onFocus(event);
-        }
-      },
-      onBlur: event => {
-        onClose();
-        if (child.props.onBlur) {
-          child.props.onBlur(event);
-        }
-      },
-      onMouseEnter: event => {
-        isHoveringRef.current = true;
-        setTimeout(() => {
-          onOpen();
-        }, 300);
-        if (child.props.onMouseEnter) {
-          child.props.onMouseEnter(event);
-        }
-      },
-      onMouseLeave: event => {
-        isHoveringRef.current = false;
-        setTimeout(() => {
-          if (isHoveringRef.current === false) {
-            onClose();
-          }
-        }, 300);
-        if (child.props.onMouseLeave) {
-          child.props.onMouseLeave(event);
-        }
-      },
-    };
-  }
-
-  return cloneElement(child, {
-    "aria-haspopup": "dialog",
-    "aria-expanded": isOpen,
-    "aria-controls": popoverId,
-    ref: referenceRef,
-    ...eventHandlers,
-  });
-};
-
-export const PopoverArrow = props => {
-  const { colorMode } = useColorMode();
-  const borderColor = colorMode === "light" ? "white" : "gray.700";
-  const { arrowRef, arrowStyles } = usePopoverContext();
-  return (
-    <Box
-      borderColor={borderColor}
-      data-arrow=""
-      ref={arrowRef}
-      css={arrowStyles}
-      {...props}
-    />
-  );
-};
-
-export const PopoverCloseButton = ({ onClick, ...props }) => {
-  const { onClose } = usePopoverContext();
-  return (
-    <CloseButton
-      size="sm"
-      onClick={event => {
-        onClose();
-        if (onClick) {
-          onClick(event);
-        }
-      }}
-      position="absolute"
-      rounded="md"
-      top="12px"
-      right="12px"
-      p="6px"
-      {...props}
-    />
-  );
-};
-
-export const PopoverTransition = ({
-  timeout = 250,
-  children,
-  onEntering,
-  ...rest
-}) => {
-  const { initialFocusRef, isOpen, trigger } = usePopoverContext();
-  const child = Children.only(children);
-
-  const fadeStyle = {
-    "&.fade-enter": {
-      opacity: 0.01,
-    },
-    "&.fade-enter-active": {
-      opacity: 1,
-      transition: `opacity ${timeout}ms ease`,
-    },
-    "&.fade-exit": {
-      opacity: 1,
-    },
-    "&.fade-exit-active": {
-      opacity: 0.01,
-      transition: `opacity ${timeout}ms ease`,
-    },
-  };
-
-  return (
-    <CSSTransition
-      in={isOpen}
-      timeout={timeout}
-      appear
-      unmountOnExit
-      classNames="fade"
-      onEntering={(node, isAppearing) => {
-        if (initialFocusRef && trigger !== "hover") {
-          initialFocusRef.current.focus();
-        }
-
-        if (onEntering) {
-          onEntering(node, isAppearing);
-        }
-      }}
-      {...rest}
-    >
-      {cloneElement(child, { css: [child.props.css, fadeStyle] })}
-    </CSSTransition>
-  );
-};
-
-export const PopoverContent = ({
-  onKeyDown,
-  onBlur: onBlurProp,
-  onMouseLeave,
-  onMouseEnter,
-  onFocus,
-  "aria-label": ariaLabel,
-  "aria-labelledby": ariaLabelledBy,
-  "aria-describedby": ariaDescribedBy,
-  ...props
-}) => {
-  const {
-    popoverRef,
-    placement,
-    popoverId,
-    isOpen,
-    onBlur,
-    popoverStyles,
-    closeOnEsc,
-    onClose,
-    isHoveringRef,
-    trigger,
-  } = usePopoverContext();
-
-  const { colorMode } = useColorMode();
-  const bg = colorMode === "light" ? "white" : "gray.700";
-
-  let eventHandlers = {};
-
-  if (trigger === "click") {
-    eventHandlers = {
-      onBlur: event => {
-        onBlur(event);
-        if (onBlurProp) {
-          onBlurProp(event);
-        }
-      },
-    };
-  }
-
-  if (trigger === "hover") {
-    eventHandlers = {
-      onMouseEnter: event => {
-        isHoveringRef.current = true;
-        if (onMouseEnter) {
-          onMouseEnter(event);
-        }
-      },
-      onMouseLeave: event => {
-        isHoveringRef.current = false;
-
-        setTimeout(() => {
-          onClose();
-        }, 300);
-
-        if (onMouseLeave) {
-          onMouseLeave(event);
-        }
-      },
-    };
-  }
-
-  eventHandlers = {
-    ...eventHandlers,
-    onKeyDown: event => {
-      if (event.key === "Escape" && closeOnEsc) {
-        onClose && onClose();
-      }
-
-      if (onKeyDown) {
-        onKeyDown(event);
-      }
-    },
-  };
-
-  return (
-    <PopoverTransition>
-      <PopoverContentBase
-        aria-label={ariaLabel}
-        role="dialog"
-        aria-modal="false"
-        bg={bg}
-        ref={popoverRef}
-        data-placement={placement}
-        id={popoverId}
-        aria-hidden={!isOpen}
-        tabIndex="-1"
-        css={{
-          position: "absolute",
-          ...popoverStyles,
-        }}
-        {...eventHandlers}
-        {...props}
-      />
-    </PopoverTransition>
-  );
-};
+import useDisclosure from "../useDisclosure";
+import { assignRef } from "../utils";
+import FocusLock from "react-focus-lock";
+import {
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverTransition,
+} from "./components";
 
 const Popover = ({
-  isOpen: isOpenProp,
-  initialFocusRef,
+  isOpen: controlledIsOpen,
   defaultIsOpen,
+  maxWidth = "xs",
+  trigger,
   gutter,
-  trigger = "click",
-  placement: placementProp,
+  placement,
   children,
+  showArrow,
+  showCloseButton,
+  usePortal = true,
+  onOpenChange,
+  trapFocus = false,
   closeOnBlur = true,
   closeOnEsc = true,
-  onOpenChange,
+  ...rest
 }) => {
-  const [isOpen, setIsOpen] = useState(defaultIsOpen || false);
-  const { current: isControlled } = useRef();
+  const { isOpen, onClose, onToggle } = useDisclosure(defaultIsOpen);
+  const triggerRef = useRef();
+  const popperRef = useRef();
 
-  const isHoveringRef = useRef();
-
-  const _isOpen = isControlled ? isOpenProp : isOpen;
-
-  const onToggle = () => {
-    if (!isControlled) {
-      setIsOpen(!_isOpen);
-    }
-
-    if (onOpenChange) {
-      onOpenChange(!_isOpen);
-    }
-  };
-
-  const onOpen = () => {
-    if (!isControlled) {
-      setIsOpen(true);
-    }
-
-    if (onOpenChange) {
-      onOpenChange(true);
-    }
-  };
-
-  const onClose = () => {
-    if (!isControlled) {
-      setIsOpen(false);
-    }
-
-    if (onOpenChange) {
-      onOpenChange(false);
-    }
-  };
-
-  const {
-    placement,
-    referenceRef,
-    popoverRef,
-    arrowRef,
-    arrowStyles,
-    popoverStyles,
-  } = usePopper({
-    placement: placementProp,
-    isOpen: _isOpen,
-    gutter,
-  });
+  useEffect(() => {
+    onOpenChange && onOpenChange(isOpen);
+  }, [isOpen, onOpenChange]);
 
   const handleBlur = event => {
     if (
+      !trapFocus &&
       isOpen &&
-      closeOnBlur &&
-      popoverRef.current &&
-      referenceRef.current &&
-      !popoverRef.current.contains(event.relatedTarget) &&
-      !referenceRef.current.contains(event.relatedTarget)
+      popperRef.current &&
+      triggerRef.current &&
+      !popperRef.current.contains(event.relatedTarget) &&
+      !triggerRef.current.contains(event.relatedTarget)
     ) {
-      onClose();
+      closeOnBlur && onClose();
     }
   };
 
+  const { colorMode } = useColorMode();
+
+  const _bgColor = colorMode === "light" ? "white" : "gray.700";
+
+  const bg = rest.bg || rest.background || rest.backgroundColor || _bgColor;
   const popoverId = `popper-${useId()}`;
-  const prevIsOpen = usePrevious(isOpen);
-
-  useEffect(() => {
-    if (
-      isOpen &&
-      popoverRef.current &&
-      !initialFocusRef &&
-      trigger !== "hover"
-    ) {
-      popoverRef.current.focus();
-    }
-
-    if (!isOpen && prevIsOpen && trigger !== "hover") {
-      referenceRef.current.focus();
-    }
-  }, [isOpen, popoverRef, initialFocusRef, trigger, referenceRef, prevIsOpen]);
-
-  const context = {
-    popoverRef,
-    referenceRef,
-    popoverStyles,
-    arrowStyles,
-    popoverId,
-    onOpen,
-    onClose,
-    onToggle,
-    placement,
-    trigger,
-    isOpen,
-    arrowRef,
-    onBlur: handleBlur,
-    closeOnEsc,
-    initialFocusRef,
-    isHoveringRef,
-  };
+  const PopperWrapper = usePortal ? Portal : Fragment;
 
   return (
-    <PopoverContext.Provider value={context}>
-      {typeof children === "function"
-        ? children({ isOpen, onClose })
-        : children}
-    </PopoverContext.Provider>
+    <Manager>
+      <Reference>
+        {({ ref: referenceRef }) =>
+          cloneElement(trigger, {
+            "aria-haspopup": "true",
+            "aria-controls": popoverId,
+            ref: node => {
+              triggerRef.current = node;
+              assignRef(referenceRef, node);
+            },
+            onClick: event => {
+              onToggle();
+              trigger.props.onClick && trigger.props.onClick(event);
+            },
+          })
+        }
+      </Reference>
+
+      <PopperWrapper>
+        <Popper placement={placement}>
+          {({ ref, style: popperStyle, placement, arrowProps }) => (
+            <PopoverTransition duration={100} isOpen={isOpen}>
+              {styles => (
+                <FocusLock
+                  // eslint-disable-next-line jsx-a11y/no-autofocus
+                  autoFocus={false}
+                  returnFocus
+                >
+                  <PopoverContent
+                    ref={node => {
+                      popperRef.current = node;
+                      assignRef(ref, node);
+                    }}
+                    bg={bg}
+                    maxWidth={maxWidth}
+                    data-placement={placement}
+                    id={popoverId}
+                    aria-hidden={isOpen}
+                    {...rest}
+                    tabIndex="-1"
+                    onBlur={handleBlur}
+                    css={{
+                      ...popperStyle,
+                      transform: `${popperStyle.transform} scale(${styles.scale})`,
+                      opacity: styles.opacity,
+                    }}
+                    onKeyDown={event => {
+                      event.stopPropagation();
+                      if (event.key === "Escape" && closeOnEsc) {
+                        onClose && onClose();
+                      }
+                    }}
+                  >
+                    {showCloseButton && (
+                      <PopoverCloseButton onClick={onClose} />
+                    )}
+                    {typeof children === "function"
+                      ? children({ isOpen, onClose })
+                      : children}
+                    {showArrow && (
+                      <Box
+                        borderColor={bg}
+                        data-arrow=""
+                        ref={arrowProps.ref}
+                        css={arrowProps.style}
+                      />
+                    )}
+                  </PopoverContent>
+                </FocusLock>
+              )}
+            </PopoverTransition>
+          )}
+        </Popper>
+      </PopperWrapper>
+    </Manager>
   );
 };
 
 export default Popover;
+export * from "./components";

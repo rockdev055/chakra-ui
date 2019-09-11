@@ -1,10 +1,40 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/core";
 import { forwardRef } from "react";
+import { Transition } from "react-spring/renderprops.cjs";
+import CloseButton from "../CloseButton";
 import Box from "../Box";
-import PseudoBox from "../PseudoBox";
 
-export const popperStyle = (arrowSize = "5px") => css`
+const arrowSize = "5px";
+
+export const PopoverTransition = ({
+  isOpen,
+  duration = 200,
+  children,
+  ...rest
+}) => (
+  <Transition
+    items={isOpen}
+    from={{
+      opacity: 0.01,
+      scale: 0.75,
+    }}
+    enter={{
+      opacity: 1,
+      scale: 1,
+    }}
+    leave={{
+      opacity: 0,
+      scale: 0.75,
+    }}
+    config={{ duration, ...rest.config }}
+    {...rest}
+  >
+    {isOpen => isOpen && (style => children(style))}
+  </Transition>
+);
+
+export const popperStyle = css`
   > [data-arrow] {
     width: 0;
     height: 0;
@@ -23,9 +53,11 @@ export const popperStyle = (arrowSize = "5px") => css`
     border-left-color: transparent;
     border-right-color: transparent;
     border-bottom-color: transparent;
-    bottom: -${arrowSize};
+    bottom: -5px;
+    left: calc(50% - 5px);
     margin-top: 0;
     margin-bottom: 0;
+    box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.07);
   }
 
   &[data-placement^="bottom"] {
@@ -38,13 +70,15 @@ export const popperStyle = (arrowSize = "5px") => css`
     border-left-color: transparent;
     border-right-color: transparent;
     border-top-color: transparent;
-    top: -${arrowSize};
+    top: -5px;
+    left: calc(50% - 5px);
     margin-top: 0;
     margin-bottom: 0;
+    box-shadow: -2px -2px 5px rgba(0, 0, 0, 0.06);
   }
 
   &[data-placement^="right"] {
-    margin-left: ${arrowSize};
+    margin-left: 5px;
     transform-origin: left center;
   }
 
@@ -53,9 +87,11 @@ export const popperStyle = (arrowSize = "5px") => css`
     border-left-color: transparent;
     border-top-color: transparent;
     border-bottom-color: transparent;
-    left: -${arrowSize};
+    left: -5px;
+    top: calc(50% - 5px);
     margin-left: 0;
     margin-right: 0;
+    box-shadow: -3px 3px 7px rgba(0, 0, 0, 0.07);
   }
 
   &[data-placement^="left"] {
@@ -68,36 +104,56 @@ export const popperStyle = (arrowSize = "5px") => css`
     border-top-color: transparent;
     border-right-color: transparent;
     border-bottom-color: transparent;
-    right: -${arrowSize};
+    right: -5px;
+    top: calc(50% - 5px);
     margin-left: 0;
     margin-right: 0;
+    box-shadow: 3px -3px 7px rgba(0, 0, 0, 0.07);
   }
 `;
 
 export const PopoverContent = forwardRef((props, ref) => (
-  <PseudoBox
+  <Box
     width="100%"
     position="relative"
     display="flex"
     flexDirection="column"
     rounded="lg"
-    shadow="md"
+    boxShadow="lg"
     maxWidth="xs"
     ref={ref}
-    css={popperStyle()}
-    _focus={{ outline: 0, shadow: "outline" }}
+    css={popperStyle}
     {...props}
   />
 ));
 
+export const PopoverCloseButton = ({ onClick, ...props }) => (
+  <CloseButton
+    size="sm"
+    onClick={onClick}
+    position="absolute"
+    rounded="md"
+    top="12px"
+    right="12px"
+    p="6px"
+    {...props}
+  />
+);
+
 export const PopoverHeader = props => (
-  <Box px="12px" shadow="bottom" py="8px" as="header" {...props} />
+  <Box px="12px" boxShadow="bottom" py="8px" as="header" {...props} />
 );
 
 export const PopoverFooter = props => (
-  <Box px="12px" shadow="top" py="8px" as="footer" {...props} />
+  <Box px="12px" boxShadow="top" py="8px" as="footer" {...props} />
 );
 
-export const PopoverBody = props => (
-  <Box flex="1" px="12px" py="8px" {...props} />
+export const PopoverBody = ({ isScrollable, ...props }) => (
+  <Box
+    flex="1"
+    px="12px"
+    py="8px"
+    {...(isScrollable && { overflow: "hidden auto" })}
+    {...props}
+  />
 );
