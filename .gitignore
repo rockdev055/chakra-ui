@@ -11,5 +11,4 @@ npm-debug.log*
 packages/*/.env
 *.log
 yarn.lock
-yarn-error.log
 packages/*/.rpt2_cache
