@@ -1,126 +1,146 @@
-# Popover (In Progress)
+# Popover
 
-The Popover component displays floating content in relation to a trigger.
-Popovers appear either at the `top`, `bottom`, `left` or `right` of their
-trigger. The preferred and default side is the bottom. Popover is built on top
-of the <a href="https://popper.js.org/" target="__blank">Popper.js</a> library.
+Popover is a non-modal dialog that floats around a trigger. It's used to display
+contextual information to the user, and should be paired with a clickable
+trigger element.
+
+Popover is built on top of the [Popper.js](https://popper.js.org/) library.
 
 ## Import
 
+- `Popover`: The wrapper that provides props, state, and context to it's
+  children.
+- `PopoverTrigger`: Used to wrap the reference (or trigger) element.
+- `PopoverContent`: The popover itself.
+- `PopoverHeader`: The header of the popover.
+- `PopoverBody`: The body of the popover.
+- `PopoverArrow`: A visual arrow that points to the reference (or trigger).
+- `PopoverCloseButton`: Obviously, a button to close the popover.
+
 ```js
-import { Popover } from "@chakra-ui/core";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter,
+  PopoverArrow,
+  PopoverCloseButton,
+} from "@chakra-ui/core";
 ```
 
-## Usage
+## Basic Usage
 
 ```jsx
-function Example() {
+function BasicExample() {
+  const closeRef = React.useRef();
   return (
-    <>
-      <Popover
-        trigger={<Button>Trigger</Button>}
-        usePortal
-        placement="bottom"
-        showCloseButton
-      >
-        {({ onClose }) => (
-          <>
-            <PopoverHeader>Header</PopoverHeader>
-            <PopoverBody>
-              <Button color="blue" onClick={onClose}>
-                Close
-              </Button>
-            </PopoverBody>
-            <PopoverFooter>This is the footer</PopoverFooter>
-          </>
-        )}
-      </Popover>
-    </>
+    <Popover initialFocusRef={closeRef}>
+      <PopoverTrigger>
+        <Button>Trigger</Button>
+      </PopoverTrigger>
+      <PopoverContent zIndex={20}>
+        <PopoverArrow />
+        <PopoverHeader>Header</PopoverHeader>
+        <PopoverCloseButton />
+        <PopoverBody>
+          <Button variantColor="blue" ref={closeRef}>
+            Button
+          </Button>
+        </PopoverBody>
+        <PopoverFooter>This is the footer</PopoverFooter>
+      </PopoverContent>
+    </Popover>
   );
 }
 ```
 
-## With arrow
+## Using Portal
+
+The popovers don't display in a portal by default. To use a portal, Import the
+`Portal` component.
 
 ```jsx
-function Example() {
+// import { Portal } from "@chakra-ui/core"
+
+function BasicExample() {
   return (
-    <>
-      <Popover
-        trigger={<Button>Trigger</Button>}
-        usePortal
-        showArrow
-        bg="gray.500"
-        placement="bottom"
-        showCloseButton
-      >
-        {({ onClose }) => (
-          <>
-            <PopoverHeader>Header</PopoverHeader>
-            <PopoverBody>
-              <Button color="blue" onClick={onClose}>
-                Close
-              </Button>
-            </PopoverBody>
-            <PopoverFooter>This is the footer</PopoverFooter>
-          </>
-        )}
-      </Popover>
-    </>
+    <Popover>
+      <PopoverTrigger>
+        <Button>Trigger</Button>
+      </PopoverTrigger>
+      <ChakraPortal>
+        <PopoverContent>
+          <PopoverArrow />
+          <PopoverHeader>Header</PopoverHeader>
+          <PopoverCloseButton />
+          <PopoverBody>
+            <Button variantColor="blue">Button</Button>
+          </PopoverBody>
+          <PopoverFooter>This is the footer</PopoverFooter>
+        </PopoverContent>
+      </ChakraPortal>
+    </Popover>
   );
 }
 ```
 
-## Placement
+## Trapping Focus
 
-Using the `placement` prop you can adjust where your popover will be displayed.
+The popovers don't display in a portal by default. To use a portal, Import the
+`Portal` component.
 
 ```jsx
-function Example() {
-  return (
-    <Flex>
-      <Popover
-        trigger={<Button>Top start</Button>}
-        usePortal
-        placement="top-start"
-        showCloseButton
-      >
-        {({ onClose }) => (
-          <>
-            <PopoverHeader>Header</PopoverHeader>
-            <PopoverBody>
-              <Button color="blue" onClick={onClose}>
-                Close
-              </Button>
-            </PopoverBody>
-            <PopoverFooter>This is the footer</PopoverFooter>
-          </>
-        )}
-      </Popover>
-      <Box mx="4px" />
+// import { Portal } from "@chakra-ui/core"
+// import  FocusLock from "react-focus-lock"
 
-      <Popover
-        trigger={<Button>Right end</Button>}
-        usePortal
-        placement="right-end"
-        showCloseButton
-      >
-        {({ onClose }) => (
-          <>
-            <PopoverHeader>Header</PopoverHeader>
-            <PopoverBody>
-              <Button color="blue" onClick={onClose}>
-                Close
-              </Button>
-            </PopoverBody>
-            <PopoverFooter>This is the footer</PopoverFooter>
-          </>
-        )}
-      </Popover>
-    </Flex>
-  );
-}
+<Popover closeOnBlur={false}>
+  <PopoverTrigger>
+    <Button>Trigger</Button>
+  </PopoverTrigger>
+  <Portal>
+    <PopoverContent>
+      <FocusLock returnFocus persistentFocus={false}>
+        <PopoverHeader>Header</PopoverHeader>
+        <PopoverCloseButton />
+        <PopoverBody>
+          <Button variantColor="blue">Close</Button>
+        </PopoverBody>
+        <PopoverFooter>This is the footer</PopoverFooter>
+      </FocusLock>
+    </PopoverContent>
+  </Portal>
+</Popover>
 ```
+
+## Popover with no arrow
+
+In some cases, you might not need to use the PopoverArrow. Pass the `hasArrow`
+prop to the `PopoverContent` and set to `false`. This will remove the internal
+margin set on the `PopoverContent` to allow for the arrow.
+
+TO DO: Show Example.
+
+## Customizing the Popover
+
+Chakra exports all the components you need to customize the look and feel of the
+popover. You can change the background, arrow size, boxShadow and so on.
+
+TO DO: Show Example.
+
+## Accessiblity
+
+- The `Popover` element has role set to `dialog`
+- The dialog should be labelled, this can be achieved in two ways:
+- Apply the `aria-labelledby` attribute to the dialog element and set the value
+  to be the ID of the main Heading element in the Popover (if it provides a good
+  and meaningful title to the dialog)
+- If no Heading element is present, use the `aria-label` attribute and set the
+  value to be a meaningful title of the dialog
+- The dialog should be described where possible. This can be achieved by
+  applying the `aria-describedby` attribute to the dialog element and set the
+  value to be the id of the Popover body
 
 ## Props
 

@@ -3,7 +3,7 @@ import { ButtonProps } from "../Button";
 
 type PropsFromButton = Pick<
   ButtonProps,
-  "size" | "variant" | "color" | "isDisabled" | "isLoading" | "type"
+  "size" | "variant" | "color" | "isLoading" | "type"
 >;
 
 interface IIconButton extends PropsFromButton {

@@ -1,7 +1,6 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import { useId } from "@reach/auto-id";
-import { bool, func, string } from "prop-types";
 import {
   createContext,
   forwardRef,
@@ -10,48 +9,54 @@ import {
   useRef,
   useState,
 } from "react";
-import { Manager, Popper, Reference } from "react-popper";
 import Box from "../Box";
 import PseudoBox from "../PseudoBox";
 import Text from "../Text";
 import { useColorMode } from "../ColorModeProvider";
 import usePrevious from "../usePrevious";
-import { getFocusables, mergeRefs } from "../utils";
+import { getFocusables, useForkRef } from "../utils";
 import { useMenuItemStyle, useMenuListStyle } from "./styles";
 import Divider from "../Divider";
+import Popper from "../Popper";
 
 const MenuContext = createContext();
 
 const Menu = ({
   children,
-  isOpen,
+  isOpen: isOpenProp,
+  defaultIsOpen,
+  onOpenChange,
   autoSelect = true,
   closeOnBlur = true,
   closeOnSelect = true,
+  placement,
 }) => {
   const { colorMode } = useColorMode();
 
-  const [state, setState] = useState({
-    isOpen: isOpen || false,
-    index: -1,
-  });
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const [isOpen, setIsOpen] = useState(defaultIsOpen || false);
+  const { current: isControlled } = useRef(isOpenProp != null);
+
+  const _isOpen = isControlled ? isOpenProp : isOpen;
 
   const menuId = `menu-${useId()}`;
   const buttonId = `menubutton-${useId()}`;
 
+  const focusableItems = useRef(null);
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
-  const focusableItems = useRef(null);
 
   useEffect(() => {
-    let focusables = getFocusables(menuRef.current).filter(node =>
-      ["menuitem", "menuitemradio", "menuitemcheckbox"].includes(
-        node.getAttribute("role"),
-      ),
-    );
-    focusableItems.current = menuRef.current ? focusables : [];
-    initTabIndex();
-  }, []);
+    if (_isOpen && menuRef && menuRef.current) {
+      let focusables = getFocusables(menuRef.current).filter(node =>
+        ["menuitem", "menuitemradio", "menuitemcheckbox"].includes(
+          node.getAttribute("role"),
+        ),
+      );
+      focusableItems.current = menuRef.current ? focusables : [];
+      initTabIndex();
+    }
+  }, [_isOpen]);
 
   const updateTabIndex = index => {
     if (focusableItems.current.length > 0) {
@@ -66,7 +71,9 @@ const Menu = ({
   };
 
   const resetTabIndex = () => {
-    focusableItems.current.forEach(node => node.setAttribute("tabindex", -1));
+    if (focusableItems.current) {
+      focusableItems.current.forEach(node => node.setAttribute("tabindex", -1));
+    }
   };
 
   const initTabIndex = () => {
@@ -75,44 +82,58 @@ const Menu = ({
     );
   };
 
-  const wasPreviouslyOpen = usePrevious(state.isOpen);
+  const wasPreviouslyOpen = usePrevious(_isOpen);
 
   useEffect(() => {
-    if (state.index !== -1) {
-      focusableItems.current[state.index].focus();
-      updateTabIndex(state.index);
+    if (activeIndex !== -1) {
+      focusableItems.current[activeIndex].focus();
+      updateTabIndex(activeIndex);
     }
-    if (state.index === -1 && !state.isOpen && wasPreviouslyOpen) {
+    if (activeIndex === -1 && !_isOpen && wasPreviouslyOpen) {
       buttonRef.current && buttonRef.current.focus();
     }
-    if (state.index === -1 && state.isOpen) {
+    if (activeIndex === -1 && _isOpen) {
       menuRef.current && menuRef.current.focus();
     }
-  }, [state, wasPreviouslyOpen]);
+  }, [activeIndex, _isOpen, buttonRef, menuRef, wasPreviouslyOpen]);
 
   const focusOnFirstItem = () => {
-    setState({ isOpen: true, index: 0 });
+    if (!isControlled) {
+      setActiveIndex(0);
+      setIsOpen(true);
+    }
   };
 
   const openMenu = () => {
-    setState({ ...state, isOpen: true });
+    if (!isControlled) {
+      setIsOpen(true);
+    }
   };
 
   const focusAtIndex = index => {
-    setState({ ...state, index });
+    if (!isControlled) {
+      setActiveIndex(index);
+    }
   };
 
   const focusOnLastItem = () => {
-    setState({ isOpen: true, index: focusableItems.current.length - 1 });
+    if (!isControlled) {
+      setIsOpen(true);
+      setActiveIndex(focusableItems.current.length - 1);
+    }
   };
 
   const closeMenu = () => {
-    setState({ isOpen: false, index: -1 });
+    if (!isControlled) {
+      setIsOpen(false);
+      setActiveIndex(-1);
+    }
     resetTabIndex();
   };
 
   const context = {
-    state,
+    activeIndex,
+    isOpen: _isOpen,
     focusAtIndex,
     focusOnLastItem,
     focusOnFirstItem,
@@ -120,6 +141,7 @@ const Menu = ({
     buttonRef,
     menuRef,
     focusableItems,
+    placement,
     menuId,
     buttonId,
     openMenu,
@@ -131,11 +153,9 @@ const Menu = ({
 
   return (
     <MenuContext.Provider value={context}>
-      <Manager>
-        {typeof children === "function"
-          ? children({ isOpen: state.isOpen, onClose: closeMenu })
-          : children}
-      </Manager>
+      {typeof children === "function"
+        ? children({ isOpen: _isOpen, onClose: closeMenu })
+        : children}
     </MenuContext.Provider>
   );
 };
@@ -159,7 +179,7 @@ const PseudoButton = forwardRef((props, ref) => (
 const MenuButton = forwardRef(
   ({ onClick, onKeyDown, as: Comp = PseudoButton, ...rest }, ref) => {
     const {
-      state: { isOpen },
+      isOpen,
       focusOnLastItem,
       focusOnFirstItem,
       closeMenu,
@@ -170,53 +190,56 @@ const MenuButton = forwardRef(
       buttonRef,
     } = useMenuContext();
 
+    const menuButtonRef = useForkRef(buttonRef, ref);
+
     return (
-      <Reference>
-        {({ ref: referenceRef }) => (
-          <Comp
-            aria-haspopup="menu"
-            aria-expanded={isOpen}
-            aria-controls={menuId}
-            id={buttonId}
-            role="button"
-            ref={node => mergeRefs([buttonRef, referenceRef, ref], node)}
-            onClick={event => {
-              if (isOpen) {
-                closeMenu();
-              } else {
-                autoSelect ? focusOnFirstItem() : openMenu();
-              }
-              if (onClick) {
-                onClick(event);
-              }
-            }}
-            onKeyDown={event => {
-              if (event.key === "ArrowDown") {
-                event.preventDefault();
-                focusOnFirstItem();
-              }
+      <Comp
+        aria-haspopup="menu"
+        aria-expanded={isOpen}
+        aria-controls={menuId}
+        id={buttonId}
+        role="button"
+        ref={menuButtonRef}
+        onClick={event => {
+          if (isOpen) {
+            closeMenu();
+          } else {
+            if (autoSelect) {
+              focusOnFirstItem();
+            } else {
+              openMenu();
+            }
+          }
+          if (onClick) {
+            onClick(event);
+          }
+        }}
+        onKeyDown={event => {
+          if (event.key === "ArrowDown") {
+            event.preventDefault();
+            focusOnFirstItem();
+          }
 
-              if (event.key === "ArrowUp") {
-                event.preventDefault();
-                focusOnLastItem();
-              }
+          if (event.key === "ArrowUp") {
+            event.preventDefault();
+            focusOnLastItem();
+          }
 
-              if (onKeyDown) {
-                onKeyDown(event);
-              }
-            }}
-            {...rest}
-          />
-        )}
-      </Reference>
+          if (onKeyDown) {
+            onKeyDown(event);
+          }
+        }}
+        {...rest}
+      />
     );
   },
 );
 //////////////////////////////////////////////////////////////////////////////////////////
 
-const MenuList = ({ onKeyDown, onBlur, placement, ...props }) => {
+const MenuList = ({ onKeyDown, onBlur, ...props }) => {
   const {
-    state: { index, isOpen },
+    activeIndex: index,
+    isOpen,
     focusAtIndex,
     focusOnFirstItem,
     focusOnLastItem,
@@ -227,6 +250,7 @@ const MenuList = ({ onKeyDown, onBlur, placement, ...props }) => {
     buttonId,
     menuRef,
     closeOnBlur,
+    placement,
   } = useMenuContext();
 
   const handleKeyDown = event => {
@@ -285,28 +309,29 @@ const MenuList = ({ onKeyDown, onBlur, placement, ...props }) => {
   const styleProps = useMenuListStyle();
 
   return (
-    <Popper placement={placement}>
-      {({ ref, style: popperStyle }) => (
-        <Box
-          minW="3xs"
-          rounded="md"
-          role="menu"
-          ref={node => mergeRefs([menuRef, ref], node)}
-          id={menuId}
-          py={2}
-          pos="absolute"
-          aria-labelledby={buttonId}
-          onKeyDown={handleKeyDown}
-          onBlur={handleBlur}
-          tabIndex={-1}
-          zIndex="1"
-          hidden={!isOpen}
-          css={popperStyle}
-          {...styleProps}
-          {...props}
-        />
-      )}
-    </Popper>
+    <Popper
+      usePortal={false}
+      isOpen={isOpen}
+      anchorEl={buttonRef.current}
+      placement={placement}
+      modifiers={{
+        preventOverflow: { enabled: true, boundariesElement: "viewport" },
+      }}
+      minW="3xs"
+      rounded="md"
+      role="menu"
+      ref={menuRef}
+      id={menuId}
+      py={2}
+      aria-labelledby={buttonId}
+      onKeyDown={handleKeyDown}
+      onBlur={handleBlur}
+      tabIndex={-1}
+      zIndex="1"
+      _focus={{ outline: 0, shadow: "outline" }}
+      {...styleProps}
+      {...props}
+    />
   );
 };
 
@@ -356,8 +381,12 @@ const MenuItem = forwardRef(
             event.preventDefault();
             return;
           }
-          onClick && onClick(event);
-          closeOnSelect && closeMenu();
+          if (onClick) {
+            onClick(event);
+          }
+          if (closeOnSelect) {
+            closeMenu();
+          }
         }}
         onMouseMove={event => {
           if (isDisabled) {
@@ -365,22 +394,38 @@ const MenuItem = forwardRef(
             event.preventDefault();
             return;
           }
-          let nextIndex = focusableItems.current.indexOf(event.currentTarget);
-          focusAtIndex(nextIndex);
-          onMouseMove && onMouseMove(event);
+          if (focusableItems && focusableItems.current.length > 0) {
+            let nextIndex = focusableItems.current.indexOf(event.currentTarget);
+            focusAtIndex(nextIndex);
+          }
+          if (onMouseMove) {
+            onMouseMove(event);
+          }
         }}
         onMouseLeave={event => {
           focusAtIndex(-1);
-          onMouseLeave && onMouseLeave(event);
+
+          if (onMouseLeave) {
+            onMouseLeave(event);
+          }
         }}
         onKeyDown={event => {
           if (isDisabled) return;
           if (event.key === "Enter" || event.key === " ") {
             event.preventDefault();
-            onClick && onClick();
-            closeOnSelect && closeMenu();
+
+            if (onClick) {
+              onClick();
+            }
+
+            if (closeOnSelect) {
+              closeMenu();
+            }
           }
-          onKeyDown && onKeyDown(event);
+
+          if (onKeyDown) {
+            onKeyDown(event);
+          }
         }}
         {...styleProps}
         {...props}
@@ -388,14 +433,6 @@ const MenuItem = forwardRef(
     );
   },
 );
-
-MenuItem.propTypes = {
-  isDisabled: bool,
-  onKeyDown: func,
-  onClick: func,
-  onMouseMove: func,
-  role: string,
-};
 
 //////////////////////////////////////////////////////////////////////////////////////////
 

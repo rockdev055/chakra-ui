@@ -1,150 +1,147 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
-import styled from "@emotion/styled";
-import Portal from "@reach/portal";
-import { cloneElement, useRef, Children } from "react";
-import { Manager, Popper, Reference } from "react-popper";
-import { assignRef, genId } from "../utils";
-import { PopoverTransition, popperStyle } from "../Popover/components";
+import { cloneElement, useRef, Children, Fragment } from "react";
 import { useColorMode } from "../ColorModeProvider";
 import Box from "../Box";
 import useDisclosure from "../useDisclosure";
 import { useId } from "@reach/auto-id";
+import Popper from "../Popper";
+import VisuallyHidden from "../VisuallyHidden";
 
-const TooltipContent = styled(Box)`
-  ${popperStyle}
-`;
+const activeTooltip = { id: "" };
 
 const Tooltip = ({
-  bg,
   color,
   label,
-  showDelay = 100,
-  hideDelay = 100,
-  transitionDuration = 50,
+  "aria-label": ariaLabel,
+  showDelay = 250,
+  hideDelay = 500,
   placement = "auto",
   children,
-  showArrow,
+  hasArrow,
   closeOnClick,
   defaultIsOpen,
+  gutter,
+  shouldWrapChildren,
   isOpen: controlledIsOpen,
-  onOpenChange,
+  onOpen: onOpenProp,
+  onClose: onCloseProp,
   ...rest
 }) => {
   const { isOpen, onClose, onOpen } = useDisclosure(defaultIsOpen || false);
   const { current: isControlled } = useRef(controlledIsOpen != null);
   const _isOpen = isControlled ? controlledIsOpen : isOpen;
 
+  const referenceRef = useRef();
+  const enterTimeoutRef = useRef();
+  const exitTimeoutRef = useRef();
+
   const openWithDelay = () => {
-    setTimeout(onOpen, showDelay);
+    enterTimeoutRef.current = setTimeout(onOpen, showDelay);
   };
 
   const closeWithDelay = () => {
-    setTimeout(onClose, hideDelay);
+    exitTimeoutRef.current = setTimeout(onClose, hideDelay);
   };
 
   const tooltipId = `tooltip-${useId()}`;
 
   const handleOpen = () => {
-    !isControlled && openWithDelay();
-    onOpenChange && onOpenChange();
+    if (!isControlled) {
+      openWithDelay();
+    }
+
+    if (onOpenProp) {
+      onOpenProp();
+    }
   };
 
   const handleClose = () => {
-    !isControlled && closeWithDelay();
-    onOpenChange && onOpenChange();
+    if (!isControlled) {
+      closeWithDelay();
+    }
+
+    if (onCloseProp) {
+      onCloseProp();
+    }
   };
 
   const { colorMode } = useColorMode();
   const _bg = colorMode === "dark" ? "gray.300" : "gray.700";
   const _color = colorMode === "dark" ? "gray.900" : "whiteAlpha.900";
 
-  const bgColor = bg || _bg;
+  const bgColor = rest.bg || rest.backgroundColor || _bg;
   const textColor = color || _color;
 
-  const child =
-    typeof children === "string" ? children : Children.only(children);
-
   const handleClick = event => {
-    closeOnClick && closeWithDelay();
+    if (closeOnClick) {
+      closeWithDelay();
+    }
+
     if (typeof children !== "string") {
-      child.props.onClick && child.props.onClick(event);
+      if (children.props.onClick) {
+        children.props.onClick(event);
+      }
     }
   };
 
+  const referenceProps = {
+    "aria-labelledby": tooltipId,
+    ref: referenceRef,
+    onMouseEnter: handleOpen,
+    onMouseLeave: handleClose,
+    onClick: handleClick,
+    onFocus: handleOpen,
+    onBlur: handleClose,
+  };
+
+  const clone =
+    typeof children === "string" || shouldWrapChildren ? (
+      <Box as="span" tabIndex="0" {...referenceProps}>
+        {children}
+      </Box>
+    ) : (
+      cloneElement(Children.only(children), referenceProps)
+    );
+
+  const hasAriaLabel = ariaLabel != null;
+
   return (
-    <Manager>
-      <Reference>
-        {({ ref: referenceRef }) => {
-          // Props for the reference element.
-          const referenceProps = {
-            "aria-labelledby": tooltipId,
-            ref: node => {
-              assignRef(referenceRef, node);
-            },
-            onMouseEnter: handleOpen,
-            onMouseLeave: handleClose,
-            onClick: handleClick,
-            onFocus: handleOpen,
-            onBlur: handleClose,
-          };
+    <Fragment>
+      {clone}
 
-          // If you pass just a string to the Tooltip children,
-          // let's wrap it in a span as a fallback
-          if (typeof child === "string") {
-            return (
-              <Box as="span" {...referenceProps}>
-                {child}
-              </Box>
-            );
-          }
-
-          return cloneElement(child, { ...referenceProps });
-        }}
-      </Reference>
-
-      <Popper placement={placement}>
-        {({ ref: popperRef, style, arrowProps, placement }) => (
-          <PopoverTransition duration={transitionDuration} isOpen={_isOpen}>
-            {styles => (
-              <Portal>
-                <TooltipContent
-                  ref={popperRef}
-                  px="8px"
-                  py="2px"
-                  id={tooltipId}
-                  role="tooltip"
-                  bg={bgColor}
-                  borderRadius="sm"
-                  fontWeight="medium"
-                  color={textColor}
-                  css={{
-                    ...style,
-                    transform: `${style.transform}`,
-                    opacity: styles.opacity,
-                  }}
-                  data-placement={placement}
-                  fontSize="sm"
-                  boxShadow="md"
-                  maxWidth="320px"
-                  {...rest}
-                >
-                  {label}
-                  {showArrow && (
-                    <Box
-                      borderColor={bgColor}
-                      data-arrow=""
-                      ref={arrowProps.ref}
-                      style={arrowProps.style}
-                    />
-                  )}
-                </TooltipContent>
-              </Portal>
-            )}
-          </PopoverTransition>
+      <Popper
+        usePortal
+        isOpen={_isOpen}
+        placement={placement}
+        timeout={200}
+        modifiers={{ offset: { enabled: true, offset: `0, 8` } }}
+        anchorEl={referenceRef.current}
+        arrowSize="10px"
+        hasArrow={hasArrow}
+        px="8px"
+        py="2px"
+        id={hasAriaLabel ? undefined : tooltipId}
+        role={hasAriaLabel ? undefined : "tooltip"}
+        bg={bgColor}
+        borderRadius="sm"
+        fontWeight="medium"
+        pointerEvents="none"
+        color={textColor}
+        fontSize="sm"
+        shadow="md"
+        maxW="320px"
+        {...rest}
+      >
+        {label}
+        {hasAriaLabel && (
+          <VisuallyHidden role="tooltip" id={tooltipId}>
+            {ariaLabel}
+          </VisuallyHidden>
         )}
+        {hasArrow && <Box x-arrow="" />}
       </Popper>
-    </Manager>
+    </Fragment>
   );
 };
 

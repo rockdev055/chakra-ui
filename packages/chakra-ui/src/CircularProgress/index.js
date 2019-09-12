@@ -3,6 +3,7 @@ import { jsx, keyframes } from "@emotion/core";
 import { useColorMode } from "../ColorModeProvider";
 import Box from "../Box";
 import { forwardRef } from "react";
+import { useTheme } from "../ThemeProvider";
 
 const circularProgressCircle = keyframes`
   0% {
@@ -38,7 +39,6 @@ export const CircularProgressLabel = props => (
     lineHeight="1"
     transform="translate(-50%, -50%)"
     fontSize="0.25em"
-    css={{ fontVariantNumeric: "tabular-nums" }}
     {...props}
   ></Box>
 );
