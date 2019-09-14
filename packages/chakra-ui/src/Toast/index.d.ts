@@ -1,15 +1,6 @@
-import { IAlert, AlertProps as BaseAlertProps } from "../Alert";
+import { IAlert, AlertProps } from "../Alert";
 import { BoxProps } from "../Box";
-import { Omit } from "../common-types";
-import { Position } from "toasted-notes";
 import * as React from "react";
-
-type AlertProps = Omit<BaseAlertProps, "position"> & {
-  /**
-   * One of toasted-notes positions.
-   */
-  position?: keyof typeof Position;
-};
 
 export interface IToast extends AlertProps {
   /**
@@ -29,9 +20,15 @@ export interface IToast extends AlertProps {
    */
   description?: string;
   /**
-   * Duration before dismiss in milliseconds, or `null` to never dismiss.
+   * Position
    */
-  duration?: number | null;
+  position?:
+    | "top-left"
+    | "top"
+    | "top-right"
+    | "bottom-left"
+    | "bottom"
+    | "bottom-right";
 }
 
 export type ToastProps = IToast;
