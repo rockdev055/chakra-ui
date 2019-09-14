@@ -1,11 +1,12 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import { forwardRef } from "react";
+import propTypes from "prop-types";
 import ControlBox from "../ControlBox";
 import { useColorMode } from "../ColorModeProvider";
 import VisuallyHidden from "../VisuallyHidden";
 import useCheckboxStyle from "../Checkbox/styles";
-import PseudoBox from "../PseudoBox";
+import Flex from "../Flex";
 import Box from "../Box";
 
 const Radio = forwardRef(
@@ -16,11 +17,11 @@ const Radio = forwardRef(
       value,
       "aria-label": ariaLabel,
       "aria-labelledby": ariaLabelledBy,
-      variantColor = "blue",
+      color,
       defaultIsChecked,
       isChecked,
       isFullWidth,
-      size = "md",
+      size,
       isDisabled,
       isInvalid,
       onChange,
@@ -33,14 +34,14 @@ const Radio = forwardRef(
   ) => {
     const { colorMode } = useColorMode();
     const styleProps = useCheckboxStyle({
-      color: variantColor,
+      color,
       size,
       colorMode,
       type: "radio",
     });
 
     return (
-      <PseudoBox
+      <Flex
         as="label"
         display="inline-flex"
         verticalAlign="top"
@@ -80,9 +81,58 @@ const Radio = forwardRef(
             {children}
           </Box>
         )}
-      </PseudoBox>
+      </Flex>
     );
   },
 );
+
+Radio.defaultProps = {
+  size: "md",
+  color: "blue",
+};
+
+Radio.propTypes = {
+  /**
+   * The aria-label attribute associated with the radio element
+   */
+  "aria-label": propTypes.string,
+  /**
+   * If `true`, the radio will be disabled
+   */
+  isDisabled: propTypes.bool,
+  /**
+   * If `true`, the radio is marked as invalid.
+   * Changes style of unchecked state.
+   */
+  isInvalid: propTypes.bool,
+  /**
+   * The color of the radio when it's checked.
+   * This should be one of the color keys in the theme (e.g."green", "red")
+   */
+  color: propTypes.string,
+  /**
+   * If `true`, the radio will be initially checked.
+   */
+  defaultChecked: propTypes.bool,
+  /**
+   * If `true`, the radio will be checked.
+   * You'll need to pass `onChange` to update it's value (since it's now controlled)
+   */
+  isChecked: propTypes.bool,
+  /**
+   * id assigned to input
+   */
+  id: propTypes.string,
+  /**
+   * The name of the input field in a radio
+   * (Useful for form submission).
+   */
+  name: propTypes.string,
+  /**
+   * The value to be used in the radio button.
+   * This is the value that will be returned on form submission.
+   */
+  value: propTypes.oneOfType([propTypes.string, propTypes.number]),
+};
 
 export default Radio;

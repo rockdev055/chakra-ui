@@ -44,7 +44,6 @@ const Spinner = forwardRef(
         borderColor="currentColor"
         borderBottomColor={emptyColor}
         borderLeftColor={emptyColor}
-        borderStyle="solid"
         rounded="full"
         color={color}
         animation={`${spin} ${speed} linear infinite`}

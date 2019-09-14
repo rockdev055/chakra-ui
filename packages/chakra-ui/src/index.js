@@ -4,6 +4,7 @@ export { default as AlertDialog } from "./AlertDialog";
 export * from "./AlertDialog";
 export { default as Avatar } from "./Avatar";
 export * from "./Avatar";
+export { default as AspectRatioBox } from "./AspectRatioBox";
 export { default as AvatarGroup } from "./AvatarGroup";
 
 export { default as Badge } from "./Badge";
@@ -23,10 +24,8 @@ export { default as ControlBox } from "./ControlBox";
 export { default as ColorModeProvider } from "./ColorModeProvider";
 export * from "./ColorModeProvider";
 export { default as CSSReset } from "./CSSReset";
-export {
-  default as CircularProgress,
-  CircularProgressLabel,
-} from "./CircularProgress";
+export { default as CircularProgress } from "./CircularProgress";
+export * from "./CircularProgress";
 
 export { default as Divider } from "./Divider";
 export { default as Drawer } from "./Drawer";
@@ -34,7 +33,6 @@ export * from "./Drawer";
 
 export { default as Editable } from "./Editable";
 export * from "./Editable";
-export { default as AspectRatioBox } from "./AspectRatioBox";
 
 export { default as Flex } from "./Flex";
 export { default as FormControl } from "./FormControl";
@@ -72,6 +70,7 @@ export * from "./Modal";
 export { default as NumberInput } from "./NumberInput";
 
 export { default as Portal } from "./Portal";
+export { default as Popover } from "./Popover";
 export * from "./Popover";
 export { default as Progress } from "./Progress";
 export * from "./Progress";

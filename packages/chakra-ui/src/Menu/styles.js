@@ -6,17 +6,17 @@ export const useMenuListStyle = () => {
   const elevation = {
     light: {
       bg: "#fff",
-      shadow: "sm",
+      boxShadow:
+        "0 7px 14px 0 rgba(0,0,0, 0.1), 0 3px 6px 0 rgba(0, 0, 0, .07)",
     },
     dark: {
       bg: "gray.700",
-      shadow: `rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.2) 0px 5px 10px, rgba(0, 0, 0, 0.4) 0px 15px 40px`,
+      boxShadow: `rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.2) 0px 5px 10px, rgba(0, 0, 0, 0.4) 0px 15px 40px`,
     },
   };
 
   return {
     color: "inherit",
-    borderWidth: "1px",
     ...elevation[colorMode],
   };
 };
@@ -44,7 +44,6 @@ const interactionProps = ({ colorMode }) => {
     },
     _focus: {
       bg: _focusColor[colorMode],
-      outline: 0,
     },
     _disabled: {
       opacity: 0.4,
@@ -56,7 +55,7 @@ const interactionProps = ({ colorMode }) => {
 export const useMenuItemStyle = () => {
   const theme = useTheme();
   const { colorMode } = useColorMode();
-  const props = { theme, colorMode };
+  const props = { theme, colorMode};
 
   return {
     ...baseProps,

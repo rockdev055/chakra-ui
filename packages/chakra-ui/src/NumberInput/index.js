@@ -8,7 +8,6 @@ import React, {
 import Flex from "../Flex";
 import Input from "../Input";
 import Spinner from "./Spinner";
-import { wrapEvent } from "../utils";
 
 function useLongPress(callback = () => {}, speed = 200) {
   const [startLongPress, setStartLongPress] = useState(false);
@@ -86,7 +85,7 @@ const NumberInput = forwardRef(
       let output = nextVal;
 
       if (nextVal > max) {
-        output = max;
+        output = nextVal;
       }
       if (nextVal < min) {
         output = min;
@@ -171,19 +170,6 @@ const NumberInput = forwardRef(
       }
     };
 
-    const handleBlur = wrapEvent(onBlur, event => {
-      const maxExists = max != null;
-      const minExists = min != null;
-
-      if (maxExists && event.target.value > max) {
-        updateValue(max);
-      }
-
-      if (minExists && event.target.value < min) {
-        updateValue(min);
-      }
-    });
-
     const iconSize = size === "sm" ? "11px" : "15px";
 
     const increment = useLongPress(handleIncrement);
@@ -207,7 +193,6 @@ const NumberInput = forwardRef(
           onChange={handleChange}
           value={_value}
           onKeyDown={handleKeyDown}
-          onBlur={handleBlur}
           {...{
             form,
             pattern,
@@ -216,6 +201,7 @@ const NumberInput = forwardRef(
             onKeyUp,
             onKeyPress,
             onFocus,
+            onBlur,
             autoFocus,
             max,
             step,
