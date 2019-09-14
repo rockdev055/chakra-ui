@@ -1,10 +1,4 @@
-export function genId(prefix) {
-  return `${prefix}-${Math.random()
-    .toString(32)
-    .substr(2, 8)}`;
-}
-
-export const makeId = (id, index) => `${id}:${index}`;
+import { useMemo, useLayoutEffect, useEffect } from "react";
 
 export const assignRef = (ref, value) => {
   if (ref == null) return;
@@ -17,10 +11,6 @@ export const assignRef = (ref, value) => {
       throw new Error(`Cannot assign value "${value}" to ref "${ref}"`);
     }
   }
-};
-
-export const mergeRefs = (refs, value) => {
-  refs.forEach(ref => assignRef(ref, value));
 };
 
 const focusableElList = [
@@ -82,4 +72,53 @@ export const getColorInTheme = (theme, color) => {
   }
 
   return color;
+};
+
+export function setRef(ref, value) {
+  if (typeof ref === "function") {
+    ref(value);
+  } else if (ref) {
+    ref.current = value;
+  }
+}
+
+export function useForkRef(refA, refB) {
+  return useMemo(() => {
+    if (refA == null && refB == null) {
+      return null;
+    }
+    return refValue => {
+      setRef(refA, refValue);
+      setRef(refB, refValue);
+    };
+  }, [refA, refB]);
+}
+
+export function createChainedFunction(...funcs) {
+  return funcs.reduce(
+    (acc, func) => {
+      if (func == null) {
+        return acc;
+      }
+
+      return function chainedFunction(...args) {
+        acc.apply(this, args);
+        func.apply(this, args);
+      };
+    },
+    () => {},
+  );
+}
+
+export const useEnhancedEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
+export const wrapEvent = (theirHandler, ourHandler) => event => {
+  if (theirHandler) {
+    theirHandler(event);
+  }
+
+  if (!event.defaultPrevented) {
+    return ourHandler(event);
+  }
 };
