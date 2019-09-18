@@ -9,7 +9,6 @@ import {
   useState,
   Children,
   cloneElement,
-  isValidElement,
 } from "react";
 import Box from "../Box";
 import Collapse from "../Collapse";
@@ -46,8 +45,6 @@ const Accordion = ({
   const _index = isControlled ? index : expandedIndex;
 
   const clones = Children.map(children, (child, childIndex) => {
-    if (!isValidElement(child)) return;
-
     return cloneElement(child, {
       isOpen: getExpandCondition(_index, childIndex),
       onChange: isExpanded => {

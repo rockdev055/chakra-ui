@@ -2,10 +2,9 @@ import { useTheme } from "../ThemeProvider";
 import { useColorMode } from "../ColorModeProvider";
 
 const outlinedStyle = ({
+  focusBorderColor = "blue",
   theme: { colors },
   colorMode,
-  focusBorderColor,
-  errorBorderColor,
 }) => {
   const bg = { light: "white", dark: "whiteAlpha.100" };
   const borderColor = { light: "inherit", dark: "whiteAlpha.50" };
@@ -14,7 +13,7 @@ const outlinedStyle = ({
   const boxShadow = colors[focusBorderColor] && colors[focusBorderColor][500];
 
   const invalidColor = { light: "red.500", dark: "red.300" };
-  const invalidBoxShadow = { light: errorBorderColor, dark: errorBorderColor };
+  const invalidBoxShadow = { light: colors.red[500], dark: colors.red[300] };
 
   return {
     ...readOnly,
@@ -29,7 +28,7 @@ const outlinedStyle = ({
       cursor: "not-allowed",
     },
     _focus: {
-      borderColor: focusBorderColor,
+      borderColor: `${focusBorderColor}.500`,
       boxShadow: `0 0 0 1px ${boxShadow}`,
     },
     _invalid: {
@@ -47,13 +46,13 @@ const readOnly = {
   },
 };
 
-const filledStyle = ({ focusBorderColor, errorBorderColor, colorMode }) => {
+const filledStyle = ({ focusBorderColor, colorMode }) => {
   const bg = { light: "gray.100", dark: "whiteAlpha.50" };
   const hoverColor = { light: "gray.200", dark: "whiteAlpha.100" };
-  const invalidColor = { light: errorBorderColor, dark: errorBorderColor };
+  const invalidColor = { light: "red.500", dark: "red.300" };
   const focusColor = {
-    light: focusBorderColor,
-    dark: focusBorderColor,
+    light: `${focusBorderColor}.500`,
+    dark: `${focusBorderColor}.300`,
   };
 
   return {
@@ -78,9 +77,9 @@ const filledStyle = ({ focusBorderColor, errorBorderColor, colorMode }) => {
   };
 };
 
-const flushedStyle = ({ colorMode, focusBorderColor, errorBorderColor }) => {
-  const focusColor = { light: focusBorderColor, dark: focusBorderColor };
-  const errorColor = { light: errorBorderColor, dark: errorBorderColor };
+const flushedStyle = ({ colorMode }) => {
+  const focusColor = { light: "blue.500", dark: "blue.300" };
+  const errorColor = { light: "red.500", dark: "red.300" };
 
   return {
     ...readOnly,

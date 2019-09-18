@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
-import { forwardRef, Children, cloneElement, isValidElement } from "react";
+import { forwardRef, Children, cloneElement } from "react";
 import Box from "../Box";
 import Icon from "../Icon";
 import PseudoBox from "../PseudoBox";
@@ -18,8 +18,6 @@ const List = forwardRef(
       {...props}
     >
       {Children.map(children, (child, index) => {
-        if (!isValidElement(child)) return;
-
         const isLast = index + 1 === Children.count(children);
         if (isLast) {
           return child;
