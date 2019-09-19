@@ -1,5 +1,5 @@
 const SEO = {
-  title: "Chakra UI | Design System built with React",
+  title: "Chakra Design System",
   description:
     "Simple, Modular and Accessible UI Components for your React Applications. Built with Styled System",
   openGraph: {

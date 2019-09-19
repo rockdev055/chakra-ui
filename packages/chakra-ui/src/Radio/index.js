@@ -5,6 +5,7 @@ import ControlBox from "../ControlBox";
 import { useColorMode } from "../ColorModeProvider";
 import VisuallyHidden from "../VisuallyHidden";
 import useCheckboxStyle from "../Checkbox/styles";
+import PseudoBox from "../PseudoBox";
 import Box from "../Box";
 
 const Radio = forwardRef(
@@ -39,7 +40,7 @@ const Radio = forwardRef(
     });
 
     return (
-      <Box
+      <PseudoBox
         as="label"
         display="inline-flex"
         verticalAlign="top"
@@ -79,7 +80,7 @@ const Radio = forwardRef(
             {children}
           </Box>
         )}
-      </Box>
+      </PseudoBox>
     );
   },
 );

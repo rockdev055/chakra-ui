@@ -1,14 +1,7 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import { useId } from "@reach/auto-id";
-import {
-  Children,
-  cloneElement,
-  forwardRef,
-  useRef,
-  useState,
-  isValidElement,
-} from "react";
+import { Children, cloneElement, forwardRef, useRef, useState } from "react";
 import { MenuGroup, useMenuContext } from ".";
 import Box from "../Box";
 import Icon from "../Icon";
@@ -161,8 +154,6 @@ export const MenuOptionGroup = ({
   return (
     <MenuGroup title={title} {...rest}>
       {Children.map(children, child => {
-        if (!isValidElement(child)) return;
-
         if (type === "radio") {
           return cloneElement(child, {
             type,
