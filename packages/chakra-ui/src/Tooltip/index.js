@@ -8,30 +8,18 @@ import { useId } from "@reach/auto-id";
 import Popper, { PopperArrow } from "../Popper";
 import VisuallyHidden from "../VisuallyHidden";
 
-const wrapEvent = (child, theirHandler, ourHandler) => event => {
-  if (typeof child === "string") return;
-
-  if (child.props[theirHandler]) {
-    child.props[theirHandler](event);
-  }
-
-  if (!event.defaultPrevented) {
-    return ourHandler(event);
-  }
-};
+// const activeTooltip = { id: "" };
 
 const Tooltip = ({
-  color,
   label,
   "aria-label": ariaLabel,
-  showDelay = 250,
-  hideDelay = 500,
+  showDelay = 0,
+  hideDelay = 0,
   placement = "auto",
   children,
   hasArrow,
   closeOnClick,
   defaultIsOpen,
-  gutter,
   shouldWrapChildren,
   isOpen: controlledIsOpen,
   onOpen: onOpenProp,
@@ -80,23 +68,26 @@ const Tooltip = ({
   const _bg = colorMode === "dark" ? "gray.300" : "gray.700";
   const _color = colorMode === "dark" ? "gray.900" : "whiteAlpha.900";
 
-  const bgColor = rest.bg || rest.backgroundColor || _bg;
-  const textColor = color || _color;
-
-  const handleClick = wrapEvent(children, "onClick", () => {
+  const handleClick = event => {
     if (closeOnClick) {
       closeWithDelay();
     }
-  });
+
+    if (typeof children !== "string") {
+      if (children.props.onClick) {
+        children.props.onClick(event);
+      }
+    }
+  };
 
   const referenceProps = {
+    "aria-labelledby": tooltipId,
     ref: referenceRef,
-    onMouseEnter: wrapEvent(children, "onMouseEnter", handleOpen),
-    onMouseLeave: wrapEvent(children, "onMouseLeave", handleClose),
+    onMouseEnter: handleOpen,
+    onMouseLeave: handleClose,
     onClick: handleClick,
-    onFocus: wrapEvent(children, "onFocus", handleOpen),
-    onBlur: wrapEvent(children, "onBlur", handleClose),
-    ...(_isOpen && { "aria-describedby": tooltipId }),
+    onFocus: handleOpen,
+    onBlur: handleClose,
   };
 
   const clone =
@@ -127,11 +118,11 @@ const Tooltip = ({
         py="2px"
         id={hasAriaLabel ? undefined : tooltipId}
         role={hasAriaLabel ? undefined : "tooltip"}
-        bg={bgColor}
+        bg={_bg}
         borderRadius="sm"
         fontWeight="medium"
         pointerEvents="none"
-        color={textColor}
+        color={_color}
         fontSize="sm"
         shadow="md"
         maxW="320px"
