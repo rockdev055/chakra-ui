@@ -4,7 +4,6 @@ import { forwardRef } from "react";
 import Box from "../Box";
 import { useColorMode } from "../ColorModeProvider";
 import ControlBox from "../ControlBox";
-import PseudoBox from "../PseudoBox";
 import Icon from "../Icon";
 import VisuallyHidden from "../VisuallyHidden";
 import checkboxStyles from "./styles";
@@ -39,7 +38,7 @@ const Checkbox = forwardRef(
     const styleProps = checkboxStyles({ color: variantColor, size, colorMode });
 
     return (
-      <PseudoBox
+      <Box
         as="label"
         display="inline-flex"
         verticalAlign="top"
@@ -70,7 +69,6 @@ const Checkbox = forwardRef(
             name={isIndeterminate ? "minus" : "check"}
             size={iconSize}
             color={iconColor}
-            transition="transform 240ms, opacity 240ms"
           />
         </ControlBox>
         {children && (
@@ -83,7 +81,7 @@ const Checkbox = forwardRef(
             {children}
           </Box>
         )}
-      </PseudoBox>
+      </Box>
     );
   },
 );
