@@ -9,6 +9,7 @@ import {
   useContext,
   useRef,
   useState,
+  isValidElement,
 } from "react";
 import { useId } from "@reach/auto-id";
 import { assignRef } from "../utils";
@@ -117,8 +118,8 @@ const TabList = forwardRef((props, ref) => {
       onManualTabChange(index);
       onChangeTab(index);
 
-      if (child.props.onClick) {
-        child.props.onClick(event);
+      if (onClick) {
+        onClick(event);
       }
     };
 
@@ -161,7 +162,7 @@ const TabPanel = forwardRef(
         aria-labelledby={`tab:${id}`}
         hidden={!isSelected}
         id={`panel:${id}`}
-        outline={0}
+        css={{ outline: "none" }}
         {...rest}
       >
         {children}
@@ -182,6 +183,8 @@ const TabPanels = forwardRef(({ children, ...rest }, ref) => {
   } = useContext(TabContext);
 
   const clones = Children.map(children, (child, index) => {
+    if (!isValidElement(child)) return;
+
     return cloneElement(child, {
       isSelected: isManual ? index === manualIndex : index === selectedIndex,
       selectedPanelRef,

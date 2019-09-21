@@ -14,7 +14,7 @@ import PseudoBox from "../PseudoBox";
 import Text from "../Text";
 import { useColorMode } from "../ColorModeProvider";
 import usePrevious from "../usePrevious";
-import { getFocusables, useForkRef } from "../utils";
+import { getFocusables, useForkRef, wrapEvent } from "../utils";
 import { useMenuItemStyle, useMenuListStyle } from "./styles";
 import Divider from "../Divider";
 import Popper from "../Popper";
@@ -25,17 +25,15 @@ const Menu = ({
   children,
   isOpen: isOpenProp,
   defaultIsOpen,
-  onOpen,
-  onClose,
+  onOpenChange,
   autoSelect = true,
   closeOnBlur = true,
   closeOnSelect = true,
-  defaultActiveIndex,
   placement,
 }) => {
   const { colorMode } = useColorMode();
 
-  const [activeIndex, setActiveIndex] = useState(defaultActiveIndex || -1);
+  const [activeIndex, setActiveIndex] = useState(-1);
   const [isOpen, setIsOpen] = useState(defaultIsOpen || false);
   const { current: isControlled } = useRef(isOpenProp != null);
 
@@ -100,39 +98,36 @@ const Menu = ({
   }, [activeIndex, _isOpen, buttonRef, menuRef, wasPreviouslyOpen]);
 
   const focusOnFirstItem = () => {
-    openMenu();
-    setActiveIndex(0);
+    if (!isControlled) {
+      setActiveIndex(0);
+      setIsOpen(true);
+    }
   };
 
   const openMenu = () => {
     if (!isControlled) {
       setIsOpen(true);
     }
-
-    if (onOpen) {
-      onOpen();
-    }
   };
 
   const focusAtIndex = index => {
-    setActiveIndex(index);
+    if (!isControlled) {
+      setActiveIndex(index);
+    }
   };
 
   const focusOnLastItem = () => {
-    openMenu();
-    setActiveIndex(focusableItems.current.length - 1);
+    if (!isControlled) {
+      setIsOpen(true);
+      setActiveIndex(focusableItems.current.length - 1);
+    }
   };
 
   const closeMenu = () => {
     if (!isControlled) {
       setIsOpen(false);
+      setActiveIndex(-1);
     }
-
-    if (onClose) {
-      onClose();
-    }
-
-    setActiveIndex(-1);
     resetTabIndex();
   };
 
@@ -205,7 +200,7 @@ const MenuButton = forwardRef(
         id={buttonId}
         role="button"
         ref={menuButtonRef}
-        onClick={event => {
+        onClick={wrapEvent(onClick, () => {
           if (isOpen) {
             closeMenu();
           } else {
@@ -215,11 +210,8 @@ const MenuButton = forwardRef(
               openMenu();
             }
           }
-          if (onClick) {
-            onClick(event);
-          }
-        }}
-        onKeyDown={event => {
+        })}
+        onKeyDown={wrapEvent(onKeyDown, event => {
           if (event.key === "ArrowDown") {
             event.preventDefault();
             focusOnFirstItem();
@@ -229,11 +221,7 @@ const MenuButton = forwardRef(
             event.preventDefault();
             focusOnLastItem();
           }
-
-          if (onKeyDown) {
-            onKeyDown(event);
-          }
-        }}
+        })}
         {...rest}
       />
     );
@@ -333,7 +321,7 @@ const MenuList = ({ onKeyDown, onBlur, ...props }) => {
       onBlur={handleBlur}
       tabIndex={-1}
       zIndex="1"
-      _focus={{ outline: 0, shadow: "outline" }}
+      _focus={{ outline: 0 }}
       {...styleProps}
       {...props}
     />
@@ -348,8 +336,8 @@ const MenuItem = forwardRef(
       isDisabled,
       onClick,
       onMouseLeave,
+      onMouseEnter,
       onKeyDown,
-      onMouseMove,
       role = "menuitem",
       ...props
     },
@@ -380,20 +368,17 @@ const MenuItem = forwardRef(
         tabIndex={-1}
         disabled={isDisabled}
         aria-disabled={isDisabled}
-        onClick={event => {
+        onClick={wrapEvent(onClick, event => {
           if (isDisabled) {
             event.stopPropagation();
             event.preventDefault();
             return;
           }
-          if (onClick) {
-            onClick(event);
-          }
           if (closeOnSelect) {
             closeMenu();
           }
-        }}
-        onMouseMove={event => {
+        })}
+        onMouseEnter={wrapEvent(onMouseEnter, event => {
           if (isDisabled) {
             event.stopPropagation();
             event.preventDefault();
@@ -403,18 +388,11 @@ const MenuItem = forwardRef(
             let nextIndex = focusableItems.current.indexOf(event.currentTarget);
             focusAtIndex(nextIndex);
           }
-          if (onMouseMove) {
-            onMouseMove(event);
-          }
-        }}
-        onMouseLeave={event => {
+        })}
+        onMouseLeave={wrapEvent(onMouseLeave, () => {
           focusAtIndex(-1);
-
-          if (onMouseLeave) {
-            onMouseLeave(event);
-          }
-        }}
-        onKeyDown={event => {
+        })}
+        onKeyDown={wrapEvent(onKeyDown, event => {
           if (isDisabled) return;
           if (event.key === "Enter" || event.key === " ") {
             event.preventDefault();
@@ -427,11 +405,7 @@ const MenuItem = forwardRef(
               closeMenu();
             }
           }
-
-          if (onKeyDown) {
-            onKeyDown(event);
-          }
-        }}
+        })}
         {...styleProps}
         {...props}
       />

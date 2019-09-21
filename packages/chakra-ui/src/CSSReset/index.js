@@ -21,14 +21,12 @@ const defaultConfig = theme => ({
 const CSSReset = ({ config }) => {
   const { colorMode } = useColorMode();
 
+  const customFunc = config || defaultConfig;
+
   const configCSS = theme => {
-    const _defaultConfig = defaultConfig(theme);
-
-    const _config = config
-      ? config(theme, _defaultConfig)
-      : defaultConfig(theme);
-
-    const { color, bg, borderColor, placeholderColor } = _config[colorMode];
+    const { color, bg, borderColor, placeholderColor } = customFunc(theme)[
+      colorMode
+    ];
 
     return css`
       html {

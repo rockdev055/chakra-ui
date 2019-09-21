@@ -12,7 +12,7 @@ const NavLink = ({ children, ...props }) => {
   }
 
   return (
-    <NextLink passHref {...props}>
+    <NextLink {...props}>
       {typeof children === "function" ? children(isActive) : children}
     </NextLink>
   );
@@ -40,6 +40,7 @@ export const SideNavLink = forwardRef(({ children, icon, ...props }, ref) => {
       py="1"
       transition="all 0.2s"
       fontWeight="medium"
+      tabIndex="0"
       outline="none"
       _focus={{ shadow: "outline" }}
       color={color[colorMode]}

@@ -1,7 +1,8 @@
 {
   "packages": ["packages/*"],
   "version": "independent",
-  "registry": "https://registry.npmjs.org/",
   "npmClient": "yarn",
-  "useWorkspaces": true
+  "useWorkspaces": true,
+  "registry": "https://registry.npmjs.org/",
+  "publishConfig": { "access": "public" }
 }

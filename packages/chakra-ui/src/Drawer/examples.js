@@ -1,17 +1,10 @@
 import { storiesOf } from "@storybook/react";
-import React, { useState, Fragment, useRef } from "react";
-import {
-  Drawer,
-  DrawerBody,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
-} from ".";
+import React, { useState, Fragment } from "react";
+import Drawer, { DrawerBody, DrawerFooter, DrawerHeader } from ".";
 import Button from "../Button";
 import Input from "../Input";
 import Box from "../Box";
+import { DrawerCloseButton } from "./components";
 
 const stories = storiesOf("Drawer", module);
 stories.addDecorator(story => {
@@ -25,36 +18,36 @@ stories.addDecorator(story => {
 stories.add("Default", () => {
   const SampleDrawer = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const btnRef = useRef();
     return (
       <Fragment>
-        <Button ref={btnRef} onClick={() => setIsOpen(true)}>
-          Open Drawer
-        </Button>
-
         <Drawer
           isOpen={isOpen}
-          placement="right"
+          size="xl"
+          placement="left"
           onClose={() => setIsOpen(false)}
-          finalFocusRef={btnRef}
         >
-          <DrawerOverlay />
-          <DrawerContent>
-            <DrawerCloseButton />
-            <DrawerHeader>Create your account</DrawerHeader>
+          <DrawerCloseButton
+            onClick={() => {
+              setIsOpen(false);
+              console.log("hello");
+            }}
+          />
+          <DrawerHeader>Create your account</DrawerHeader>
 
-            <DrawerBody>
-              <Input placeholder="Type here..." />
-            </DrawerBody>
+          <DrawerBody>
+            <Input placeholder="Type here..." />
+          </DrawerBody>
 
-            <DrawerFooter>
-              <Button variant="outline" mr={3} onClick={() => setIsOpen(false)}>
-                Cancel
-              </Button>
-              <Button color="blue">Save</Button>
-            </DrawerFooter>
-          </DrawerContent>
+          <DrawerFooter>
+            <Button variant="outline" mr={3} onClick={() => setIsOpen(false)}>
+              Cancel
+            </Button>
+            <Button color="blue" onClick={() => setIsOpen(false)}>
+              Save
+            </Button>
+          </DrawerFooter>
         </Drawer>
+        <Button onClick={() => setIsOpen(true)}>Open Drawer</Button>
       </Fragment>
     );
   };

@@ -1,38 +1,50 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
-import { forwardRef } from "react";
-import {
-  Modal,
-  ModalContent,
-  ModalFooter,
-  ModalBody,
-  ModalHeader,
-  ModalOverlay,
-} from "../Modal";
+import { ModalTransition } from "../Modal/components";
+import { AlertDialogContent, AlertDialogOverlay } from "./components";
 
-const formatIds = id => ({
-  content: `alert-dialog-${id}`,
-  header: `alert-dialog-${id}-label`,
-  body: `alert-dialog-${id}-desc`,
-});
-
-const AlertDialog = ({ leastDestructiveRef, ...props }) => (
-  <Modal
-    formatIds={formatIds}
-    initialFocusRef={leastDestructiveRef}
-    {...props}
-  />
-);
-
-const AlertDialogContent = forwardRef((props, ref) => (
-  <ModalContent ref={ref} role="alertdialog" {...props} />
-));
-
-export {
-  AlertDialog,
-  AlertDialogContent,
-  ModalOverlay as AlertDialogOverlay,
-  ModalBody as AlertDialogBody,
-  ModalHeader as AlertDialogHeader,
-  ModalFooter as AlertDialogFooter,
+const AlertDialog = ({
+  isOpen,
+  onClose,
+  children,
+  size = "md",
+  overlayBg,
+  zIndex,
+  isCentered,
+  leastDestructiveRef,
+  ...rest
+}) => {
+  return (
+    <ModalTransition isOpen={isOpen}>
+      {styles => (
+        <AlertDialogOverlay
+          bg={overlayBg}
+          zIndex={zIndex}
+          leastDestructiveRef={leastDestructiveRef}
+          css={{
+            opacity: styles.opacity,
+            ...(isCentered && {
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }),
+          }}
+          onDismiss={onClose}
+        >
+          <AlertDialogContent
+            maxWidth={size}
+            rounded="md"
+            transform={`translate3d(0px, ${styles.y}px, 0px)`}
+            {...(!isCentered && { top: 40, mx: "auto" })}
+            {...rest}
+          >
+            {children}
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      )}
+    </ModalTransition>
+  );
 };
+
+export default AlertDialog;
+export * from "./components";

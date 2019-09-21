@@ -9,7 +9,7 @@ import ThemeProvider from "../src/ThemeProvider";
 //   require("../stories");
 // }
 
-const req = require.context("../src", true, /examples\.(js|mdx)$/);
+const req = require.context("../src", true, /examples\.js$/);
 
 function loadStories() {
   req.keys().forEach(filename => req(filename));
