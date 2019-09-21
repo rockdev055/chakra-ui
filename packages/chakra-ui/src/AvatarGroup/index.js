@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
-import { Children, cloneElement, isValidElement } from "react";
+import { Children, cloneElement } from "react";
 import { avatarSizes } from "../Avatar/styles";
 import Flex from "../Flex";
 import { useColorMode } from "../ColorModeProvider";
@@ -46,8 +46,6 @@ const AvatarGroup = ({
   let count = Children.count(children);
 
   const clones = Children.map(children, (child, index) => {
-    if (!isValidElement(child)) return;
-
     if (max && index > max) {
       return null;
     }

@@ -1,10 +1,5 @@
-/**
- * Popper Component
- *
- * The following code is a derivative of the amazing work done by the Material UI team.
- * Original source: https://github.com/mui-org/material-ui/blob/master/packages/material-ui/src/Popper/Popper.js
- */
-
+// Note: This is adapted from the amazing work done by the material-ui team
+// Original reference: https://material-ui.com/api/popper/
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 

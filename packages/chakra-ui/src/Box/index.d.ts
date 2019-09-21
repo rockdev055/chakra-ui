@@ -90,6 +90,7 @@ interface ICustomConfig {
   // Outline prop
   outline?: StyledSystem.ResponsiveValue<CSS["outline"]>;
   float?: StyledSystem.ResponsiveValue<CSS["float"]>;
+  willChange?: StyledSystem.ResponsiveValue<CSS["willChange"]>;
 }
 
 type FontSize =
@@ -158,6 +159,13 @@ type TypographyProps = Omit<
   "fontWeight" | "lineHeight" | "fontSize" | "letterSpacing"
 >;
 
+interface Truncated {
+  /**
+   * If `true`, the text will be truncated
+   */
+  isTruncated?: boolean;
+}
+
 export type BoxProps = React.RefAttributes<HTMLElement> &
   React.HTMLAttributes<HTMLElement> &
   StyledSystem.LayoutProps &
@@ -176,7 +184,8 @@ export type BoxProps = React.RefAttributes<HTMLElement> &
   IFontWeight &
   ILineHeight &
   ICustomConfig &
-  As;
+  As &
+  Truncated;
 
 declare const Box: React.FC<BoxProps>;
 

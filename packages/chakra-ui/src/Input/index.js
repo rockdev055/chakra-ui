@@ -18,7 +18,6 @@ const Input = forwardRef((props, ref) => {
     isInvalid,
     isRequired,
     focusBorderColor,
-    errorBorderColor,
     ...rest
   } = props;
 
@@ -49,8 +48,7 @@ Input.defaultProps = {
   as: "input",
   variant: "outline",
   isFullWidth: true,
-  focusBorderColor: "blue.500",
-  errorBorderColor: "red.500",
+  focusBorderColor: "blue",
 };
 
 export default Input;

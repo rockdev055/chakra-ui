@@ -53,16 +53,9 @@ export interface IInput<T = HTMLInputElement> {
   /**
    * The border color when the input is focused. Use color keys in `theme.colors`
    * @example
-   * focusBorderColor = "blue.500"
+   * focusBorderColor = "blue"
    */
   focusBorderColor?: string;
-
-  /**
-   * The border color when the input is invalid. Use color keys in `theme.colors`
-   * @example
-   * errorBorderColor = "red.500"
-   */
-  errorBorderColor?: string;
 }
 
 type OmittedTypes =

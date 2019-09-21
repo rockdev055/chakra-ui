@@ -1,10 +1,54 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
-import { DrawerContent, DrawerOverlay, DrawerTransition } from "./components";
+import { createContext, useContext, forwardRef } from "react";
+import {
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  ModalCloseButton,
+} from "../Modal";
+import { Slide } from "../Transition";
 
-/**
- * Mapping the maxWidth tokens in `theme.sizes` to the size prop.
- */
+const DrawerContext = createContext({});
+const useDrawerContext = () => useContext(DrawerContext);
+
+const Drawer = ({
+  isOpen,
+  onClose,
+  isFullHeight,
+  placement = "right",
+  finalFocusRef,
+  size = "xs",
+  ...props
+}) => {
+  return (
+    <Slide
+      in={isOpen}
+      from={placement}
+      finalHeight={isFullHeight ? "100vh" : "auto"}
+    >
+      {styles => (
+        <DrawerContext.Provider value={{ styles, size }}>
+          <Modal
+            isOpen={true}
+            onClose={onClose}
+            finalFocusRef={finalFocusRef}
+            formatIds={id => ({
+              content: `drawer-${id}`,
+              header: `drawer-${id}-header`,
+              body: `drawer-${id}-body`,
+            })}
+            {...props}
+          />
+        </DrawerContext.Provider>
+      )}
+    </Slide>
+  );
+};
+
 const drawerSizes = {
   xs: "xs",
   sm: "md",
@@ -14,44 +58,42 @@ const drawerSizes = {
   full: "100vw",
 };
 
-const Drawer = ({
-  isOpen,
-  onClose,
-  children,
-  size = "md",
-  isFullHeight,
-  initialFocusRef,
-  placement = "right",
-  overlayBg,
-  zIndex,
-  ...rest
-}) => {
-  const maxWidth = size in drawerSizes ? drawerSizes[size] : size;
+const DrawerContent = forwardRef((props, ref) => {
+  const {
+    // Don't want to  animate the opacity of the DrawerContent
+    styles: { opacity, ...placementStyles },
+    size,
+  } = useDrawerContext();
+
+  const _size = size in drawerSizes ? drawerSizes[size] : size;
 
   return (
-    <DrawerTransition {...{ isOpen, placement, isFullHeight }}>
-      {({ reactSpringStyles, transformStyle, placementStyle }) => (
-        <DrawerOverlay
-          initialFocusRef={initialFocusRef}
-          onDismiss={onClose}
-          bg={overlayBg}
-          zIndex={zIndex}
-          opacity={reactSpringStyles.opacity}
-        >
-          <DrawerContent
-            position="fixed"
-            transform={transformStyle}
-            maxWidth={maxWidth}
-            {...placementStyle}
-            {...rest}
-          >
-            {children}
-          </DrawerContent>
-        </DrawerOverlay>
-      )}
-    </DrawerTransition>
+    <ModalContent
+      ref={ref}
+      noStyles
+      pos="fixed"
+      maxWidth={_size}
+      {...placementStyles}
+      {...props}
+    />
   );
-};
+});
 
-export default Drawer;
-export * from "./components";
+const DrawerOverlay = forwardRef((props, ref) => {
+  const { styles } = useDrawerContext();
+  return <ModalOverlay ref={ref} opacity={styles.opacity} {...props} />;
+});
+
+const DrawerCloseButton = forwardRef(({ onClick, ...rest }, ref) => (
+  <ModalCloseButton ref={ref} position="fixed" zIndex="1" {...rest} />
+));
+
+export {
+  Drawer,
+  DrawerContent,
+  DrawerOverlay,
+  ModalBody as DrawerBody,
+  ModalHeader as DrawerHeader,
+  ModalFooter as DrawerFooter,
+  DrawerCloseButton,
+};
