@@ -1,6 +1,5 @@
 export * from "./Accordion";
 export * from "./Alert";
-export { default as AlertDialog } from "./AlertDialog";
 export * from "./AlertDialog";
 export { default as Avatar } from "./Avatar";
 export * from "./Avatar";
@@ -28,7 +27,6 @@ export { default as CircularProgress } from "./CircularProgress";
 export * from "./CircularProgress";
 
 export { default as Divider } from "./Divider";
-export { default as Drawer } from "./Drawer";
 export * from "./Drawer";
 
 export { default as Editable } from "./Editable";
@@ -64,7 +62,6 @@ export { default as Stack } from "./Stack";
 
 export { default as Menu } from "./Menu";
 export * from "./Menu";
-export { default as Modal } from "./Modal";
 export * from "./Modal";
 
 export { default as NumberInput } from "./NumberInput";
