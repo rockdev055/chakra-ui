@@ -48,7 +48,6 @@ export interface ITabs {
 }
 
 export type TabsProps = ITabs & BoxProps;
-
 declare const Tabs: React.FC<TabsProps>;
 export default Tabs;
 
@@ -100,5 +99,5 @@ export type TabPanelsProps = ITabPanels & BoxProps;
 export const TabPanels: React.FC<TabPanelsProps>;
 
 ////////////////////////////////////////////////////////////////////////
-type TabProps = PseudoBoxProps & React.ButtonHTMLAttributes<HTMLButtonElement>;
-export const Tab: React.FC<TabProps>;
+
+export const Tab: React.FC<PseudoBoxProps>;

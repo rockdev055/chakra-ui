@@ -27,17 +27,15 @@ breakpoints.xl = breakpoints[3];
 const zIndices = {
   hide: -1,
   auto: "auto",
-  base: 0,
-  docked: 10,
-  dropdown: 1000,
-  sticky: 1100,
-  banner: 1200,
-  overlay: 1300,
-  modal: 1400,
-  popover: 1500,
-  skipLink: 1600,
-  toast: 1700,
-  tooltip: 1800,
+  "0": 0,
+  "10": 10,
+  "20": 20,
+  "30": 30,
+  "40": 40,
+  "50": 50,
+  "60": 60,
+  "70": 70,
+  "80": 80,
 };
 
 const radii = {

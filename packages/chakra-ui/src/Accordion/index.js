@@ -9,6 +9,7 @@ import {
   useState,
   Children,
   cloneElement,
+  isValidElement,
 } from "react";
 import Box from "../Box";
 import Collapse from "../Collapse";
@@ -45,6 +46,8 @@ const Accordion = ({
   const _index = isControlled ? index : expandedIndex;
 
   const clones = Children.map(children, (child, childIndex) => {
+    if (!isValidElement(child)) return;
+
     return cloneElement(child, {
       isOpen: getExpandCondition(_index, childIndex),
       onChange: isExpanded => {
@@ -152,8 +155,7 @@ const AccordionHeader = forwardRef(({ onClick, ...props }, ref) => {
       _hover={{ bg: "blackAlpha.50" }}
       _disabled={{ opacity: "0.4", cursor: "not-allowed" }}
       as="button"
-      type="button"
-      outline="0"
+      outline="none"
       disabled={isDisabled}
       aria-disabled={isDisabled}
       aria-expanded={isExpanded}

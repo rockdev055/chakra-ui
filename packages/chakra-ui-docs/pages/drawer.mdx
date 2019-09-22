@@ -1,3 +1,12 @@
+import SEO from "../components/SEO";
+
+<SEO
+  title="Drawer"
+  description="The Drawer component is a panel that slides out from the edge of the screen. It
+can be useful when you need users to complete a task or view some details
+without leaving the current page."
+/>
+
 # Drawer
 
 The Drawer component is a panel that slides out from the edge of the screen. It
@@ -9,12 +18,9 @@ without leaving the current page.
 ```js
 import {
   Drawer,
+  DrawerHeader,
   DrawerBody,
   DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
 } from "@chakra-ui/core";
 ```
 
@@ -24,36 +30,26 @@ import {
 
 ```jsx
 function DrawerExample() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const btnRef = React.useRef();
+  const [isOpen, setIsOpen] = React.useState(false);
 
   return (
     <>
-      <Button ref={btnRef} variantColor="teal" onClick={onOpen}>
+      <Button variantColor="teal" onClick={() => setIsOpen(true)}>
         Open
       </Button>
       <Drawer
         isOpen={isOpen}
+        size="sm"
+        zIndex={6}
         placement="right"
-        onClose={onClose}
-        finalFocusRef={btnRef}
+        onClose={() => setIsOpen(false)}
       >
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerCloseButton />
-          <DrawerHeader>Create your account</DrawerHeader>
-
-          <DrawerBody>
-            <Input placeholder="Type here..." />
-          </DrawerBody>
-
-          <DrawerFooter>
-            <Button variant="outline" mr={3} onClick={onClose}>
-              Cancel
-            </Button>
-            <Button color="blue">Save</Button>
-          </DrawerFooter>
-        </DrawerContent>
+        <DrawerHeader borderBottomWidth="1px">Basic Drawer</DrawerHeader>
+        <DrawerBody>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+        </DrawerBody>
       </Drawer>
     </>
   );
@@ -67,8 +63,11 @@ set it to `top`, `right`, `bottom`, or `left`.
 
 ```jsx
 function PlacementExample() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const [placement, setPlacement] = React.useState("right");
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  const openDrawer = () => setIsOpen(true);
+  const closeDrawer = () => setIsOpen(false);
   const handlePlacementChange = event => setPlacement(event.target.value);
 
   return (
@@ -85,19 +84,21 @@ function PlacementExample() {
         <Radio value="bottom">Bottom</Radio>
         <Radio value="left">Left</Radio>
       </RadioGroup>
-      <Button variantColor="blue" onClick={onOpen}>
+      <Button variantColor="blue" onClick={openDrawer}>
         Open
       </Button>
-      <Drawer placement={placement} onClose={onClose} isOpen={isOpen}>
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerHeader borderBottomWidth="1px">Basic Drawer</DrawerHeader>
-          <DrawerBody>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-          </DrawerBody>
-        </DrawerContent>
+      <Drawer
+        zIndex={6}
+        placement={placement}
+        onClose={closeDrawer}
+        isOpen={isOpen}
+      >
+        <DrawerHeader borderBottomWidth="1px">Basic Drawer</DrawerHeader>
+        <DrawerBody>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+        </DrawerBody>
       </Drawer>
     </>
   );
@@ -114,76 +115,78 @@ drawer opens. Pass the `initialFocusRef` prop.
 
 ```jsx
 function DrawerExample() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isOpen, setIsOpen] = React.useState(false);
   const firstField = React.useRef();
-  const btnRef = React.useRef();
 
   return (
     <>
-      <Button ref={btnRef} leftIcon="add" variantColor="teal" onClick={onOpen}>
+      <Button
+        leftIcon="add"
+        variantColor="teal"
+        onClick={() => setIsOpen(true)}
+      >
         Create user
       </Button>
       <Drawer
         isOpen={isOpen}
+        zIndex={6}
         placement="right"
         initialFocusRef={firstField}
-        finalFocusRef={btnRef}
-        onClose={onClose}
+        onClose={() => setIsOpen(false)}
       >
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerCloseButton />
-          <DrawerHeader borderBottomWidth="1px">
-            Create a new account
-          </DrawerHeader>
+        <DrawerCloseButton onClick={() => setIsOpen(false)} />
+        <DrawerHeader borderBottomWidth="1px">
+          Create a new account
+        </DrawerHeader>
 
-          <DrawerBody>
-            <Stack spacing="24px">
-              <Box>
-                <FormLabel htmlFor="username">Name</FormLabel>
+        <DrawerBody>
+          <Stack spacing="24px">
+            <Box>
+              <FormLabel htmlFor="username">Name</FormLabel>
+              <Input
+                ref={firstField}
+                id="username"
+                placeholder="Please enter user name"
+              />
+            </Box>
+
+            <Box>
+              <FormLabel htmlFor="url">Url</FormLabel>
+              <InputGroup>
+                <InputLeftAddon>https://</InputLeftAddon>
                 <Input
-                  ref={firstField}
-                  id="username"
-                  placeholder="Please enter user name"
+                  type="url"
+                  id="url"
+                  placeholder="Please enter password"
+                  rounded="0"
                 />
-              </Box>
+                <InputRightAddon>.com</InputRightAddon>
+              </InputGroup>
+            </Box>
 
-              <Box>
-                <FormLabel htmlFor="url">Url</FormLabel>
-                <InputGroup>
-                  <InputLeftAddon>http://</InputLeftAddon>
-                  <Input
-                    type="url"
-                    id="url"
-                    placeholder="Please enter password"
-                    rounded="0"
-                  />
-                  <InputRightAddon>.com</InputRightAddon>
-                </InputGroup>
-              </Box>
+            <Box>
+              <FormLabel htmlFor="owner">Select Owner</FormLabel>
+              <Select id="owner" defaultValue="segun">
+                <option value="segun">Segun Adebayo</option>
+                <option value="kola">Kola Tioluwani</option>
+              </Select>
+            </Box>
 
-              <Box>
-                <FormLabel htmlFor="owner">Select Owner</FormLabel>
-                <Select id="owner" defaultValue="segun">
-                  <option value="segun">Segun Adebayo</option>
-                  <option value="kola">Kola Tioluwani</option>
-                </Select>
-              </Box>
+            <Box>
+              <FormLabel htmlFor="desc">Description</FormLabel>
+              <Textarea id="desc" />
+            </Box>
+          </Stack>
+        </DrawerBody>
 
-              <Box>
-                <FormLabel htmlFor="desc">Description</FormLabel>
-                <Textarea id="desc" />
-              </Box>
-            </Stack>
-          </DrawerBody>
-
-          <DrawerFooter borderTopWidth="1px">
-            <Button variant="outline" mr={3} onClick={onClose}>
-              Cancel
-            </Button>
-            <Button variantColor="blue">Submit</Button>
-          </DrawerFooter>
-        </DrawerContent>
+        <DrawerFooter borderTopWidth="1px">
+          <Button variant="outline" mr={3} onClick={() => setIsOpen(false)}>
+            Cancel
+          </Button>
+          <Button variantColor="blue" onClick={() => setIsOpen(false)}>
+            Submit
+          </Button>
+        </DrawerFooter>
       </Drawer>
     </>
   );
@@ -198,11 +201,14 @@ Pass the `size` prop if you need to adjust the size of the drawer. Values can be
 ```jsx
 function SizeExample() {
   const [size, setSize] = React.useState("md");
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  const openDrawer = () => setIsOpen(true);
+  const closeDrawer = () => setIsOpen(false);
 
   const handleClick = newSize => {
     setSize(newSize);
-    onOpen();
+    openDrawer();
   };
 
   const sizes = ["xs", "sm", "md", "lg", "xl", "full"];
@@ -218,16 +224,11 @@ function SizeExample() {
         >{`Open ${size} Drawer`}</Button>
       ))}
 
-      <Drawer onClose={onClose} isOpen={isOpen} size={size}>
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerHeader>{`${size} drawer contents`}</DrawerHeader>
-          <DrawerBody>
-            {size === "full"
-              ? `You're trapped 😆, refresh the page to leave`
-              : null}
-          </DrawerBody>
-        </DrawerContent>
+      <Drawer zIndex={6} onClose={closeDrawer} isOpen={isOpen} size={size}>
+        <DrawerHeader>{`${size} drawer contents`}</DrawerHeader>
+        {size === "full"
+          ? `You're trapped 😆, refresh the page to leave`
+          : null}
       </Drawer>
     </>
   );
