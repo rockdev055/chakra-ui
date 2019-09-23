@@ -1,14 +1,15 @@
 import * as React from "react";
 import { ButtonProps } from "../Button";
+import { Omit } from "../common-types";
 
-type PropsFromButton = Pick<
+type _ButtonProps = Omit<
   ButtonProps,
-  "size" | "variant" | "color" | "isDisabled" | "isLoading" | "type"
+  "loadingText" | "isFullWidth" | "leftIcon" | "rightIcon" | "iconSpacing"
 >;
 
-interface IIconButton extends PropsFromButton {
+interface IIconButton {
   /**
-   * The icon to be used. Refer to the [Icons](https://chakra-ui.com/icon/) section
+   * The icon to be used. Refer to the [Icons](http://chakra-ui.com/icon/) section
    * of the docs for the available icon options.
    */
   icon?: string;
@@ -22,7 +23,7 @@ interface IIconButton extends PropsFromButton {
   "aria-label": string;
 }
 
-export type IconButtonProps = IIconButton & React.RefAttributes<HTMLDivElement>;
+export type IconButtonProps = IIconButton & _ButtonProps;
 
 declare const IconButton: React.FC<IconButtonProps>;
 
