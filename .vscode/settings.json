@@ -1,0 +1,6 @@
+{
+  "mdx-preview.preview.useVscodeMarkdownStyles": true,
+  "files.watcherExclude": {
+    "dist/**": true
+  }
+}
