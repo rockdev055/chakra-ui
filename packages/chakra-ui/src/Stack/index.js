@@ -5,34 +5,27 @@ import Flex from "../Flex";
 import Box from "../Box";
 
 const Stack = ({
-  direction,
   isInline,
   children,
-  align = "center",
+  align,
   justify,
   spacing = 2,
   shouldWrapChildren,
   ...rest
 }) => {
-  let flexDirection;
-
-  if (isInline) {
-    flexDirection = isInline ? "row" : "column";
-  }
-
-  if (direction) {
-    flexDirection = direction;
-  }
-
   return (
-    <Flex align={align} justify={justify} direction={flexDirection} {...rest}>
+    <Flex
+      align={align}
+      justify={justify}
+      flexDir={isInline ? "row" : "column"}
+      {...rest}
+    >
       {Children.map(children, (child, index) => {
         if (!isValidElement(child)) return;
         let isLastChild = children.length === index + 1;
-        let spacingProps =
-          isInline || direction === "horizontal"
-            ? { mr: isLastChild ? null : spacing }
-            : { mb: isLastChild ? null : spacing };
+        let spacingProps = isInline
+          ? { mr: isLastChild ? null : spacing }
+          : { mb: isLastChild ? null : spacing };
 
         if (shouldWrapChildren) {
           return (
