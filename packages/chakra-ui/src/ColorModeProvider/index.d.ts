@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export interface IColorModeProvider {
+interface IColorModeProvider {
   value?: "light" | "dark";
   children: React.ReactNode;
 }

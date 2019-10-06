@@ -1,6 +1,6 @@
 import { useTheme } from "../ThemeProvider";
 import { useColorMode } from "../ColorModeProvider";
-import { get } from "styled-system";
+import { get } from "@styled-system/core";
 
 const outlinedStyle = ({
   theme,

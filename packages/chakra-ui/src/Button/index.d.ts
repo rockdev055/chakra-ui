@@ -50,12 +50,12 @@ export interface IButton {
    * If added, the button will show an icon before the button's label.
    * Use the icon key in `theme.iconPath`
    */
-  leftIcon?: string | React.ElementType;
+  leftIcon?: string;
   /**
    * If added, the button will show an icon after the button's label.
    * Use the icon key in `theme.iconPath`
    */
-  rightIcon?: string | React.ElementType;
+  rightIcon?: string;
   /**
    * The space between the button icon and label.
    * Use the styled-system tokens or add custom values as a string

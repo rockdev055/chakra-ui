@@ -4,19 +4,15 @@ import { Omit } from "../common-types";
 
 type _ButtonProps = Omit<
   ButtonProps,
-  | "loadingText"
-  | "isFullWidth"
-  | "leftIcon"
-  | "rightIcon"
-  | "iconSpacing"
-  | "children"
+  "loadingText" | "isFullWidth" | "leftIcon" | "rightIcon" | "iconSpacing"
 >;
 
 interface IIconButton {
   /**
-   * The icon to be used in the button.
+   * The icon to be used. Refer to the [Icons](https://chakra-ui.com/icon/) section
+   * of the docs for the available icon options.
    */
-  icon?: string | React.ElementType;
+  icon?: string;
   /**
    * If `true`, the button will be perfectly round. Else, it'll be slightly round
    */
