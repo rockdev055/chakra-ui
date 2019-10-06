@@ -23,7 +23,6 @@ const Checkbox = forwardRef(
       size = "md",
       isDisabled,
       isInvalid,
-      isReadOnly,
       onChange,
       onBlur,
       onFocus,
@@ -37,7 +36,6 @@ const Checkbox = forwardRef(
   ) => {
     const { colorMode } = useColorMode();
     const styleProps = checkboxStyles({ color: variantColor, size, colorMode });
-    const opacity = isReadOnly || isDisabled ? 0.32 : 1;
 
     return (
       <Box
@@ -63,7 +61,6 @@ const Checkbox = forwardRef(
           onFocus={onFocus}
           checked={isChecked}
           disabled={isDisabled}
-          readOnly={isReadOnly}
           aria-invalid={isInvalid}
           data-indeterminate={isIndeterminate}
         />
@@ -76,7 +73,12 @@ const Checkbox = forwardRef(
           />
         </ControlBox>
         {children && (
-          <Box ml={2} fontSize={size} userSelect="none" opacity={opacity}>
+          <Box
+            ml={2}
+            fontSize={size}
+            userSelect="none"
+            opacity={isDisabled ? 0.32 : 1}
+          >
             {children}
           </Box>
         )}
