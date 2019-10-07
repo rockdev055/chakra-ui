@@ -22,10 +22,10 @@ interface IMenuItemOption {
   isDisabled?: boolean;
   isChecked?: boolean;
   type?: "radio" | "checkbox";
-  onClick?: React.KeyboardEventHandler<HTMLElement>;
-  onMouseLeave?: React.MouseEventHandler<HTMLElement>;
-  onKeyDown?: React.KeyboardEventHandler<HTMLElement>;
-  onMouseMove?: React.MouseEventHandler<HTMLElement>;
+  onClick?: React.KeyboardEventHandler<HTMLButtonElement>;
+  onMouseLeave?: React.MouseEventHandler<HTMLButtonElement>;
+  onKeyDown?: React.KeyboardEventHandler<HTMLButtonElement>;
+  onMouseMove?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 type MenuItemOptionProps = PseudoBoxProps & IMenuItemOption;

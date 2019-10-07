@@ -99,6 +99,5 @@ export * from "./ThemeProvider";
 export { default as useClipboard } from "./useClipboard";
 export { default as useDisclosure } from "./useDisclosure";
 export { default as usePrevious } from "./usePrevious";
-export { default as useNumberInput } from "./useNumberInput";
 
 export { default as VisuallyHidden } from "./VisuallyHidden";
