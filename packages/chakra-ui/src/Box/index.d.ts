@@ -172,7 +172,9 @@ interface Truncated {
   isTruncated?: boolean;
 }
 
-type StyledSystemProps = StyledSystem.LayoutProps &
+export type BoxProps = React.RefAttributes<HTMLElement> &
+  React.HTMLAttributes<HTMLElement> &
+  StyledSystem.LayoutProps &
   StyledSystem.ColorProps &
   StyledSystem.SpaceProps &
   StyledSystem.BordersProps &
@@ -182,20 +184,13 @@ type StyledSystemProps = StyledSystem.LayoutProps &
   StyledSystem.ShadowProps &
   StyledSystem.GridProps &
   StyledSystem.OpacityProps &
-  StyledSystem.OverflowProps;
-
-type ModifiedStyledSystemProps = TypographyProps &
+  StyledSystem.OverflowProps &
+  TypographyProps &
   IFontSize &
   ILetterSpacing &
   IFontWeight &
   ILineHeight &
-  ICustomConfig;
-
-type BoxHTMLProps = React.RefAttributes<any> & React.HTMLAttributes<any>;
-
-export type BoxProps = BoxHTMLProps &
-  StyledSystemProps &
-  ModifiedStyledSystemProps &
+  ICustomConfig &
   As &
   Truncated;
 
