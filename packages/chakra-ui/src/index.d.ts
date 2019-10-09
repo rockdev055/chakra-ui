@@ -88,6 +88,7 @@ export { default as Menu } from "./Menu";
 export * from "./Modal";
 
 export * from "./NumberInput";
+export { default as NumberInput } from "./NumberInput";
 
 export * from "./Portal";
 export { default as Portal } from "./Portal";
@@ -133,6 +134,5 @@ export { default as ThemeProvider } from "./ThemeProvider";
 export { default as useClipboard } from "./useClipboard";
 export { default as useDisclosure } from "./useDisclosure";
 export { default as usePrevious } from "./usePrevious";
-export { default as useNumberInput } from "./useNumberInput";
 
 export { default as VisuallyHidden } from "./VisuallyHidden";

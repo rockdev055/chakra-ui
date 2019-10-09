@@ -20,7 +20,6 @@ const components = [
   "Editable",
   "Flex",
   "FormControl",
-  "Grid",
   "Heading",
   "Icon",
   "IconButton",
