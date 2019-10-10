@@ -1,6 +1,7 @@
 /** @jsx jsx */
 import {
   Box,
+  Fixed,
   Flex,
   Icon,
   Input,
