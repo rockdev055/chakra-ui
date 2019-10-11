@@ -1,8 +1,6 @@
 import * as React from "react";
 import * as StyledSystem from "styled-system";
 import { BoxProps } from "../Box";
-import { IconProps } from "../Icon";
-import { Omit } from "../common-types";
 
 interface IList {
   /**
@@ -26,11 +24,6 @@ interface IList {
 type ListProps = IList & BoxProps;
 declare const List: React.FC<ListProps>;
 export const ListItem: React.FC<BoxProps>;
-
-type ListIconProps = Omit<IconProps, "name"> & {
-  icon: IconProps["name"] | React.ComponentType;
-};
-
-export const ListIcon: React.FC<ListIconProps>;
+export const ListIcon: React.FC<BoxProps>;
 
 export default List;

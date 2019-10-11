@@ -1,13 +1,8 @@
-import SEO from "../components/SEO";
-
-<SEO
-  title="Input"
-  description="Input component is a component that is used to get user input in a text field."
-/>
-
 # Input
 
-Input component is a component that is used to get user input in a text field.
+Input component enables the user to interact with and input content and data.
+The form input allows you to create various text style inputs such as `text`,
+`password`, `email`, `number`, `url`, `search` and more.
 
 ## Import
 
@@ -23,7 +18,7 @@ Here's a basic usage of the Input component.
 <Input placeholder="Basic usage" />
 ```
 
-### Changing the size of the Input
+### Three sizes of Input
 
 There are three sizes of an Input : large (40px), default (32px) and small
 (24px).
@@ -33,20 +28,6 @@ There are three sizes of an Input : large (40px), default (32px) and small
   <Input placeholder="large size" size="lg" />
   <Input placeholder="default size" size="md" />
   <Input placeholder="small size" size="sm" />
-</Stack>
-```
-
-### Changing the appearance of the input
-
-The input component comes in 3 variants, `outline`, `unstyled` , `flushed` , and
-`filled`. Pass the `variant` prop and set it to either of these values.
-
-```jsx
-<Stack spacing={3}>
-  <Input variant="outline" placeholder="Outline" />
-  <Input variant="filled" placeholder="Filled" />
-  <Input variant="flushed" placeholder="Flushed" />
-  <Input variant="unstyled" placeholder="Unstyled" />
 </Stack>
 ```
 

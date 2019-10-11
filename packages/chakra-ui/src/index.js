@@ -22,7 +22,6 @@ export { default as Collapse } from "./Collapse";
 export { default as ControlBox } from "./ControlBox";
 export { default as ColorModeProvider } from "./ColorModeProvider";
 export * from "./ColorModeProvider";
-export { default as css } from "./Css";
 export { default as CSSReset } from "./CSSReset";
 export { default as CircularProgress } from "./CircularProgress";
 export * from "./CircularProgress";
@@ -60,13 +59,12 @@ export { default as Link } from "./Link";
 export { default as List } from "./List";
 export * from "./List";
 export { default as Stack } from "./Stack";
-export { default as SimpleGrid } from "./SimpleGrid";
 
 export { default as Menu } from "./Menu";
 export * from "./Menu";
 export * from "./Modal";
 
-export * from "./NumberInput";
+export { default as NumberInput } from "./NumberInput";
 
 export { default as Portal } from "./Portal";
 export * from "./Popover";
@@ -101,6 +99,5 @@ export * from "./ThemeProvider";
 export { default as useClipboard } from "./useClipboard";
 export { default as useDisclosure } from "./useDisclosure";
 export { default as usePrevious } from "./usePrevious";
-export { default as useNumberInput } from "./useNumberInput";
 
 export { default as VisuallyHidden } from "./VisuallyHidden";

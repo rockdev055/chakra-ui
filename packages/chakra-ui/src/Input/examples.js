@@ -37,7 +37,7 @@ stories.add("Readonly", () => (
   />
 ));
 
-const variantStories = storiesOf("Input/Variants", module);
+const variantStories = storiesOf("Input/Variants");
 variantStories.addDecorator(withKnobs);
 
 variantStories.add("Filled", () => (

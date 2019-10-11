@@ -55,22 +55,8 @@ const shouldForwardProp = createShouldForwardProp([
   "stroke",
 ]);
 
-/**
- * htmlWidth and htmlHeight is used in the <Image />
- * component to support the native `width` and `height` attributes
- *
- * https://github.com/chakra-ui/chakra-ui/issues/149
- */
-const nativeHTMLPropAlias = ["htmlWidth", "htmlHeight"];
-
 const Box = styled("div", {
-  shouldForwardProp: prop => {
-    if (nativeHTMLPropAlias.includes(prop)) {
-      return true;
-    } else {
-      return shouldForwardProp(prop);
-    }
-  },
+  shouldForwardProp,
 })(truncate, systemProps);
 
 export default Box;
