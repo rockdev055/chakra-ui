@@ -165,7 +165,7 @@ const StepperButton = forwardRef((props, ref) => {
 });
 
 const NumberIncrementStepper = forwardRef((props, ref) => {
-  const { incrementStepper, size } = useNumberInputContext();
+  const { incrementSpinner, size } = useNumberInputContext();
   const iconSize = size === "sm" ? "11px" : "15px";
   const children = props.children || <Icon name="triangle-up" size="0.6em" />;
   return (
@@ -173,7 +173,7 @@ const NumberIncrementStepper = forwardRef((props, ref) => {
       fontSize={iconSize}
       ref={ref}
       {...props}
-      {...incrementStepper}
+      {...incrementSpinner}
     >
       {children}
     </StepperButton>
@@ -181,7 +181,7 @@ const NumberIncrementStepper = forwardRef((props, ref) => {
 });
 
 const NumberDecrementStepper = forwardRef((props, ref) => {
-  const { decrementStepper, size } = useNumberInputContext();
+  const { decrementSpinner, size } = useNumberInputContext();
   const iconSize = size === "sm" ? "11px" : "15px";
   const children = props.children || <Icon name="triangle-down" size="0.6em" />;
   return (
@@ -189,7 +189,7 @@ const NumberDecrementStepper = forwardRef((props, ref) => {
       fontSize={iconSize}
       ref={ref}
       {...props}
-      {...decrementStepper}
+      {...decrementSpinner}
     >
       {children}
     </StepperButton>
