@@ -14,7 +14,7 @@ stories.add("vertical stack", () => (
 ));
 
 stories.add("Inline Stack", () => (
-  <Stack bg="blue.500" w="100%" h="60px" direction="row">
+  <Stack bg="blue.500" w="100%" h="60px" direction="horizontal">
     <Box size="40px" background={"#fff"} rounded="full" />
     <Box size="40px" background={"#fff"} rounded="full" />
     <Box size="40px" background={"#fff"} rounded="full" />
