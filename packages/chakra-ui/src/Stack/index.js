@@ -4,7 +4,6 @@ import { Children, cloneElement, isValidElement } from "react";
 import Flex from "../Flex";
 import Box from "../Box";
 
-// TODO: Reduce complexity by deprecating isInline and isReversed prop
 const Stack = ({
   direction,
   isInline = false,
@@ -16,35 +15,18 @@ const Stack = ({
   shouldWrapChildren,
   ...rest
 }) => {
-  const _isReversed =
-    isReversed || (direction && direction.endsWith("reverse"));
-  const _isInline = isInline || (direction && direction.startsWith("row"));
-  let _direction;
-
-  if (_isInline) {
-    _direction = "row";
-  }
-
-  if (_isReversed) {
-    _direction = isInline ? "row-reverse" : "column-reverse";
-  }
-
-  if (direction) {
-    _direction = direction;
-  }
-
-  if (!_isInline && !_isReversed && !direction) {
-    _direction = "column";
-  }
+  direction = direction || (isInline ? "row" : "column");
+  isInline |= direction.startsWith("row");
+  isReversed |= direction.endsWith("reverse");
 
   return (
-    <Flex align={align} justify={justify} direction={_direction} {...rest}>
+    <Flex align={align} justify={justify} direction={direction} {...rest}>
       {Children.map(children, (child, index) => {
         if (!isValidElement(child)) return;
         let isLastChild = children.length === index + 1;
-        let spacingProps = _isInline
-          ? { [_isReversed ? "ml" : "mr"]: isLastChild ? null : spacing }
-          : { [_isReversed ? "mt" : "mb"]: isLastChild ? null : spacing };
+        let spacingProps = isInline
+          ? { [isReversed ? "ml" : "mr"]: isLastChild ? null : spacing }
+          : { [isReversed ? "mt" : "mb"]: isLastChild ? null : spacing };
 
         if (shouldWrapChildren) {
           return (
