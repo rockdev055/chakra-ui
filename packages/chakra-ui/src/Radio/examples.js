@@ -1,6 +1,6 @@
 import { storiesOf } from "@storybook/react";
 import React, { Fragment } from "react";
-import Radio from "../Radio";
+import Radio from ".";
 import Box from "../Box";
 import RadioGroup from "../RadioGroup";
 

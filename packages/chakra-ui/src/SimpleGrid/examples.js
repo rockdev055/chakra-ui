@@ -2,7 +2,7 @@
 import { jsx } from "@emotion/core";
 import { storiesOf } from "@storybook/react";
 import Box from "../Box";
-import SimpleGrid from "../SimpleGrid";
+import SimpleGrid from ".";
 
 const stories = storiesOf("SimpleGrid", module);
 

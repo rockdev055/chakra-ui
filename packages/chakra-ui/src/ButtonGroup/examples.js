@@ -3,7 +3,7 @@ import { storiesOf } from "@storybook/react";
 import React from "react";
 import Box from "../Box";
 import Button from "../Button";
-import ButtonGroup from "../ButtonGroup";
+import ButtonGroup from ".";
 
 const stories = storiesOf("Button Group", module);
 stories.addDecorator(withKnobs);

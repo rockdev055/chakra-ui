@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import { storiesOf } from "@storybook/react";
-import CircularProgress, { CircularProgressLabel } from "../CircularProgress";
+import CircularProgress, { CircularProgressLabel } from ".";
 
 const stories = storiesOf("Circular progress", module);
 

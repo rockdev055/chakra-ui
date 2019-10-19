@@ -6,7 +6,7 @@ import {
   AccordionHeader,
   AccordionIcon,
   AccordionPanel,
-} from "../Accordion";
+} from ".";
 import Icon from "../Icon";
 import Box from "../Box";
 

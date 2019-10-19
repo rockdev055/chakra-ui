@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import { storiesOf } from "@storybook/react";
-import css from "../Css";
+import css from ".";
 
 const stories = storiesOf("CSS", module);
 stories.add("Default", () => (

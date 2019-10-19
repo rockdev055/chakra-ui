@@ -11,7 +11,7 @@ import {
   PopoverBody,
   PopoverFooter,
   PopoverHeader,
-} from "../Popover";
+} from ".";
 import Button from "../Button";
 import Avatar from "../Avatar";
 import Box from "../Box";

@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import { storiesOf } from "@storybook/react";
-import Spinner from "../Spinner";
+import Spinner from ".";
 
 const stories = storiesOf("Spinner", module);
 stories.add("Default", () =>

@@ -8,7 +8,7 @@ import {
   StatHelpText,
   StatArrow,
   StatGroup,
-} from "../Stat";
+} from ".";
 
 const stories = storiesOf("Stats", module);
 

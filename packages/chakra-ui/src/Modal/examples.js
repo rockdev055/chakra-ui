@@ -14,7 +14,7 @@ import {
   ModalBody,
   ModalFooter,
   ModalHeader,
-} from "../Modal";
+} from ".";
 import Lorem from "react-lorem-component";
 import { SlideIn, Scale } from "../Transition";
 

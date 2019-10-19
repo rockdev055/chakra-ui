@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import { storiesOf } from "@storybook/react";
-import IconButton from "../IconButton";
+import IconButton from ".";
 
 const stories = storiesOf("IconButton", module);
 stories.add("Default", () => (

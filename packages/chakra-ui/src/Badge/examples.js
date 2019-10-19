@@ -2,7 +2,7 @@ import { withKnobs } from "@storybook/addon-knobs";
 import { storiesOf } from "@storybook/react";
 import React from "react";
 import Box from "../Box";
-import Badge from "../Badge";
+import Badge from ".";
 
 const stories = storiesOf("Badge", module);
 stories.addDecorator(withKnobs);

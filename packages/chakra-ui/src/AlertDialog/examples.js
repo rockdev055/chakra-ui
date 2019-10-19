@@ -9,7 +9,7 @@ import {
   AlertDialogHeader,
   AlertDialogContent,
   AlertDialogOverlay,
-} from "../AlertDialog";
+} from ".";
 import Button from "../Button";
 
 const stories = storiesOf("AlertDialog", module);

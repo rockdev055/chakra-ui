@@ -6,7 +6,7 @@ import Menu, {
   MenuGroup,
   MenuItem,
   MenuList,
-} from "../Menu";
+} from ".";
 import Box from "../Box";
 import Button from "../Button";
 import Icon from "../Icon";

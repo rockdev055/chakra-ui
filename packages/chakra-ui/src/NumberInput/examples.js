@@ -8,7 +8,7 @@ import {
   NumberInputStepper,
   NumberDecrementStepper,
   NumberIncrementStepper,
-} from "../NumberInput";
+} from ".";
 import { useState } from "react";
 
 const stories = storiesOf("NumberInput", module);

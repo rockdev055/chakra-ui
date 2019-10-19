@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import { storiesOf } from "@storybook/react";
-import Slider, { SliderThumb, SliderTrack, SliderFilledTrack } from "../Slider";
+import Slider, { SliderThumb, SliderTrack, SliderFilledTrack } from ".";
 
 const stories = storiesOf("Slider", module);
 

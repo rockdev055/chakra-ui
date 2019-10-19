@@ -5,7 +5,7 @@ import Breadcrumb, {
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbSeparator,
-} from "../Breadcrumb";
+} from ".";
 import Box from "../Box";
 import Icon from "../Icon";
 
