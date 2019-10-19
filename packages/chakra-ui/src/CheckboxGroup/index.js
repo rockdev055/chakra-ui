@@ -31,9 +31,9 @@ const CheckboxGroup = ({
     const { checked, value } = event.target;
     let newValues;
     if (checked) {
-      newValues = [..._values, value];
+      newValues = [...values, value];
     } else {
-      newValues = _values.filter(val => val !== value);
+      newValues = values.filter(val => val !== value);
     }
 
     !isControlled && setValues(newValues);
