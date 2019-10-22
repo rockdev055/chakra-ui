@@ -3,28 +3,25 @@
   "version": "0.4.0",
   "description": "Responsive and accessible React UI components built with React and Emotion",
   "main": "dist/index.js",
-  "module": "dist/core.esm.js",
-  "typings": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "module": "dist/es/index.js",
   "sideEffects": false,
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
     "prebuild": "rimraf dist",
-    "start": "tsdx watch",
-    "build": "tsdx build",
-    "test": "tsdx test --env=jsdom",
-    "lint": "tsdx lint src",
+    "build": "yarn build:cjs && yarn build:es && yarn build:copy-types",
+    "build:cjs": "cross-env NODE_ENV=production BABEL_ENV=cjs babel --root-mode upward src -d dist --ignore \"**/examples.js\"",
+    "build:esm": "cross-env NODE_ENV=production BABEL_ENV=esm babel --root-mode upward src -d dist/esm --ignore \"**/examples.js\"",
+    "build:es": "cross-env NODE_ENV=production BABEL_ENV=es babel --root-mode upward src -d dist/es --ignore \"**/examples.js\"",
+    "build:umd": "cross-env NODE_ENV=production-umd rollup -c",
+    "build:copy-types": "node ../../scripts/copy-files.js",
     "version": "yarn build"
   },
   "dependencies": {
+    "@reach/auto-id": "0.2.0",
     "@styled-system/css": "5.0.13",
     "@styled-system/should-forward-prop": "5.0.12",
-    "@types/color": "3.0.0",
-    "@types/exenv": "1.2.0",
     "@types/styled-system": "5.0.1",
     "aria-hidden": "^1.1.1",
     "body-scroll-lock": "^2.6.4",
@@ -35,7 +32,6 @@
     "react-animate-height": "2.0.9",
     "react-focus-lock": "^2.1.0",
     "react-spring": "^8.0.27",
-    "react-uid": "2.2.0",
     "styled-system": "5.0.5",
     "toasted-notes": "3.0.0",
     "use-dark-mode": "2.3.1"
@@ -63,21 +59,5 @@
     "library",
     "design-system"
   ],
-  "gitHead": "bf23c9514f184e58fb8f652bfaa38826d1b88906",
-  "devDependencies": {
-    "@testing-library/jest-dom": "4.1.2",
-    "@testing-library/react": "8.0.7",
-    "@types/jest": "24.0.19",
-    "@types/react": "16.9.6",
-    "@types/react-dom": "16.9.2",
-    "eslint-config-react-app": "5.0.1",
-    "husky": "3.0.9",
-    "jest": "24.9.0",
-    "react": "16.10.2",
-    "react-dom": "16.10.2",
-    "ts-jest": "24.1.0",
-    "tsdx": "0.9.3",
-    "tslib": "1.10.0",
-    "typescript": "3.6.4"
-  }
+  "gitHead": "bf23c9514f184e58fb8f652bfaa38826d1b88906"
 }
