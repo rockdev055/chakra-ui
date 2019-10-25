@@ -112,15 +112,6 @@ const Checkbox = forwardRef(function Checkbox(
   const { colorMode } = useColorMode();
   const styleProps = checkboxStyles({ color: variantColor, size, colorMode });
 
-  /**
-   *
-   * TODO: Improve API to be more declarative
-   * <Checkbox>
-   *   <CheckboxInput icon={CheckIcon}/>
-   *   <CheckboxText>Welcome home</CheckboxText>
-   * </Checkbox>
-   */
-
   return (
     <Box
       as="label"

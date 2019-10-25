@@ -44,7 +44,7 @@ export interface AlertOptions {
   /**
    * The status of the alert
    */
-  status?: keyof Statuses;
+  status?: "error" | "success" | "warning" | "info";
   /**
    * The variant of the alert style to use.
    */
@@ -60,7 +60,7 @@ function Alert<P>({
 }: AlertProps<P>) {
   const alertStyleProps = useAlertStyle({
     variant,
-    color: statuses[status]["color"],
+    color: statuses[status] && statuses[status]["color"],
   });
 
   const context = { status, variant };
@@ -84,9 +84,13 @@ const AlertIcon = (props: IconProps) => {
   const { status, variant } = useAlertContext();
   const iconStyleProps = useAlertIconStyle({
     variant: variant,
-    color: statuses[status]["color"],
+    color: statuses[status] && statuses[status]["color"],
   });
-  const iconName = statuses[status]["icon"];
+
+  let iconName: Icons | undefined;
+  if (statuses[status] && statuses[status]["icon"]) {
+    iconName = statuses[status]["icon"];
+  }
 
   return (
     <Icon

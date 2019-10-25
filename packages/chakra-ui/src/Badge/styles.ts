@@ -1,19 +1,8 @@
 import { addOpacity, generateAlphaColors, get } from "../theme/colors-utils";
 import { useTheme } from "../ThemeProvider";
 import { useColorMode } from "../ColorModeProvider";
-import { Theme } from "../theme";
-import { BadgeOptions } from "./Badge";
 
-type RequiredProps = Required<BadgeOptions>;
-
-type Props = {
-  variant: RequiredProps["variant"];
-  color: RequiredProps["variantColor"];
-};
-
-type PropsWithTheme = Props & { theme: Theme };
-
-const solidStyle = ({ theme: { colors }, color }: PropsWithTheme) => {
+const solidStyle = ({ theme: { colors }, color }) => {
   const _color = colors[color] && colors[color][500];
   const darkModeBg = addOpacity(_color, 0.6);
   return {
@@ -28,7 +17,7 @@ const solidStyle = ({ theme: { colors }, color }: PropsWithTheme) => {
   };
 };
 
-const subtleStyle = ({ theme: { colors }, color }: PropsWithTheme) => {
+const subtleStyle = ({ theme: { colors }, color }) => {
   const _color = colors[color] && colors[color][200];
   const alphaColors = generateAlphaColors(_color);
   const darkModeBg = alphaColors[300];
@@ -45,7 +34,7 @@ const subtleStyle = ({ theme: { colors }, color }: PropsWithTheme) => {
   };
 };
 
-const outlineStyle = ({ theme: { colors }, color }: PropsWithTheme) => {
+const outlineStyle = ({ theme: { colors }, color }) => {
   const _color = colors[color] && colors[color][200];
   const darkModeColor = addOpacity(_color, 0.8);
   const boxShadowColor = colors[color] && colors[color][500];
@@ -61,9 +50,7 @@ const outlineStyle = ({ theme: { colors }, color }: PropsWithTheme) => {
   };
 };
 
-const variantProps = (
-  props: PropsWithTheme & { colorMode: "light" | "dark" },
-) => {
+const variantProps = props => {
   const { variant, colorMode } = props;
   switch (variant) {
     case "solid":
@@ -77,7 +64,7 @@ const variantProps = (
   }
 };
 
-const useBadgeStyle = (props: Props) => {
+const useBadgeStyle = props => {
   const theme = useTheme();
   const { colorMode } = useColorMode();
   const _props = { ...props, theme, colorMode };
