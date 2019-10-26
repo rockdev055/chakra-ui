@@ -1,14 +1,17 @@
 // Credit goes to Reakit and react-roving-tabindex for inspiring this API
 import React, {
+  createContext,
   useMemo,
   useReducer,
   useLayoutEffect,
-  useEffect,
   useRef,
 } from "react";
-import { findIndex } from "@chakra-ui/utils/dist/array";
+import { findIndex, createOnKeyDown } from "@chakra-ui/utils";
 import useCreateContext from "./useCreateContext";
-import useId from "./useId";
+import { useUID } from "react-uid";
+import { useContext } from "react";
+import { useEffect } from "react";
+import useFocusEffect from "./useFocusEffect";
 
 interface Stop {
   id: string;
@@ -262,7 +265,7 @@ export function useRegister(
   } = {},
 ) {
   const { isDisabled, isFocusable, extraData } = options;
-  const id = useId();
+  const id = useUID();
   const ref = useRef(null);
   const { state, actions } = useRegisterContext();
 
@@ -277,3 +280,4 @@ export function useRegister(
 
   return { ref, id, state, actions };
 }
+

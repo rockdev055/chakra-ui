@@ -1,20 +1,20 @@
-import { SystemProps } from "@chakra-ui/core/dist/Box";
-import { findIndex } from "@chakra-ui/utils";
-import styled from "@emotion/styled";
 import React, {
-  Children,
-  cloneElement,
-  forwardRef,
-  isValidElement,
-  KeyboardEvent,
+  useState,
   useEffect,
   useRef,
-  useState,
+  forwardRef,
+  Children,
+  cloneElement,
 } from "react";
-import { useUID as useId } from "react-uid";
+import styled from "@emotion/styled";
 import scrollIntoView from "scroll-into-view-if-needed";
-import useCreateContext from "./useCreateContext";
+import { useUID as useId } from "react-uid";
 import usePrevious from "./usePrevious";
+import { SystemProps } from "@chakra-ui/core";
+import { isValidElement } from "react";
+import { KeyboardEvent } from "react";
+import { findIndex } from "@chakra-ui/utils";
+import useCreateContext from "./useCreateContext";
 
 const optionStyle: SystemProps = {
   fontWeight: "normal",
