@@ -29,7 +29,7 @@ const Kbd = React.forwardRef(function Kbd<P, T>(
   props: BoxProps<P, T>,
 ) => React.ReactElement<BoxProps<P, T>>;
 
-export function KbdExample() {
+export function ImageExample() {
   return <Kbd mx="100px" />;
 }
 
