@@ -2,7 +2,8 @@
 
 import React, { useState, forwardRef, ReactInstance } from "react";
 import { findDOMNode, createPortal } from "react-dom";
-import { useEnhancedEffect, assignRef } from "@chakra-ui/hooks";
+import { assignRef } from "@chakra-ui/utils";
+import { useEnhancedEffect } from "@chakra-ui/hooks";
 
 type Container = ReactInstance | (() => ReactInstance | null) | null;
 
@@ -36,6 +37,7 @@ function getContainer(container: Container) {
 const Portal = forwardRef<any, PortalProps>(
   ({ children, container, isDisabled = false, onRendered }, ref) => {
     const [mountNode, setMountNode] = useState<HTMLElement | null>(null);
+    // const handleRef = mergeRefs(children.ref, ref);
 
     useEnhancedEffect(() => {
       if (!isDisabled && container) {
@@ -60,6 +62,13 @@ const Portal = forwardRef<any, PortalProps>(
         onRendered();
       }
     }, [onRendered, mountNode, isDisabled]);
+
+    // if (isDisabled) {
+    //   Children.only(children);
+    //   return cloneElement(children, {
+    //     ref: handleRef,
+    //   });
+    // }
 
     const _node = mountNode ? createPortal(children, mountNode) : mountNode;
     return _node as React.ReactPortal;

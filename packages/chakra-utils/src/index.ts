@@ -1,6 +1,7 @@
 export * from "./callbacks";
 export * from "./mergeTransform";
 export * from "./types";
+export * from "./refs";
 export * from "./dom";
 export * from "./array";
 export * from "./keydown";

@@ -1,14 +1,10 @@
 import React, { useState } from "react";
 import { storiesOf } from "@storybook/react";
 import { ThemeProvider, CSSReset } from "@chakra-ui/core";
+import { useRover, useRoverState } from "./useRover";
 import { SelectExample } from "./useSelect";
-// import useLogger from "./useLogger";
-import {
-  useSelection,
-  useSelectionState,
-  UseSelectionOptions,
-} from "./useSelection/useSelection";
-import useFocusEffect from "./useFocusEffect";
+import { omit } from "@chakra-ui/utils";
+import useLogger from "./useLogger";
 
 const stories = storiesOf("Hooks", module).addDecorator(story => (
   <ThemeProvider>
@@ -17,65 +13,31 @@ const stories = storiesOf("Hooks", module).addDecorator(story => (
   </ThemeProvider>
 ));
 
-const Item: React.FC<UseSelectionOptions> = ({ state, actions, id }) => {
-  const ss = useSelection({ state, actions, id });
-  const isFocused = state.focusedId === id;
-  const isSelected = state.selectedId === id;
+function Rover(props: any) {
+  const rover = useRover(props);
+  const allProps = { ...props, ...rover };
+  const finalProps = omit(allProps, ["value", "actions", "state"]);
 
-  useFocusEffect(isFocused, ss.ref);
+  return <div {...finalProps} />;
+}
 
-  return (
-    <button
-      ref={ss.ref}
-      tabIndex={isFocused ? 0 : -1}
-      id={id}
-      onClick={() => actions.mouse_select(ss.id)}
-      onKeyDown={e => {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          actions.keyboard_select();
-        }
-        if (e.key === "ArrowRight") {
-          actions.next("keyboard-select");
-        }
-        if (e.key === "ArrowLeft") {
-          actions.previous("keyboard-select");
-        }
-        if (e.key === "End") {
-          actions.last();
-        }
-        if (e.key === "Home") {
-          actions.first();
-        }
-      }}
-    >
-      Button {id} {isSelected && "selected"}
-    </button>
-  );
-};
-
-const Selection = () => {
-  const ss = useSelectionState({
-    loop: true,
-    selectOnFocus: false,
-    onSelect: (id, item) => console.log({ id, item }),
-    defaultSelectedId: "tab3",
-  });
-
+export function RoverExample() {
+  const rover = useRoverState({ loop: true });
+  useLogger(rover.state);
   return (
     <div>
-      <Item id="tab1" {...ss}>
-        Welcome 1
-      </Item>
-      <Item id="tab2" {...ss}>
-        Welcome 2
-      </Item>
-      <Item id="tab3" {...ss}>
-        Welcome 2
-      </Item>
+      <Rover value="option 1" {...rover}>
+        Option 1
+      </Rover>
+      <Rover value="option 2" {...rover}>
+        Option 2
+      </Rover>
+      <Rover value="option 3" {...rover}>
+        Option 3
+      </Rover>
     </div>
   );
-};
+}
 
-stories.add("Test", () => <Selection />);
+stories.add("Register", () => <RoverExample />);
 stories.add("Select", () => <SelectExample />);
