@@ -1,41 +1,19 @@
 {
   "compilerOptions": {
-    "outDir": "build/lib",
-    "module": "esnext",
     "target": "es5",
-    "lib": ["es5", "es6", "es7", "es2017", "dom", "esnext"],
-    "sourceMap": true,
-    "allowJs": false,
-    "jsx": "react",
-    "importHelpers": true,
-    "moduleResolution": "node",
-    "rootDirs": ["packages"],
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
     "skipLibCheck": true,
-    "baseUrl": "packages",
+    "strict": false,
     "forceConsistentCasingInFileNames": true,
-    // "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noImplicitAny": true,
-    // "strictNullChecks": true,
-    // "suppressImplicitAnyIndexErrors": true,
-    // "noUnusedLocals": true,
-    "declaration": true,
-    "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "typeRoots": [
-      "node_modules/@types",
-      "packages/**/*/@types"
-    ]
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve"
   },
-  "include": ["packages/**/*"],
-  "exclude": [
-    "node_modules",
-    "build",
-    "scripts",
-    "**/*.spec.ts",
-    "**/*.spec.tsx",
-    "**/*.test.ts",
-    "**/*.test.tsx"
-  ]
+  "exclude": ["node_modules"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }
