@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, BoxProps } from "../Box";
 
-export type TextProps<P, T> = BoxProps<P, T>;
+type TextProps<P, T> = BoxProps<P, T>;
 
 const Text = React.forwardRef(function Text<P, T extends HTMLElement>(
   props: TextProps<P, T>,
