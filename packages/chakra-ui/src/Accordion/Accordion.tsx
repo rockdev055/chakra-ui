@@ -11,7 +11,7 @@ import {
   cloneElement,
   isValidElement,
 } from "react";
-import { Box, BoxProps } from "../Box";
+import { Box, BoxProps } from "@chakra-ui/layout";
 import { Collapse, CollapseProps } from "../Collapse";
 import Icon, { IconProps } from "../Icon/Icon";
 import { Merge, Omit } from "../utils";
@@ -82,7 +82,7 @@ const Accordion = forwardRef(function Accordion<P, T>(
   const clones = Children.map(children, (child, childIndex) => {
     if (!isValidElement(child)) return;
 
-    return cloneElement(child, {
+    return cloneElement(child as React.ReactElement<any>, {
       isOpen: _index ? getExpandCondition(_index, childIndex) : false,
       onChange: (isExpanded: boolean) => {
         if (allowMultiple && Array.isArray(_index)) {
