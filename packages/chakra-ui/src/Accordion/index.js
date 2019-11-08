@@ -134,8 +134,6 @@ const AccordionItem = forwardRef(
   },
 );
 
-AccordionItem.displayName = "AccordionItem";
-
 /////////////////////////////////////////////////////////////
 
 const AccordionHeader = forwardRef(({ onClick, ...props }, ref) => {
@@ -177,8 +175,6 @@ const AccordionHeader = forwardRef(({ onClick, ...props }, ref) => {
   );
 });
 
-AccordionHeader.displayName = "AccordionHeader";
-
 /////////////////////////////////////////////////////////////
 
 const AccordionPanel = forwardRef((props, ref) => {
@@ -199,8 +195,6 @@ const AccordionPanel = forwardRef((props, ref) => {
     />
   );
 });
-
-AccordionPanel.displayName = "AccordionPanel";
 
 /////////////////////////////////////////////////////////////
 

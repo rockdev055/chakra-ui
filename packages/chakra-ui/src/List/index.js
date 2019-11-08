@@ -31,13 +31,9 @@ const List = forwardRef(
   ),
 );
 
-List.displayName = "List";
-
 export const ListItem = forwardRef(({ spacing, ...props }, ref) => (
   <PseudoBox ref={ref} as="li" mb={spacing} {...props} />
 ));
-
-ListItem.diplayName = "ListItem";
 
 export const ListIcon = ({ icon, ...props }) => {
   if (typeof icon === "string") {

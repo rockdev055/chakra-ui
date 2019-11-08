@@ -104,8 +104,6 @@ const Switch = forwardRef(
   },
 );
 
-Switch.displayName = "Switch";
-
 Switch.defaultProps = {
   color: "blue",
   size: "md",

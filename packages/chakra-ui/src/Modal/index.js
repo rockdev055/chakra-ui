@@ -210,8 +210,6 @@ const ModalOverlay = React.forwardRef((props, ref) => {
   );
 });
 
-ModalOverlay.displayName = "ModalOverlay";
-
 ////////////////////////////////////////////////////////////////////////
 
 const ModalContent = React.forwardRef(
@@ -348,8 +346,6 @@ const ModalContent = React.forwardRef(
   },
 );
 
-ModalContent.displayName = "ModalContent";
-
 ////////////////////////////////////////////////////////////////////////
 
 const ModalHeader = forwardRef((props, ref) => {
@@ -369,8 +365,6 @@ const ModalHeader = forwardRef((props, ref) => {
   );
 });
 
-ModalHeader.displayName = "ModalHeader";
-
 ////////////////////////////////////////////////////////////////////////
 
 const ModalFooter = forwardRef((props, ref) => (
@@ -384,8 +378,6 @@ const ModalFooter = forwardRef((props, ref) => (
     {...props}
   />
 ));
-
-ModalFooter.displayName = "ModalFooter";
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -402,8 +394,6 @@ const ModalBody = forwardRef((props, ref) => {
   );
 });
 
-ModalBody.displayName = "ModalBody";
-
 ////////////////////////////////////////////////////////////////////////
 
 const ModalCloseButton = forwardRef((props, ref) => {
@@ -419,8 +409,6 @@ const ModalCloseButton = forwardRef((props, ref) => {
     />
   );
 });
-
-ModalCloseButton.displayName = "ModalCloseButton";
 
 ////////////////////////////////////////////////////////////////////////
 

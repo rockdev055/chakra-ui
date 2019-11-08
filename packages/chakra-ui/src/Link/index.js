@@ -38,6 +38,4 @@ const Link = forwardRef(({ isDisabled, isExternal, onClick, ...rest }, ref) => {
   );
 });
 
-Link.displayName = "Link";
-
 export default Link;

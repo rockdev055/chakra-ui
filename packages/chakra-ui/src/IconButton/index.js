@@ -33,8 +33,6 @@ const IconButton = forwardRef(
   },
 );
 
-IconButton.displayName = "IconButton";
-
 IconButton.defaultProps = Button.defaultProps;
 
 export default IconButton;

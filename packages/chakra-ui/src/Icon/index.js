@@ -56,6 +56,4 @@ const Icon = forwardRef(
   },
 );
 
-Icon.displayName = "Icon";
-
 export default Icon;

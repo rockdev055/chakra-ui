@@ -8,13 +8,9 @@ const StatLabel = forwardRef((props, ref) => (
   <Text ref={ref} fontWeight="medium" fontSize="sm" {...props} />
 ));
 
-StatLabel.displayName = "StatLabel";
-
 const StatHelpText = forwardRef((props, ref) => (
   <Text ref={ref} fontSize="sm" opacity="0.8" mb={2} {...props} />
 ));
-
-StatHelpText.displayName = "StatHelpText";
 
 const StatNumber = props => (
   <Text
@@ -50,13 +46,9 @@ const StatArrow = forwardRef(
   ),
 );
 
-StatArrow.displayName = "StatArrow";
-
 const Stat = forwardRef((props, ref) => (
   <Box ref={ref} flex="1" pr={4} position="relative" {...props} />
 ));
-
-Stat.displayName = "Stat";
 
 const StatGroup = forwardRef((props, ref) => (
   <Flex
@@ -67,7 +59,5 @@ const StatGroup = forwardRef((props, ref) => (
     {...props}
   />
 ));
-
-StatGroup.displayName = "StatGroup";
 
 export { StatLabel, StatNumber, Stat, StatHelpText, StatArrow, StatGroup };

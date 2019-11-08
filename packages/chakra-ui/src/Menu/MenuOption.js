@@ -125,8 +125,6 @@ export const MenuItemOption = forwardRef(
   },
 );
 
-MenuItemOption.displayName = "MenuItemOption";
-
 export const MenuOptionGroup = ({
   children,
   type = "radio",

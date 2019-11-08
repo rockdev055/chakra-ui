@@ -10,8 +10,6 @@ const BreadcrumbSeparator = forwardRef(({ spacing, ...props }, ref) => {
   );
 });
 
-BreadcrumbSeparator.displayName = "BreadcrumbSeparator";
-
 const Span = forwardRef((props, ref) => <Box ref={ref} as="span" {...props} />);
 
 const BreadcrumbLink = forwardRef(({ isCurrentPage, ...props }, ref) => {
@@ -21,8 +19,6 @@ const BreadcrumbLink = forwardRef(({ isCurrentPage, ...props }, ref) => {
     <Comp ref={ref} aria-current={isCurrentPage ? "page" : null} {...props} />
   );
 });
-
-BreadcrumbLink.displayName = "BreadcrumbLink";
 
 const BreadcrumbItem = ({
   isCurrentPage,

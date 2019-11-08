@@ -21,6 +21,4 @@ const SimpleGrid = forwardRef(
   },
 );
 
-SimpleGrid.displayName = "SimpleGrid";
-
 export default SimpleGrid;

@@ -106,6 +106,4 @@ const RadioButtonGroup = ({
   );
 };
 
-RadioButtonGroup.displayName = "RadioButtonGroup";
-
 export default RadioButtonGroup;

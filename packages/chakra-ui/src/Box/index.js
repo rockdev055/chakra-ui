@@ -73,6 +73,4 @@ const Box = styled("div", {
   },
 })(truncate, systemProps);
 
-Box.displayName = "Box";
-
 export default Box;

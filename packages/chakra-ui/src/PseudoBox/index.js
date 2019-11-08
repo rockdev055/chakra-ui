@@ -85,6 +85,4 @@ const PseudoBox = styled(Box)(
   },
 );
 
-PseudoBox.displayName = "PseudoBox";
-
 export default PseudoBox;

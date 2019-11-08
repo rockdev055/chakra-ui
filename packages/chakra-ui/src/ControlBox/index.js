@@ -43,8 +43,6 @@ const ControlBox = styled(Box)(
   },
 );
 
-ControlBox.displayName = "ControlBox";
-
 ControlBox.defaultProps = {
   display: "inline-flex",
   alignItems: "center",

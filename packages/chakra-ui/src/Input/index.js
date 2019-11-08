@@ -44,8 +44,6 @@ const Input = forwardRef((props, ref) => {
   );
 });
 
-Input.displayName = "Input";
-
 Input.defaultProps = {
   size: "md",
   as: "input",

@@ -130,8 +130,6 @@ const Editable = forwardRef(
   },
 );
 
-Editable.displayName = "Editable";
-
 const sharedProps = {
   fontSize: "inherit",
   fontWeight: "inherit",
