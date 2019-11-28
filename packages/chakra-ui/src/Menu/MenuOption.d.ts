@@ -26,7 +26,6 @@ interface IMenuItemOption {
   onMouseLeave?: React.MouseEventHandler<HTMLElement>;
   onKeyDown?: React.KeyboardEventHandler<HTMLElement>;
   onMouseMove?: React.MouseEventHandler<HTMLElement>;
-  value?: string | number;
 }
 
 type MenuItemOptionProps = PseudoBoxProps & IMenuItemOption;
