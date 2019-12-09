@@ -1,16 +1,16 @@
 import * as React from "react";
-import useClickOutside from "./utils/useClickOutside";
-import useAriaHidden from "./utils/useAriaHidden";
+import useClickOutside from "./useClickOutside";
+import useAriaHidden from "./useAriaHidden";
 import useLockBodyScroll from "../useLockBodyScroll";
-import { useManager } from "./utils/ModalManager";
+import { useManager } from "./ModalManager";
 import useMountedState from "../useMountedState";
 import useId from "../useId";
 
 interface UseModalOptions {
-  onClose?: () => void;
+  onClose: () => void;
 }
 
-function useModal({ onClose, ...props }: UseModalOptions) {
+function useModal({ onClose }: UseModalOptions) {
   const ref = React.useRef<any>(null);
   const visible = useMountedState();
   const uuid = useId();
@@ -18,11 +18,9 @@ function useModal({ onClose, ...props }: UseModalOptions) {
 
   React.useEffect(() => {
     if (!visible) return;
-
-    if (manager) manager.add(ref);
-
+    manager.add(ref);
     return () => {
-      if (manager) manager.remove(ref);
+      manager.remove(ref);
     };
     // eslint-disable-next-line
   }, [visible, ref]);
@@ -35,14 +33,13 @@ function useModal({ onClose, ...props }: UseModalOptions) {
     event => {
       if (event.key === "Escape") {
         event.stopPropagation();
-        onClose && onClose();
+        onClose();
       }
     },
     [onClose],
   );
 
   return {
-    ...props,
     ref,
     id: uuid,
     onKeyDown,
