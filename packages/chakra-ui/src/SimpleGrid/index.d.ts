@@ -25,8 +25,6 @@ interface ISimpleGrid {
   spacingY?: GridProps["gridGap"];
 }
 
-export type SimpleGridProps = BoxProps & ISimpleGrid;
+type SimpleGridProps = BoxProps & ISimpleGrid;
 
 declare const SimpleGrid: React.FC<SimpleGridProps>;
-
-export default SimpleGrid;
