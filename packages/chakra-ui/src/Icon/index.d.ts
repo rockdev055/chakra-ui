@@ -20,6 +20,11 @@ interface IIcon {
    * The role of the icon. `presentation` or `img`
    */
   role?: "presentation" | "img";
+  /**
+   * If `false`, it means the icon is used within interactive
+   * element and won't be focuable.
+   */
+  focusable?: boolean;
 }
 
 export type IconProps = IIcon & Omit<BoxProps, "size">;
