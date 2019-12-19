@@ -1,35 +1,19 @@
 {
   "compilerOptions": {
-    "outDir": "build/lib",
-    "module": "esnext",
     "target": "es5",
-    "lib": ["dom", "esnext"],
-    "rootDir": "./",
-    "strict": true,
-    "jsx": "react",
-    "importHelpers": true,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
     "moduleResolution": "node",
-    "rootDirs": ["packages"],
-    "baseUrl": "packages",
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "noUnusedLocals": true,
-    "declaration": true,
-    "sourceMap": true,
-    "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "typeRoots": ["node_modules/@types", "packages/**/*/@types"]
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve"
   },
-  "include": ["packages/**/*"],
-  "exclude": [
-    "node_modules",
-    "build",
-    "scripts",
-    "**/*.spec.ts",
-    "**/*.spec.tsx",
-    "**/*.test.ts",
-    "**/*.test.tsx"
-  ]
+  "exclude": ["node_modules"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }
