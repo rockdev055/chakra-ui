@@ -1,3 +1,5 @@
+import prettyNum, { PRECISION_SETTING } from "pretty-num";
+
 export function isNumberKey(event) {
   const charCode = event.which ? event.which : event.keyCode;
   if (event.key === ".") return true;
@@ -18,7 +20,10 @@ export function preventNonNumberKey(event) {
 }
 
 export function roundToPrecision(value, precision) {
-  return parseFloat(value).toFixed(precision);
+  return prettyNum(value, {
+    precision,
+    precisionSetting: PRECISION_SETTING.FIXED,
+  });
 }
 
 export function calculatePrecision(value) {
