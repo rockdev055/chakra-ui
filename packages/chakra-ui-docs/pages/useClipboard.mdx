@@ -1,8 +1,9 @@
-import Head from "next/head";
+import SEO from "../components/SEO";
 
-<Head key="useClipboard">
-  <title key="tti">useClipboard hook</title>
-</Head>
+<SEO
+  title="useClipboard"
+  description="useClipboard is a custom hook to handle copying content to clipboard."
+/>
 
 # useClipboard
 
@@ -12,11 +13,11 @@ import Head from "next/head";
 
 The `useClipboard` hook returns an object with the following fields:
 
-| Name        | Type       | Default | Description                              |
-| ----------- | ---------- | ------- | ---------------------------------------- |
-| `value`     | `string`   |         | The copied value.                        |
-| `onCopy`    | `function` |         | Callback function to copy content.       |
-| `hasCopied` | `boolean`  | `false` | If `true`, the content has been copied . |
+| Name        | Type       | Default | Description                                           |
+| ----------- | ---------- | ------- | ----------------------------------------------------- |
+| `value`     | `string`   |         | The copied value.                                     |
+| `onCopy`    | `function` |         | Function to copy content.                             |
+| `hasCopied` | `boolean`  | `false` | If `true`, the content has been copied to clipboard . |
 
 ## Import
 
