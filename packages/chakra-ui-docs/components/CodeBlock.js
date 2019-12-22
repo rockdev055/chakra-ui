@@ -179,13 +179,7 @@ const CodeBlock = ({
 
   return (
     <LiveProvider disabled {...liveProviderProps}>
-      <Box position="relative">
-        <LiveEditor padding={20} style={liveEditorStyle} />
-
-        <CopyButton top="1.25em" onClick={onCopy}>
-          {hasCopied ? "copied" : "copy"}
-        </CopyButton>
-      </Box>
+      <LiveEditor padding={20} style={liveEditorStyle} />
     </LiveProvider>
   );
 
