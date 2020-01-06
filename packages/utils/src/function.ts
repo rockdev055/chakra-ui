@@ -1,0 +1,44 @@
+import { FunctionArguments, AnyFunction } from "./types";
+
+/**
+ * This is checks any callback to ensure it's a
+ * function before invoking it with it's arguments
+ *
+ * @param callback The callback's value
+ * @param event The callback's argument/event
+ */
+export function resolveCallback<T, U>(
+  callback: T | ((event: U) => T),
+  event?: U,
+): T {
+  if (typeof callback === "function") {
+    //@ts-ignore
+    return callback(event);
+  }
+  return callback;
+}
+
+export function composeEventHandlers<T extends (event: any) => void>(
+  ...fns: (T | undefined)[]
+) {
+  return function(event: FunctionArguments<T>[0]) {
+    fns.some(fn => {
+      fn && fn(event);
+      return event && event.defaultPrevented;
+    });
+  };
+}
+
+export function composeFns<T extends AnyFunction>(...fns: AnyFunction[]) {
+  const filteredFns = fns.filter(Boolean);
+  return (...args: FunctionArguments<T>) => {
+    filteredFns.forEach(fn => fn(...args));
+  };
+}
+
+type Func<T = any> = (arg: T) => T;
+
+export const pipeFns = <R>(...fns: Array<Func<R> | null | undefined>) => {
+  const filteredFns = fns.filter(Boolean) as Array<Func<R>>;
+  return filteredFns.reduce((prevFn, nextFn) => value => nextFn(prevFn(value)));
+};
