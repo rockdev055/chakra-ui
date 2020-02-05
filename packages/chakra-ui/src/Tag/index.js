@@ -26,7 +26,7 @@ const tagSizes = {
   },
 };
 
-export const TagCloseButton = ({ isDisabled, ...props }) => (
+export const TagCloseButton = props => (
   <PseudoBox
     as="button"
     display="flex"
@@ -38,12 +38,6 @@ export const TagCloseButton = ({ isDisabled, ...props }) => (
     outline="none"
     mr={-1}
     opacity="0.5"
-    disabled={isDisabled}
-    _disabled={{
-      opacity: "40%",
-      cursor: "not-allowed",
-      boxShadow: "none",
-    }}
     _focus={{
       boxShadow: "outline",
       bg: "rgba(0, 0, 0, 0.14)",
