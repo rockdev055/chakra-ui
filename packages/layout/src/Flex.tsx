@@ -1,0 +1,41 @@
+import { ChakraComponent, forwardRef } from "@chakra-ui/system";
+import * as React from "react";
+import { Box, BoxProps } from "./Box";
+
+interface FlexOptions {
+  /**
+   * Shorthand for Styled-System `alignItems` prop
+   */
+  align?: BoxProps["alignItems"];
+  /**
+   * Shorthand for Styled-System `justifyContent` prop
+   */
+  justify?: BoxProps["justifyContent"];
+  /**
+   * Shorthand for Styled-System `flexWrap` prop
+   */
+  wrap?: BoxProps["flexWrap"];
+  /**
+   * Shorthand for Styled-System `flexDirection` prop
+   */
+  direction?: BoxProps["flexDirection"];
+}
+
+export type FlexProps = BoxProps & FlexOptions;
+
+const Flex = forwardRef((props: FlexProps, ref: React.Ref<any>) => {
+  const { direction, align, justify, wrap, ...rest } = props;
+  return (
+    <Box
+      ref={ref}
+      display="flex"
+      flexDirection={direction}
+      alignItems={align}
+      justifyContent={justify}
+      flexWrap={wrap}
+      {...rest}
+    />
+  );
+}) as ChakraComponent<"div", FlexOptions>;
+
+export default Flex;
