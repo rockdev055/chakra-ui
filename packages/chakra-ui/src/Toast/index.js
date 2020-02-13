@@ -1,7 +1,6 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import toaster from "toasted-notes";
-import { useCallback } from "react";
 import { Alert, AlertIcon, AlertTitle, AlertDescription } from "../Alert";
 import ThemeProvider, { useTheme } from "../ThemeProvider";
 import Box from "../Box";
@@ -51,54 +50,49 @@ const Toast = ({
 function useToast() {
   const theme = useTheme();
 
-  const notify = useCallback(
-    ({
-      position = "bottom",
-      duration = 5000,
-      render,
-      title,
-      description,
-      status,
-      variant = "solid",
-      isClosable,
-    }) => {
-      const options = {
-        position,
-        duration,
-      };
+  function notify({
+    position = "bottom",
+    duration = 5000,
+    render,
+    title,
+    description,
+    status,
+    variant = "solid",
+    isClosable,
+  }) {
+    const options = {
+      position,
+      duration,
+    };
 
-      if (render) {
-        return toaster.notify(
-          ({ onClose, id }) => (
-            <ThemeProvider theme={theme}>
-              {render({ onClose, id })}
-            </ThemeProvider>
-          ),
-          options,
-        );
-      }
-
-      toaster.notify(
+    if (render) {
+      return toaster.notify(
         ({ onClose, id }) => (
-          <ThemeProvider theme={theme}>
-            <Toast
-              {...{
-                onClose,
-                id,
-                title,
-                description,
-                status,
-                variant,
-                isClosable,
-              }}
-            />
-          </ThemeProvider>
+          <ThemeProvider theme={theme}>{render({ onClose, id })}</ThemeProvider>
         ),
         options,
       );
-    },
-    [theme],
-  );
+    }
+
+    toaster.notify(
+      ({ onClose, id }) => (
+        <ThemeProvider theme={theme}>
+          <Toast
+            {...{
+              onClose,
+              id,
+              title,
+              description,
+              status,
+              variant,
+              isClosable,
+            }}
+          />
+        </ThemeProvider>
+      ),
+      options,
+    );
+  }
 
   return notify;
 }

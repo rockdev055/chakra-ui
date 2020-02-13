@@ -38,7 +38,6 @@ const sizes = {
 
 const CloseButton = ({
   size = "md",
-  type = "button",
   isDisabled,
   color,
   "aria-label": ariaLabel = "Close",
@@ -61,7 +60,6 @@ const CloseButton = ({
       size={buttonSize}
       _hover={{ bg: hoverColor[colorMode] }}
       _active={{ bg: activeColor[colorMode] }}
-      type={type}
       {...baseProps}
       {...rest}
     >
