@@ -62,7 +62,7 @@ git clone git@github.com:chakra-ui/chakra-ui.git
 cd chakra-ui
 yarn install
 yarn bootstrap
-yarn build
+yarn core:build
 ```
 
 ## Root Repo Scripts:
@@ -75,7 +75,7 @@ yarn storybook        # starts storybook server
 
 yarn docs         # runs the documentation site locally
 
-yarn build        # build the component library
+yarn core:build        # build the component library
 
 yarn release      # publishes changed packages
 ```
@@ -95,7 +95,7 @@ Changes to the docs will hot reload the site.
 ### Building locally
 
 To use the provided build scripts with yarn you have to install `npm@^10`.
-Depending on the package you want to build just run `npm run build`.
+Depending on the package you want to build just run `npm run core:build`.
 
 ### Coding style
 
