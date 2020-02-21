@@ -1,18 +1,26 @@
 {
-  "name": "@chakra-ui/preset-base",
+  "name": "@chakra-ui/visuallyhidden",
   "version": "0.0.1",
-  "description": "The default theme for chakra components",
+  "description": "A React component for adding visually hidden styles to elements",
   "keywords": [
-    "theme",
-    "theming",
-    "ui mode",
-    "ui"
+    "react",
+    "component",
+    "chakra",
+    "chakra ui",
+    "a11y",
+    "aria",
+    "accessibility",
+    "accessible",
+    "visually hidden",
+    "visually hidden component",
+    "sr only",
+    "screenreader"
   ],
   "author": "Segun Adebayo <sage@adebayosegun.com>",
   "homepage": "https://github.com/chakra-ui/chakra-ui#readme",
   "license": "MIT",
   "main": "dist/index.js",
-  "module": "dist/preset-base.esm.js",
+  "module": "dist/visuallyhidden.esm.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
@@ -35,9 +43,6 @@
     "lint": "tsdx lint src",
     "version": "yarn build"
   },
-  "dependencies": {
-    "@chakra-ui/color": "0.0.1"
-  },
   "devDependencies": {
     "@types/jest": "24.0.25",
     "@types/react": "16.9.17",
@@ -49,5 +54,12 @@
     "tsdx": "0.12.1",
     "tslib": "1.10.0",
     "typescript": "3.7.4"
+  },
+  "dependencies": {
+    "@chakra-ui/system": "0.0.1"
+  },
+  "peerDependencies": {
+    "react": "16.x",
+    "react-dom": "16.x"
   }
 }
