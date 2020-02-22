@@ -1,23 +1,12 @@
 {
   "name": "@chakra-ui/tabs",
   "version": "0.0.1",
-  "description": "Accessible Tabs component for React and Chakra UI",
+  "description": "description",
   "keywords": [
-    "react",
-    "react component",
-    "tabs",
-    "accessible tabs",
-    "a11y tabs",
-    "react a11y tabs",
-    "react accessible tabs",
-    "react tabs",
-    "chakra ui",
-    "chakra",
-    "react tabs component",
-    "a11y",
-    "react aria tabs",
-    "aria",
-    "aria tabs"
+    "theme",
+    "theming",
+    "ui mode",
+    "ui"
   ],
   "author": "Segun Adebayo <sage@adebayosegun.com>",
   "homepage": "https://github.com/chakra-ui/chakra-ui#readme",

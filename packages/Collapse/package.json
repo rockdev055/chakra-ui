@@ -1,17 +1,12 @@
 {
   "name": "@chakra-ui/collapse",
   "version": "0.0.1",
-  "description": "An accessible auto-height and collapse component for elements with variable (and dynamic) height",
+  "description": "description",
   "keywords": [
-    "react",
-    "accessible",
-    "react-component",
-    "collapse component",
-    "collapse",
-    "accordion",
-    "animate height",
-    "auto height",
-    "react spring"
+    "theme",
+    "theming",
+    "ui mode",
+    "ui"
   ],
   "author": "Segun Adebayo <sage@adebayosegun.com>",
   "homepage": "https://github.com/chakra-ui/chakra-ui#readme",
@@ -52,12 +47,9 @@
     "tslib": "1.10.0",
     "typescript": "3.7.4"
   },
-  "dependencies": {
-    "react-spring": "8.0.27",
-    "@chakra-ui/hooks": "0.0.1",
-    "@chakra-ui/utils": "0.0.1"
-  },
+  "dependencies": {},
   "peerDependencies": {
+    "@emotion/core": "10.x",
     "react": "16.x",
     "react-dom": "16.x"
   }
