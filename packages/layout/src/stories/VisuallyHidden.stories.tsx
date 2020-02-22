@@ -1,6 +1,6 @@
 import { PropsOf } from "@chakra-ui/system"
 import React from "react"
-import { VisuallyHidden } from "../src/VisuallyHidden"
+import VisuallyHidden from "../VisuallyHidden"
 
 export default {
   title: "Visually Hidden",

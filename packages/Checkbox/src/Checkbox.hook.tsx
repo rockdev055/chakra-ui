@@ -3,8 +3,12 @@ import {
   useIsomorphicEffect,
   useMergeRefs,
 } from "@chakra-ui/hooks"
-import { callAllHandlers, makeDataAttr, createContext } from "@chakra-ui/utils"
-import { visuallyHiddenStyle } from "@chakra-ui/visually-hidden"
+import {
+  callAllHandlers,
+  makeDataAttr,
+  createContext,
+  visuallyHiddenStyle,
+} from "@chakra-ui/utils"
 import * as React from "react"
 
 export interface CheckboxHookProps {

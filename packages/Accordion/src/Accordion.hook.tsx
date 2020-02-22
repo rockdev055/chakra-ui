@@ -43,7 +43,7 @@ export interface AccordionHookProps {
   /**
    * The callback invoked when accordion items are expanded or collapsed.
    */
-  onChange?: (expandedIndex?: ExpandedIndex) => void
+  onChange?: (expandedIndex?: ExpandedIndex | null) => void
   /**
    * The content of the accordion. Must be `AccordionItem`
    */
@@ -183,6 +183,7 @@ export function useAccordionItem(props: AccordionItemHookProps) {
 
   const buttonRef = React.useRef<HTMLButtonElement>(null)
 
+  // generate some ids
   const [buttonId, panelId] = useIds(`accordion-header`, `accordion-panel`)
 
   // warn for incorrect usage
@@ -236,13 +237,13 @@ export function useAccordionItem(props: AccordionItemHookProps) {
   })
 
   // Since each accordion item's button still remains tabbable, let's
-  // update the focusedIndex when it receives focus
+  // update the focusManager when it receives focus
   const onFocus = React.useCallback(() => {
     setFocusedIndex(index)
   }, [index, setFocusedIndex])
 
   type ButtonProps = {
-    ref?: React.RefObject<any>
+    ref?: React.Ref<any>
     onFocus?: React.FocusEventHandler
     onKeyDown?: React.KeyboardEventHandler
     onClick?: React.MouseEventHandler
@@ -279,7 +280,7 @@ export function useAccordionItem(props: AccordionItemHookProps) {
     // actions
     onOpen,
     onClose,
-    // other html props (useful if you need to spread other props to root component)
+    // other props (useful if you need to spread  other props to root component)
     htmlProps,
   }
 }
