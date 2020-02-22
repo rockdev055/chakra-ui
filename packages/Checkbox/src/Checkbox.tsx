@@ -2,7 +2,7 @@ import { createChakra, PropsOf, SystemProps, chakra } from "@chakra-ui/system"
 import { Omit } from "@chakra-ui/utils"
 import * as React from "react"
 import { CheckboxHookProps, useCheckbox } from "./Checkbox.hook"
-import { CheckIcon, MinusIcon } from "./Checkbox.icon"
+import { CheckboxIcon } from "./Checkbox.icon"
 import { IconProps } from "@chakra-ui/icon"
 
 const ControlBox = createChakra("span", { themeKey: "Checkbox" })
@@ -19,22 +19,11 @@ type CustomCheckboxProps = OmittedCheckboxProps &
     iconSize?: IconProps["size"]
   }
 
-function CheckboxIcon({
-  isChecked,
-  isIndeterminate,
-  ...props
-}: IconProps & {
-  isChecked?: boolean
-  isIndeterminate?: boolean
-}) {
-  if (isChecked) return <CheckIcon {...props} />
-  if (isIndeterminate) return <MinusIcon {...props} />
-  return null
-}
-
 export const Checkbox = React.forwardRef(
   (props: CustomCheckboxProps, ref: React.Ref<HTMLInputElement>) => {
-    const { state, input, checkbox, htmlProps } = useCheckbox(props)
+    const { state, getInputProps, getCheckboxProps, htmlProps } = useCheckbox(
+      props,
+    )
 
     const { iconSize = 3, iconColor } = props
 
@@ -45,14 +34,13 @@ export const Checkbox = React.forwardRef(
     }
 
     return (
-      <label>
-        <input {...input} ref={ref} />
+      <chakra.label {...htmlProps}>
+        <input {...getInputProps({ ref })} />
         <ControlBox
           variantSize="lg"
           variantColor="blue"
           verticalAlign="top"
-          {...checkbox}
-          {...htmlProps}
+          {...getCheckboxProps()}
         >
           <CheckboxIcon
             isChecked={state.isChecked}
@@ -70,7 +58,7 @@ export const Checkbox = React.forwardRef(
             {props.children}
           </chakra.div>
         )}
-      </label>
+      </chakra.label>
     )
   },
 )
