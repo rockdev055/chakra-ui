@@ -34,9 +34,7 @@ function CheckboxIcon({
 
 export const Checkbox = React.forwardRef(
   (props: CustomCheckboxProps, ref: React.Ref<HTMLInputElement>) => {
-    const { state, getInputProps, getCheckboxProps, htmlProps } = useCheckbox(
-      props,
-    )
+    const { state, input, checkbox, htmlProps } = useCheckbox(props)
 
     const { iconSize = 3, iconColor } = props
 
@@ -47,13 +45,14 @@ export const Checkbox = React.forwardRef(
     }
 
     return (
-      <chakra.label {...htmlProps}>
-        <input {...getInputProps({ ref })} />
+      <label>
+        <input {...input} ref={ref} />
         <ControlBox
           variantSize="lg"
           variantColor="blue"
           verticalAlign="top"
-          {...getCheckboxProps()}
+          {...checkbox}
+          {...htmlProps}
         >
           <CheckboxIcon
             isChecked={state.isChecked}
@@ -71,7 +70,7 @@ export const Checkbox = React.forwardRef(
             {props.children}
           </chakra.div>
         )}
-      </chakra.label>
+      </label>
     )
   },
 )
