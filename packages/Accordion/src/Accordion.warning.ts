@@ -1,6 +1,6 @@
-import { AccordionHookProps, AccordionItemHookProps } from "./Accordion.hook"
+import * as Accordion from "./Accordion.hook"
 
-export function allowMultiple(props: AccordionHookProps) {
+export function allowMultiple(props: Accordion.AccordionHookProps) {
   const indexPassed = props.index || props.defaultIndex
   if (
     props.allowMultiple &&
@@ -13,7 +13,9 @@ export function allowMultiple(props: AccordionHookProps) {
   }
 }
 
-export function allowMultipleAndAllowToggle(props: AccordionHookProps) {
+export function allowMultipleAndAllowToggle(
+  props: Accordion.AccordionHookProps,
+) {
   if (props.allowMultiple && props.allowToggle) {
     console.warn(
       `If 'allowMultiple' is passed, 'allowToggle' will be ignored. Either remove 'allowToggle' or 'allowMultiple' depending on whether you want multiple accordions visible or not`,
@@ -21,7 +23,7 @@ export function allowMultipleAndAllowToggle(props: AccordionHookProps) {
   }
 }
 
-export function controlledAndNoChange(props: AccordionHookProps) {
+export function controlledAndNoChange(props: Accordion.AccordionHookProps) {
   if (
     typeof props.index !== "undefined" &&
     typeof props.onChange === "undefined"
@@ -32,7 +34,7 @@ export function controlledAndNoChange(props: AccordionHookProps) {
   }
 }
 
-export function focusableNotDisabled(props: AccordionItemHookProps) {
+export function focusableNotDisabled(props: Accordion.AccordionItemHookProps) {
   if (props.isFocusable && !props.isDisabled) {
     console.error(
       `Using only 'isFocusable', this prop is reserved for situations where you pass 'isDisabled' but you still want the element to receive focus (A11y). Either remove it or pass 'isDisabled' as well.

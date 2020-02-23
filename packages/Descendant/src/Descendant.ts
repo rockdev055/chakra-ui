@@ -1,5 +1,5 @@
 import * as React from "react"
-import { useIsomorphicEffect, useForceUpdate } from "@chakra-ui/hooks"
+import { useIsomorphicEffect } from "@chakra-ui/hooks"
 
 export type Descendant<T extends HTMLElement, P = {}> = P & {
   element: T | null
@@ -40,21 +40,30 @@ export function useDescendant<T extends HTMLElement, P>(
     ...rest
   } = props
 
-  const forceUpdate = useForceUpdate()
+  const [, forceUpdate] = React.useState()
+
   const { register, unregister, descendants } = context
 
+  /**
+   * Ideally, we'll run this effect to use `useLayoutEffect` but to
+   * support SSR, we'll use `useEffect` on the server. Hence, the use of
+   * `useIsomorphicEffect`
+   */
   useIsomorphicEffect(() => {
-    if (!element) forceUpdate()
+    if (!element) forceUpdate({})
 
     // Don't register this descendant if it's disabled and not focusable
     if (disabled && !focusable) return
 
     // else, register the descendant
-    register({ element, ...rest } as any)
+    //@ts-ignore
+    register({ element, ...rest })
 
     // when it unmounts, unregister the descendant
     return () => {
-      if (element) unregister(element)
+      if (element) {
+        unregister(element)
+      }
     }
     //eslint-disable-next-line
   }, [element, ...Object.values(rest)])
@@ -109,6 +118,7 @@ export function useDescendants<T extends HTMLElement, P>() {
     )
   }, [])
 
+  // memoize the context to improve performance
   const context = React.useMemo(() => {
     return { descendants, register, unregister }
   }, [descendants, register, unregister])

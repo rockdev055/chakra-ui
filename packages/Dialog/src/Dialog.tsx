@@ -1,15 +1,15 @@
-import { FocusLock } from "@chakra-ui/focus-lock"
+import * as React from "react"
+import { createContext, callAllHandlers } from "@chakra-ui/utils"
 import {
-  useAriaHidden,
   useIds,
   useLockBodyScroll,
+  useAriaHidden,
   useMergeRefs,
 } from "@chakra-ui/hooks"
-import { Portal } from "@chakra-ui/portal"
-import { createChakra, SystemProps } from "@chakra-ui/system"
-import { callAllHandlers, createContext } from "@chakra-ui/utils"
-import * as React from "react"
 import { useOutsideClick, useStackContext } from "./Dialog.utils"
+import FocusLock from "./Dialog.focus-lock"
+import { createChakra, SystemProps } from "@chakra-ui/system"
+import { Portal } from "@chakra-ui/portal"
 
 interface DialogProviderProps {
   /**
@@ -114,6 +114,7 @@ function useDialogContent(props: any) {
 }
 
 export const DialogContent = createChakra("section", {
+  // hook: useDialogContent,
   baseStyle: {
     position: "fixed",
     display: "flex",
@@ -132,6 +133,8 @@ export const DialogOverlay = createChakra("div", {
     width: "100vw",
     height: "100vh",
   },
+  // hook: useDialogOverlay,
+  // attrs: { "data-chakra-overlay": "" },
 })
 
 // TODO: Move this style to the Dialog.ts in theme

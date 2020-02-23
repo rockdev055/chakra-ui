@@ -1,14 +1,14 @@
 import * as React from "react"
 import ReactFocusLock from "react-focus-lock"
 
-export interface FocusLockProps {
-  initialFocusRef?: React.RefObject<HTMLElement>
-  finalFocusRef?: React.RefObject<HTMLElement>
+interface FocusLockProps {
+  initialFocusRef?: React.RefObject<any>
+  finalFocusRef?: React.RefObject<any>
   restoreFocus?: boolean
   children: React.ReactNode
 }
 
-export function FocusLock(props: FocusLockProps) {
+function FocusLock(props: FocusLockProps) {
   const { initialFocusRef, finalFocusRef, restoreFocus, children } = props
 
   const onActivation = React.useCallback(() => {
@@ -18,7 +18,7 @@ export function FocusLock(props: FocusLockProps) {
   }, [initialFocusRef])
 
   const onDeactivation = React.useCallback(() => {
-    if (finalFocusRef?.current) {
+    if (finalFocusRef && finalFocusRef.current) {
       finalFocusRef.current.focus()
     }
   }, [finalFocusRef])
@@ -35,3 +35,5 @@ export function FocusLock(props: FocusLockProps) {
     </ReactFocusLock>
   )
 }
+
+export default FocusLock
