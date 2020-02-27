@@ -160,7 +160,6 @@ const baseProps = {
   position: "relative",
   transition: "all 0.2s",
   outline: "none",
-  appearance: "none",
 };
 
 export const inputSizes = {
@@ -168,18 +167,21 @@ export const inputSizes = {
     fontSize: "lg",
     px: 4,
     height: 12,
+    lineHeight: "3rem",
     rounded: "md",
   },
   md: {
     fontSize: "md",
     px: 4,
     height: 10,
+    lineHeight: "2.5rem",
     rounded: "md",
   },
   sm: {
     fontSize: "sm",
     px: 3,
     height: 8,
+    lineHeight: "2rem",
     rounded: "sm",
   },
 };

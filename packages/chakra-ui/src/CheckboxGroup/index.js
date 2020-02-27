@@ -1,9 +1,14 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
+import {
+  Children,
+  cloneElement,
+  useState,
+  useRef,
+  isValidElement,
+} from "react";
 import { useId } from "@reach/auto-id";
-import { cloneElement, useRef, useState } from "react";
 import Box from "../Box";
-import { cleanChildren } from "../utils";
 
 const CheckboxGroup = ({
   onChange,
@@ -39,9 +44,10 @@ const CheckboxGroup = ({
   const fallbackName = `checkbox-${useId()}`;
   const _name = name || fallbackName;
 
-  const validChildren = cleanChildren(children);
-  const clones = validChildren.map((child, index) => {
-    const isLastCheckbox = validChildren.length === index + 1;
+  const clones = Children.map(children, (child, index) => {
+    if (!isValidElement(child)) return;
+
+    const isLastCheckbox = children.length === index + 1;
     const spacingProps = isInline ? { mr: spacing } : { mb: spacing };
 
     return (

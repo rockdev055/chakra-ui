@@ -47,7 +47,6 @@ const Tooltip = ({
   };
 
   const closeWithDelay = () => {
-    clearTimeout(enterTimeoutRef.current);
     exitTimeoutRef.current = setTimeout(onClose, hideDelay);
   };
 

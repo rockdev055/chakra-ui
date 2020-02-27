@@ -1,12 +1,18 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import { useId } from "@reach/auto-id";
-import { cloneElement, forwardRef, useRef, useState } from "react";
+import {
+  Children,
+  cloneElement,
+  forwardRef,
+  useRef,
+  useState,
+  isValidElement,
+} from "react";
 import { MenuGroup, useMenuContext } from ".";
 import Box from "../Box";
 import Icon from "../Icon";
 import PseudoBox from "../PseudoBox";
-import { cleanChildren } from "../utils";
 import { useMenuItemStyle } from "./styles";
 
 export const MenuItemOption = forwardRef(
@@ -154,11 +160,11 @@ export const MenuOptionGroup = ({
 
   const fallbackName = `radio-${useId()}`;
 
-  const validChildren = cleanChildren(children);
-
   return (
     <MenuGroup title={title} {...rest}>
-      {validChildren.map(child => {
+      {Children.map(children, child => {
+        if (!isValidElement(child)) return;
+
         if (type === "radio") {
           return cloneElement(child, {
             type,

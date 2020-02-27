@@ -59,8 +59,6 @@ const PopoverTrigger = ({ children }) => {
     };
   }
 
-  const openTimeout = useRef(null);
-
   if (trigger === "hover") {
     eventHandlers = {
       onFocus: wrapEvent(child.props.onFocus, onOpen),
@@ -72,14 +70,10 @@ const PopoverTrigger = ({ children }) => {
       onBlur: wrapEvent(child.props.onBlur, onClose),
       onMouseEnter: wrapEvent(child.props.onMouseEnter, () => {
         isHoveringRef.current = true;
-        openTimeout.current = setTimeout(onOpen, 300);
+        setTimeout(onOpen, 300);
       }),
       onMouseLeave: wrapEvent(child.props.onMouseLeave, () => {
         isHoveringRef.current = false;
-        if (openTimeout.current) {
-          clearTimeout(openTimeout.current);
-          openTimeout.current = null;
-        }
         setTimeout(() => {
           if (isHoveringRef.current === false) {
             onClose();

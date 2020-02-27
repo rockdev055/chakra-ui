@@ -11,7 +11,7 @@ interface IIcon {
   /**
    * The name of the icon.
    */
-  name?: Icons | string;
+  name?: Icons;
   /**
    * The color of the icon.
    */

@@ -28,7 +28,6 @@ const Editable = forwardRef(
       isPreviewFocusable = true,
       placeholder = "Click to edit...",
       children,
-      onEdit,
       ...rest
     },
     ref,
@@ -49,12 +48,6 @@ const Editable = forwardRef(
         setIsEditing(true);
       }
     };
-
-    useEffect(() => {
-      if (isEditing) {
-        onEdit && onEdit();
-      }
-    }, [isEditing, onEdit]);
 
     useEffect(() => {
       if (isEditing && inputRef.current) {
@@ -202,7 +195,6 @@ export const EditableInput = props => {
     onKeyDown,
     value,
     onSubmit,
-    onCancel,
     submitOnBlur,
     placeholder,
     isDisabled,
@@ -223,7 +215,7 @@ export const EditableInput = props => {
   const renderProps = {
     ref: inputRef,
     onBlur: event => {
-      submitOnBlur ? onSubmit() : onCancel();
+      submitOnBlur && onSubmit();
       if (props.onBlur) {
         props.onBlur(event);
       }

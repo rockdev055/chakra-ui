@@ -14,7 +14,6 @@ import DocsHeader from "../components/DocsHeader";
 import MDXComponents from "../components/MDXComponents";
 import SideNav from "../components/SideNav";
 import seo from "../seo.config";
-import { initGA, logPageView } from "../components/Analytics";
 
 const Main = props => <Box as="main" mx="auto" mb="3rem" {...props} />;
 
@@ -65,14 +64,6 @@ export default ({ Component, pageProps }) => {
   } else {
     Layout = DocsLayout;
   }
-
-  React.useEffect(() => {
-    if (!window.GA_INITIALIZED) {
-      initGA();
-      window.GA_INITIALIZED = true;
-    }
-    logPageView();
-  }, []);
 
   return (
     <ThemeProvider>
