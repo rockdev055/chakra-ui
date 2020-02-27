@@ -1,6 +1,10 @@
 import { addDecorator, configure } from "@storybook/react";
 import React from "react";
-import { CSSReset, ThemeProvider } from "@chakra-ui/core";
+import { CSSReset, ThemeProvider } from "../packages/chakra-ui/src";
+
+// function loadStories() {
+//   require("../stories");
+// }
 
 const req = require.context("../packages", true, /examples\.(js|mdx)$/);
 

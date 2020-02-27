@@ -1,10 +1,4 @@
-import {
-  useMemo,
-  useLayoutEffect,
-  useEffect,
-  Children,
-  isValidElement,
-} from "react";
+import { useMemo, useLayoutEffect, useEffect } from "react";
 import { useTheme } from "../ThemeProvider";
 
 export const assignRef = (ref, value) => {
@@ -179,8 +173,4 @@ export function useVariantColorWarning(label, variantColor) {
       }
     }
   }
-}
-
-export function cleanChildren(children) {
-  return Children.toArray(children).filter(child => isValidElement(child));
 }

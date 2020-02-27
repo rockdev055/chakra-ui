@@ -1,25 +1,41 @@
-import { useState, useEffect, useCallback } from "react";
-import copy from "copy-to-clipboard";
+import { useState } from "react";
 
-export function useClipboard(value) {
+/**
+ *
+ * @param {any} value - The content to add to clipboard
+ */
+const copyToClipboard = value => {
+  const el = document.createElement("textarea");
+  el.value = value;
+  el.setAttribute("readonly", "");
+  el.style.position = "absolute";
+  el.style.left = "-9999px";
+  document.body.appendChild(el);
+
+  const selected =
+    document.getSelection().rangeCount > 0
+      ? document.getSelection().getRangeAt(0)
+      : false;
+  el.select();
+
+  document.execCommand("copy");
+  document.body.removeChild(el);
+  if (selected) {
+    document.getSelection().removeAllRanges();
+    document.getSelection().addRange(selected);
+  }
+};
+
+const useClipboard = value => {
   const [hasCopied, setHasCopied] = useState(false);
 
-  const onCopy = useCallback(() => {
-    const didCopy = copy(value);
-    setHasCopied(didCopy);
-  }, [value]);
-
-  useEffect(() => {
-    if (hasCopied) {
-      const id = setTimeout(() => {
-        setHasCopied(false);
-      }, 1500);
-
-      return () => clearTimeout(id);
-    }
-  }, [hasCopied]);
+  const onCopy = () => {
+    copyToClipboard(value);
+    setHasCopied(true);
+    setTimeout(() => setHasCopied(false), 1500);
+  };
 
   return { value, onCopy, hasCopied };
-}
+};
 
 export default useClipboard;

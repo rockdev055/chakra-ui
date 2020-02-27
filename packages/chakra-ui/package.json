@@ -1,6 +1,6 @@
 {
   "name": "@chakra-ui/core",
-  "version": "0.6.1",
+  "version": "0.5.2",
   "description": "Responsive and accessible React UI components built with React and Emotion",
   "main": "dist/index.js",
   "module": "dist/es/index.js",
@@ -26,7 +26,6 @@
     "aria-hidden": "^1.1.1",
     "body-scroll-lock": "^2.6.4",
     "color": "3.1.2",
-    "copy-to-clipboard": "3.3.1",
     "exenv": "^1.2.2",
     "popper.js": "^1.15.0",
     "react-animate-height": "2.0.9",
@@ -56,7 +55,8 @@
     "accessible",
     "components",
     "emotion",
-    "library"
+    "library",
+    "design-system"
   ],
   "gitHead": "bf23c9514f184e58fb8f652bfaa38826d1b88906"
 }

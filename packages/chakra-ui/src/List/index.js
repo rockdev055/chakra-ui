@@ -1,36 +1,34 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
-import { Children, cloneElement, forwardRef } from "react";
+import { forwardRef, Children, cloneElement, isValidElement } from "react";
 import Box from "../Box";
 import Icon from "../Icon";
 import PseudoBox from "../PseudoBox";
-import { cleanChildren } from "../utils";
 
 const List = forwardRef(
   (
     { styleType = "none", stylePos = "inside", spacing, children, ...props },
     ref,
-  ) => {
-    const validChildren = cleanChildren(children);
-    return (
-      <Box
-        ref={ref}
-        as="ul"
-        listStyleType={styleType}
-        listStylePosition={stylePos}
-        {...props}
-      >
-        {validChildren.map((child, index) => {
-          const isLast = index + 1 === Children.count(children);
-          if (isLast) {
-            return child;
-          }
+  ) => (
+    <Box
+      ref={ref}
+      as="ul"
+      listStyleType={styleType}
+      listStylePosition={stylePos}
+      {...props}
+    >
+      {Children.map(children, (child, index) => {
+        if (!isValidElement(child)) return;
 
-          return cloneElement(child, { spacing });
-        })}
-      </Box>
-    );
-  },
+        const isLast = index + 1 === Children.count(children);
+        if (isLast) {
+          return child;
+        }
+
+        return cloneElement(child, { spacing });
+      })}
+    </Box>
+  ),
 );
 
 List.displayName = "List";

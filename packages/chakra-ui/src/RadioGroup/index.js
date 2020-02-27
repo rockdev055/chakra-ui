@@ -11,7 +11,6 @@ import {
 } from "react";
 import { useId } from "@reach/auto-id";
 import Box from "../Box";
-import { cleanChildren } from "../utils";
 
 const RadioGroup = forwardRef(
   (
@@ -49,10 +48,10 @@ const RadioGroup = forwardRef(
     const fallbackName = `radio-${useId()}`;
     const _name = name || fallbackName;
 
-    const validChildren = cleanChildren(children);
+    const clones = Children.map(children, (child, index) => {
+      if (!isValidElement(child)) return;
 
-    const clones = validChildren.map((child, index) => {
-      const isLastRadio = validChildren.length === index + 1;
+      const isLastRadio = children.length === index + 1;
       const spacingProps = isInline ? { mr: spacing } : { mb: spacing };
 
       return (
