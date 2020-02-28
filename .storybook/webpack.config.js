@@ -1,15 +1,10 @@
+const path = require("path");
 module.exports = ({ config }) => {
-  config.module.rules.push({
-    test: /\.(ts|tsx)$/,
-    use: [
-      {
-        loader: require.resolve("ts-loader"),
-        options: {
-          reportFiles: ["**/**/*.{ts|tsx}"],
-        },
-      },
-    ],
-  })
-  config.resolve.extensions.push(".ts", ".tsx")
-  return config
-}
+  config.resolve.alias = Object.assign(config.resolve.alias, {
+    "@chakra-ui/core": path.resolve(
+      __dirname,
+      "../node_modules/@chakra-ui/core",
+    ),
+  });
+  return config;
+};
