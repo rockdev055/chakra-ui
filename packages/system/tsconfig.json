@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.build.json",
+  "include": ["src", "types", "setup.tsx"],
+  "exclude": [
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.stories.tsx"
+  ],
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "rootDir": "./",
+    "typeRoots": ["types", "../../node_modules/@types"]
+  }
+}
