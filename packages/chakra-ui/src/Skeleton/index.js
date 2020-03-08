@@ -56,7 +56,7 @@ const Skeleton = props => {
     ...rest
   } = props;
   if (isLoaded) {
-    return <Box {...rest} />;
+    return <Fragment children={props.children} />;
   }
 
   return (
