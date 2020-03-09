@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@reach/auto-id": "0.8.6",
-    "@styled-system/css": "5.0.13",
+    "@styled-system/css": "5.1.5",
     "@styled-system/should-forward-prop": "5.1.5",
     "@types/styled-system": "5.0.1",
     "aria-hidden": "^1.1.1",
@@ -32,7 +32,7 @@
     "react-animate-height": "2.0.20",
     "react-focus-lock": "^2.2.1",
     "react-spring": "^8.0.27",
-    "styled-system": "5.0.5",
+    "styled-system": "5.1.5",
     "toasted-notes": "3.0.0",
     "use-dark-mode": "2.3.1"
   },
