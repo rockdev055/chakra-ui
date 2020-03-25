@@ -65,12 +65,7 @@ const AvatarGroup = ({
 
     if (max && index === max) {
       return (
-        <MoreAvatarLabel
-          key={index}
-          size={size}
-          ml={spacing}
-          label={`+${count - max}`}
-        />
+        <MoreAvatarLabel size={size} ml={spacing} label={`+${count - max}`} />
       );
     }
   });

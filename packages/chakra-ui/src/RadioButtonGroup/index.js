@@ -97,7 +97,6 @@ const RadioButtonGroup = ({
     };
 
     return cloneElement(child, {
-      key: index,
       ref: node => (allNodes.current[index] = node),
       name: _name,
       onClick: handleClick,

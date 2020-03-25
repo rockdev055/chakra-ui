@@ -3,16 +3,14 @@ import { jsx } from "@emotion/core";
 import { useEffect, useState, forwardRef, useRef } from "react";
 import Box from "../Box";
 
-export function useHasImageLoaded(props) {
-  const { src, onLoad, onError, enabled = true } = props;
+export const useHasImageLoaded = ({ src, onLoad, onError }) => {
   const isMounted = useRef(true);
   const [hasLoaded, setHasLoaded] = useState(false);
 
   useEffect(() => {
-    if (!src || !enabled) {
+    if (!src) {
       return;
     }
-
     const image = new window.Image();
     image.src = src;
 
@@ -23,13 +21,13 @@ export function useHasImageLoaded(props) {
       }
     };
 
-    image.onerror = event => {
+    image.onError = event => {
       if (isMounted.current) {
         setHasLoaded(false);
         onError && onError(event);
       }
     };
-  }, [src, onLoad, onError, enabled]);
+  }, [src, onLoad, onError]);
 
   useEffect(() => {
     return () => {
@@ -38,7 +36,7 @@ export function useHasImageLoaded(props) {
   }, []);
 
   return hasLoaded;
-}
+};
 
 const NativeImage = forwardRef(
   ({ htmlWidth, htmlHeight, alt, ...props }, ref) => (
@@ -46,22 +44,18 @@ const NativeImage = forwardRef(
   ),
 );
 
-const Image = forwardRef((props, ref) => {
-  const { src, fallbackSrc, onError, onLoad, ignoreFallback, ...rest } = props;
-
-  const hasLoaded = useHasImageLoaded({
-    src,
-    onLoad,
-    onError,
-    enabled: !Boolean(ignoreFallback),
-  });
-
-  const imageProps = ignoreFallback
-    ? { src, onLoad, onError }
-    : { src: hasLoaded ? src : fallbackSrc };
-
-  return <Box as={NativeImage} ref={ref} {...imageProps} {...rest} />;
-});
+const Image = forwardRef(
+  ({ src, fallbackSrc, onError, onLoad, ignoreFallback, ...props }, ref) => {
+    const hasLoaded = useHasImageLoaded({ src, onLoad, onError });
+    let imageProps;
+    if (ignoreFallback) {
+      imageProps = { src, onLoad, onError };
+    } else {
+      imageProps = { src: hasLoaded ? src : fallbackSrc };
+    }
+    return <Box as={NativeImage} ref={ref} {...imageProps} {...props} />;
+  },
+);
 
 Image.displayName = "Image";
 

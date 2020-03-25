@@ -40,14 +40,12 @@ const CheckboxGroup = ({
   const _name = name || fallbackName;
 
   const validChildren = cleanChildren(children);
-
   const clones = validChildren.map((child, index) => {
     const isLastCheckbox = validChildren.length === index + 1;
     const spacingProps = isInline ? { mr: spacing } : { mb: spacing };
 
     return (
       <Box
-        key={index}
         display={isInline ? "inline-block" : "block"}
         {...(!isLastCheckbox && spacingProps)}
       >
