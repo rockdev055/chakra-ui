@@ -117,8 +117,9 @@ import { Button } from "@chakra-ui/core"
 
 ## CodeSandbox
 
-- JavaScript: https://codesandbox.io/s/chakra-js-starter-1dkwi
-- Typescript: https://codesandbox.io/s/chakra-ts-starter-1r38l
+- JavaScript: https://codesandbox.io/s/chakra-js-starter-lzzg9
+
+- Typescript: https://codesandbox.io/s/chakra-ts-starter-pomi8
 
 ## Contributing
 
