@@ -1,11 +1,5 @@
 import { PropsOf, chakra } from "@chakra-ui/system"
-import {
-  Omit,
-  createContext,
-  __DEV__,
-  NodeOrRenderProp,
-  isFunction,
-} from "@chakra-ui/utils"
+import { Omit, createContext, __DEV__ } from "@chakra-ui/utils"
 import { ChevronDownIcon, IconProps } from "@chakra-ui/icons"
 import React, { forwardRef } from "react"
 import {
@@ -78,10 +72,8 @@ const StyledItem = chakra("div", {
   themeKey: "Accordion.Item",
 })
 
-export type AccordionItemProps = Omit<PropsOf<typeof StyledItem>, "children"> &
-  Omit<AccordionItemHookProps, "context"> & {
-    children?: NodeOrRenderProp<{ isExpanded: boolean; isDisabled: boolean }>
-  }
+export type AccordionItemProps = PropsOf<typeof StyledItem> &
+  Omit<AccordionItemHookProps, "context">
 
 /**
  * AccordionItem
@@ -100,18 +92,9 @@ export const AccordionItem = forwardRef(
       context: accordionContext,
     })
 
-    const { children } = props
-
     return (
       <AccordionItemCtxProvider value={context}>
-        <StyledItem ref={ref} data-chakra-accordion-item="" {...htmlProps}>
-          {isFunction(children)
-            ? children({
-                isExpanded: !!context.isOpen,
-                isDisabled: !!context.isDisabled,
-              })
-            : children}
-        </StyledItem>
+        <StyledItem ref={ref} data-chakra-accordion-item="" {...htmlProps} />
       </AccordionItemCtxProvider>
     )
   },
