@@ -38,11 +38,10 @@ export function useRadioGroup(props: RadioGroupHookProps = {}) {
     const rootNode = rootRef.current
     if (!rootNode) return
 
+    const { querySelector } = rootNode
     let query = `input:not(:disabled):checked`
 
-    const firstEnabledAndCheckedInput = rootNode.querySelector(
-      query,
-    ) as HTMLElement
+    const firstEnabledAndCheckedInput = querySelector(query) as HTMLElement
 
     if (firstEnabledAndCheckedInput) {
       firstEnabledAndCheckedInput.focus()
@@ -51,7 +50,7 @@ export function useRadioGroup(props: RadioGroupHookProps = {}) {
 
     query = `input:not(:disabled)`
 
-    const firstEnabledInput = rootNode.querySelector(query) as HTMLElement
+    const firstEnabledInput = querySelector(query) as HTMLElement
     firstEnabledInput?.focus()
   }, [])
 

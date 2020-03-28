@@ -160,10 +160,6 @@ interface AccordionItemHookOptions {
    */
   isOpen?: boolean
   /**
-   * If `true`, expands the accordion by on initial mount.
-   */
-  defaultIsOpen?: boolean
-  /**
    * If `true`, the accordion item will be disabled.
    */
   isDisabled?: boolean
@@ -307,10 +303,10 @@ export function useAccordionItem(props: AccordionItemHookProps) {
       "aria-labelledby": buttonId,
       hidden: !isOpen,
     }),
-    /**
-     * other html props (useful if you need to spread other props to root component)
-     */
-    htmlProps,
+    getRootProps: (props: Dict = {}) => ({
+      ...htmlProps,
+      ref: props.ref,
+    }),
   }
 }
 
