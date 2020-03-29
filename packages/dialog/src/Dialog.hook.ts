@@ -1,7 +1,7 @@
 import { useIds, useLockBodyScroll } from "@chakra-ui/hooks"
-import { callAllHandlers, Dict, mergeRefs } from "@chakra-ui/utils"
+import { callAllHandlers, mergeRefs } from "@chakra-ui/utils"
 import * as AriaHidden from "aria-hidden"
-import React, { useCallback, useEffect, useRef, useState } from "react"
+import * as React from "react"
 import { manager, useDialogManager } from "./Dialog.manager"
 
 export interface DialogHookProps {
@@ -60,8 +60,8 @@ export function useDialog(props: DialogHookProps) {
     onOverlayClick: onOverlayClickProp,
   } = props
 
-  const dialogRef = useRef<HTMLElement>(null)
-  const overlayRef = useRef<HTMLElement>(null)
+  const dialogRef = React.useRef<HTMLElement>(null)
+  const overlayRef = React.useRef<HTMLElement>(null)
 
   const [dialogId, headerId, bodyId] = useIds(
     id,
@@ -74,26 +74,23 @@ export function useDialog(props: DialogHookProps) {
   useAriaHidden(dialogRef, isOpen)
   useDialogManager(dialogRef, isOpen)
 
-  const mouseDownTarget = useRef<EventTarget | null>(null)
+  const mouseDownTarget = React.useRef<EventTarget | null>(null)
 
-  const onMouseDown = useCallback((event: React.MouseEvent) => {
+  const onMouseDown = React.useCallback((event: React.MouseEvent) => {
     mouseDownTarget.current = event.target
   }, [])
 
-  const onKeyDown = useCallback(
+  const onKeyDown = React.useCallback(
     (event: React.KeyboardEvent) => {
       if (event.key === "Escape") {
         event.stopPropagation()
-
-        if (closeOnEsc) {
-          onClose?.()
-        }
+        closeOnEsc && onClose?.()
       }
     },
     [closeOnEsc, onClose],
   )
 
-  const onOverlayClick = useCallback(
+  const onOverlayClick = React.useCallback(
     (event: React.MouseEvent) => {
       event.stopPropagation()
 
@@ -103,16 +100,27 @@ export function useDialog(props: DialogHookProps) {
       onOverlayClickProp?.()
 
       if (manager.isTopDialog(dialogRef)) {
-        if (closeOnOverlayClick) {
-          onClose?.()
-        }
+        closeOnOverlayClick && onClose?.()
       }
     },
     [onClose, closeOnOverlayClick, onOverlayClickProp],
   )
 
-  const [headerMounted, setHeaderMounted] = useState(false)
-  const [bodyMounted, setBodyMounted] = useState(false)
+  const [headerMounted, setHeaderMounted] = React.useState(false)
+  const [bodyMounted, setBodyMounted] = React.useState(false)
+
+  type DialogContentProps = {
+    ref?: React.Ref<any>
+    onClick?: React.MouseEventHandler
+    role?: string
+  }
+
+  type DialogOverlayProps = {
+    ref?: React.Ref<any>
+    onClick?: React.MouseEventHandler
+    onMouseDown?: React.MouseEventHandler
+    onKeyDown?: React.KeyboardEventHandler
+  }
 
   return {
     isOpen,
@@ -121,7 +129,7 @@ export function useDialog(props: DialogHookProps) {
     bodyId,
     setBodyMounted,
     setHeaderMounted,
-    getDialogContentProps: (props: Dict = {}) => ({
+    getDialogContentProps: (props: DialogContentProps = {}) => ({
       ...props,
       ref: mergeRefs(props.ref, dialogRef),
       id: dialogId,
@@ -130,11 +138,9 @@ export function useDialog(props: DialogHookProps) {
       "aria-modal": true,
       "aria-labelledby": headerMounted ? headerId : undefined,
       "aria-describedby": bodyMounted ? bodyId : undefined,
-      onClick: callAllHandlers(props.onClick, (event: React.MouseEvent) =>
-        event.stopPropagation(),
-      ),
+      onClick: callAllHandlers(props.onClick, event => event.stopPropagation()),
     }),
-    getDialogOverlayProps: (props: Dict = {}) => ({
+    getDialogOverlayProps: (props: DialogOverlayProps = {}) => ({
       ...props,
       ref: mergeRefs(props.ref, overlayRef),
       onClick: callAllHandlers(props.onClick, onOverlayClick),
@@ -150,21 +156,18 @@ export function useAriaHidden(
   ref: React.RefObject<HTMLElement>,
   activate: boolean,
 ) {
-  useEffect(() => {
-    const node = ref.current
-
-    if (!node) return
+  React.useEffect(() => {
+    if (!ref.current) return
 
     let undoAriaHidden: AriaHidden.Undo | null = null
+    const elementNode = ref.current
 
-    if (activate && node) {
-      undoAriaHidden = AriaHidden.hideOthers(node)
+    if (activate && elementNode) {
+      undoAriaHidden = AriaHidden.hideOthers(elementNode)
     }
 
     return () => {
-      if (activate) {
-        undoAriaHidden?.()
-      }
+      if (activate && undoAriaHidden) undoAriaHidden()
     }
   }, [activate, ref])
 }
