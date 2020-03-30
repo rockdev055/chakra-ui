@@ -155,6 +155,10 @@ const CSSReset = () => (
         border-top-width: 1px;
       }
 
+      img {
+        border-style: solid;
+      }
+
       textarea {
         resize: vertical;
       }

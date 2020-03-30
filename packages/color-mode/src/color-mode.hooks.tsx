@@ -1,5 +1,5 @@
 import React from "react"
-import { useSafeLayoutEffect, useEventListener } from "@chakra-ui/hooks"
+import { useIsomorphicEffect, useEventListener } from "@chakra-ui/hooks"
 import { storage, syncBodyClassName, storageKey } from "./color-mode.utils"
 
 export function useUpdateBodyClassName(isDark: boolean) {
@@ -8,7 +8,7 @@ export function useUpdateBodyClassName(isDark: boolean) {
     syncBodyClassName(isDark)
   }, [isDark])
 
-  useSafeLayoutEffect(() => {
+  useIsomorphicEffect(() => {
     const mode = storage.get()
     syncBodyClassName(mode ? mode === "dark" : isDark)
   }, [])

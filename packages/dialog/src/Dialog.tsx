@@ -1,6 +1,6 @@
 import { CloseButton, CloseButtonProps } from "@chakra-ui/close-button"
 import { FocusLock } from "@chakra-ui/focus-lock"
-import { useSafeLayoutEffect } from "@chakra-ui/hooks"
+import { useIsomorphicEffect } from "@chakra-ui/hooks"
 import { Portal } from "@chakra-ui/portal"
 import { chakra, PropsOf } from "@chakra-ui/system"
 import { createContext } from "@chakra-ui/utils"
@@ -142,7 +142,7 @@ export type DialogHeaderProps = PropsOf<typeof StyledHeader>
 export const DialogHeader = (props: DialogHeaderProps) => {
   const { headerId, setHeaderMounted } = useDialogContext()
 
-  useSafeLayoutEffect(() => {
+  useIsomorphicEffect(() => {
     setHeaderMounted(true)
     return () => setHeaderMounted(false)
   }, [])
@@ -159,7 +159,7 @@ export type DialogBodyProps = PropsOf<"div">
 export const DialogBody = (props: DialogBodyProps) => {
   const { bodyId, setBodyMounted } = useDialogContext()
 
-  useSafeLayoutEffect(() => {
+  useIsomorphicEffect(() => {
     setBodyMounted(true)
     return () => setBodyMounted(false)
   }, [])

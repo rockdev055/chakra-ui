@@ -1,13 +1,7 @@
 import { useBooleanState, useControllableProp } from "@chakra-ui/hooks"
-import { attr, callAllHandlers, Dict, mergeRefs } from "@chakra-ui/utils"
+import { callAllHandlers, attr, mergeRefs } from "@chakra-ui/utils"
 import { visuallyHiddenStyle } from "@chakra-ui/visually-hidden"
-import {
-  ChangeEvent,
-  KeyboardEvent,
-  useCallback,
-  useRef,
-  useState,
-} from "react"
+import * as React from "react"
 
 /**
  * @todo use the `useTabbable` hook here
@@ -61,7 +55,7 @@ export interface RadioHookProps {
   /**
    * Function called when checked state of the `input` changes
    */
-  onChange?: (event: ChangeEvent<HTMLInputElement>) => void
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 export function useRadio(props: RadioHookProps = {}) {
@@ -84,16 +78,20 @@ export function useRadio(props: RadioHookProps = {}) {
   const [isHovered, setHovering] = useBooleanState()
   const [isActive, setActive] = useBooleanState()
 
-  const ref = useRef<HTMLInputElement>(null)
+  const ref = React.useRef<HTMLInputElement>(null)
 
-  const [isCheckedState, setCheckedState] = useState(Boolean(defaultIsChecked))
+  const [isCheckedState, setCheckedState] = React.useState(
+    Boolean(defaultIsChecked),
+  )
 
   const [isControlled, isChecked] = useControllableProp(
     isCheckedProp,
     isCheckedState,
   )
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  type ChangeEvent = React.ChangeEvent<HTMLInputElement>
+
+  const handleChange = (event: ChangeEvent) => {
     if (isReadOnly || isDisabled) {
       event.preventDefault()
       return
@@ -108,8 +106,8 @@ export function useRadio(props: RadioHookProps = {}) {
 
   const trulyDisabled = isDisabled && !isFocusable
 
-  const handleKeyDown = useCallback(
-    (event: KeyboardEvent) => {
+  const handleKeyDown = React.useCallback(
+    (event: React.KeyboardEvent) => {
       if (event.key === " ") {
         setActive.on()
       }
@@ -117,8 +115,8 @@ export function useRadio(props: RadioHookProps = {}) {
     [setActive],
   )
 
-  const handleKeyUp = useCallback(
-    (event: KeyboardEvent) => {
+  const handleKeyUp = React.useCallback(
+    (event: React.KeyboardEvent) => {
       if (event.key === " ") {
         setActive.off()
       }
@@ -137,7 +135,7 @@ export function useRadio(props: RadioHookProps = {}) {
       isReadOnly,
       isRequired,
     },
-    getCheckboxProps: (props: Dict = {}) => ({
+    getCheckboxProps: (props: any = {}) => ({
       ...props,
       "data-active": attr(isActive),
       "data-hover": attr(isHovered),
@@ -150,7 +148,7 @@ export function useRadio(props: RadioHookProps = {}) {
       onPointerEnter: callAllHandlers(props.onPointerEnter, setHovering.on),
       onPointerLeave: callAllHandlers(props.onPointerLeave, setHovering.off),
     }),
-    getInputProps: (props: Dict = {}) => ({
+    getInputProps: (props: any = {}) => ({
       ...props,
       ref: mergeRefs(props.ref, ref),
       type: "radio",

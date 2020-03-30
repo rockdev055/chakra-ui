@@ -8,7 +8,7 @@
     "lazyloading",
     "component",
     "chakra ui",
-    "image",
+    "images",
     "loading"
   ],
   "author": "Segun Adebayo <sage@adebayosegun.com>",
@@ -34,7 +34,7 @@
     "prebuild": "rimraf dist",
     "start": "tsdx watch",
     "build": "tsdx build",
-    "test": "tsdx test --env=jsdom --passWithNoTests",
+    "test": "tsdx test --env=jsdom",
     "lint": "tsdx lint src",
     "version": "yarn build"
   },

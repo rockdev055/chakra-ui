@@ -49,7 +49,7 @@ export function ChakraHorizontalSlider() {
       <SliderTrack>
         <SliderFilledTrack />
       </SliderTrack>
-      <SliderThumb children="#" boxSize="30px" color="black" />
+      <SliderThumb children="#" size="30px" color="black" />
     </Slider>
   )
 }

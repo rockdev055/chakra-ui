@@ -1,10 +1,10 @@
+import * as React from "react"
 import { useControllableProp, useId } from "@chakra-ui/hooks"
-import { Dict, isInputEvent, mergeRefs } from "@chakra-ui/utils"
-import { ChangeEvent, useCallback, useRef, useState } from "react"
+import { isInputEvent, mergeRefs, Dict } from "@chakra-ui/utils"
 
 type Value = string | number
 
-type EventOrValue = ChangeEvent<HTMLInputElement> | Value
+type EventOrValue = React.ChangeEvent<HTMLInputElement> | Value
 
 export interface RadioGroupHookProps {
   /**
@@ -48,16 +48,16 @@ export function useRadioGroup(props: RadioGroupHookProps = {}) {
     isNative,
   } = props
 
-  const [valueState, setValue] = useState<Value>(defaultValue || "")
+  const [valueState, setValue] = React.useState<Value>(defaultValue || "")
 
   const [isControlled, derivedValue] = useControllableProp(
     valueProp,
     valueState,
   )
 
-  const rootRef = useRef<any>(null)
+  const rootRef = React.useRef<HTMLElement>(null)
 
-  const focus = useCallback(() => {
+  const focus = React.useCallback(() => {
     const rootNode = rootRef.current
     if (!rootNode) return
 
@@ -83,7 +83,7 @@ export function useRadioGroup(props: RadioGroupHookProps = {}) {
    */
   const name = useId(props.name, `radio`)
 
-  const onChange = useCallback(
+  const onChange = React.useCallback(
     (eventOrValue: EventOrValue) => {
       const nextValue = isInputEvent(eventOrValue)
         ? eventOrValue.target.value
