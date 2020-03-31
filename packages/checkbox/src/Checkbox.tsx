@@ -34,7 +34,7 @@ type OmittedCheckboxProps = Omit<
   "onChange" | "defaultChecked"
 >
 
-export type CheckboxProps = OmittedCheckboxProps &
+type CustomCheckboxProps = OmittedCheckboxProps &
   Omit<PropsOf<"input">, "size"> &
   CheckboxHookProps & {
     /**
@@ -60,12 +60,10 @@ export type CheckboxProps = OmittedCheckboxProps &
  *
  * Checkbox component is used in forms when a user needs to select
  * multiple values from several options.
- *
- * @see Docs https://chakra-ui.com/checkbox
  */
 
 export const Checkbox = React.forwardRef(
-  (props: CheckboxProps, ref: React.Ref<HTMLInputElement>) => {
+  (props: CustomCheckboxProps, ref: React.Ref<HTMLInputElement>) => {
     const { state, getInputProps, getCheckboxProps, htmlProps } = useCheckbox(
       props,
     )
