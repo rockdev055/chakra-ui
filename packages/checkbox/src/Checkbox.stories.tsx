@@ -1,5 +1,6 @@
 import * as React from "react"
 import { Checkbox } from "./Checkbox"
+import { CheckboxGroup } from "./CheckboxGroup"
 import { useCheckbox } from "."
 
 export default {
@@ -20,7 +21,7 @@ export const Base = () => {
  * A simple checkbox component.
  */
 
-export const Basic = () => <Checkbox />
+export const Basic = () => <Checkbox>Hello</Checkbox>
 
 /**
  * Pass the `isDisabled` prop set to true, to have the checkbox in the
@@ -82,6 +83,10 @@ export const Sizes = () => {
   )
 }
 
+/**
+ * The indeterminate property can help to achieve a 'check all' effect.
+ */
+
 export const Indeterminate = () => {
   const [checkedItems, setCheckedItems] = React.useState([false, false])
 
@@ -122,4 +127,19 @@ export const Controlled = () => {
   }
 
   return <Checkbox isChecked={value} onChange={handleChange} />
+}
+
+export const CheckboxGroupExample = () => {
+  return (
+    <CheckboxGroup
+      spacing={[2, 4, 6]}
+      direction={["column", "row"]}
+      defaultValue={["one", "two"]}
+      onChange={value => console.log(value)}
+    >
+      <Checkbox value="one">One</Checkbox>
+      <Checkbox value="two">Two</Checkbox>
+      <Checkbox value="three">Three</Checkbox>
+    </CheckboxGroup>
+  )
 }
