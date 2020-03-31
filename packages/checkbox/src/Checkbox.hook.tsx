@@ -1,7 +1,7 @@
 import {
   useBooleanState,
   useControllableProp,
-  useSafeLayoutEffect,
+  useIsomorphicEffect,
 } from "@chakra-ui/hooks"
 import { callAllHandlers, attr, mergeRefs } from "@chakra-ui/utils"
 import { visuallyHiddenStyle } from "@chakra-ui/visually-hidden"
@@ -66,18 +66,7 @@ export interface CheckboxHookProps {
   id?: string
 }
 
-///////////////////////////////////////////////////////////////////////////
-
-/**
- * useCheckbox
- *
- * React hook that provides all the state and focus management logic
- * for a checkbox.
- *
- * It is consumed by the `Checkbox` component
- */
-
-export function useCheckbox(props: CheckboxHookProps = {}) {
+export function useCheckbox(props: CheckboxHookProps) {
   const {
     defaultIsChecked,
     isChecked: checkedProp,
@@ -138,7 +127,7 @@ export function useCheckbox(props: CheckboxHookProps = {}) {
     ],
   )
 
-  useSafeLayoutEffect(() => {
+  useIsomorphicEffect(() => {
     if (!ref.current) return
     ref.current.indeterminate = Boolean(isIndeterminate)
   }, [isIndeterminate])

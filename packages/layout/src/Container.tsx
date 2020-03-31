@@ -1,3 +1,4 @@
+import React, { forwardRef } from "react"
 import { chakra, PropsOf } from "@chakra-ui/system"
 import { __DEV__ } from "@chakra-ui/utils"
 
@@ -13,13 +14,17 @@ export type ContainerProps = PropsOf<typeof chakra.div>
  *
  * It also sets a default max-width of `60ch` (60 characters).
  */
-const Container = chakra("div", {
-  baseStyle: {
-    width: "100%",
-    mx: "auto",
-    maxWidth: "60ch",
-    boxSizing: "content-box",
-  },
+const Container = forwardRef((props: ContainerProps, ref: React.Ref<any>) => {
+  return (
+    <chakra.div
+      ref={ref}
+      width="100%"
+      mx="auto"
+      maxWidth="60ch"
+      boxSizing="content-box"
+      {...props}
+    />
+  )
 })
 
 if (__DEV__) {

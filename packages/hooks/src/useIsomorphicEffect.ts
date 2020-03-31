@@ -1,8 +1,5 @@
-import * as React from "react"
-import { isBrowser } from "@chakra-ui/utils"
-
 /**
- * useSafeLayoutEffect enables us to safely call `useLayoutEffect` on the browser
+ * useIsomorphicEffect enables us to safely call `useLayoutEffect` on the browser
  * (for SSR reasons)
  *
  * React currently throws a warning when using useLayoutEffect on the server.
@@ -11,6 +8,10 @@ import { isBrowser } from "@chakra-ui/utils"
  *
  * @see https://gist.github.com/gaearon/e7d97cdf38a2907924ea12e4ebdf3c85
  */
-export const useSafeLayoutEffect = isBrowser
+
+import * as React from "react"
+import { isBrowser } from "@chakra-ui/utils"
+
+export const useIsomorphicEffect = isBrowser
   ? React.useLayoutEffect
   : React.useEffect

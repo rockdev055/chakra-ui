@@ -5,16 +5,6 @@ import { CheckboxHookProps, useCheckbox } from "./Checkbox.hook"
 import { CheckboxIcon } from "./Checkbox.icon"
 import { IconProps } from "@chakra-ui/icon"
 
-/**
- * ControlBox
- *
- * Wrapper element around checkbox check icon. Style appropriately to
- * match checked state of the checbox.
- *
- * To style the element, change the styles in
- * `theme.components.Checkbox`
- */
-
 const ControlBox = chakra("span", {
   themeKey: "Checkbox",
   baseStyle: {
@@ -27,14 +17,12 @@ const ControlBox = chakra("span", {
   },
 })
 
-///////////////////////////////////////////////////////////////////////////
-
 type OmittedCheckboxProps = Omit<
   PropsOf<typeof ControlBox>,
   "onChange" | "defaultChecked"
 >
 
-export type CheckboxProps = OmittedCheckboxProps &
+type CustomCheckboxProps = OmittedCheckboxProps &
   Omit<PropsOf<"input">, "size"> &
   CheckboxHookProps & {
     /**
@@ -53,19 +41,8 @@ export type CheckboxProps = OmittedCheckboxProps &
     labelSpacing?: SystemProps["marginLeft"]
   }
 
-///////////////////////////////////////////////////////////////////////////
-
-/**
- * Checkbox
- *
- * Checkbox component is used in forms when a user needs to select
- * multiple values from several options.
- *
- * @see Docs https://chakra-ui.com/checkbox
- */
-
 export const Checkbox = React.forwardRef(
-  (props: CheckboxProps, ref: React.Ref<HTMLInputElement>) => {
+  (props: CustomCheckboxProps, ref: React.Ref<HTMLInputElement>) => {
     const { state, getInputProps, getCheckboxProps, htmlProps } = useCheckbox(
       props,
     )
@@ -79,30 +56,9 @@ export const Checkbox = React.forwardRef(
       size = "lg",
     } = props
 
-    // Prevent onBlur being fired when the checkbox label is clicked
-    const handleMouseDown = (event: React.MouseEvent<HTMLInputElement>) => {
-      event.preventDefault()
-      event.stopPropagation()
-    }
-
-    // Prevent onBlur being fired when the checkbox label is touched
-    const handleTouchStart = (event: React.TouchEvent<HTMLInputElement>) => {
-      event.preventDefault()
-      event.stopPropagation()
-    }
-
     return (
-      <chakra.label
-        cursor="pointer"
-        display="inline-flex"
-        alignItems="center"
-        verticalAlign="top"
-        data-chakra-checkbox=""
-        {...htmlProps}
-      >
-        <chakra.div position="relative">
-          <input data-chakra-checkbox-input="" {...getInputProps({ ref })} />
-        </chakra.div>
+      <chakra.label data-chakra-checkbox="" {...htmlProps}>
+        <input data-chakra-checkbox-input="" {...getInputProps({ ref })} />
         <ControlBox
           data-chakra-checkbox-control=""
           variant={variant}
@@ -126,8 +82,6 @@ export const Checkbox = React.forwardRef(
             marginLeft={labelSpacing}
             fontSize={props.size}
             userSelect="none"
-            onMouseDown={handleMouseDown}
-            onTouchStart={handleTouchStart}
             opacity={props.isDisabled ? 0.4 : 1}
           >
             {props.children}

@@ -1,6 +1,6 @@
 import * as React from "react"
 import { isBrowser } from "@chakra-ui/utils"
-import { useSafeLayoutEffect } from "./useSafeLayoutEffect"
+import { useIsomorphicEffect } from "./useIsomorphicEffect"
 
 const isSupported = (api: string) => isBrowser && api in window
 
@@ -15,7 +15,7 @@ export function useMediaQuery(query: string) {
     return !!window.matchMedia(query).matches
   })
 
-  useSafeLayoutEffect(() => {
+  useIsomorphicEffect(() => {
     if (!isSupported("matchMedia")) return
 
     const mediaQueryList = window.matchMedia(query)
