@@ -1,6 +1,6 @@
 import { chakra } from "@chakra-ui/system"
 import React from "react"
-import { Switch } from "."
+import { Switch } from "./Switch"
 
 export default {
   title: "Switch",
@@ -13,41 +13,12 @@ export default {
   ],
 }
 
-/**
- * A simple switch component.
- */
-
 export const Base = () => (
   <>
-    <Switch colorScheme="green" />
+    <Switch size="sm" colorScheme="green" margin="20px" />
+    <Switch isDisabled size="md" colorScheme="blue" margin="20px" />
+    <Switch size="lg" colorScheme="cyan" />
   </>
-)
-
-/**
- * Pass the `isDisabled` prop set to true, to have the switch in the
- * disabled state.
- */
-
-export const Disabled = () => (
-  <Switch isDisabled size="md" colorScheme="blue" margin="20px" />
-)
-
-/**
- * Pass the `isReadOnly` prop set to true, to have the switch in the
- * readonly state.
- */
-
-export const Readonly = () => (
-  <Switch isReadOnly size="md" colorScheme="blue" margin="20px" />
-)
-
-/**
- * Pass the `isInvalid` prop set to true, to have the switch in the
- * invalid state.
- */
-
-export const Invalid = () => (
-  <Switch isInvalid size="md" colorScheme="blue" margin="20px" />
 )
 
 export const Usage = () => (
@@ -59,34 +30,13 @@ export const Usage = () => (
   </chakra.div>
 )
 
-/**
- * Pass the `size` prop to change the size of the switch.
- * Values can be either sm, md or lg.
- */
-
-export const Sizes = () => {
-  const sizes = ["sm", "md", "lg"]
-
-  return (
-    <>
-      {sizes.map(size => (
-        <Switch size={size} marginLeft="1rem" colorScheme="green" />
-      ))}
-    </>
-  )
-}
-
-/**
- * Controlled switch
- */
-
 export const Controlled = () => {
   const [value, setValue] = React.useState(false)
 
   return (
     <Switch
       isChecked={value}
-      colorScheme="blue"
+      colorScheme="green"
       onChange={e => setValue(e.target.checked)}
     />
   )
