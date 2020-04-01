@@ -1,5 +1,0 @@
-{
-  "buildCommand": "build",
-  "packages": ["packages/chakra-ui"],
-  "sandboxes": ["27i2n"]
-}
