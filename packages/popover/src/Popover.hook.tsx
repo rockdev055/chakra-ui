@@ -77,7 +77,6 @@ export function usePopover(props: PopoverHookProps = {}) {
     id,
     arrowSize,
   } = props
-
   const { isOpen, onClose, onToggle } = useDisclosure(props)
 
   const triggerRef = React.useRef<any>(null)

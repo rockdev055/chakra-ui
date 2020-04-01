@@ -2,7 +2,6 @@
   "extends": "../../tsconfig.build.json",
   "include": ["src", "types"],
   "exclude": [
-    "src/tests",
     "**/*.spec.ts",
     "**/*.spec.tsx",
     "**/*.test.ts",
