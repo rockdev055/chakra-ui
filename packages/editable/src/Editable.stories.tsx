@@ -3,89 +3,57 @@ import {
   Editable,
   EditableInput,
   EditablePreview,
-  useEditableControls,
+  useEditableState,
 } from "./Editable"
 import { useEditable } from "./Editable.hook"
-import { chakra } from "@chakra-ui/system"
 
 export default {
   title: "Editable",
-  decorators: [
-    (Story: Function) => (
-      <chakra.div maxW="400px" mt="40px" mx="auto">
-        <Story />
-      </chakra.div>
-    ),
-  ],
 }
 
-export const UseEditableHook = () => {
+export const HookExample = () => {
   const {
     getInputProps,
     getPreviewProps,
-    onSubmit,
-    onCancel,
     isValueEmpty,
     isEditing,
     onEdit,
-  } = useEditable({ placeholder: "Title..." })
+  } = useEditable({
+    placeholder: "Title",
+    isPreviewFocusable: true,
+    submitOnBlur: true,
+  })
 
   return (
     <>
-      <input
-        style={{ width: "auto", background: "transparent" }}
-        {...getInputProps({
-          onBlur: () => {
-            console.log("blur")
-          },
-        })}
-      />
+      <input style={{ width: "100%" }} {...getInputProps()} />
       <span
         style={{ opacity: isValueEmpty ? 0.7 : 1 }}
         {...getPreviewProps()}
       />
       {!isEditing && <button onClick={onEdit}>Edit</button>}
-      {isEditing && (
-        <>
-          <button onClick={onSubmit}>Save</button>
-          <button onClick={onCancel}>Cancel</button>
-        </>
-      )}
     </>
   )
 }
 
 const EditableControls = () => {
-  const {
-    isEditing,
-    getEditButtonProps,
-    getSubmitButtonProps,
-    getCancelButtonProps,
-  } = useEditableControls()
-
+  const { isEditing, onEdit, onSubmit, onCancel } = useEditableState()
   return (
     <div>
       {!isEditing ? (
-        <button {...getEditButtonProps()}>Edit</button>
+        <button onClick={onEdit}>Edit</button>
       ) : (
         <>
-          <button {...getSubmitButtonProps()}>Save</button>
-          <button {...getCancelButtonProps()}>Cancel</button>
+          <button onClick={onSubmit}>Save</button>
+          <button onClick={onCancel}>Cancel</button>
         </>
       )}
     </div>
   )
 }
 
-export const editable = () => (
-  <Editable
-    defaultValue="Rasengan ⚡️"
-    fontSize="2xl"
-    textAlign="center"
-    isPreviewFocusable={false}
-    submitOnBlur={false}
-    onChange={console.log}
-  >
+export const BaseComponents = () => (
+  <Editable defaultValue="testing">
     <EditablePreview />
     <EditableInput />
     <EditableControls />

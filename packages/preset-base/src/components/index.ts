@@ -23,7 +23,6 @@ import Kbd from "./Kbd"
 import PinInput from "./PinInput"
 import Popover from "./Popover"
 import Form from "./Form"
-import Editable from "./Editable"
 
 export default {
   Accordion,
@@ -53,5 +52,4 @@ export default {
   PinInput,
   Popover,
   Form,
-  Editable,
 }

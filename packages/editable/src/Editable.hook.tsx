@@ -1,13 +1,6 @@
-import { useControllableState, useUpdateEffect } from "@chakra-ui/hooks"
-import {
-  callAllHandlers,
-  createOnKeyDown,
-  Dict,
-  isEmpty,
-  mergeRefs,
-} from "@chakra-ui/utils"
-import * as React from "react"
-import { PropsOf } from "@chakra-ui/system"
+import React, { useState, useRef, useCallback } from "react"
+import { useControllableProp, useUpdateEffect } from "@chakra-ui/hooks"
+import { callAllHandlers, mergeRefs, isEmpty, Dict } from "@chakra-ui/utils"
 
 export interface EditableHookProps {
   /**
@@ -27,36 +20,32 @@ export interface EditableHookProps {
    */
   startWithEditView?: boolean
   /**
-   * If `true`, the read only view, has a `tabIndex` set to `0`
-   * so it can recieve focus via the keyboard or click.
-   * @default true
+   * If `true`, the read only view, has a `tabIndex` set to `0` so it can recieve focus via the keyboard or click.
    */
   isPreviewFocusable?: boolean
   /**
    * If `true`, it'll update the value onBlur and turn off the edit mode.
-   * @default true
    */
   submitOnBlur?: boolean
   /**
    * Callback invoked when user changes input.
    */
-  onChange?: (nextValue: string) => void
+  onChange?: (nextValue?: string) => void
   /**
    * Callback invoked when user cancels input with the `Esc` key.
    * It provides the last confirmed value as argument.
    */
-  onCancel?: (previousValue: string) => void
+  onCancel?: (prevValue?: string) => void
   /**
    * Callback invoked when user confirms value with `enter` key or by blurring input.
    */
-  onSubmit?: (nextValue: string) => void
+  onSubmit?: (nextValue?: string) => void
   /**
    * Callback invoked once the user enters edit mode.
    */
   onEdit?: () => void
   /**
    * If `true`, the input's text will be highlighted on focus.
-   * @default true
    */
   selectAllOnFocus?: boolean
   /**
@@ -65,12 +54,7 @@ export interface EditableHookProps {
   placeholder?: string
 }
 
-/**
- * React hook for managing the inline renaming of some text.
- *
- * @see Docs https://chakra-ui.com/useEditable
- */
-export function useEditable(props: EditableHookProps = {}) {
+export function useEditable(props: EditableHookProps) {
   const {
     onChange: onChangeProp,
     onCancel: onCancelProp,
@@ -78,109 +62,105 @@ export function useEditable(props: EditableHookProps = {}) {
     value: valueProp,
     isDisabled,
     defaultValue,
+    isPreviewFocusable,
+    submitOnBlur,
     startWithEditView,
-    isPreviewFocusable = true,
-    submitOnBlur = true,
-    selectAllOnFocus = true,
+    selectAllOnFocus,
     placeholder,
     onEdit: onEditProp,
     ...htmlProps
   } = props
 
-  const defaultIsEditing = Boolean(startWithEditView && !isDisabled)
+  const [isEditing, setIsEditing] = useState(
+    Boolean(startWithEditView && !isDisabled),
+  )
+  const [valueState, setValue] = useState<string>(defaultValue || "")
+  const [isControlled, value] = useControllableProp(valueProp, valueState)
+  const [previousValue, setPreviousValue] = useState(value)
 
-  const [isEditing, setIsEditing] = React.useState(defaultIsEditing)
-
-  const [value, setValue] = useControllableState({
-    defaultValue: defaultValue || "",
-    value: valueProp,
-    onChange: onChangeProp,
-    shouldUpdate: (prev, next) => prev !== next,
-  })
-
-  // keep track of the previous value, so if users
-  // presses `cancel`, we can revert to it.
-  const [prevValue, setPrevValue] = React.useState(value)
-
-  // ref to help focus the input in edit mode
-  const inputRef = React.useRef<HTMLInputElement>(null)
-  const previewRef = React.useRef<any>(null)
-
-  const editButtonRef = React.useRef<HTMLButtonElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const isInteractive = !isEditing || !isDisabled
 
   useUpdateEffect(() => {
-    if (!isEditing) {
-      editButtonRef.current?.focus()
-      return
-    }
+    if (!isEditing) return
+
+    const node = inputRef.current
 
     if (selectAllOnFocus) {
-      inputRef.current?.select()
+      node?.select()
     } else {
-      inputRef.current?.focus()
+      node?.focus()
     }
 
     onEditProp?.()
   }, [isEditing, selectAllOnFocus])
 
-  const onEdit = React.useCallback(() => {
-    if (isInteractive) {
-      setIsEditing(true)
-    }
+  const onEdit = useCallback(() => {
+    if (isInteractive) setIsEditing(true)
   }, [isInteractive])
 
-  const onCancel = React.useCallback(() => {
+  const onCancel = useCallback(() => {
     setIsEditing(false)
-    setValue(prevValue)
-    onCancelProp?.(prevValue)
-  }, [onCancelProp, setValue, prevValue])
+    setValue(previousValue)
 
-  const onSubmit = React.useCallback(() => {
+    if (value !== previousValue) {
+      onChangeProp?.(previousValue)
+    }
+
+    onCancelProp?.(previousValue)
+  }, [onChangeProp, onCancelProp, value, previousValue])
+
+  const onSubmit = useCallback(() => {
     setIsEditing(false)
-    setPrevValue(value)
+    setPreviousValue(value)
     onSubmitProp?.(value)
   }, [value, onSubmitProp])
 
-  const onChange = React.useCallback(
+  const onChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      setValue(event.target.value)
+      const { value } = event.target
+      if (!isControlled) {
+        setValue(value)
+      }
+      onChangeProp?.(value)
     },
-    [setValue],
+    [onChangeProp, isControlled],
   )
 
-  const onKeyDown = createOnKeyDown({
-    keyMap: {
-      Escape: onCancel,
-      Enter: onSubmit,
+  const onKeyDown = useCallback(
+    (event: React.KeyboardEvent) => {
+      if (event.key === "Escape") return onCancel()
+      if (event.key === "Enter") return onSubmit()
     },
-  })
+    [onCancel, onSubmit],
+  )
 
   const isValueEmpty = isEmpty(value)
 
   const getTabIndex = () => {
-    const shouldHaveTabIndex = isInteractive && isPreviewFocusable
-    return shouldHaveTabIndex ? 0 : undefined
+    if (isInteractive && isPreviewFocusable) return 0
+    return undefined
   }
 
-  const onBlur = React.useCallback(() => {
+  const onBlur = useCallback(() => {
     if (submitOnBlur) {
       onSubmit()
+    } else {
+      onCancel()
     }
-  }, [submitOnBlur, onSubmit])
+  }, [submitOnBlur, onSubmit, onCancel])
 
   return {
     isEditing,
     isDisabled,
-    isValueEmpty,
     value,
     onEdit,
     onCancel,
     onSubmit,
+    isValueEmpty,
     getPreviewProps: (props: Dict = {}) => ({
       ...props,
-      ref: mergeRefs(props.ref, previewRef),
       children: isValueEmpty ? placeholder : value,
       hidden: isEditing,
       "aria-disabled": isDisabled ? true : undefined,
@@ -193,30 +173,11 @@ export function useEditable(props: EditableHookProps = {}) {
       placeholder,
       ref: mergeRefs(props.ref, inputRef),
       disabled: isDisabled,
-      "aria-disabled": isDisabled ? true : undefined,
+      "aria-disabled": isDisabled,
       value,
       onBlur: callAllHandlers(props.onBlur, onBlur),
       onChange: callAllHandlers(props.onChange, onChange),
       onKeyDown: callAllHandlers(props.onKeyDown, onKeyDown),
-    }),
-    getEditButtonProps: (props: Dict = {}): PropsOf<"button"> => ({
-      ...props,
-      type: "button",
-      "aria-label": props["aria-label"] || "Edit",
-      onClick: callAllHandlers(props.onClick, onEdit),
-      ref: mergeRefs(props.ref, editButtonRef),
-    }),
-    getSubmitButtonProps: (props: Dict = {}): PropsOf<"button"> => ({
-      ...props,
-      type: "button",
-      "aria-label": props["aria-label"] || "Submit",
-      onClick: callAllHandlers(props.onClick, onSubmit),
-    }),
-    getCancelButtonProps: (props: Dict = {}): PropsOf<"button"> => ({
-      ...props,
-      type: "button",
-      "aria-label": props["aria-label"] || "Cancel",
-      onClick: callAllHandlers(props.onClick, onCancel),
     }),
     htmlProps,
   }
