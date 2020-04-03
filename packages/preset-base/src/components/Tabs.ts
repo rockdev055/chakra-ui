@@ -124,9 +124,6 @@ const Tabs: ComponentTheme = {
     TabList: {
       display: "flex",
     },
-    TabPanel: {
-      padding: 4,
-    },
   },
   sizes: {
     sm: {
