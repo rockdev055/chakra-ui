@@ -1,7 +1,7 @@
-import Input, { InputProps } from "./Input"
+import Input from "./Input"
 import { ComponentTheme } from "./utils"
 
-const PinInput: ComponentTheme<InputProps> = {
+const PinInput: ComponentTheme = {
   defaultProps: Input.defaultProps,
   baseStyle: Input.baseStyle,
   variants: Input.variants,

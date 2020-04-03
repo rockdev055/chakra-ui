@@ -1,5 +1,5 @@
 import React from "react"
-import { useRadio, Radio, useRadioGroup, RadioGroup } from "."
+import { useRadio, Radio, useRadioGroup } from "."
 import { chakra } from "@chakra-ui/system"
 import { Stack } from "@chakra-ui/layout"
 
@@ -13,122 +13,33 @@ export default {
     ),
   ],
 }
-/**
- * A simple radio component.
- */
-
-export const Basic = () => <Radio>Hello</Radio>
-
-/**
- * Pass the `isDisabled` prop set to true, to have the radio in the
- * disabled state.
- */
-
-export const Disabled = () => <Radio isDisabled>Disabled</Radio>
-
-/**
- * Pass the `isReadOnly` prop set to true, to have the radio in the
- * readonly state.
- */
 
 export const RadioOnly = () => (
-  <Radio marginTop="40px" isChecked isReadOnly size="lg" colorScheme="green">
-    I'm a readonly radio
+  <Radio marginTop="40px" size="lg" colorScheme="green">
+    I'm a radio
   </Radio>
 )
 
-/**
- * Pass the `size` prop to change the size of the radio.
- * Values can be either sm, md or lg.
- */
+function RadioGroup(props: any) {
+  const options = ["Option 1", "Option 2", "Option 3"]
 
-export const Sizes = () => {
-  const sizes = ["sm", "md", "lg"]
+  const { getRadioProps, getRootProps } = useRadioGroup(props)
 
   return (
-    <>
-      {sizes.map(size => (
-        <Radio size={size} marginLeft="1rem" colorScheme="red">
-          Option
-        </Radio>
+    <div {...getRootProps()}>
+      {options.map(value => (
+        <label key={value}>
+          <input type="radio" {...getRadioProps({ value })} />
+          <span style={{ margin: 10 }}>{value}</span>
+        </label>
       ))}
-    </>
+    </div>
   )
 }
 
-/**
- * Default RadioGroup
- */
-
-export const radioGroup = () => {
-  return (
-    <RadioGroup defaultValue="Option 1" onChange={console.log}>
-      <Radio value="Option 1">Option 1</Radio>
-      <Radio value="Option 2">Option 2</Radio>
-      <Radio value="Option 3">Option 3</Radio>
-    </RadioGroup>
-  )
-}
-
-/**
- * Pass the `direction` prop to change the orientation of the RadioGroup.
- * `direction` can be either row or column, it is row by default
- */
-
-export const radioGroupDirection = () => {
-  return (
-    <RadioGroup
-      direction="column"
-      defaultValue="Option 1"
-      onChange={console.log}
-    >
-      <Radio value="Option 1">Option 1</Radio>
-      <Radio value="Option 2">Option 2</Radio>
-      <Radio value="Option 3">Option 3</Radio>
-    </RadioGroup>
-  )
-}
-
-/**
- * Pass the `spacing` prop to change the spacing between
- * the children radios of the RadioGroup.
- */
-
-export const radioGroupSpacing = () => {
-  return (
-    <RadioGroup spacing={10} defaultValue="Option 1" onChange={console.log}>
-      <Radio value="Option 1">Option 1</Radio>
-      <Radio value="Option 2">Option 2</Radio>
-      <Radio value="Option 3">Option 3</Radio>
-    </RadioGroup>
-  )
-}
-
-/**
- * The `spacing` and `direction` props take responsvie values
- * to help achieve flexible layouts in applications.
- */
-
-export const responsiveRadioGroup = () => {
-  return (
-    <RadioGroup
-      spacing={[2, 4, 6]}
-      onChange={console.log}
-      defaultValue="Option 1"
-      direction={["column", "row"]}
-    >
-      {Array.from(Array(10))
-        .map((_, i) => i + 1)
-        .map(item => (
-          <Radio value={`Option ${item}`}>{`Option ${item}`}</Radio>
-        ))}
-    </RadioGroup>
-  )
-}
-
-/**
- * Compose a custom RadioGroup component using the `useRadioGroup` hook.
- */
+export const radioGroup = () => (
+  <RadioGroup isNative defaultValue={"Option 1"} onChange={console.log} />
+)
 
 export const WithTheming = () => {
   const options = ["react", "vue", "svelte"]
@@ -149,10 +60,6 @@ export const WithTheming = () => {
     </Stack>
   )
 }
-
-/**
- * Compose a custom RadioButton component using the `useRadio` hook.
- */
 
 function RadioButton(props: any) {
   const { children, ...rest } = props
@@ -175,10 +82,6 @@ function RadioButton(props: any) {
     </chakra.label>
   )
 }
-
-/**
- * Compose a custom Radio component using the `useRadio` hook.
- */
 
 export function CustomRadioCard() {
   const options = ["react", "vue", "svelte"]
