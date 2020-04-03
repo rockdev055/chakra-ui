@@ -85,12 +85,7 @@ export function useTabs(props: TabsHookProps) {
     }
   }, [isControlled, indexProp])
 
-  // this manager is a register for all enabled tabs
   const manager = useDescendants()
-
-  // this manage is a register for all tabs (whether enabled or not)
-  // we need this for manual activated tabs
-  const allManager = useDescendants()
 
   // generate a unique id or use user-provided id
   const id = useId(props.id, `tabs`)
@@ -105,7 +100,6 @@ export function useTabs(props: TabsHookProps) {
     isManual,
     orientation,
     manager,
-    allManager,
   }
 }
 
@@ -128,20 +122,14 @@ export interface TabListHookProps {
  */
 export function useTabList<P extends TabListHookProps>(props: P) {
   const { context, ...htmlProps } = props
-  const {
-    setFocusedIndex,
-    focusedIndex,
-    orientation,
-    manager,
-    allManager,
-  } = context
+  const { setFocusedIndex, focusedIndex, orientation, manager } = context
 
   const count = manager.descendants.length
 
   // // Function to update the selected tab index
   const setIndex = (index: number) => {
     const tab = manager.descendants[index]
-    tab?.element?.focus()
+    tab.element?.focus()
     setFocusedIndex(index)
   }
 
@@ -205,7 +193,6 @@ export function useTab<P extends TabHookProps>(props: P) {
 
   const {
     manager,
-    allManager,
     selectedIndex,
     setFocusedIndex,
     setSelectedIndex,
@@ -215,7 +202,6 @@ export function useTab<P extends TabHookProps>(props: P) {
 
   const ref = React.useRef<HTMLElement>(null)
 
-  // register this tab only if it's enabled and focusable
   const { index } = useDescendant({
     disabled: isDisabled,
     focusable: isFocusable,
@@ -223,17 +209,7 @@ export function useTab<P extends TabHookProps>(props: P) {
     element: ref.current,
   })
 
-  // Manual mode: register this tab in any case
-  useDescendant({
-    context: allManager,
-    element: ref.current,
-  })
-
-  const computedIndex = allManager.descendants.findIndex(
-    item => item.element === ref.current,
-  )
-
-  const isSelected = computedIndex === selectedIndex
+  const isSelected = index === selectedIndex
 
   const onClick = () => {
     setFocusedIndex(index)
@@ -242,18 +218,17 @@ export function useTab<P extends TabHookProps>(props: P) {
 
   const onFocus = () => {
     const isDisabledButFocusable = isDisabled && isFocusable
+
     const selectionFollowsFocus = !isManual && !isDisabledButFocusable
 
     if (selectionFollowsFocus) {
-      setSelectedIndex(computedIndex)
+      setSelectedIndex(index)
     }
   }
 
   const tabbable = useTabbable({
     ...htmlProps,
     ref: mergeRefs(ref, props.ref),
-    isDisabled,
-    isFocusable,
     onClick: callAllHandlers(props.onClick, onClick),
   })
 
