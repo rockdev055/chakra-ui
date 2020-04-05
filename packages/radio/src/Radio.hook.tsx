@@ -10,7 +10,7 @@ import {
 } from "react"
 
 /**
- * @todo use the `useClickable` hook here
+ * @todo use the `useTabbable` hook here
  * to manage the isFocusable & isDisabled props
  */
 export interface RadioHookProps {

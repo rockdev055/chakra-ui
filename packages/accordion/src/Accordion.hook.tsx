@@ -215,15 +215,16 @@ export function useAccordionItem(props: AccordionItemHookProps) {
   /**
    * Think of this as a way to register this accordion item
    * with it's parent `useAccordion`
+   *
+   * `index` =  the index of the accordion item
+   * `descendants` = the array of all registered accordion item
    */
-  const index = useDescendant({
+  const { index, descendants } = useDescendant({
     element: buttonRef.current,
     context: descendantsContext,
     disabled: isDisabled,
     focusable: isFocusable,
   })
-
-  const { descendants } = descendantsContext
 
   const shouldFocus = index === focusedIndex
 

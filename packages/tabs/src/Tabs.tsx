@@ -53,9 +53,7 @@ const [ThemingContextProvider, useThemingContext] = createContext<
  * any DOM node.
  */
 export function Tabs(props: TabsProps) {
-  /**
-   * get the default props for `variant` and `size` from `theme.components.Tabs`
-   */
+  // get the default theming props for variant and size
   const defaults = useComponentDefaults("Tabs")
 
   const {
@@ -110,7 +108,6 @@ export const Tab = React.forwardRef((props: TabProps, ref: React.Ref<any>) => {
   const { isFitted, ...themingProps } = useThemingContext()
   return (
     <StyledTab
-      data-chakra-tab=""
       flex={isFitted ? 1 : undefined}
       {...themingProps}
       {...tabProps}
@@ -140,15 +137,9 @@ export const TabList = React.forwardRef(
     const context = useTabsContext()
 
     const tablistProps = useTabList({ ...props, ref, context })
-    const { isFitted, ...themingProps } = useThemingContext()
+    const themingProps = useThemingContext()
 
-    return (
-      <StyledTabList
-        data-chakra-tablist=""
-        {...themingProps}
-        {...tablistProps}
-      />
-    )
+    return <StyledTabList {...themingProps} {...tablistProps} />
   },
 )
 
@@ -172,7 +163,7 @@ export type TabPanelProps = PropsOf<typeof StyledTabPanel>
 export const TabPanel = React.forwardRef(
   (props: TabPanelProps, ref: React.Ref<any>) => {
     const tabpanelProps = useTabPanel({ ...props, ref })
-    return <StyledTabPanel data-chakra-tabpanel="" {...tabpanelProps} />
+    return <StyledTabPanel {...tabpanelProps} />
   },
 )
 
@@ -189,7 +180,7 @@ export type TabPanelsProps = PropsOf<typeof chakra.div>
 export function TabPanels(props: TabPanelsProps) {
   const context = useTabsContext()
   const panelsProp = useTabPanels({ ...props, context })
-  return <chakra.div data-chakra-tabpanels="" {...panelsProp} />
+  return <chakra.div {...panelsProp} />
 }
 
 export type TabIndicatorProps = PropsOf<typeof chakra.div>
@@ -203,11 +194,5 @@ export type TabIndicatorProps = PropsOf<typeof chakra.div>
 export function TabIndicator(props: TabIndicatorProps) {
   const context = useTabsContext()
   const styles = useTabIndicator(context)
-  return (
-    <chakra.div
-      data-chakra-tab-indicator=""
-      {...props}
-      style={{ ...props.style, ...styles }}
-    />
-  )
+  return <chakra.div {...props} style={{ ...props.style, ...styles }} />
 }

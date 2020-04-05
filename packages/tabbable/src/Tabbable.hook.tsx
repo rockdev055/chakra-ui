@@ -1,10 +1,22 @@
 import * as React from "react"
-import { mergeRefs, attr } from "@chakra-ui/utils"
+import { useMergeRefs } from "@chakra-ui/hooks"
 
-type HTMLAttributes = React.HTMLAttributes<any> & React.RefAttributes<any>
-type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>
+type HTMLAttributes = React.HTMLAttributes<Element> &
+  React.RefAttributes<Element>
 
-export interface ClickableHookProps extends HTMLAttributes {
+type HTMLProps = Pick<
+  HTMLAttributes,
+  | "onMouseOver"
+  | "onMouseDown"
+  | "onMouseUp"
+  | "onClick"
+  | "onKeyDown"
+  | "onKeyUp"
+  | "ref"
+  | "tabIndex"
+>
+
+export interface TabbableHookProps extends HTMLProps {
   /**
    * If `true`, the element will be disabled.
    * It will set the `disabled` HTML attribute
@@ -16,24 +28,16 @@ export interface ClickableHookProps extends HTMLAttributes {
    */
   isFocusable?: boolean
   /**
-   * Whether or not trigger click on pressing `Enter`.
+   * Whether or not trigger click on pressing ```Enter```.
    */
   clickOnEnter?: boolean
   /**
-   * Whether or not trigger click on pressing `Space`.
+   * Whether or not trigger click on pressing ```Space```.
    */
   clickOnSpace?: boolean
 }
 
-/**
- * useClickable
- *
- * React hook that implements all the interactions of a native `button`
- * component with support for making it focusable even if it's disabled.
- *
- * It can be used with both native button elements or other elements (like `div`).
- */
-export function useClickable(props: ClickableHookProps = {}) {
+export function useTabbable(props: TabbableHookProps) {
   const {
     ref: htmlRef,
     isDisabled,
@@ -49,22 +53,16 @@ export function useClickable(props: ClickableHookProps = {}) {
     onMouseOver,
     ...htmlProps
   } = props
-  /**
-   * We'll use this to track if the element is a button element
-   */
+  // We'll use this to track if the element is a button element
   const [isButton, setIsButton] = React.useState(true)
 
-  /**
-   * For custom button implementation, we'll use this to track when
-   * we mouse down on the button, to enable use style it's ":active" style
-   */
-  const [isActive, setIsActive] = React.useState(false)
+  // For custom button implementation, we'll use this to track when
+  // we mouse down on the button, to enable use style it's ":active" style
+  const [isPressed, setIsPressed] = React.useState(false)
 
-  /**
-   * The ref callback that fires as soon as the dom node is ready
-   */
+  // The ref callback that fires as soon as the dom node is ready
   const refCallback = React.useCallback(node => {
-    if (node?.tagName !== "BUTTON") {
+    if (node && node.tagName !== "BUTTON") {
       setIsButton(false)
     }
   }, [])
@@ -80,8 +78,8 @@ export function useClickable(props: ClickableHookProps = {}) {
         return
       }
 
-      const self = event.currentTarget as HTMLElement
-      self.focus()
+      ;(event.currentTarget as HTMLElement).focus()
+
       onClick?.(event)
     },
     [isDisabled, onClick],
@@ -91,43 +89,41 @@ export function useClickable(props: ClickableHookProps = {}) {
     (event: React.KeyboardEvent) => {
       onKeyDown?.(event)
 
-      if (isDisabled || event.defaultPrevented || event.metaKey) {
+      if (isDisabled) {
         return
       }
 
-      const shouldClickOnEnter = clickOnEnter && event.key === "Enter"
-      const shouldClickOnSpace = clickOnSpace && event.key === " "
+      const shouldEnterClick = clickOnEnter && event.key === "Enter"
 
-      if (!isButton && shouldClickOnSpace) {
+      if (!isButton && event.key === " ") {
         event.preventDefault()
-        setIsActive(true)
+        setIsPressed(true)
         return
       }
 
-      if (!isButton && shouldClickOnEnter) {
+      if (!isButton && shouldEnterClick) {
         event.preventDefault()
-        const self = event.currentTarget as HTMLElement
-        self.click()
+        ;(event.currentTarget as HTMLElement).click()
         return
       }
     },
-    [isDisabled, isButton, onKeyDown, clickOnEnter, clickOnSpace],
+    [isDisabled, isButton, onKeyDown, clickOnEnter],
   )
 
   const handleKeyUp = React.useCallback(
     (event: React.KeyboardEvent) => {
       onKeyUp?.(event)
 
-      if (isDisabled || event.defaultPrevented || event.metaKey) return
+      if (isDisabled) {
+        return
+      }
 
-      const shouldClickOnSpace = clickOnSpace && event.key === " "
+      const shouldSpaceClick = clickOnSpace && event.key === " "
 
-      if (!isButton && shouldClickOnSpace) {
+      if (!isButton && shouldSpaceClick) {
         event.preventDefault()
-        setIsActive(false)
-
-        const self = event.currentTarget as HTMLElement
-        self.click()
+        setIsPressed(false)
+        ;(event.currentTarget as HTMLElement).click()
       }
     },
     [clickOnSpace, isButton, isDisabled, onKeyUp],
@@ -142,7 +138,7 @@ export function useClickable(props: ClickableHookProps = {}) {
       }
 
       if (!isButton) {
-        setIsActive(true)
+        setIsPressed(true)
       }
 
       onMouseDown?.(event)
@@ -153,7 +149,7 @@ export function useClickable(props: ClickableHookProps = {}) {
   const handleMouseUp = React.useCallback(
     (event: React.MouseEvent) => {
       if (!isButton) {
-        setIsActive(false)
+        setIsPressed(false)
       }
 
       onMouseUp?.(event)
@@ -173,13 +169,13 @@ export function useClickable(props: ClickableHookProps = {}) {
     [isDisabled, onMouseOver],
   )
 
-  const ref = mergeRefs(htmlRef, refCallback)
+  const ref = useMergeRefs(htmlRef, refCallback)
 
   if (isButton) {
     return {
       ...htmlProps,
       ref,
-      type: "button" as ButtonProps["type"],
+      type: "button" as React.ButtonHTMLAttributes<any>["type"],
       "aria-disabled": trulyDisabled ? undefined : isDisabled,
       disabled: trulyDisabled,
       onClick: handleClick,
@@ -195,7 +191,7 @@ export function useClickable(props: ClickableHookProps = {}) {
     ...htmlProps,
     ref,
     role: "button",
-    "data-active": attr(isActive),
+    "data-active": isPressed || undefined,
     "aria-disabled": isDisabled,
     tabIndex: trulyDisabled ? undefined : tabIndex,
     onClick: handleClick,
@@ -206,3 +202,5 @@ export function useClickable(props: ClickableHookProps = {}) {
     onMouseOver: handleMouseOver,
   }
 }
+
+export default useTabbable

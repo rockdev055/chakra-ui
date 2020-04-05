@@ -1,10 +1,16 @@
 import { useIds, useLockBodyScroll } from "@chakra-ui/hooks"
 import { callAllHandlers, Dict, mergeRefs } from "@chakra-ui/utils"
-import { Undo, hideOthers } from "aria-hidden"
-import * as React from "react"
+import * as AriaHidden from "aria-hidden"
+import React, { useCallback, useEffect, useRef, useState } from "react"
 import { manager, useDialogManager } from "./Dialog.manager"
 
 export interface DialogHookProps {
+  /**
+   * Where scroll behaviour should originate.
+   * - If set to `inside`, scroll only occurs within the `ModalBody`.
+   * - If set to `outside`, the entire `ModalContent` will scroll within the viewport.
+   */
+  scrollBehavior?: "inside" | "outside"
   /**
    * If `true`, the modal when be opened.
    */
@@ -35,21 +41,12 @@ export interface DialogHookProps {
   /**
    * Callback fired when the overlay is clicked.
    */
-  onOverlayClick?(): void
+  onOverlayClick?: () => void
   /**
    * Callback fired when the escape key is pressed,
    * `closeOnEsc` is set to `false` and focus is within dialog
    */
-  onEscapeKeyDown?(): void
-  /**
-   * A11y: If `true`, the siblings of the `Modal` will have `aria-hidden`
-   * set to `true` so that screen readers can only see the `Modal`.
-   *
-   * This is commonly known as making the other elements **inert**
-   *
-   *  @default true
-   */
-  useInert?: boolean
+  onEscapeKeyDown?: () => void
 }
 
 export function useDialog(props: DialogHookProps) {
@@ -60,12 +57,11 @@ export function useDialog(props: DialogHookProps) {
     closeOnOverlayClick = true,
     closeOnEsc = true,
     blockScrollOnMount = true,
-    useInert = true,
     onOverlayClick: onOverlayClickProp,
   } = props
 
-  const dialogRef = React.useRef<HTMLElement>(null)
-  const overlayRef = React.useRef<HTMLElement>(null)
+  const dialogRef = useRef<HTMLElement>(null)
+  const overlayRef = useRef<HTMLElement>(null)
 
   const [dialogId, headerId, bodyId] = useIds(
     id,
@@ -74,29 +70,17 @@ export function useDialog(props: DialogHookProps) {
     `chakra-dialog--body`,
   )
 
-  /**
-   * Hook used to block scrolling once the modal is open
-   */
   useLockBodyScroll(dialogRef, isOpen && blockScrollOnMount)
-  /**
-   * Hook used to polyfill `aria-modal` for older browsers.
-   * It uses `aria-hidden` to all other nodes.
-   *
-   * @see https://developer.paciellogroup.com/blog/2018/06/the-current-state-of-modal-dialog-accessibility/
-   */
-  useAriaHidden(dialogRef, isOpen && useInert)
-  /**
-   * Hook use to manage multiple or nested dialogs
-   */
+  useAriaHidden(dialogRef, isOpen)
   useDialogManager(dialogRef, isOpen)
 
-  const mouseDownTarget = React.useRef<EventTarget | null>(null)
+  const mouseDownTarget = useRef<EventTarget | null>(null)
 
-  const onMouseDown = React.useCallback((event: React.MouseEvent) => {
+  const onMouseDown = useCallback((event: React.MouseEvent) => {
     mouseDownTarget.current = event.target
   }, [])
 
-  const onKeyDown = React.useCallback(
+  const onKeyDown = useCallback(
     (event: React.KeyboardEvent) => {
       if (event.key === "Escape") {
         event.stopPropagation()
@@ -109,25 +93,15 @@ export function useDialog(props: DialogHookProps) {
     [closeOnEsc, onClose],
   )
 
-  const onOverlayClick = React.useCallback(
+  const onOverlayClick = useCallback(
     (event: React.MouseEvent) => {
       event.stopPropagation()
 
-      /**
-       * Make sure the event starts and ends on the same DOM element.
-       *
-       * This is used to prevent the dialog from closing when you
-       * start dragging from the content, and release drag outside the content.
-       *
-       * We prevent this because it's technically not a considered "click outside"
-       */
+      // Make sure the event starts and ends on the same DOM element.
       if (mouseDownTarget.current !== event.target) return
 
       onOverlayClickProp?.()
 
-      /**
-       * When you click on the overlay, we want to remove only the topmost dialog
-       */
       if (manager.isTopDialog(dialogRef)) {
         if (closeOnOverlayClick) {
           onClose?.()
@@ -137,8 +111,8 @@ export function useDialog(props: DialogHookProps) {
     [onClose, closeOnOverlayClick, onOverlayClickProp],
   )
 
-  const [headerMounted, setHeaderMounted] = React.useState(false)
-  const [bodyMounted, setBodyMounted] = React.useState(false)
+  const [headerMounted, setHeaderMounted] = useState(false)
+  const [bodyMounted, setBodyMounted] = useState(false)
 
   return {
     isOpen,
@@ -174,21 +148,23 @@ export type DialogHookReturn = ReturnType<typeof useDialog>
 
 export function useAriaHidden(
   ref: React.RefObject<HTMLElement>,
-  shouldHide: boolean,
+  activate: boolean,
 ) {
-  React.useEffect(() => {
-    if (!ref.current) return
+  useEffect(() => {
+    const node = ref.current
 
-    let undo: Undo | null = null
+    if (!node) return
 
-    if (shouldHide && ref.current) {
-      undo = hideOthers(ref.current)
+    let undoAriaHidden: AriaHidden.Undo | null = null
+
+    if (activate && node) {
+      undoAriaHidden = AriaHidden.hideOthers(node)
     }
 
     return () => {
-      if (shouldHide) {
-        undo?.()
+      if (activate) {
+        undoAriaHidden?.()
       }
     }
-  }, [shouldHide, ref])
+  }, [activate, ref])
 }

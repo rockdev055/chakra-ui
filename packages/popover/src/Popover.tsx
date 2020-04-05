@@ -1,10 +1,6 @@
 import * as React from "react"
 import { PopoverHookReturn, PopoverHookProps, usePopover } from "./Popover.hook"
-import {
-  createContext,
-  ReactNodeOrRenderProp,
-  isFunction,
-} from "@chakra-ui/utils"
+import { createContext, NodeOrRenderProp, isFunction } from "@chakra-ui/utils"
 import { chakra, PropsOf } from "@chakra-ui/system"
 import { Portal } from "@chakra-ui/portal"
 import { useSafeLayoutEffect } from "@chakra-ui/hooks"
@@ -23,7 +19,7 @@ export type PopoverProps = PopoverHookProps & {
    * The content of the popover. It's usually the `PopoverTrigger`,
    * and `PopoverContent`
    */
-  children?: ReactNodeOrRenderProp<{ isOpen: boolean; onClose(): void }>
+  children?: NodeOrRenderProp<{ isOpen: boolean; onClose(): void }>
 }
 
 /**

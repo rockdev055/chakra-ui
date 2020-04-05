@@ -4,11 +4,7 @@ import {
   EditableHookProps,
   EditableHookReturn,
 } from "./Editable.hook"
-import {
-  createContext,
-  isFunction,
-  ReactNodeOrRenderProp,
-} from "@chakra-ui/utils"
+import { createContext, isFunction, NodeOrRenderProp } from "@chakra-ui/utils"
 import { chakra, PropsOf } from "@chakra-ui/system"
 
 type EditableContext = Omit<EditableHookReturn, "htmlProps">
@@ -26,7 +22,7 @@ type Omitted = "onChange" | "value" | "children" | "defaultValue"
 
 export type EditableProps = EditableHookProps &
   Omit<PropsOf<typeof StyledEditable>, Omitted> & {
-    children?: ReactNodeOrRenderProp<RenderProps>
+    children?: NodeOrRenderProp<RenderProps>
   }
 
 /**
