@@ -10,6 +10,7 @@ packages/*/node_modules
 npm-debug.log*
 packages/*/.env
 *.log
+*.cache
 yarn.lock
 yarn-error.log
 packages/*/.rpt2_cache
@@ -17,3 +18,4 @@ packages/*/.rts2_cache*
 .next
 # Local Netlify folder
 .netlify
+.idea
