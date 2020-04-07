@@ -20,12 +20,8 @@ export type FunctionArguments<T extends Function> = T extends (
 
 export type Dict<T = any> = Record<string, T>
 
-export type ReactNodeOrRenderProp<P> =
+export type NodeOrRenderProp<P> =
   | React.ReactNode
   | ((props: P) => React.ReactNode)
 
 export type Booleanish = boolean | "true" | "false"
-
-export type ObjectOrArray<T, K extends keyof any = keyof any> =
-  | T[]
-  | Record<K, T>

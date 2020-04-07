@@ -49,8 +49,7 @@
   },
   "dependencies": {
     "@chakra-ui/system": "0.0.1",
-    "@chakra-ui/form-control": "0.0.1",
-    "@chakra-ui/utils": "0.0.1"
+    "@chakra-ui/form-control": "0.0.1"
   },
   "peerDependencies": {
     "react": "16.x",

@@ -62,9 +62,6 @@ interface AliasesCSSProperties {
   ml?: StandardCSSProperties["marginLeft"]
   mx?: StandardCSSProperties["marginLeft"]
   pos?: StandardCSSProperties["position"]
-  inset?: StandardCSSProperties["left"]
-  insetX?: StandardCSSProperties["left"]
-  insetY?: StandardCSSProperties["top"]
   marginX?: StandardCSSProperties["marginLeft"]
   my?: StandardCSSProperties["marginTop"]
   marginY?: StandardCSSProperties["marginTop"]
@@ -87,7 +84,7 @@ interface OverwriteCSSProperties {
 }
 
 interface AllSystemCSSProperties
-  extends Omit<CSSProperties, "boxShadow" | "fontWeight" | "zIndex" | "inset">,
+  extends Omit<CSSProperties, "boxShadow" | "fontWeight" | "zIndex">,
     AliasesCSSProperties,
     OverwriteCSSProperties {}
 

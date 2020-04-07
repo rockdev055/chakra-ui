@@ -1,30 +1,30 @@
 import {
-  Modal,
-  ModalContent,
-  ModalContentProps,
-  ModalProps,
-} from "@chakra-ui/modal"
+  Dialog,
+  DialogProps,
+  DialogContent,
+  DialogContentProps,
+} from "@chakra-ui/dialog"
 import * as React from "react"
 
-export type AlertDialogProps = Omit<ModalProps, "initialFocusRef"> & {
-  leastDestructiveRef: ModalProps["initialFocusRef"]
+export type AlertDialogProps = Omit<DialogProps, "initialFocusRef"> & {
+  leastDestructiveRef: DialogProps["initialFocusRef"]
 }
 
 export function AlertDialog(props: AlertDialogProps) {
   const { leastDestructiveRef, ...rest } = props
-  return <Modal {...rest} initialFocusRef={leastDestructiveRef} />
+  return <Dialog {...rest} initialFocusRef={leastDestructiveRef} />
 }
 
 export const AlertDialogContent = React.forwardRef(
-  (props: ModalContentProps, ref: React.Ref<any>) => (
-    <ModalContent ref={ref} role="alertdialog" {...props} />
+  (props: DialogContentProps, ref: React.Ref<any>) => (
+    <DialogContent ref={ref} role="alertdialog" {...props} />
   ),
 )
 
 export {
-  ModalBody as AlertDialogBody,
-  ModalCloseButton as AlertDialogCloseButton,
-  ModalFooter as AlertDialogFooter,
-  ModalHeader as AlertDialogHeader,
-  ModalOverlay as AlertDialogOverlay,
-} from "@chakra-ui/modal"
+  DialogBody as AlertDialogBody,
+  DialogCloseButton as AlertDialogCloseButton,
+  DialogFooter as AlertDialogFooter,
+  DialogHeader as AlertDialogHeader,
+  DialogOverlay as AlertDialogOverlay,
+} from "@chakra-ui/dialog"

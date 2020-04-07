@@ -2,12 +2,12 @@ import {
   PropsOf,
   ThemingProps,
   chakra,
-  useThemeDefaultProps,
+  useComponentDefaults,
   layoutPropNames,
 } from "@chakra-ui/system"
 import * as React from "react"
-import { UseRadioProps, useRadio } from "./Radio.hook"
-import { split, __DEV__ } from "@chakra-ui/utils"
+import { RadioHookProps, useRadio } from "./Radio.hook"
+import { split } from "@chakra-ui/utils"
 
 const StyledRadio = chakra("div", {
   themeKey: "Radio",
@@ -19,22 +19,13 @@ const StyledRadio = chakra("div", {
   },
 })
 
-export type RadioProps = UseRadioProps &
+export type RadioProps = RadioHookProps &
   ThemingProps &
   Omit<PropsOf<typeof StyledRadio>, "onChange" | "defaultChecked">
 
-/**
- * Radio
- *
- * Radio component is used in forms when a user needs to select a single value from
- * several options.
- *
- * @see Docs https://chakra-ui.com/radio
- */
-
 export const Radio = React.forwardRef(
   (props: RadioProps, ref: React.Ref<HTMLInputElement>) => {
-    const defaults = useThemeDefaultProps("Radio")
+    const defaults = useComponentDefaults("Radio")
 
     const {
       colorScheme = "blue",
@@ -51,18 +42,6 @@ export const Radio = React.forwardRef(
     )
 
     const [rootStyles, radioStyles] = split(rest, layoutPropNames as any)
-
-    // Prevent onBlur being fired when the checkbox label is clicked
-    const handleMouseDown = (event: React.MouseEvent<HTMLInputElement>) => {
-      event.preventDefault()
-      event.stopPropagation()
-    }
-
-    // Prevent onBlur being fired when the checkbox label is touched
-    const handleTouchStart = (event: React.TouchEvent<HTMLInputElement>) => {
-      event.preventDefault()
-      event.stopPropagation()
-    }
 
     return (
       <chakra.label
@@ -82,8 +61,6 @@ export const Radio = React.forwardRef(
             marginLeft="0.5rem"
             fontSize={size}
             userSelect="none"
-            onMouseDown={handleMouseDown}
-            onTouchStart={handleTouchStart}
             opacity={props.isDisabled ? 0.4 : 1}
           >
             {children}
@@ -93,7 +70,3 @@ export const Radio = React.forwardRef(
     )
   },
 )
-
-if (__DEV__) {
-  Radio.displayName = "Radio"
-}

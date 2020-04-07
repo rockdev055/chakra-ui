@@ -53,7 +53,7 @@ interface Props {
 const Button = chakra<"button", Props>("button", {
   themeKey: "Button",
   attrs: props => ({
-    type: "button",
+    type: "button" as any,
     disabled: props.isDisabled,
   }),
   baseStyle: props => ({

@@ -1,34 +1,33 @@
-import { chakra, PropsOf } from "@chakra-ui/system"
-import { fireEvent, render } from "@chakra-ui/test-utils"
 import * as React from "react"
+import { chakra, PropsOf } from "@chakra-ui/system"
+import { render, fireEvent } from "@chakra-ui/test-utils"
 import {
-  FormControlOptions,
   FormControl,
   FormErrorIcon,
   FormErrorMessage,
   FormHelperText,
   FormLabel,
   RequiredIndicator,
-  useFormControl,
-} from ".."
+  useField,
+  ControlProps,
+} from "../FormControl"
 
 type OmittedTypes = "disabled" | "required" | "readOnly"
-type InputProps = Omit<PropsOf<typeof StyledInput>, OmittedTypes> &
-  FormControlOptions
+type InputProps = Omit<PropsOf<typeof StyledInput>, OmittedTypes> & ControlProps
 
-// Create an input that consumes useFormControl
-type InputOptions = { focusBorderColor?: string; errorBorderColor?: string }
-const StyledInput = chakra<"input", InputOptions>("input", {
-  themeKey: "Input",
-})
+// Create an input that consumes useField
+const StyledInput = chakra<
+  "input",
+  { focusBorderColor?: string; errorBorderColor?: string }
+>("input", { themeKey: "Input" })
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
-  const inputProps = useFormControl<HTMLInputElement>(props)
+  const inputProps = useField<HTMLInputElement>(props)
   return <StyledInput ref={ref} {...inputProps} />
 })
 
 test("FormControl renders correctly in default state", () => {
-  const tools = render(
+  const { asFragment } = render(
     <FormControl id="name">
       <FormLabel>Name</FormLabel>
       <Input placeholder="Name" />
@@ -36,11 +35,11 @@ test("FormControl renders correctly in default state", () => {
       <FormErrorMessage>Your name is invalid</FormErrorMessage>
     </FormControl>,
   )
-  expect(tools.asFragment()).toMatchSnapshot()
+  expect(asFragment()).toMatchSnapshot()
 })
 
 test("FormControl renders correctly when required", () => {
-  const tools = render(
+  const { asFragment } = render(
     <FormControl id="name" isRequired>
       <FormLabel>Name</FormLabel>
       <RequiredIndicator />
@@ -49,11 +48,11 @@ test("FormControl renders correctly when required", () => {
       <FormErrorMessage>Your name is invalid</FormErrorMessage>
     </FormControl>,
   )
-  expect(tools.asFragment()).toMatchSnapshot()
+  expect(asFragment()).toMatchSnapshot()
 })
 
 test("FormControl renders correctly when invalid", () => {
-  const tools = render(
+  const { asFragment } = render(
     <FormControl id="name" isInvalid>
       <FormLabel>Name</FormLabel>
       <RequiredIndicator />
@@ -63,10 +62,10 @@ test("FormControl renders correctly when invalid", () => {
       <FormErrorMessage>Your name is invalid</FormErrorMessage>
     </FormControl>,
   )
-  expect(tools.asFragment()).toMatchSnapshot()
+  expect(asFragment()).toMatchSnapshot()
 })
 
-test("useFormControl calls provided input callbacks", () => {
+test("useField calls provided input callbacks", () => {
   const onFocus = jest.fn()
   const onBlur = jest.fn()
 
@@ -167,13 +166,21 @@ test("has the correct data attributes", () => {
       </FormErrorMessage>
     </FormControl>,
   )
+  const control = utils.getByTestId("control")
   const label = utils.getByTestId("label")
+  const indicator = utils.getByTestId("indicator")
+  const helperText = utils.getByTestId("helper-text")
+  const errorMessage = utils.getByTestId("error-message")
 
   fireEvent.focus(utils.getByLabelText("Name"))
 
+  expect(control).toHaveAttribute("data-chakra-form-control")
+  expect(label).toHaveAttribute("data-chakra-form-label")
   expect(label).toHaveAttribute("data-focus")
   expect(label).toHaveAttribute("data-invalid")
-
   expect(label).toHaveAttribute("data-loading")
   expect(label).toHaveAttribute("data-readonly")
+  expect(indicator).toHaveAttribute("data-chakra-required-indicator")
+  expect(helperText).toHaveAttribute("data-chakra-form-helper-text")
+  expect(errorMessage).toHaveAttribute("data-chakra-form-error-message")
 })

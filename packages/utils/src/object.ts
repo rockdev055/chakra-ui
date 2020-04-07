@@ -66,5 +66,3 @@ export function get(
 export function getWithDefault(path: any, scale: any) {
   return get(scale, path, path)
 }
-
-export { default as deepmerge } from "deepmerge"

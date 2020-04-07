@@ -1,12 +1,12 @@
 import * as React from "react"
 import { getProgressProps, rotate, spin } from "./Progress.utils"
-import { chakra, PropsOf } from "@chakra-ui/system"
+import { chakra, PropsOf, style } from "@chakra-ui/system"
 import { isUndefined } from "@chakra-ui/utils"
 
-type CircleProps = PropsOf<typeof chakra.circle>
+type CircleProps = PropsOf<"circle">
 
 function Circle(props: CircleProps) {
-  return <chakra.circle cx={50} cy={50} r={42} fill="transparent" {...props} />
+  return <circle cx={50} cy={50} r={42} fill="transparent" {...props} />
 }
 
 type ShapeProps = PropsOf<typeof chakra.svg> & {
@@ -20,11 +20,12 @@ function Shape({ size, isIndeterminate, ...props }: ShapeProps) {
       width={size}
       height={size}
       viewBox="0 0 100 100"
-      css={{
-        ...(isIndeterminate && {
-          animation: `${rotate} 2s linear infinite`,
-        }),
-      }}
+      css={
+        isIndeterminate &&
+        style`
+          animation: ${rotate} 2s linear infinite;
+        `
+      }
       {...props}
     />
   )
@@ -116,12 +117,16 @@ export function CircularProgress(props: CircularProgressProps) {
 
   const indicatorProps = isIndeterminate
     ? {
-        css: { animation: `${spin} 1.5s linear infinite` },
+        css: style`
+          animation: ${spin} 1.5s linear infinite;
+        `,
       }
     : {
         strokeDashoffset: 66,
         strokeDasharray,
-        transition: `stroke-dasharray 0.6s ease 0s, stroke 0.6s ease`,
+        css: style`
+          transition: stroke-dasharray 0.6s ease 0s, stroke 0.6s ease;
+        `,
       }
 
   return (

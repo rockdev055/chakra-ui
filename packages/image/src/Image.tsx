@@ -1,6 +1,6 @@
 import { chakra, PropsOf, SystemProps } from "@chakra-ui/system"
-import * as React from "react"
-import { UseImageProps, useImage } from "./Image.hook"
+import React, { forwardRef, Ref, ReactElement } from "react"
+import { ImageHookProps, useImage } from "./Image.hook"
 import { __DEV__, omit } from "@chakra-ui/utils"
 
 interface ImageOptions {
@@ -13,7 +13,7 @@ interface ImageOptions {
   /**
    * Fallback element to show if image is loading or image fails.
    */
-  fallback?: React.ReactElement
+  fallback?: ReactElement
   /**
    * The native HTML `width` attribute to the passed to the `img`
    */
@@ -32,15 +32,11 @@ interface ImageOptions {
    * It maps to css `object-position` property.
    */
   align?: SystemProps["objectPosition"]
-  /**
-   * If `true`, opt out of the `fallbackSrc` logic and use as `img`
-   */
-  ignoreFallback?: boolean
 }
 
 const StyledImage = chakra.img
 
-export type ImageProps = UseImageProps &
+export type ImageProps = ImageHookProps &
   PropsOf<typeof StyledImage> &
   ImageOptions
 
@@ -50,17 +46,9 @@ export type ImageProps = UseImageProps &
  *
  * @see Docs https://chakra-ui.com/image
  */
-export const Image = React.forwardRef(
-  (props: ImageProps, ref: React.Ref<HTMLImageElement>) => {
-    const {
-      fallbackSrc,
-      fallback,
-      src,
-      align,
-      fit,
-      ignoreFallback,
-      ...rest
-    } = props
+export const Image = forwardRef(
+  (props: ImageProps, ref: Ref<HTMLImageElement>) => {
+    const { fallbackSrc, fallback, src, align, fit, ...rest } = props
 
     const status = useImage(props)
 
@@ -68,16 +56,11 @@ export const Image = React.forwardRef(
       ref,
       objectFit: fit,
       objectPosition: align,
-      ...(ignoreFallback ? rest : omit(rest, ["onError", "onLoad"])),
+      ...omit(rest, ["onError", "onLoad"]),
     }
 
     if (status !== "loaded") {
-      /**
-       * If user passed a custom fallback component,
-       * let's render it here.
-       */
       if (fallback) return fallback
-
       return (
         <StyledImage
           data-chakra-image-placeholder=""

@@ -1,12 +1,12 @@
 import { useControllableProp, useId } from "@chakra-ui/hooks"
 import { Dict, isInputEvent, mergeRefs } from "@chakra-ui/utils"
-import * as React from "react"
+import { ChangeEvent, useCallback, useRef, useState } from "react"
 
 type Value = string | number
 
-type EventOrValue = React.ChangeEvent<HTMLInputElement> | Value
+type EventOrValue = ChangeEvent<HTMLInputElement> | Value
 
-export interface UseRadioGroupProps {
+export interface RadioGroupHookProps {
   /**
    * The value of the radio to be `checked`
    * (in controlled mode)
@@ -33,10 +33,6 @@ export interface UseRadioGroupProps {
    * This assumes, you're using native radio inputs
    */
   isNative?: boolean
-  /**
-   * The `ref` of the wrapper element of the radio group
-   */
-  ref?: React.Ref<any>
 }
 
 /**
@@ -44,7 +40,7 @@ export interface UseRadioGroupProps {
  *
  * React hook to manage a group of radio inputs
  */
-export function useRadioGroup(props: UseRadioGroupProps = {}) {
+export function useRadioGroup(props: RadioGroupHookProps = {}) {
   const {
     onChange: onChangeProp,
     value: valueProp,
@@ -52,16 +48,16 @@ export function useRadioGroup(props: UseRadioGroupProps = {}) {
     isNative,
   } = props
 
-  const [valueState, setValue] = React.useState<Value>(defaultValue || "")
+  const [valueState, setValue] = useState<Value>(defaultValue || "")
 
   const [isControlled, derivedValue] = useControllableProp(
     valueProp,
     valueState,
   )
 
-  const rootRef = React.useRef<any>(null)
+  const rootRef = useRef<any>(null)
 
-  const focus = React.useCallback(() => {
+  const focus = useCallback(() => {
     const rootNode = rootRef.current
     if (!rootNode) return
 
@@ -87,7 +83,7 @@ export function useRadioGroup(props: UseRadioGroupProps = {}) {
    */
   const name = useId(props.name, `radio`)
 
-  const onChange = React.useCallback(
+  const onChange = useCallback(
     (eventOrValue: EventOrValue) => {
       const nextValue = isInputEvent(eventOrValue)
         ? eventOrValue.target.value

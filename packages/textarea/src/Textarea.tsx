@@ -1,7 +1,6 @@
-import { FormControlOptions, useFormControl } from "@chakra-ui/form-control"
+import { ControlProps, useField } from "@chakra-ui/form-control"
 import { chakra, PropsOf } from "@chakra-ui/system"
 import * as React from "react"
-import { __DEV__ } from "@chakra-ui/utils"
 
 interface TextareaOptions {
   /**
@@ -31,15 +30,19 @@ const StyledTextarea = chakra<"textarea", TextareaOptions>("textarea", {
 type OmittedTypes = "disabled" | "required" | "readOnly"
 
 export type TextareaProps = Omit<PropsOf<typeof StyledTextarea>, OmittedTypes> &
-  FormControlOptions
+  ControlProps
 
 export const Textarea = React.forwardRef(
   (props: TextareaProps, ref: React.Ref<HTMLTextAreaElement>) => {
-    const fieldProps = useFormControl<HTMLTextAreaElement>(props)
+    const fieldProps = useField<HTMLTextAreaElement>(props)
     return <StyledTextarea ref={ref} {...fieldProps} />
   },
 )
 
-if (__DEV__) {
-  Textarea.displayName = "Textarea"
+Textarea.displayName = "Textares"
+
+Textarea.defaultProps = {
+  isFullWidth: true,
+  focusBorderColor: "blue.500",
+  errorBorderColor: "red.500",
 }

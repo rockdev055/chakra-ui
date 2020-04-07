@@ -1,14 +1,21 @@
+import { IconProps } from "@chakra-ui/icon"
 import {
-  CheckCircleIcon,
+  ColorMode,
+  chakra,
+  PropsOf,
+  useColorMode,
+  useComponentDefaults,
+} from "@chakra-ui/system"
+import React, { forwardRef } from "react"
+import {
   InfoIcon,
-  WarningIcon,
   WarningTwoIcon,
+  CheckCircleIcon,
+  WarningIcon,
 } from "@chakra-ui/icons"
-import { chakra, PropsOf, useThemeDefaultProps } from "@chakra-ui/system"
 import { createContext } from "@chakra-ui/utils"
-import * as React from "react"
 
-export const ALERT_STATUSES = {
+export const statuses = {
   info: { icon: InfoIcon, color: "blue" },
   warning: { icon: WarningTwoIcon, color: "orange" },
   success: { icon: CheckCircleIcon, color: "green" },
@@ -19,15 +26,15 @@ type AlertContext = Required<AlertOptions>
 
 const [AlertContextProvider, useAlertContext] = createContext<AlertContext>()
 
-interface AlertOptions {
+export interface AlertOptions {
   /**
    * The status of the alert
    */
-  status?: keyof typeof ALERT_STATUSES
+  status?: keyof typeof statuses
   /**
    * The variant of the alert style to use.
    */
-  variant?: string
+  variant?: "subtle" | "solid" | "left-accent" | "top-accent"
 }
 
 export type AlertProps = PropsOf<typeof StyledAlert> & AlertOptions
@@ -45,35 +52,30 @@ const StyledAlert = chakra("div", {
   },
 })
 
-/**
- * Alert
- *
- * React component used to communicate the state or status of a
- * page, feature or action
- */
-export const Alert = React.forwardRef(
-  (props: AlertProps, ref: React.Ref<any>) => {
-    const defaults = useThemeDefaultProps("Alert")
+export const Alert = forwardRef((props: AlertProps, ref: React.Ref<any>) => {
+  const defaults = useComponentDefaults("Alert")
 
-    const { status = "info", variant = defaults?.variant, ...rest } = props
-    const colorScheme = ALERT_STATUSES[status]["color"]
+  const {
+    status = "info",
+    variant = defaults?.variant || "subtle",
+    ...rest
+  } = props
 
-    const context = { status, variant }
+  const colorScheme = statuses[status]["color"]
 
-    return (
-      <AlertContextProvider value={context as AlertContext}>
-        <StyledAlert
-          ref={ref}
-          variant={variant}
-          colorScheme={colorScheme}
-          {...rest}
-        />
-      </AlertContextProvider>
-    )
-  },
-)
+  const context = { status, variant }
 
-export type AlertTitleProps = PropsOf<typeof AlertTitle>
+  return (
+    <AlertContextProvider value={context as AlertContext}>
+      <StyledAlert
+        ref={ref}
+        variant={variant}
+        {...rest}
+        colorScheme={colorScheme}
+      />
+    </AlertContextProvider>
+  )
+})
 
 export const AlertTitle = chakra("div", {
   themeKey: "Alert.Title",
@@ -83,35 +85,23 @@ export const AlertTitle = chakra("div", {
   },
 })
 
-/**
- * AlertDescription
- *
- * The description of the alert to be announced by screen
- * readers.
- */
-export const AlertDescription = chakra("div", {
-  themeKey: "Alert.Description",
-  baseStyle: {
-    display: "inline-block",
-  },
-})
+export const AlertDescription = chakra("div", { themeKey: "Alert.Description" })
 
-const StyledWrapper = chakra("span", { themeKey: "Alert.Icon" })
-
-export type AlertIconProps = PropsOf<typeof StyledWrapper>
-
-/**
- * AlertIcon
- *
- * The visual icon for the alert that changes based on the `status` prop.
- */
-export const AlertIcon = (props: AlertIconProps) => {
+export const AlertIcon = (props: IconProps) => {
+  const [colorMode] = useColorMode()
   const { status, variant } = useAlertContext()
-  const { icon: Icon, color: colorScheme } = ALERT_STATUSES[status]
+  const { icon: Icon, color } = statuses[status]
 
-  return (
-    <StyledWrapper variant={variant} colorScheme={colorScheme} {...props}>
-      <Icon boxSize="100%" />
-    </StyledWrapper>
-  )
+  let style: { [K in ColorMode]?: any } = {}
+
+  if (["left-accent", "top-accent", "subtle"].includes(variant)) {
+    style = {
+      light: { color: `${color}.500` },
+      dark: { color: `${color}.200` },
+    }
+  }
+
+  const styles = style[colorMode]
+
+  return <Icon mt={1} mr={3} size={5} {...styles} {...props} />
 }

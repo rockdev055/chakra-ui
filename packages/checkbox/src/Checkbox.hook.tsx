@@ -1,13 +1,13 @@
 import {
   useBooleanState,
   useControllableProp,
-  useSafeLayoutEffect,
+  useIsomorphicEffect,
 } from "@chakra-ui/hooks"
-import { callAllHandlers, dataAttr, mergeRefs } from "@chakra-ui/utils"
+import { callAllHandlers, attr, mergeRefs } from "@chakra-ui/utils"
 import { visuallyHiddenStyle } from "@chakra-ui/visually-hidden"
 import * as React from "react"
 
-export interface UseCheckboxProps {
+export interface CheckboxHookProps {
   /**
    * If `true`, the checkbox will be checked.
    * You'll need to pass `onChange` to update it's value (since it's now controlled)
@@ -66,18 +66,7 @@ export interface UseCheckboxProps {
   id?: string
 }
 
-///////////////////////////////////////////////////////////////////////////
-
-/**
- * useCheckbox
- *
- * React hook that provides all the state and focus management logic
- * for a checkbox.
- *
- * It is consumed by the `Checkbox` component
- */
-
-export function useCheckbox(props: UseCheckboxProps = {}) {
+export function useCheckbox(props: CheckboxHookProps) {
   const {
     defaultIsChecked,
     isChecked: checkedProp,
@@ -138,7 +127,7 @@ export function useCheckbox(props: UseCheckboxProps = {}) {
     ],
   )
 
-  useSafeLayoutEffect(() => {
+  useIsomorphicEffect(() => {
     if (!ref.current) return
     ref.current.indeterminate = Boolean(isIndeterminate)
   }, [isIndeterminate])
@@ -192,13 +181,13 @@ export function useCheckbox(props: UseCheckboxProps = {}) {
     // prop getters
     getCheckboxProps: (props: CustomCheckboxProps = {}) => ({
       ...props,
-      "data-active": dataAttr(isActive),
-      "data-hover": dataAttr(isHovered),
-      "data-checked": dataAttr(isChecked),
-      "data-focus": dataAttr(isFocused),
-      "data-mixed": dataAttr(isIndeterminate),
-      "data-disabled": dataAttr(isDisabled),
-      "data-readonly": dataAttr(isReadOnly),
+      "data-active": attr(isActive),
+      "data-hover": attr(isHovered),
+      "data-checked": attr(isChecked),
+      "data-focus": attr(isFocused),
+      "data-mixed": attr(isIndeterminate),
+      "data-disabled": attr(isDisabled),
+      "data-readonly": attr(isReadOnly),
       "aria-hidden": true,
       onPointerDown: callAllHandlers(props.onPointerDown, setActive.on),
       onPointerUp: callAllHandlers(props.onPointerUp, setActive.off),
@@ -230,4 +219,6 @@ export function useCheckbox(props: UseCheckboxProps = {}) {
   }
 }
 
-export type UseCheckboxReturn = ReturnType<typeof useCheckbox>
+export type CheckboxHookReturn = ReturnType<typeof useCheckbox>
+
+export default useCheckbox

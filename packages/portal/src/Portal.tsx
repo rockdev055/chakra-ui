@@ -1,141 +1,107 @@
-import { createContext, isBrowser, __DEV__ } from "@chakra-ui/utils"
+/* eslint-disable react-hooks/exhaustive-deps */
 import * as React from "react"
 import { createPortal } from "react-dom"
 import { usePortalManager } from "./Portal.manager"
-import { useSafeLayoutEffect } from "@chakra-ui/hooks"
+import { isBrowser, createContext } from "@chakra-ui/utils"
 
-type PortalContext = HTMLDivElement | null
-
-const [PortalCtxProvider, usePortalContext] = createContext<PortalContext>({
+const [
+  PortalContextProvider,
+  usePortalContext,
+] = createContext<HTMLDivElement | null>({
   strict: false,
 })
 
 export interface PortalProps {
-  /**
-   * Function called when the portal mounts
-   */
   onMount?(): void
-  /**
-   * Function called when the portal unmounts
-   */
   onUnmount?(): void
-  /**
-   * Function that will be called to get the parent element
-   * that the portal will be attached to.
-   */
-  container?: () => HTMLElement
-  /**
-   * The content or node you'll like to portal
-   */
+  mountNode?: HTMLElement
   children?: React.ReactNode
 }
 
-/**
- * Portal
- *
- * Declarative component used to render children into a DOM node
- * that exists outside the DOM hierarchy of the parent component.
- *
- * @see Docs https://chakra-ui.com/portal
- */
 export function Portal(props: PortalProps) {
-  const { onMount, onUnmount, children, container: containerProp } = props
+  const { onMount, onUnmount, mountNode, children } = props
 
-  /**
-   * Generate the portal's dom node. We'll wrap the children
-   * in this dom node before mounting it.
-   */
-  const [portal] = React.useState(() => {
+  // the portalNode to render it's children
+  const [portalNode] = React.useState(() => {
     if (isBrowser) {
-      const div = document.createElement("div")
-      div.className = "chakra-portal"
-      return div
+      const portalNode = document.createElement("div")
+      portalNode.className = "chakra-portal"
+      return portalNode
     }
     // for ssr
     return null
   })
 
-  /**
-   * This portal might be nested in another portal.
-   * Let's read from the portal context to check this.
-   */
+  // To manage nested layers
   const parentPortal = usePortalContext()
 
-  /**
-   * If there's a PortalManager rendered, let's read from it.
-   * We use the portal manager to manage multiple portals
-   */
+  // If there's a PortalManager rendered,
+  // let's read from it
   const manager = usePortalManager()
 
   const append = React.useCallback(
     (container: HTMLElement | null) => {
       // if user specified a mount node, do nothing.
-      if (!portal || !container) return
+      if (mountNode || !portalNode || !container) return
 
       // else, simply append component to the portal node
-      container.appendChild(portal)
+      container.appendChild(portalNode)
     },
-    [portal],
+    [mountNode, portalNode],
   )
 
-  useSafeLayoutEffect(() => {
-    // get the custom container from the container prop
-    const mountNode = containerProp?.()
+  React.useEffect(() => {
+    // if user specified a mount node, do nothing but run onMount.
+    if (mountNode) {
+      onMount?.()
+      return
+    }
 
-    /**
-     * We need to know where to mount this portal, we have 4 options:
-     * - If a mountRef is specified, we'll use that as the container
-     * - If portal is nested, use the parent portal node as container.
-     * - If it's not nested, use the manager's node as container
-     * - else use document.body as containers
-     */
-    const container =
-      mountNode ?? parentPortal ?? manager?.node ?? document.body
+    // If portal is nested, use the parent portal as host,
+    // else, if no manager exists, use document.body
+    const container = parentPortal ?? manager?.node ?? document.body
 
-    /**
-     * Append portal node to the computed container
-     */
     append(container)
-
-    onMount?.()
 
     return () => {
       onUnmount?.()
 
-      if (!portal) return
+      if (!portalNode) return
 
-      if (container?.contains(portal)) {
-        container?.removeChild(portal)
+      if (container?.contains(portalNode)) {
+        container?.removeChild(portalNode)
       }
     }
   }, [
-    containerProp,
-    portal,
-    parentPortal,
     onMount,
+    mountNode,
+    portalNode,
+    parentPortal,
     onUnmount,
     manager && manager.node,
     append,
   ])
 
-  const finalChildren = manager?.zIndex ? (
-    <div className="chakra-portal-zIndex" style={{ zIndex: manager.zIndex }}>
-      {children}
-    </div>
+  const _children = manager?.zIndex ? (
+    <div
+      className="chakra-zIndex-wrapper"
+      style={{ zIndex: manager.zIndex }}
+      children={children}
+    />
   ) : (
     children
   )
 
-  if (!portal) {
-    return <React.Fragment>{finalChildren}</React.Fragment>
+  if (mountNode) {
+    return createPortal(_children, mountNode)
   }
 
-  return createPortal(
-    <PortalCtxProvider value={portal}>{finalChildren}</PortalCtxProvider>,
-    portal,
-  )
-}
+  if (!portalNode) return <React.Fragment>{_children}</React.Fragment>
 
-if (__DEV__) {
-  Portal.displayName = "Portal"
+  return createPortal(
+    <PortalContextProvider value={portalNode}>
+      {_children}
+    </PortalContextProvider>,
+    portalNode,
+  )
 }

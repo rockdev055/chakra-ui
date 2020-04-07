@@ -18,7 +18,7 @@ import * as warn from "./Accordion.warning"
 
 export type ExpandedIndex = number | number[]
 
-export interface UseAccordionProps {
+export interface AccordionHookProps {
   /**
    * If `true`, multiple accordion items can be expanded at once.
    */
@@ -58,7 +58,7 @@ type AccordionElement = React.ReactElement<{
  *
  * It is consumed by the `Accordion` component
  */
-export function useAccordion(props: UseAccordionProps) {
+export function useAccordion(props: AccordionHookProps) {
   const {
     onChange,
     defaultIndex,
@@ -150,11 +150,11 @@ export function useAccordion(props: UseAccordionProps) {
   }
 }
 
-export type UseAccordionReturn = ReturnType<typeof useAccordion>
+export type AccordionHookReturn = ReturnType<typeof useAccordion>
 
 //////////////////////////////////////////////////////////////////////
 
-interface UseAccordionItemOptions {
+interface AccordionItemHookOptions {
   /**
    * If `true`, expands the accordion in the controlled mode.
    */
@@ -177,8 +177,8 @@ interface UseAccordionItemOptions {
   onChange?: (isOpen: boolean) => void
 }
 
-export type UseAccordionItemProps = UseAccordionItemOptions & {
-  context: Omit<UseAccordionReturn, "children" | "htmlProps">
+export type AccordionItemHookProps = AccordionItemHookOptions & {
+  context: Omit<AccordionHookReturn, "children" | "htmlProps">
 }
 
 /**
@@ -187,7 +187,7 @@ export type UseAccordionItemProps = UseAccordionItemOptions & {
  * React hook that provides the open/close functionality
  * for an accordion item and it's children
  */
-export function useAccordionItem(props: UseAccordionItemProps) {
+export function useAccordionItem(props: AccordionItemHookProps) {
   const {
     isDisabled,
     isFocusable,
@@ -215,15 +215,16 @@ export function useAccordionItem(props: UseAccordionItemProps) {
   /**
    * Think of this as a way to register this accordion item
    * with it's parent `useAccordion`
+   *
+   * `index` =  the index of the accordion item
+   * `descendants` = the array of all registered accordion item
    */
-  const index = useDescendant({
+  const { index, descendants } = useDescendant({
     element: buttonRef.current,
     context: descendantsContext,
     disabled: isDisabled,
     focusable: isFocusable,
   })
-
-  const { descendants } = descendantsContext
 
   const shouldFocus = index === focusedIndex
 
@@ -309,4 +310,4 @@ export function useAccordionItem(props: UseAccordionItemProps) {
   }
 }
 
-export type UseAccordionItemReturn = ReturnType<typeof useAccordionItem>
+export type AccordionItemHookReturn = ReturnType<typeof useAccordionItem>

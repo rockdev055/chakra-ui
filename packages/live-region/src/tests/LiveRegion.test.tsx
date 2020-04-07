@@ -1,6 +1,7 @@
 import * as React from "react"
 import { render, wait } from "@chakra-ui/test-utils"
-import { LiveRegion, LiveRegionOptions } from ".."
+import { LiveRegion } from ".."
+import { LiveRegionOptions } from "../live-region"
 
 test("LiveRegion creates a container and has the proper aria and role attributes", () => {
   render(<div />)

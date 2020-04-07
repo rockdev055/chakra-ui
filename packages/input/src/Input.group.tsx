@@ -2,7 +2,7 @@ import {
   chakra,
   PropsOf,
   ThemingProps,
-  useThemeDefaultProps,
+  useComponentDefaults,
 } from "@chakra-ui/system"
 import { createContext } from "@chakra-ui/utils"
 import * as React from "react"
@@ -25,7 +25,7 @@ export { useInputGroup }
 export type InputGroupProps = PropsOf<typeof chakra.div> & ThemingProps
 
 export const InputGroup = (props: InputGroupProps) => {
-  const defaults = useThemeDefaultProps("Input")
+  const defaults = useComponentDefaults("Input")
 
   const {
     children,
@@ -37,21 +37,20 @@ export const InputGroup = (props: InputGroupProps) => {
   const [hasLeftElement, setHasLeftElement] = React.useState(false)
   const [hasRightElement, setHasRightElement] = React.useState(false)
 
-  const context = React.useMemo(
-    () => ({
-      size,
-      variant,
-      hasLeftElement,
-      setHasLeftElement,
-      hasRightElement,
-      setHasRightElement,
-    }),
-    [hasLeftElement, hasRightElement, size, variant],
-  )
-
   return (
     <chakra.div display="flex" position="relative" {...rest}>
-      <InputGroupProvider value={context}>{children}</InputGroupProvider>
+      <InputGroupProvider
+        value={{
+          size,
+          variant,
+          hasLeftElement,
+          setHasLeftElement,
+          hasRightElement,
+          setHasRightElement,
+        }}
+      >
+        {children}
+      </InputGroupProvider>
     </chakra.div>
   )
 }

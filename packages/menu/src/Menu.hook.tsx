@@ -1,30 +1,33 @@
-import { useClickable } from "@chakra-ui/clickable"
 import { useDescendant, useDescendants } from "@chakra-ui/descendant"
 import {
-  useControllableState,
   useDisclosure,
   useId,
   useIds,
   useShortcut,
   useUpdateEffect,
+  useControllableState,
 } from "@chakra-ui/hooks"
 import { usePopper } from "@chakra-ui/popper"
+import { useTabbable } from "@chakra-ui/tabbable"
 import {
-  addItem,
   callAllHandlers,
   createOnKeyDown,
   getNextIndex,
   getNextItemFromSearch,
   getPrevIndex,
-  getValidChildren,
-  isArray,
   mergeRefs,
+  getValidChildren,
+  isString,
+  isArray,
+  addItem,
   removeItem,
 } from "@chakra-ui/utils"
 import * as React from "react"
 
-export type UseMenuProps = {
-  context?: UseMenuReturn
+///////////////////////////////////////////////////////////////////////////////////
+
+export type MenuHookProps = {
+  context?: MenuHookReturn
   id?: string
   closeOnSelect?: boolean
   // TODO: Implement these
@@ -32,7 +35,7 @@ export type UseMenuProps = {
   autoSelect?: boolean
 }
 
-export function useMenu(props: UseMenuProps) {
+export function useMenu(props: MenuHookProps) {
   const { context, id, closeOnSelect = true } = props
   /**
    *
@@ -49,7 +52,7 @@ export function useMenu(props: UseMenuProps) {
 
   // prepare the reference to the menu and disclosure
   const menuRef = React.useRef<HTMLDivElement>(null)
-  const buttonRef = React.useRef<HTMLButtonElement>(null)
+  const disclosureRef = React.useRef<HTMLButtonElement>(null)
 
   // Add some popper.js for dynamic positioning
   const { placement, popper, reference } = usePopper({
@@ -80,7 +83,7 @@ export function useMenu(props: UseMenuProps) {
    */
   useUpdateEffect(() => {
     if (!isOpen && !hasParent) {
-      buttonRef.current?.focus()
+      disclosureRef.current?.focus()
     }
   }, [isOpen])
 
@@ -101,7 +104,7 @@ export function useMenu(props: UseMenuProps) {
     onOpen,
     onClose,
     menuRef,
-    buttonRef,
+    disclosureRef,
     focusedIndex,
     closeOnSelect,
     setFocusedIndex,
@@ -109,14 +112,14 @@ export function useMenu(props: UseMenuProps) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface UseMenuReturn extends ReturnType<typeof useMenu> {}
+export interface MenuHookReturn extends ReturnType<typeof useMenu> {}
 
 //////////////////////////////////////////////////////////////////////////////
 
 export interface MenuListHookProps {
   onMouseEnter?: React.MouseEventHandler
   onKeyDown?: React.KeyboardEventHandler
-  context: UseMenuReturn
+  context: MenuHookReturn
   style?: React.CSSProperties
   hidden?: boolean
 }
@@ -143,7 +146,7 @@ export function useMenuList(props: MenuListHookProps) {
       }
       // If we're clicking on a menuitem that's a disclosure,
       // don't do anything
-      if (event.target === menu.buttonRef.current) {
+      if (event.target === menu.disclosureRef.current) {
         return
       }
       // otherwise, onClose the menu
@@ -200,7 +203,7 @@ export function useMenuList(props: MenuListHookProps) {
       ArrowLeft: () => {
         if (!hasParent) return
         menu.onClose()
-        const node = menu.buttonRef.current
+        const node = menu.disclosureRef.current
         node?.focus()
       },
     },
@@ -231,7 +234,7 @@ export interface MenuButtonHookProps {
   onClick?: React.MouseEventHandler
   onMouseOut?: React.MouseEventHandler
   onKeyDown?: React.KeyboardEventHandler
-  context: UseMenuReturn
+  context: MenuHookReturn
 }
 
 export function useMenuButton(props: MenuButtonHookProps) {
@@ -311,25 +314,22 @@ export function useMenuButton(props: MenuButtonHookProps) {
       Enter: () => {
         openAndFocusFirstItem()
       },
+      " ": () => {
+        openAndFocusFirstItem()
+      },
       ArrowDown: () => {
-        if (!hasParent) {
-          openAndFocusFirstItem()
-        }
+        if (!hasParent) openAndFocusFirstItem()
       },
       ArrowUp: () => {
-        if (!hasParent) {
-          showAndFocusLastItem()
-        }
+        if (!hasParent) showAndFocusLastItem()
       },
       ArrowRight: () => {
-        if (hasParent) {
-          openAndFocusFirstItem()
-        }
+        if (hasParent) openAndFocusFirstItem()
       },
     },
   })
 
-  const ref = mergeRefs(menu.buttonRef, menu.reference.ref)
+  const ref = mergeRefs(menu.disclosureRef, menu.reference.ref)
 
   return {
     ...htmlProps,
@@ -347,15 +347,15 @@ export function useMenuButton(props: MenuButtonHookProps) {
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-export interface UseMenuItemProps {
+export interface MenuItemHookProps {
   onMouseOut?: React.MouseEventHandler
-  context: UseMenuReturn
+  context: MenuHookReturn
   onClick?: React.MouseEventHandler
   isDisabled?: boolean
   isFocusable?: boolean
 }
 
-export function useMenuItem(props: UseMenuItemProps) {
+export function useMenuItem(props: MenuItemHookProps) {
   const {
     context: menu,
     onMouseOut: onMouseOutProp,
@@ -376,7 +376,7 @@ export function useMenuItem(props: UseMenuItemProps) {
   const ref = React.useRef<HTMLDivElement>(null)
   const id = useId(undefined, `chakra-menu-item`)
 
-  const index = useDescendant({
+  const { index } = useDescendant({
     element: ref.current,
     context: descendantsContext,
     disabled: isDisabled,
@@ -443,7 +443,7 @@ export function useMenuItem(props: UseMenuItemProps) {
     }
   }, [isFocused])
 
-  const tabbable = useClickable({
+  const tabbable = useTabbable({
     onClick,
     onMouseOver,
     ref,
@@ -461,13 +461,13 @@ export function useMenuItem(props: UseMenuItemProps) {
   }
 }
 
-export type UseMenuOptionProps = UseMenuItemProps & {
+export type MenuOptionHookProps = MenuItemHookProps & {
   value?: string
   isChecked?: string
   type?: "radio" | "checkbox"
 }
 
-export function useMenuOption(props: UseMenuOptionProps) {
+export function useMenuOption(props: MenuOptionHookProps) {
   const {
     context: menu,
     onMouseOut,
@@ -494,7 +494,7 @@ export function useMenuOption(props: UseMenuOptionProps) {
   }
 }
 
-export interface UseMenuOptionGroupProps {
+export interface MenuOptionGroupHookProps {
   value?: string | string[]
   defaultValue?: string | string[]
   type?: "radio" | "checkbox"
@@ -502,7 +502,7 @@ export interface UseMenuOptionGroupProps {
   children?: React.ReactNode
 }
 
-export function useMenuOptionGroup(props: UseMenuOptionGroupProps) {
+export function useMenuOptionGroup(props: MenuOptionGroupHookProps) {
   const {
     children,
     type = "radio",

@@ -4,7 +4,7 @@ import {
   useId,
   useMergeRefs,
 } from "@chakra-ui/hooks"
-import { Placement, usePopper, UsePopperProps } from "@chakra-ui/popper"
+import { Placement, usePopper, PopperHookProps } from "@chakra-ui/popper"
 import { callAllHandlers, mergeRefs } from "@chakra-ui/utils"
 import flushable from "flushable"
 import * as React from "react"
@@ -28,7 +28,7 @@ function hide(fn: (flushed: boolean) => void, delay: number) {
   return pendingHide.cancel
 }
 
-export interface UseTooltipProps {
+export interface TooltipHookProps {
   /**
    * Delay (in ms) before hiding the tooltip
    * @default 200ms
@@ -84,10 +84,10 @@ export interface UseTooltipProps {
    * The size of the arrow in css units (numeric)
    * @default 10 ( = 10px )
    */
-  arrowSize?: UsePopperProps["arrowSize"]
+  arrowSize?: PopperHookProps["arrowSize"]
 }
 
-export function useTooltip(props: UseTooltipProps = {}) {
+export function useTooltip(props: TooltipHookProps = {}) {
   const {
     showDelay = 200,
     hideDelay = 200,
@@ -227,4 +227,4 @@ export function useTooltip(props: UseTooltipProps = {}) {
   }
 }
 
-export type UseTooltipReturn = ReturnType<typeof useTooltip>
+export type TooltipHookReturn = ReturnType<typeof useTooltip>

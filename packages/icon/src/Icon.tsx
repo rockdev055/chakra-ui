@@ -15,15 +15,14 @@ const fallbackIcon = {
   viewBox: "0 0 24 24",
 }
 
-const StyledSvg = chakra("svg", { themeKey: "Icon" })
+const StyledSvg = chakra("svg")
 
 export type IconProps = PropsOf<typeof StyledSvg>
 
 export function Icon(props: IconProps) {
   const {
     as,
-    size,
-    boxSize = "1em",
+    size = "1em",
     viewBox,
     color = "currentColor",
     role = "presentation",
@@ -40,7 +39,6 @@ export function Icon(props: IconProps) {
     focusable,
     role,
     flexShrink: 0,
-    boxSize,
   }
 
   // If you're using an icon-library like `react-icons`
@@ -55,17 +53,17 @@ export function Icon(props: IconProps) {
     )
   }
 
-  const _path = children ?? fallbackIcon.path
-  const _viewBox = viewBox ?? fallbackIcon.viewBox
+  const iconPath = children ?? fallbackIcon.path
+  const iconViewbox = viewBox ?? fallbackIcon.viewBox
 
   return (
     <StyledSvg
       verticalAlign="middle"
-      viewBox={_viewBox}
+      viewBox={iconViewbox}
       {...sharedProps}
       {...rest}
     >
-      {_path}
+      {iconPath}
     </StyledSvg>
   )
 }

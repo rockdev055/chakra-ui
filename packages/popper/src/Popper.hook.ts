@@ -3,12 +3,11 @@ import { Placement, Instance, createPopper } from "@popperjs/core"
 import { getArrowStyles } from "./Popper.utils"
 
 const isBrowser = typeof window !== "undefined"
-
-const useSafeLayoutEffect = isBrowser ? React.useLayoutEffect : React.useEffect
+const useIsomorphicEffect = isBrowser ? React.useLayoutEffect : React.useEffect
 
 export { Placement }
 
-export interface UsePopperProps {
+export interface PopperHookProps {
   gutter?: number
   placement?: Placement
   offset?: number
@@ -20,7 +19,7 @@ export interface UsePopperProps {
   eventsEnabled?: boolean
 }
 
-export function usePopper(props: UsePopperProps) {
+export function usePopper(props: PopperHookProps) {
   const {
     placement: initialPlacement = "bottom",
     offset: offsetProp,
@@ -54,7 +53,7 @@ export function usePopper(props: UsePopperProps) {
     return false
   }, [])
 
-  useSafeLayoutEffect(() => {
+  useIsomorphicEffect(() => {
     if (referenceRef.current && popoverRef.current) {
       popper.current = createPopper(referenceRef.current, popoverRef.current, {
         placement: originalPlacement,
@@ -145,4 +144,6 @@ export function usePopper(props: UsePopperProps) {
   }
 }
 
-export type UsePopperReturn = ReturnType<typeof usePopper>
+export type PopperHookReturn = ReturnType<typeof usePopper>
+
+export default usePopper

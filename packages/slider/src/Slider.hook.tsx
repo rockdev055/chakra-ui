@@ -11,17 +11,15 @@ import {
   roundValueToStep,
   valueToPercent,
   getBox,
-  dataAttr,
-  ariaAttr,
+  attr,
   callAllHandlers,
   mergeRefs,
-  Dict,
 } from "@chakra-ui/utils"
 import * as React from "react"
 
 // http://muffinman.io/aria-progress-range-slider/
 
-export interface UseSliderProps {
+export interface SliderHookProps {
   /**
    * The minimum allowed value of the slider. Cannot be greater than max.
    * @default 0
@@ -101,7 +99,7 @@ export interface UseSliderProps {
   "aria-labelledby"?: string
 }
 
-export function useSlider(props: UseSliderProps) {
+export function useSlider(props: SliderHookProps) {
   const {
     min = 0,
     max = 100,
@@ -346,28 +344,28 @@ export function useSlider(props: UseSliderProps) {
       isDragging: isPointerDown,
     },
     actions,
-    getRootProps: (props: Dict = {}) => ({
+    getRootProps: (props: any = {}) => ({
       ...props,
       tabIndex: -1,
-      "aria-disabled": ariaAttr(isDisabled),
-      "data-focused": dataAttr(isFocused),
+      "aria-disabled": attr(isDisabled),
+      "data-focused": attr(isFocused),
       onPointerDown: callAllHandlers(props.onPointerDown, onPointerDown),
       onPointerUp: callAllHandlers(props.onPointerUp, onPointerUp),
       onPointerMove: callAllHandlers(props.onPointerMove, onPointerMove),
       style: { ...props.style, ...rootStyle },
     }),
-    getTrackProps: (props: Dict = {}) => ({
+    getTrackProps: (props: any = {}) => ({
       ...props,
       ref: mergeRefs(props.ref, trackRef),
       id: trackId,
-      "data-disabled": dataAttr(isDisabled),
+      "data-disabled": attr(isDisabled),
       style: { ...props.style, ...trackStyle },
     }),
-    getInnerTrackProps: (props: Dict = {}) => ({
+    getInnerTrackProps: (props: any = {}) => ({
       ...props,
       style: { ...props.style, ...innerTrackStyle },
     }),
-    getThumbProps: (props: Dict = {}) => ({
+    getThumbProps: (props: any = {}) => ({
       ...props,
       ref: thumbRef,
       role: "slider",
@@ -378,7 +376,7 @@ export function useSlider(props: UseSliderProps) {
       "aria-valuemax": max,
       "aria-valuenow": value,
       "aria-orientation": orientation,
-      "aria-disabled": ariaAttr(isDisabled),
+      "aria-disabled": attr(isDisabled),
       "aria-label": ariaLabel,
       "aria-labelledby": ariaLabel ? undefined : ariaLabelledBy,
       style: { ...props.style, ...thumbStyle },
@@ -386,7 +384,7 @@ export function useSlider(props: UseSliderProps) {
       onFocus: callAllHandlers(props.onFocus, setFocused.on),
       onBlur: callAllHandlers(props.onBlur, setFocused.off),
     }),
-    getMarkerProps: (props: Dict) => {
+    getMarkerProps: (props: any) => {
       const isInRange = !(props.value < min || props.value > max)
       const isHighlighted = value >= props.value
       const markerPercent = valueToPercent(props.value, min, max)
@@ -405,13 +403,13 @@ export function useSlider(props: UseSliderProps) {
         ...props,
         role: "presentation",
         "aria-hidden": true,
-        "data-disabled": dataAttr(isDisabled),
-        "data-invalid": dataAttr(!isInRange),
-        "data-highlighted": dataAttr(isHighlighted),
+        "data-disabled": attr(isDisabled),
+        "data-invalid": attr(!isInRange),
+        "data-highlighted": attr(isHighlighted),
         style: { ...props.style, ...markerStyle },
       }
     },
-    getInputProps: (props: Dict = {}) => ({
+    getInputProps: (props: any = {}) => ({
       ...props,
       type: "hidden",
       value,
@@ -422,14 +420,14 @@ export function useSlider(props: UseSliderProps) {
   }
 }
 
-export type UseSliderReturn = ReturnType<typeof useSlider>
+export type SliderHookReturn = ReturnType<typeof useSlider>
 
 /**
  * Get the value based on orientation
  * @param options
  */
 function getOrientationValue<T>(options: {
-  orientation: UseSliderProps["orientation"]
+  orientation: SliderHookProps["orientation"]
   vertical: T
   horizontal: T
 }) {

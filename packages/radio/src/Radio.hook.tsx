@@ -1,11 +1,5 @@
 import { useBooleanState, useControllableProp } from "@chakra-ui/hooks"
-import {
-  dataAttr,
-  ariaAttr,
-  callAllHandlers,
-  Dict,
-  mergeRefs,
-} from "@chakra-ui/utils"
+import { attr, callAllHandlers, Dict, mergeRefs } from "@chakra-ui/utils"
 import { visuallyHiddenStyle } from "@chakra-ui/visually-hidden"
 import {
   ChangeEvent,
@@ -16,10 +10,10 @@ import {
 } from "react"
 
 /**
- * @todo use the `useClickable` hook here
+ * @todo use the `useTabbable` hook here
  * to manage the isFocusable & isDisabled props
  */
-export interface UseRadioProps {
+export interface RadioHookProps {
   /**
    * id assigned to input
    */
@@ -70,7 +64,7 @@ export interface UseRadioProps {
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void
 }
 
-export function useRadio(props: UseRadioProps = {}) {
+export function useRadio(props: RadioHookProps = {}) {
   const {
     defaultIsChecked,
     isChecked: isCheckedProp,
@@ -145,11 +139,11 @@ export function useRadio(props: UseRadioProps = {}) {
     },
     getCheckboxProps: (props: Dict = {}) => ({
       ...props,
-      "data-active": dataAttr(isActive),
-      "data-hover": dataAttr(isHovered),
-      "data-checked": dataAttr(isChecked),
-      "data-focus": dataAttr(isFocused),
-      "data-readonly": dataAttr(isReadOnly),
+      "data-active": attr(isActive),
+      "data-hover": attr(isHovered),
+      "data-checked": attr(isChecked),
+      "data-focus": attr(isFocused),
+      "data-readonly": attr(isReadOnly),
       "aria-hidden": true,
       onPointerDown: callAllHandlers(props.onPointerDown, setActive.on),
       onPointerUp: callAllHandlers(props.onPointerUp, setActive.off),
@@ -168,16 +162,16 @@ export function useRadio(props: UseRadioProps = {}) {
       onFocus: callAllHandlers(props.onFocus, setFocused.on),
       onKeyDown: callAllHandlers(props.onKeyDown, handleKeyDown),
       onKeyUp: callAllHandlers(props.onKeyUp, handleKeyUp),
-      "aria-required": ariaAttr(isRequired),
+      "aria-required": attr(isRequired),
       checked: isChecked,
       disabled: trulyDisabled,
       readOnly: isReadOnly,
-      "aria-invalid": ariaAttr(isInvalid),
-      "aria-disabled": ariaAttr(isDisabled),
+      "aria-invalid": attr(isInvalid),
+      "aria-disabled": attr(isDisabled),
       style: visuallyHiddenStyle,
     }),
     htmlProps,
   }
 }
 
-export type UseRadioReturn = ReturnType<typeof useRadio>
+export type RadioHookReturn = ReturnType<typeof useRadio>

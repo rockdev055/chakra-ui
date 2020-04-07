@@ -1,19 +1,8 @@
 import { getColor } from "@chakra-ui/color"
-import { ComponentTheme, mode, Props, StyleProps } from "./utils"
+import { ComponentTheme, mode } from "./utils"
 
-type VariantProps = Props & Required<InputProps>
-
-const getDefaults = (props: VariantProps) => ({
-  focusBorderColor:
-    props.focusBorderColor || mode("blue.500", "blue.300")(props),
-  errorBorderColor: props.errorBorderColor || mode("red.500", "red.300")(props),
-})
-
-function getOutlineStyle (props: VariantProps): StyleProps {
-  const { theme: t } = props
-
-  const { focusBorderColor: fc, errorBorderColor: ec } = getDefaults(props)
-
+function getOutlineStyle(props: any) {
+  const { focusBorderColor: fc, errorBorderColor: ec, theme: t } = props
   return {
     border: "1px solid",
     borderColor: mode("inherit", "whiteAlpha.50")(props),
@@ -37,11 +26,8 @@ function getOutlineStyle (props: VariantProps): StyleProps {
   }
 }
 
-function getFilledStyle (props: VariantProps): StyleProps {
-  const { theme: t } = props
-
-  const { focusBorderColor: fc, errorBorderColor: ec } = getDefaults(props)
-
+function getFilledStyle(props: any) {
+  const { theme: t, focusBorderColor: fc, errorBorderColor: ec } = props
   return {
     border: "2px solid",
     borderColor: "transparent",
@@ -64,11 +50,8 @@ function getFilledStyle (props: VariantProps): StyleProps {
   }
 }
 
-function getFlushedStyle (props: VariantProps): StyleProps {
-  const { theme: t } = props
-
-  const { focusBorderColor: fc, errorBorderColor: ec } = getDefaults(props)
-
+function getFlushedStyle(props: any) {
+  const { focusBorderColor: fc, errorBorderColor: ec, theme: t } = props
   return {
     borderBottom: "2px solid",
     borderColor: "inherit",
@@ -112,20 +95,10 @@ const sizes = {
   },
 }
 
-export type InputProps = {
-  focusBorderColor?: string
-  errorBorderColor?: string
-}
-
-const Input: ComponentTheme<InputProps> = {
+const Input: ComponentTheme = {
   defaultProps: {
     size: "md",
     variant: "outline",
-  },
-  baseStyle: {
-    width: "100%",
-    outline: 0,
-    transition: "all 0.2s",
   },
   sizes,
   variants: {

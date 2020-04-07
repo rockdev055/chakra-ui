@@ -1,27 +1,25 @@
 import { chakra, PropsOf } from "@chakra-ui/system"
-import { createContext, __DEV__ } from "@chakra-ui/utils"
+import { createContext } from "@chakra-ui/utils"
 import * as React from "react"
 import {
-  UsePinInputProps,
-  UsePinInputReturn,
+  PinInputHookProps,
+  PinInputHookReturn,
   usePinInput,
   usePinInputField,
 } from "./Pin-Input.hook"
 
-type PinInputContext = UsePinInputReturn & {
+type ContextType = PinInputHookReturn & {
   isDisabled?: boolean
   isInvalid?: boolean
 }
 
-const [PinInputCtxProvider, usePinInputContext] = createContext<
-  PinInputContext
->({
+const [ContextProvider, useContext] = createContext<ContextType>({
   strict: true,
   errorMessage:
-    "[Chakra UI]: usePinInputContext can only be used within a PinInputCtxProvider",
+    "[PinInput]: useContext can only be used within a ContextProvider",
 })
 
-export type PinInputProps = UsePinInputProps & {
+export type PinInputProps = PinInputHookProps & {
   children: React.ReactNode
   isDisabled?: boolean
   isInvalid?: boolean
@@ -31,12 +29,10 @@ export function PinInput(props: PinInputProps) {
   const { children, isDisabled, isInvalid } = props
   const context = { ...usePinInput(props), isDisabled, isInvalid }
 
-  return <PinInputCtxProvider value={context}>{children}</PinInputCtxProvider>
+  return <ContextProvider value={context}>{children}</ContextProvider>
 }
 
-if (__DEV__) {
-  PinInput.displayName = "PinInput"
-}
+PinInput.displayName = "PinInput"
 
 export type PinInputFieldProps = PropsOf<typeof StyledInput>
 
@@ -51,8 +47,13 @@ const StyledInput = chakra<"input", InputOptions>("input", {
     !["focusBorderColor", "errorBorderColor"].includes(prop),
 })
 
+StyledInput.defaultProps = {
+  focusBorderColor: "blue.500",
+  errorBorderColor: "red.500",
+}
+
 export function PinInputField(props: PinInputFieldProps) {
-  const context = usePinInputContext()
+  const context = useContext()
   const hookProps = usePinInputField({ context })
   return (
     <StyledInput
@@ -65,6 +66,4 @@ export function PinInputField(props: PinInputFieldProps) {
   )
 }
 
-if (__DEV__) {
-  PinInputField.displayName = "PinInputField"
-}
+PinInputField.displayName = "PinInputField"

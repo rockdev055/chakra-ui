@@ -112,7 +112,6 @@ const Tabs: ComponentTheme = {
   defaultProps: {
     size: "md",
     variant: "line",
-    colorScheme: "blue",
   },
   baseStyle: {
     Tab: {
@@ -124,9 +123,6 @@ const Tabs: ComponentTheme = {
     },
     TabList: {
       display: "flex",
-    },
-    TabPanel: {
-      padding: 4,
     },
   },
   sizes: {

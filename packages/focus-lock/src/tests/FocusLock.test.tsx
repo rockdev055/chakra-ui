@@ -14,12 +14,12 @@ test("focuses an element on render", () => {
   }
   const utils = render(<Component />)
   const input = utils.getByTestId("input")
-  expect(input).toHaveFocus()
+  expect(document.activeElement).toEqual(input)
 })
 
 test("focuses initialFocusRef on render", () => {
   const Component = () => {
-    const ref = React.useRef<HTMLInputElement>(null)
+    const ref = React.useRef(null)
     return (
       <FocusLock initialFocusRef={ref}>
         <input />
@@ -30,13 +30,13 @@ test("focuses initialFocusRef on render", () => {
   }
   const utils = render(<Component />)
   const input = utils.getByTestId("input")
-  expect(input).toHaveFocus()
+  expect(document.activeElement).toEqual(input)
 })
 
 test("focuses finalFocusRef on unmount", () => {
   const Component = () => {
     const [show, setShow] = React.useState(true)
-    const ref = React.useRef<HTMLButtonElement>(null)
+    const ref = React.useRef(null)
     return (
       <div>
         <button ref={ref} data-testid="button" onClick={() => setShow(false)}>
@@ -54,9 +54,9 @@ test("focuses finalFocusRef on unmount", () => {
   const button = utils.getByTestId("button")
 
   // not focused while focus lock is displayed
-  expect(button).not.toHaveFocus()
+  expect(document.activeElement).not.toEqual(button)
 
   // toggle focus lock and check that button is now focused
   fireEvent.click(button)
-  expect(button).toHaveFocus()
+  expect(document.activeElement).toEqual(button)
 })

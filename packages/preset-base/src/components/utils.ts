@@ -1,49 +1,25 @@
+import React from "react"
 import { Theme } from "../foundations"
 import { SystemProps, ThemingProps } from "@chakra-ui/system"
 
-export type StyleProps = SystemProps | { [component: string]: SystemProps }
+export type StyleProps = SystemProps | { [Component: string]: SystemProps }
 
-/**
- * The component style can either be a style object or  a function that returns a
- * style object.
- */
-export type ComponentStyle<CustomProps = {}> =
+export type ComponentStyle<P = {}> =
   | StyleProps
-  | ((props: Props & Required<CustomProps>) => StyleProps)
+  | ((props: Props & P) => StyleProps)
 
-export interface ComponentTheme<CustomProps = {}> {
-  /**
-   * The default props to apply to the component
-   */
-  defaultProps?: CustomProps & {
-    /**
-     * The default variant to use (in variants)
-     */
+export interface ComponentTheme<P = {}> {
+  defaultProps?: {
     variant?: string
-    /**
-     * The default color scheme to use (if variants are defined as functions)
-     */
     colorScheme?: string
-    /**
-     * The default size to use (in sizes)
-     */
     size?: string
   }
-  /**
-   * The initial styles to be applied to the component
-   */
-  baseStyle?: ComponentStyle<CustomProps & ThemingProps>
-  /**
-   * The component's visual style variants
-   */
+  baseStyle?: ComponentStyle<P & ThemingProps>
   variants?: {
-    [variant: string]: ComponentStyle<CustomProps> | string
+    [Variant: string]: ComponentStyle<P> | string
   }
-  /**
-   * The component's size variations
-   */
   sizes?: {
-    [size: string]: ComponentStyle<CustomProps> | string
+    [Size: string]: ComponentStyle<P> | string
   }
 }
 
@@ -63,13 +39,9 @@ export function orientation<T = string>(horizontal: T, vertical: T) {
     props.orientation === "horizontal" ? horizontal : vertical
 }
 
-type RootStyles = { root?: SystemProps | ((props: Props) => SystemProps) }
-
-type ElementStyles = {
+export type Styles = {
   [K in keyof JSX.IntrinsicElements]?: SystemProps
-}
-
-export type Styles = ElementStyles & RootStyles
+} & { root?: SystemProps | ((props: Props) => SystemProps) }
 
 export function getOrientationStyle<T>(options: {
   orientation?: "vertical" | "horizontal"

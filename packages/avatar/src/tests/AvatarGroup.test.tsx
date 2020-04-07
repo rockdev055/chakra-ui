@@ -1,18 +1,19 @@
 import * as React from "react"
 import { render } from "@chakra-ui/test-utils"
-import { Avatar, AvatarGroup } from ".."
+import { Avatar } from "../Avatar"
+import { AvatarGroup } from "../AvatarGroup"
 
 test("AvatarGroup renders correctly", () => {
-  const tools = render(
+  const { asFragment } = render(
     <AvatarGroup>
       <Avatar />
     </AvatarGroup>,
   )
-  expect(tools.asFragment()).toMatchSnapshot()
+  expect(asFragment()).toMatchSnapshot()
 })
 
 test("renders a number avatar showing count of truncated avatars", () => {
-  const tools = render(
+  const { getByText } = render(
     <AvatarGroup max={2}>
       <Avatar />
       <Avatar />
@@ -21,6 +22,5 @@ test("renders a number avatar showing count of truncated avatars", () => {
       <Avatar />
     </AvatarGroup>,
   )
-  const moreLabel = tools.getByText("+3")
-  expect(moreLabel).toBeInTheDocument()
+  getByText("+3")
 })

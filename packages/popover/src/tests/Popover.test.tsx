@@ -1,14 +1,14 @@
 import * as React from "react"
-import { fireEvent, render, wait } from "@chakra-ui/test-utils"
+import { render, wait, fireEvent, userEvent } from "@chakra-ui/test-utils"
 import { usePopover } from ".."
 
 const Component = () => {
-  const { getTriggerProps, getPopoverProps, onClose } = usePopover()
+  const { trigger, popover, onClose } = usePopover()
 
   return (
     <div>
-      <button {...getTriggerProps()}>Open</button>
-      <div {...getPopoverProps()}>Popover content</div>
+      <button {...trigger}>Open</button>
+      <div {...popover}>Popover content</div>
       <button onClick={onClose}>Close</button>
     </div>
   )

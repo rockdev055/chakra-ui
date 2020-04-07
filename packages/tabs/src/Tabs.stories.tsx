@@ -13,13 +13,11 @@ export default {
   ],
 }
 
-export const automatic = () => (
-  <Tabs>
+export const Basic = () => (
+  <Tabs colorScheme="blue">
     <TabList>
       <Tab>Settings</Tab>
-      <Tab isDisabled isFocusable>
-        Billings
-      </Tab>
+      <Tab>Billings</Tab>
       <Tab>Preferences</Tab>
       <Tab>Shut Down</Tab>
     </TabList>
@@ -32,28 +30,11 @@ export const automatic = () => (
   </Tabs>
 )
 
-export const manual = () => (
-  <Tabs isManual>
-    <TabList>
-      <Tab>Settings</Tab>
-      <Tab>Billings</Tab>
-      <Tab isDisabled>Preferences</Tab>
-      <Tab>Shut Down</Tab>
-    </TabList>
-    <TabPanels>
-      <TabPanel>Settings</TabPanel>
-      <TabPanel>Billings</TabPanel>
-      <TabPanel>Preferences</TabPanel>
-      <TabPanel>Shut Down</TabPanel>
-    </TabPanels>
-  </Tabs>
-)
-
-export const withIndicator = () => (
+export const WithIndicator = () => (
   <Tabs variant="unstyled" isManual>
     <TabList>
       <Tab>Settings</Tab>
-      <Tab isDisabled>Billings</Tab>
+      <Tab>Billings</Tab>
       <Tab>Preferences</Tab>
       <Tab>Shut Down</Tab>
     </TabList>
