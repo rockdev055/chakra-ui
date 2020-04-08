@@ -1,5 +1,4 @@
 import { chakra } from "@chakra-ui/system"
-import { action } from "@storybook/addon-actions"
 import React from "react"
 import { useNumberInput } from "./NumberInput.hook"
 import {
@@ -21,31 +20,38 @@ export default {
   ],
 }
 
+const Input = chakra("input", { themeKey: "Input" })
+const Button = chakra("button", { themeKey: "Button" })
+
 export function NumberInputHook() {
+  const props = {
+    step: 0.01,
+    defaultValue: 1.53,
+    min: -4,
+    max: 6,
+    onChange: console.log,
+  }
+
   const {
     getInputProps,
     getIncrementButtonProps,
     getDecrementButtonProps,
     valueAsNumber,
-  } = useNumberInput({
-    step: 0.01,
-    defaultValue: 1.53,
-    min: -4,
-    max: 6,
-    precision: 4,
-    onChange: action("onChange"),
-  })
+  } = useNumberInput(props)
+
   return (
-    <div>
+    <>
       <div>current: {valueAsNumber}</div>
-      <button tabIndex={-1} {...getIncrementButtonProps()}>
-        +
-      </button>
-      <input {...getInputProps()} />
-      <button tabIndex={-1} {...getDecrementButtonProps()}>
-        -
-      </button>
-    </div>
+      <chakra.div display="flex">
+        <Button tabIndex={-1} {...getIncrementButtonProps()}>
+          +
+        </Button>
+        <Input {...(getInputProps() as any)} />
+        <Button tabIndex={-1} {...getDecrementButtonProps()}>
+          -
+        </Button>
+      </chakra.div>
+    </>
   )
 }
 
