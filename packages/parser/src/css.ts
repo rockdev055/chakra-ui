@@ -18,13 +18,6 @@ const hasTheme = (props: any): props is { theme: Dict } => {
 
 type PropsOrTheme = Dict | { theme: Dict }
 
-/**
- * 1. perf benchmark against theme-ui/css
- *
- * 2. Write the theme object to CSS vars onMount
- * paddingX = "md"
- * paddingLeft: var(--space-md)
- */
 export const css = (input: StyleObjectOrFn) => (props: PropsOrTheme) => {
   const theme = hasTheme(props) ? props.theme : props
 
