@@ -1,29 +1,25 @@
 import {
   useBooleanState,
-  useControllableState,
   useDimensions,
-  useEventCallback,
-  useEventListener,
+  useControllableState,
   useIds,
-  useUpdateEffect,
 } from "@chakra-ui/hooks"
 import {
-  ariaAttr,
-  callAllHandlers,
   clampValue,
   createOnKeyDown,
-  dataAttr,
-  deepmerge as merge,
-  Dict,
-  ensureFocus,
-  getBox,
-  getOwnerDocument,
-  mergeRefs,
   percentToValue,
   roundValueToStep,
   valueToPercent,
+  getBox,
+  dataAttr,
+  ariaAttr,
+  callAllHandlers,
+  mergeRefs,
+  Dict,
 } from "@chakra-ui/utils"
 import * as React from "react"
+
+// http://muffinman.io/aria-progress-range-slider/
 
 export interface UseSliderProps {
   /**
@@ -127,9 +123,8 @@ export function useSlider(props: UseSliderProps) {
     ...htmlProps
   } = props
 
-  const [isDragging, setDragging] = useBooleanState()
+  const [isPointerDown, setPointerDown] = useBooleanState()
   const [isFocused, setFocused] = useBooleanState()
-  const [source, setSource] = React.useState<"mouse" | "touch" | "keyboard">()
 
   const [sliderValue, updateValue] = useControllableState({
     value: valueProp,
@@ -137,16 +132,9 @@ export function useSlider(props: UseSliderProps) {
     onChange,
   })
 
-  const mouseDownDetach = React.useRef<Function>()
-  const touchstartDetach = React.useRef<Function>()
-  const touchendDetach = React.useRef<Function>()
-  const mouseupDetach = React.useRef<Function>()
-  const touchcancelDetach = React.useRef<Function>()
-
   // Constrain the value because it can't be less than min
   // or greater than max
   const value = clampValue(sliderValue, min, max)
-  const prev = React.useRef<number>()
 
   const reversedValue = max - value + min
   const trackValue = isReversed ? reversedValue : value
@@ -155,19 +143,18 @@ export function useSlider(props: UseSliderProps) {
   const isVertical = orientation === "vertical"
 
   // Let's keep a reference to the slider track and thumb
-  const trackRef = React.useRef<any>(null)
-  const thumbRef = React.useRef<any>(null)
-  const rootRef = React.useRef<any>(null)
+  const trackRef = React.useRef<any>()
+  const thumbRef = React.useRef<any>()
 
   const [thumbId, trackId] = useIds(idProp, `slider-thumb`, `slider-track`)
 
   const getValueFromPointer = React.useCallback(
-    (event: any) => {
+    (event: React.PointerEvent) => {
       if (!trackRef.current) return
 
       const trackRect = getBox(trackRef.current).borderBox
 
-      const { clientX, clientY } = event.touches?.[0] ?? event
+      const { clientX, clientY } = event
 
       const diff = isVertical
         ? trackRect.bottom - clientY
@@ -183,7 +170,7 @@ export function useSlider(props: UseSliderProps) {
       let nextValue = percentToValue(percent, min, max)
 
       if (step) {
-        nextValue = parseFloat(roundValueToStep(nextValue, step))
+        nextValue = +roundValueToStep(nextValue, step)
       }
 
       nextValue = clampValue(nextValue, min, max)
@@ -193,22 +180,71 @@ export function useSlider(props: UseSliderProps) {
     [isVertical, isReversed, max, min, step],
   )
 
+  const onPointerDown = React.useCallback(
+    (event: React.PointerEvent) => {
+      event.preventDefault()
+
+      if (isDisabled || !trackRef.current) return
+
+      setPointerDown.on()
+
+      onChangeStart?.(value)
+
+      const nextValue = getValueFromPointer(event)
+      trackRef.current.setPointerCapture(event.pointerId)
+
+      if (nextValue && nextValue !== value) {
+        updateValue(nextValue)
+      }
+
+      thumbRef.current?.focus()
+    },
+    [
+      isDisabled,
+      setPointerDown,
+      onChangeStart,
+      value,
+      getValueFromPointer,
+      updateValue,
+    ],
+  )
+
+  const onPointerUp = React.useCallback(
+    (event: React.PointerEvent) => {
+      setPointerDown.off()
+      trackRef.current?.releasePointerCapture(event.pointerId)
+      onChangeEnd?.(value)
+    },
+    [onChangeEnd, setPointerDown, value],
+  )
+
+  const onPointerMove = React.useCallback(
+    (event: React.PointerEvent) => {
+      if (!isPointerDown) return
+
+      const nextValue = getValueFromPointer(event)
+      if (nextValue && nextValue !== value) {
+        updateValue(nextValue)
+      }
+    },
+    [isPointerDown, updateValue, getValueFromPointer, value],
+  )
+
   const tenSteps = (max - min) / 10
   const stepSize = step || (max - min) / 100
 
   const constrain = React.useCallback(
     (value: number) => {
-      prev.current = value
-      value = parseFloat(roundValueToStep(value, stepSize))
-      value = clampValue(value, min, max)
-      updateValue(value)
+      let nextValue = value
+      nextValue = parseFloat(roundValueToStep(nextValue, stepSize))
+      nextValue = clampValue(nextValue, min, max)
+      updateValue(nextValue)
     },
     [stepSize, max, min, updateValue],
   )
 
   const onKeyDown = createOnKeyDown({
     stopPropagation: true,
-    onKey: () => setSource("keyboard"),
     keyMap: {
       ArrowRight: () => constrain(value + stepSize),
       ArrowUp: () => constrain(value + stepSize),
@@ -253,7 +289,6 @@ export function useSlider(props: UseSliderProps) {
     touchAction: "none",
     WebkitTapHighlightColor: "rgba(0,0,0,0)",
     userSelect: "none",
-    outline: 0,
     ...getOrientationValue({
       orientation,
       vertical: {
@@ -304,141 +339,33 @@ export function useSlider(props: UseSliderProps) {
     [constrain, value, stepSize, defaultValue],
   )
 
-  useUpdateEffect(() => {
-    if (thumbRef.current) {
-      ensureFocus(thumbRef.current)
-    }
-  }, [value])
-
-  useUpdateEffect(() => {
-    const shouldUpdate =
-      !isDragging && source !== "keyboard" && prev.current !== value
-
-    if (shouldUpdate) {
-      onChangeEnd?.(value)
-    }
-  }, [isDragging, onChangeEnd, value, source])
-
-  const onMouseDown = useEventCallback((event: MouseEvent) => {
-    // prevent update if it's right-click
-    if (event.button != 0) return
-
-    if (isDisabled || !rootRef.current) return
-    setDragging.on()
-    prev.current = value
-    onChangeStart?.(value)
-
-    const doc = getOwnerDocument(rootRef.current)
-
-    const run = (event: MouseEvent) => {
-      const nextValue = getValueFromPointer(event)
-
-      if (nextValue && nextValue !== value) {
-        setSource("mouse")
-        updateValue(nextValue)
-      }
-    }
-
-    run(event)
-
-    doc.addEventListener("mousemove", run)
-
-    const clean = () => {
-      doc.removeEventListener("mousemove", run)
-      setDragging.off()
-    }
-
-    doc.addEventListener("mouseup", clean)
-    mouseupDetach.current = () => {
-      doc.removeEventListener("mouseup", clean)
-    }
-  })
-
-  const onTouchStart = useEventCallback((event: TouchEvent) => {
-    if (isDisabled || !rootRef.current) return
-
-    // Prevent scrolling for touch events
-    event.preventDefault()
-
-    setDragging.on()
-    prev.current = value
-    onChangeStart?.(value)
-
-    const doc = getOwnerDocument(rootRef.current)
-
-    const run = (event: TouchEvent) => {
-      const nextValue = getValueFromPointer(event)
-
-      if (nextValue && nextValue !== value) {
-        setSource("touch")
-        updateValue(nextValue)
-      }
-    }
-
-    run(event)
-
-    doc.addEventListener("touchmove", run)
-
-    const clean = () => {
-      doc.removeEventListener("touchmove", run)
-      setDragging.off()
-    }
-
-    doc.addEventListener("touchend", clean)
-    doc.addEventListener("touchcancel", clean)
-
-    touchendDetach.current = () => doc.removeEventListener("touchend", clean)
-    touchcancelDetach.current = () => {
-      doc.removeEventListener("touchcancel", clean)
-    }
-  })
-
-  useUpdateEffect(() => {
-    if (!isDragging) {
-      mouseDownDetach.current?.()
-      touchstartDetach.current?.()
-      touchendDetach.current?.()
-      touchcancelDetach.current?.()
-      mouseupDetach.current?.()
-    }
-  }, [isDragging])
-
-  mouseDownDetach.current = useEventListener(
-    "mousedown",
-    onMouseDown,
-    rootRef.current,
-  )
-  touchstartDetach.current = useEventListener(
-    "touchstart",
-    onTouchStart,
-    rootRef.current,
-  )
-
   return {
     state: {
       value,
       isFocused,
-      isDragging: isDragging,
+      isDragging: isPointerDown,
     },
     actions,
     getRootProps: (props: Dict = {}) => ({
       ...props,
-      ref: mergeRefs(props.ref, rootRef),
       tabIndex: -1,
       "aria-disabled": ariaAttr(isDisabled),
       "data-focused": dataAttr(isFocused),
-      style: merge(props.style, rootStyle),
+      onPointerDown: callAllHandlers(props.onPointerDown, onPointerDown),
+      onPointerUp: callAllHandlers(props.onPointerUp, onPointerUp),
+      onPointerMove: callAllHandlers(props.onPointerMove, onPointerMove),
+      style: { ...props.style, ...rootStyle },
     }),
     getTrackProps: (props: Dict = {}) => ({
       ...props,
       ref: mergeRefs(props.ref, trackRef),
       id: trackId,
       "data-disabled": dataAttr(isDisabled),
-      style: merge(props.style, trackStyle),
+      style: { ...props.style, ...trackStyle },
     }),
     getInnerTrackProps: (props: Dict = {}) => ({
       ...props,
-      style: merge(props.style, innerTrackStyle),
+      style: { ...props.style, ...innerTrackStyle },
     }),
     getThumbProps: (props: Dict = {}) => ({
       ...props,
@@ -446,7 +373,6 @@ export function useSlider(props: UseSliderProps) {
       role: "slider",
       tabIndex: 0,
       id: thumbId,
-      "data-active": dataAttr(isDragging),
       "aria-valuetext": valueText,
       "aria-valuemin": min,
       "aria-valuemax": max,
@@ -455,7 +381,7 @@ export function useSlider(props: UseSliderProps) {
       "aria-disabled": ariaAttr(isDisabled),
       "aria-label": ariaLabel,
       "aria-labelledby": ariaLabel ? undefined : ariaLabelledBy,
-      style: merge(props.style, thumbStyle),
+      style: { ...props.style, ...thumbStyle },
       onKeyDown: callAllHandlers(props.onKeyDown, onKeyDown),
       onFocus: callAllHandlers(props.onFocus, setFocused.on),
       onBlur: callAllHandlers(props.onBlur, setFocused.off),
@@ -482,7 +408,7 @@ export function useSlider(props: UseSliderProps) {
         "data-disabled": dataAttr(isDisabled),
         "data-invalid": dataAttr(!isInRange),
         "data-highlighted": dataAttr(isHighlighted),
-        style: merge(props.style, markerStyle),
+        style: { ...props.style, ...markerStyle },
       }
     },
     getInputProps: (props: Dict = {}) => ({

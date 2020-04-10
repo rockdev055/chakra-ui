@@ -58,6 +58,7 @@ export function Slider(props: SliderProps) {
     <SliderProvider value={context}>
       <ThemingProvider value={themingProps}>
         <StyledSlider
+          touch-action="none"
           data-chakra-slider=""
           {...themingProps}
           {...getRootProps(htmlProps)}
