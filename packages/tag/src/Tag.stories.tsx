@@ -15,21 +15,7 @@ export default {
   ],
 }
 
-/**
- * A simple tag component
- */
-
 export const Basic = () => (
-  <>
-    <Tag>Gray</Tag>
-  </>
-)
-
-/**
- * Pass the `size` prop to change the size of the tag component
- */
-
-export const Size = () => (
   <>
     <Tag size="sm" colorScheme="gray">
       Gray
@@ -40,11 +26,6 @@ export const Size = () => (
     </Tag>
   </>
 )
-
-/**
- * Pass the `colorScheme` prop to use any color in the theme object to
- * change the color of the tag component
- */
 
 export const colorSchemes = () => (
   <>
@@ -63,15 +44,6 @@ export const LeftIcon = () => (
     <Tag colorScheme="cyan">
       <TagIcon size="12px" as={AddIcon} />
       <TagLabel>Green</TagLabel>
-    </Tag>
-  </>
-)
-
-export const RightIcon = () => (
-  <>
-    <Tag colorScheme="cyan">
-      <TagLabel>Green</TagLabel>
-      <TagIcon size="12px" as={AddIcon} />
     </Tag>
   </>
 )
