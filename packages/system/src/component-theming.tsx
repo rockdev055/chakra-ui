@@ -4,7 +4,6 @@ import { useThemeDefaultProps } from "./hooks"
 
 const [ThemingProvider, useThemingContext] = createContext<ThemingProps>({
   strict: false,
-  name: "ComponentTheme",
 })
 
 export { ThemingProvider, useThemingContext }
