@@ -1,6 +1,10 @@
 import { isFunction, isUndefined, valueToPercent } from "@chakra-ui/utils"
 import { keyframes } from "@chakra-ui/system"
 
+/**
+ * CSS Animation for progress spin effect
+ */
+
 export const spin = keyframes`
   0% {
     stroke-dasharray: 1, 400;
@@ -17,34 +21,51 @@ export const spin = keyframes`
     stroke-dashoffset: -260;
   }
 `
+/**
+ * CSS Animation for progress rotate effect
+ */
 
 export const rotate = keyframes`
   0% { transform: rotate(0deg) }
   100% { transform: rotate(360deg) }
 `
 
+/**
+ * CSS Animation for progress indeterminate effect
+ */
+
 export const progress = keyframes`
   0% { left: -40% }
   100% { left: 100% }
 `
+
+/**
+ * CSS Animation for progress stripe effect
+ */
 
 export const stripe = keyframes`
   from { background-position: 1rem 0}
   to { background-position: 0 0 }
 `
 
-export interface ProgressPropsOptions {
+export interface GetProgressPropsOptions {
   value?: number
   min: number
   max: number
   valueText?: string
-  getValueText?: (value?: number, percent?: number) => string
+  getValueText?(value?: number, percent?: number): string
 }
 
-export function getProgressProps(options: ProgressPropsOptions) {
+/**
+ * Get the common `aria-*` attributes for both the linear and circular
+ * progress components.
+ */
+export function getProgressProps(options: GetProgressPropsOptions) {
   const percent = options.value
     ? valueToPercent(options.value, options.min, options.max)
     : undefined
+
+  // A progressbar is indeterminate when the `value` is undefined
   const isIndeterminate = isUndefined(options.value)
 
   return {

@@ -1,41 +1,66 @@
 import * as React from "react"
-import { CircularProgress, CircularProgressLabel } from "./Progress.circular"
-import { Progress } from "./Progress"
+import { Progress, ProgressLabel } from "."
+import { chakra } from "@chakra-ui/system"
 
 export default {
-  title: "Progress",
+  title: "Linear Progress",
+  decorators: [
+    (story: Function) => (
+      <chakra.div maxW="500px" mt="40px" mx="auto">
+        {story()}
+      </chakra.div>
+    ),
+  ],
 }
 
-export const BasicUsage = () => <Progress value={50} />
+export const basic = () => <Progress value={50} />
 
-export const WithThemeColor = () => <Progress color="pink" value={20} />
+/**
+ * Pass the `colorScheme` prop to change the color of the
+ * indicator of the progress component
+ */
+export const withColorScheme = () => <Progress colorScheme="pink" value={20} />
 
-export const linearIndeterminate = () => (
-  <Progress margin="20px" size="xs" value={undefined} />
+/**
+ * Pass the `value` prop as `undefined` to put the progress component in
+ * the indeterminate state
+ */
+export const indeterminate = () => (
+  <Progress margin="20px" colorScheme="red" size="xs" value={undefined} />
 )
 
-export const WithStripe = () => <Progress color="green" hasStripe value={20} />
+export const withLabel = () => (
+  <Progress value={60}>
+    <ProgressLabel>60%</ProgressLabel>
+  </Progress>
+)
 
-export const WithSizes = () => (
+/**
+ * Pass the `hasStripe` prop to have a beautiful gradient to create a striped effect
+ */
+
+export const withStripe = () => (
+  <Progress colorScheme="green" hasStripe value={20} />
+)
+
+/**
+ * Pass the `size` prop to change the height of the progress component.
+ * Allowed `size` values are sm, md, lg
+ */
+export const withSizes = () => (
   <div>
-    <Progress color="green" size="sm" value={20} />
+    <Progress colorScheme="green" size="sm" value={20} />
     <br />
-    <Progress color="green" size="md" value={20} />
+    <Progress colorScheme="green" size="md" value={20} />
     <br />
-    <Progress color="green" size="lg" value={20} />
+    <Progress colorScheme="green" size="lg" value={20} />
   </div>
 )
 
-export const WithAnimation = () => (
-  <Progress color="green" hasStripe isAnimated value={20} />
-)
-
-export const circularProgress = () => (
-  <CircularProgress size="120px" value={60}>
-    <CircularProgressLabel>60%</CircularProgressLabel>
-  </CircularProgress>
-)
-
-export const circularIndeterminate = () => (
-  <CircularProgress trackColor="transparent" size="200px" value={undefined} />
+/**
+ * Pass the `isAnimated` prop combined with the `hasStrip` prop
+ * to get a beautifully animated progress component
+ */
+export const withAnimation = () => (
+  <Progress colorScheme="green" hasStripe isAnimated value={20} />
 )
