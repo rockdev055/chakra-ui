@@ -1,19 +1,30 @@
 {
-  "extends": "./tsconfig.build.json",
   "compilerOptions": {
-    "outDir": "build/lib",
-    "rootDirs": ["packages"],
-    "types": ["jest"],
-    "typeRoots": ["./node_modules/@types", "./packages/**/*/@types"]
+    "target": "es5",
+    "module": "esnext",
+    "lib": ["dom", "esnext"],
+    "importHelpers": true,
+    "moduleResolution": "node",
+    "declaration": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "pretty": true,
+    "sourceMap": true,
+    "noFallthroughCasesInSwitch": false,
+    "noImplicitAny": true,
+    "strictFunctionTypes": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
+    "jsx": "react",
+    "esModuleInterop": true,
+    "preserveSymlinks": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": false,
+    "emitDecoratorMetadata": false,
+    "alwaysStrict": true,
+    "allowJs": true,
+    "stripInternal": true,
+    "outDir": "dist/esm"
   },
-  "include": ["packages/**/*", "next-env.d.ts", "docs"],
-  "exclude": [
-    "node_modules",
-    "build",
-    "scripts",
-    "**/*.spec.ts",
-    "**/*.spec.tsx",
-    "**/*.test.ts",
-    "**/*.test.tsx"
-  ]
+  "exclude": ["node_modules", "**/*.test.js", "**/*.test.ts", "**/*.test.tsx"]
 }

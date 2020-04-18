@@ -20,32 +20,26 @@ export default {
   ],
 }
 
-/**
- * A simple input component
- */
-
-export const Basic = () => {
-  return <Input placeholder="Basic input" />
-}
-
-/**
- *
- */
-
 export const States = () => (
   <>
-    <Input placeholder="Idle" marginBottom="1rem" />
-    <Input isInvalid placeholder="isInvalid" marginBottom="1rem" />
-    <Input isDisabled placeholder="isDisabled" marginBottom="1rem" />
+    <Input placeholder="Idle" />
+    <br />
+    <Input isInvalid placeholder="isInvalid" />
+    <br />
+    <Input isDisabled placeholder="isDisabled" />
+    <br />
     <Input isReadOnly placeholder="isReadonly" />
   </>
 )
 
 export const Variants = () => (
   <>
-    <Input variant="outline" placeholder="Outline" marginBottom="1rem" />
-    <Input variant="filled" placeholder="Filled" marginBottom="1rem" />
-    <Input variant="flushed" placeholder="Flushed" marginBottom="1rem" />
+    <Input variant="outline" placeholder="Outline" />
+    <br />
+    <Input variant="filled" placeholder="Filled" />
+    <br />
+    <Input variant="flushed" placeholder="Flushed" />
+    <br />
     <Input variant="unstyled" placeholder="Unstyled" />
   </>
 )
