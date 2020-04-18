@@ -1,5 +1,4 @@
 import { Omit, Dict } from "./types"
-import merge from "deepmerge"
 
 export function omit<T extends Dict, K extends keyof T>(object: T, keys: K[]) {
   const result: Dict = {}
@@ -68,4 +67,4 @@ export function getWithDefault(path: any, scale: any) {
   return get(scale, path, path)
 }
 
-export { merge }
+export { default as merge } from "deepmerge"

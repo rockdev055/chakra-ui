@@ -1,6 +1,5 @@
 import { FunctionArguments } from "./types"
 import { isFunction } from "./assertion"
-import memoizeOne from "memoize-one"
 
 export function runIfFn<T, U>(
   valueOrFn: T | ((...args: U[]) => T),
@@ -20,7 +19,7 @@ export function callAllHandlers<T extends (event: any) => void>(
   }
 }
 
-export { memoizeOne }
+export { default as memoizeOne } from "memoize-one"
 
 export function once(fn?: Function | null) {
   let result: any

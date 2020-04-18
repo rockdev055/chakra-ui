@@ -1,31 +1,26 @@
 {
-  "include": ["src", "types"],
-  "exclude": [
-    "**/*.spec.ts",
-    "**/*.spec.tsx",
-    "**/*.test.ts",
-    "**/*.test.tsx",
-    "**/*/*.stories.tsx"
-  ],
   "compilerOptions": {
     "target": "es5",
     "module": "esnext",
     "lib": ["dom", "esnext"],
     "importHelpers": true,
+    "preserveSymlinks": true,
+    "moduleResolution": "node",
     "declaration": true,
     "sourceMap": true,
-    "rootDir": "./",
+    "skipLibCheck": true,
+    "pretty": true,
+    "allowJs": true,
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
+    "strictPropertyInitialization": true,
     "strictFunctionTypes": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
     "noFallthroughCasesInSwitch": true,
-    "types": ["jest"],
-    "moduleResolution": "node",
-    "baseUrl": "./",
-    "paths": {
-      "*": ["src/*", "node_modules/*"]
-    },
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "jsx": "react",
     "esModuleInterop": true
   }

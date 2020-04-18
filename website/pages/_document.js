@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import NextDocument, { Html, Head, Main, NextScript } from "next/document"
 
 const GTMScript = () => (

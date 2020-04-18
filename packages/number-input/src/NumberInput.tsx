@@ -7,7 +7,7 @@ import {
   useThemingContext,
 } from "@chakra-ui/system"
 import { createContext, __DEV__ } from "@chakra-ui/utils"
-import * as React from "react"
+import React from "react"
 import {
   useNumberInput,
   UseNumberInputProps,

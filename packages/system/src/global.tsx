@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { Global as EmotionGlobal, Interpolation } from "@emotion/core"
 import { useColorMode, ColorMode } from "@chakra-ui/color-mode"
 import { css } from "@chakra-ui/parser"
