@@ -5,10 +5,10 @@ import { SystemProps } from "./parser.types"
 
 const fallbackBreakpoints = { sm: 400, md: 700, lg: 1000 }
 
-export function createParser(configObject: ConfigObject) {
+export function createParser(configs: ConfigObject) {
   const cache: { breakpoints?: Dict } = {}
 
-  const parser = <P = {}>(props: SystemProps & { theme: object } & P) => {
+  const parser = (props: SystemProps & { theme: object }) => {
     /**
      * Get the breakpoints from theme or cache
      */
@@ -20,13 +20,13 @@ export function createParser(configObject: ConfigObject) {
      */
     const processor = createProcessor(cache.breakpoints as Dict)
 
-    const allConfigs = transformConfig(configObject, props.theme)
+    const allConfigs = transformConfig(configs, props.theme)
 
     for (const prop in props) {
       /**
        * No need to process if prop is theme, or there's no configs for this prop
        */
-      if (prop === "theme" || configObject[prop] == null) continue
+      if (prop === "theme" || configs[prop] == null) continue
 
       const valueOrFn = props[prop as keyof typeof props]
       const value = runIfFn(valueOrFn, props.theme)
@@ -48,18 +48,18 @@ export function createParser(configObject: ConfigObject) {
        */
       if (isArray(config)) {
         config.forEach((propConfig: any) => {
-          processor.apply({ ...propConfig, value, props })
+          processor.apply({ ...propConfig, value })
         })
       } else {
-        processor.apply({ ...config, value, props })
+        processor.apply({ ...config, value })
       }
     }
 
     return processor.value()
   }
 
-  parser.config = configObject
-  parser.propNames = Object.keys(configObject)
+  parser.config = configs
+  parser.propNames = Object.keys(configs)
 
   return parser
 }

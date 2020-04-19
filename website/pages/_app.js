@@ -9,7 +9,7 @@ import {
 import { MDXProvider } from "@mdx-js/react"
 import { DefaultSeo } from "next-seo"
 import { useRouter } from "next/router"
-import * as React from "react"
+import React from "react"
 import DocsHeader from "../components/DocsHeader"
 import MDXComponents from "../components/MDXComponents"
 import SideNav from "../components/SideNav"

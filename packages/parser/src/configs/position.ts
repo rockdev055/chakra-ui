@@ -1,5 +1,6 @@
-import { ConfigObject, positiveOrNegative } from "../utils"
+import { ConfigObject } from "../utils/transform-config"
 import { createParser } from "../create-parser"
+import { positiveOrNegative } from "../utils/positive-or-negative"
 
 const common = {
   fallbackScale: [0, 4, 8, 16, 32, 64, 128, 256, 512],

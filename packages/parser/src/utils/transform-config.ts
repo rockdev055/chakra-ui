@@ -24,7 +24,7 @@ export interface StyleConfig {
   /**
    * A function to transform the raw value based on the scale.
    */
-  transform?: (value: any, scale: any, props: any) => any
+  transform?: (value: any, scale?: any) => any
 }
 
 export type Config = null | true | StyleConfig
@@ -80,10 +80,7 @@ export function transformConfig(configs: ConfigObject, theme: Dict) {
         ...(!!transform && { transform }),
         ...(!!scale && { scale: scaleFromTheme }),
       }))
-      return
     }
-
-    transformedConfig[prop] = config
   })
 
   return transformedConfig

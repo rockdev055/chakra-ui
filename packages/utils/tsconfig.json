@@ -1,7 +1,5 @@
 {
-  "extends": "../../tsconfig.json",
-  "compilerOptions": {
-    "outDir": "dist/esm"
-  },
-  "include": ["./src"]
+  "extends": "../../tsconfig.build.json",
+  "include": ["src", "types"],
+  "exclude": ["**/*.spec.ts", "**/*.spec.tsx", "**/*.test.ts", "**/*.test.tsx"]
 }

@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { Flex, Link } from "@chakra-ui/core"
 
 const PaginationLink = props => <Link fontWeight="bold" {...props} />

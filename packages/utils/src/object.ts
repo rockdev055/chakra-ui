@@ -1,5 +1,4 @@
 import { Omit, Dict } from "./types"
-import merge from "deepmerge"
 
 export function omit<T extends Dict, K extends keyof T>(object: T, keys: K[]) {
   const result: Dict = {}
@@ -68,14 +67,4 @@ export function getWithDefault(path: any, scale: any) {
   return get(scale, path, path)
 }
 
-export { merge }
-
-export function filterUndefined(object: Dict) {
-  const result = { ...object }
-  for (const item in result) {
-    if (typeof result[item] === "undefined") {
-      delete result[item]
-    }
-  }
-  return result
-}
+export { default as merge } from "deepmerge"

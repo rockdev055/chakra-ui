@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { NextSeo } from "next-seo"
 
 function SEO({ description, title }) {
