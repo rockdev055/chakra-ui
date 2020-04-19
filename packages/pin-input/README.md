@@ -8,10 +8,4 @@ for entering digits quickly.
 
 ```sh
 yarn add @chakra-ui/pin-input
-
-or
-
-npm i @chakra-ui/pin-input
 ```
-
-## Usage
