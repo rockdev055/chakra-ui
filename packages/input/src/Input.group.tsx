@@ -4,7 +4,7 @@ import {
   ThemingProps,
   useThemeDefaultProps,
 } from "@chakra-ui/system"
-import { createContext, __DEV__ } from "@chakra-ui/utils"
+import { createContext } from "@chakra-ui/utils"
 import * as React from "react"
 
 interface InputGroupContext {
@@ -23,13 +23,6 @@ const [InputGroupProvider, useInputGroup] = createContext<InputGroupContext>({
 export { useInputGroup }
 
 export type InputGroupProps = PropsOf<typeof chakra.div> & ThemingProps
-
-/**
- * InputGroup
- *
- * Wrapper element used to enhance an input with an InputAddon
- * or an InputElement
- */
 
 export const InputGroup = (props: InputGroupProps) => {
   const defaults = useThemeDefaultProps("Input")
@@ -61,8 +54,4 @@ export const InputGroup = (props: InputGroupProps) => {
       <InputGroupProvider value={context}>{children}</InputGroupProvider>
     </chakra.div>
   )
-}
-
-if (__DEV__) {
-  InputGroup.displayName = "InputGroup"
 }

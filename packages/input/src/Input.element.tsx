@@ -8,12 +8,6 @@ export type InputElementProps = PropsOf<typeof chakra.div> & {
   placement?: "left" | "right"
 }
 
-/**
- * InputElement
- *
- * Element to append or prepend to an input
- */
-
 export const InputElement = React.forwardRef(
   (props: InputElementProps, ref: React.Ref<any>) => {
     const { placement = "left", ...rest } = props
@@ -51,12 +45,6 @@ if (__DEV__) {
   InputElement.displayName = "InputElement"
 }
 
-/**
- * InputLeftElement
- *
- * Element to append to the left of an input
- */
-
 export const InputLeftElement = React.forwardRef(
   (props: PropsOf<typeof InputElement>, ref: React.Ref<any>) => {
     const group = useInputGroup()
@@ -75,12 +63,6 @@ export const InputLeftElement = React.forwardRef(
 if (__DEV__) {
   InputLeftElement.displayName = "InputLeftElement"
 }
-
-/**
- * InputRightElement
- *
- * Element to append to the right of an input
- */
 
 export const InputRightElement = React.forwardRef(
   (props: PropsOf<typeof InputElement>, ref: React.Ref<any>) => {
