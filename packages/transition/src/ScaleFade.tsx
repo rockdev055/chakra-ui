@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { Transition, TransitionProps } from "./Transition"
 
 function getTransitionStyles(initialScale: number) {

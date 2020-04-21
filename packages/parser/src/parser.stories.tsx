@@ -1,6 +1,6 @@
 /**@jsx jsx */
 import { jsx } from "@emotion/core"
-import { parser } from "."
+import { parser, css } from "."
 
 export default {
   title: "Parser",

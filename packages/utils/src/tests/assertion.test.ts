@@ -13,7 +13,6 @@ import {
   isString,
   isInputEvent,
   isEmpty,
-  isNotEmptyObject,
 } from "../assertion"
 
 test("is number", () => {
@@ -85,9 +84,4 @@ test("is string", () => {
 
 test("is input event", () => {
   expect(isInputEvent({ target: {} })).toBeTruthy()
-})
-
-test("should check is object is not empty", () => {
-  expect(isNotEmptyObject({})).toBeFalsy()
-  expect(isNotEmptyObject({ size: "sm" })).toBeTruthy()
 })

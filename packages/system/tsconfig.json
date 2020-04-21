@@ -1,6 +1,6 @@
 {
-  "extends": "../../tsconfig.json",
-  "include": ["src"],
+  "extends": "../../tsconfig.build.json",
+  "include": ["src", "types"],
   "exclude": [
     "src/theme.sample.ts",
     "src/tests",

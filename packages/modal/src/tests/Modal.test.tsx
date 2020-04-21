@@ -1,5 +1,5 @@
 import * as React from "react"
-import { render, fireEvent, axe, press } from "@chakra-ui/test-utils"
+import { render, userEvent, axe, press } from "@chakra-ui/test-utils"
 import { PortalManager } from "@chakra-ui/portal"
 import {
   Modal,
@@ -9,7 +9,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-} from "../Modal"
+} from ".."
 
 const renderWithPortal = (ui: React.ReactElement) =>
   render(<PortalManager>{ui}</PortalManager>)
@@ -100,7 +100,7 @@ test("should fire 'onClose' callback when close button is clicked", () => {
   /**
    * click the close button
    */
-  fireEvent.click(tools.getByTestId("close"))
+  userEvent.click(tools.getByTestId("close"))
 
   expect(onClose).toHaveBeenCalled()
 })
@@ -120,11 +120,10 @@ test('clicking overlay or pressing "esc" calls the onClose callback', () => {
 
   const overlay = tools.getByTestId("overlay")
 
-  // Not working in tests but working in browser. I'm guessing this is due to focus-trap
-  // fireEvent.click(overlay as HTMLElement)
-  // expect(onClose).toHaveBeenCalled()
+  userEvent.click(overlay)
+  expect(onClose).toHaveBeenCalled()
 
-  press.Escape(overlay as HTMLElement)
+  press.Escape(overlay)
   expect(onClose).toHaveBeenCalled()
 })
 
@@ -157,7 +156,7 @@ test("focuses the initial focus ref when opened", () => {
   /**
    * User clicks button to open the modal
    */
-  fireEvent.click(tools.getByTestId("button"))
+  userEvent.click(tools.getByTestId("button"))
 
   /**
    * We focus the input right away!
@@ -201,8 +200,8 @@ test("should return focus to button when closed", () => {
   expect(button).not.toHaveFocus()
 
   // open and close the modal
-  fireEvent.click(button)
-  fireEvent.click(tools.getByTestId("close"))
+  userEvent.click(button)
+  userEvent.click(tools.getByTestId("close"))
 
   expect(button).toHaveFocus()
 })

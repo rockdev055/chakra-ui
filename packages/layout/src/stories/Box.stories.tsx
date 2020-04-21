@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { Box, Flex, Spacer, Wrap, Kbd } from ".."
 
 export default {

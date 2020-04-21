@@ -3,40 +3,42 @@
 exports[`Tag renders correctly 1`] = `
 <DocumentFragment>
   <span
-    class="css-1ms1p9r"
+    class="css-1qa246m"
   >
     A
   </span>
   <span
-    class="css-1ms1p9r"
+    class="css-1qa246m"
   >
     <span
       class="css-1h8gyx6"
+      data-chakra-tag-label=""
     >
       B
     </span>
     <button
-      class="css-pi0mvu"
+      class="css-1w1jg1l"
     >
       <svg
-        class="css-vp3v0l"
+        class="css-clmwf0"
         focusable="false"
         role="presentation"
-        viewBox="0 0 512 512"
+        viewBox="0 0 24 24"
       >
         <path
-          d="M289.94 256l95-95A24 24 0 00351 127l-95 95-95-95a24 24 0 00-34 34l95 95-95 95a24 24 0 1034 34l95-95 95 95a24 24 0 0034-34z"
+          d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
           fill="currentColor"
         />
       </svg>
     </button>
   </span>
   <span
-    class="css-1ms1p9r"
+    class="css-1qa246m"
   >
     <svg
-      class="css-ydks6r"
+      class="css-185pyue"
       data-chakra-custom-icon=""
+      data-chakra-tag-icon=""
       focusable="false"
       role="presentation"
       viewBox="0 0 24 24"
@@ -48,20 +50,21 @@ exports[`Tag renders correctly 1`] = `
     </svg>
     <span
       class="css-1h8gyx6"
+      data-chakra-tag-label=""
     >
       C
     </span>
     <button
-      class="css-pi0mvu"
+      class="css-1w1jg1l"
     >
       <svg
-        class="css-vp3v0l"
+        class="css-clmwf0"
         focusable="false"
         role="presentation"
-        viewBox="0 0 512 512"
+        viewBox="0 0 24 24"
       >
         <path
-          d="M289.94 256l95-95A24 24 0 00351 127l-95 95-95-95a24 24 0 00-34 34l95 95-95 95a24 24 0 1034 34l95-95 95 95a24 24 0 0034-34z"
+          d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
           fill="currentColor"
         />
       </svg>

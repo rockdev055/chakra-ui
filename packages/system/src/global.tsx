@@ -1,7 +1,7 @@
-import * as React from "react"
+import React from "react"
 import { Global as EmotionGlobal, Interpolation } from "@emotion/core"
 import { useColorMode, ColorMode } from "@chakra-ui/color-mode"
-import { css } from "@chakra-ui/css"
+import { css } from "@chakra-ui/parser"
 import { get, runIfFn } from "@chakra-ui/utils"
 
 export interface GlobalProps {
@@ -23,8 +23,7 @@ export function GlobalStyle() {
         if (!styleOrFn) return
 
         const globalStyle = runIfFn(styleOrFn, { colorMode })
-        const styles = css({ body: globalStyle })(theme)
-        return styles as Interpolation
+        return css({ body: globalStyle })(theme)
       }}
     />
   )

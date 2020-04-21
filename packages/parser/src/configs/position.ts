@@ -1,8 +1,13 @@
-import * as CSS from "csstype"
-import { Config, positiveOrNegative, Prop, Length } from "../utils"
+import { ConfigObject } from "../utils/transform-config"
 import { createParser } from "../create-parser"
+import { positiveOrNegative } from "../utils/positive-or-negative"
 
-const config: Config = {
+const common = {
+  fallbackScale: [0, 4, 8, 16, 32, 64, 128, 256, 512],
+  transform: positiveOrNegative,
+}
+
+const config: ConfigObject = {
   position: true,
   pos: {
     property: "position",
@@ -14,85 +19,39 @@ const config: Config = {
   inset: {
     properties: ["left", "top", "bottom", "right"],
     scale: "space",
-    transform: positiveOrNegative,
+    ...common,
   },
   insetX: {
     properties: ["left", "right"],
     scale: "space",
-    transform: positiveOrNegative,
+    ...common,
   },
   insetY: {
     properties: ["top", "bottom"],
     scale: "space",
-    transform: positiveOrNegative,
+    ...common,
   },
 
   top: {
     property: "top",
     scale: "space",
-    transform: positiveOrNegative,
+    ...common,
   },
   right: {
     property: "right",
     scale: "space",
-    transform: positiveOrNegative,
+    ...common,
   },
   bottom: {
     property: "bottom",
     scale: "space",
-    transform: positiveOrNegative,
+    ...common,
   },
   left: {
     property: "left",
     scale: "space",
-    transform: positiveOrNegative,
+    ...common,
   },
-}
-
-/**
- * Types for position CSS properties
- */
-export interface PositionProps {
-  /**
-   * The CSS `z-index` property
-   */
-  zIndex?: Prop<string | CSS.ZIndexProperty>
-  /**
-   * The CSS `top` property
-   */
-  top?: Prop<CSS.TopProperty<Length>>
-  /**
-   * The CSS `right` property
-   */
-  right?: Prop<CSS.RightProperty<Length>>
-  /**
-   * The CSS `bottom` property
-   */
-  bottom?: Prop<CSS.BottomProperty<Length>>
-  /**
-   * The CSS `left` property
-   */
-  left?: Prop<CSS.LeftProperty<Length>>
-  /**
-   * The CSS `left`, `right`, `top`, `bottom` property
-   */
-  inset?: Prop<CSS.LeftProperty<Length>>
-  /**
-   * The CSS `left`, and `right` property
-   */
-  insetX?: Prop<CSS.LeftProperty<Length>>
-  /**
-   * The CSS `top`, and `bottom` property
-   */
-  insetY?: Prop<CSS.LeftProperty<Length>>
-  /**
-   * The CSS `position` property
-   */
-  pos?: Prop<CSS.PositionProperty>
-  /**
-   * The CSS `position` property
-   */
-  position?: Prop<CSS.PositionProperty>
 }
 
 export const position = createParser(config)

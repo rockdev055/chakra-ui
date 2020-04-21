@@ -11,9 +11,8 @@ import {
   space,
   typography,
   layout,
-  outline,
+  pseudoPropNames,
 } from "./configs"
-import { pseudoPropNames } from "./pseudo"
 
 export const parser = combineParsers(
   background,
@@ -21,7 +20,6 @@ export const parser = combineParsers(
   color,
   flexbox,
   layout,
-  outline,
   grid,
   others,
   position,
