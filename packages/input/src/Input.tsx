@@ -23,6 +23,7 @@ interface InputOptions {
    * If `true`, the input element will span the full width of it's parent
    */
   isFullWidth?: boolean
+  size?: any
 }
 
 export type InputProps = Omit<PropsOf<typeof StyledInput>, OmittedTypes> &
@@ -34,13 +35,19 @@ const StyledInput = chakra<"input", InputOptions>("input", {
     !["focusBorderColor", "errorBorderColor"].includes(prop),
 })
 
+/**
+ * Input
+ *
+ * Element that allows users enter single valued data.
+ */
+
 export const Input = React.forwardRef(
   (props: InputProps, ref: React.Ref<HTMLInputElement>) => {
     const inputProps = useFormControl<HTMLInputElement>(props)
     const group = useInputGroup()
 
     const variant = group?.variant || props.variant
-    const size = (group?.size || props.size) as any
+    const size = group?.size || props.size
 
     const inputStyle = useComponentStyle({
       themeKey: "Input",
@@ -48,7 +55,7 @@ export const Input = React.forwardRef(
       size,
     })
 
-    const themingProps = { variant, size } as any
+    const themingProps = { variant, size }
 
     return (
       <StyledInput
