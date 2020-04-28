@@ -1,9 +1,17 @@
-import { ArrowForwardIcon, EmailIcon } from "@chakra-ui/icons"
-import { MdBuild, MdCall } from "react-icons/md"
-import { Stack, Container } from "@chakra-ui/layout"
+import {
+  ArrowForwardIcon,
+  ChevronDownIcon,
+  EmailIcon,
+  PhoneIcon,
+  SearchIcon,
+} from "@chakra-ui/icons"
+import { Container, Stack, VStack, HStack } from "@chakra-ui/layout"
+// import "focus-visible/dist/focus-visible"
 import * as React from "react"
-import "focus-visible/dist/focus-visible"
-import { Button } from "."
+import { MdBuild, MdCall } from "react-icons/md"
+import { FaFacebook, FaTwitter } from "react-icons/fa"
+import { BeatLoader } from "react-spinners"
+import { Button, ButtonGroup, IconButton } from "."
 
 export default {
   title: "Button",
@@ -19,7 +27,7 @@ export default {
 export const basic = () => <Button colorScheme="green">Button</Button>
 
 export const withVariants = () => (
-  <Stack direction="row" spacing="24px" align="center">
+  <HStack spacing="24px">
     <Button colorScheme="teal" variant="solid">
       Button
     </Button>
@@ -32,11 +40,11 @@ export const withVariants = () => (
     <Button colorScheme="teal" variant="link">
       Button
     </Button>
-  </Stack>
+  </HStack>
 )
 
 export const withSizes = () => (
-  <Stack direction="row" align="center">
+  <HStack>
     <Button colorScheme="blue" size="xs">
       Button
     </Button>
@@ -49,11 +57,11 @@ export const withSizes = () => (
     <Button colorScheme="blue" size="lg">
       Button
     </Button>
-  </Stack>
+  </HStack>
 )
 
 export const WithIcon = () => (
-  <Stack direction="row" spacing={4} align="center">
+  <HStack spacing={4}>
     <Button leftIcon={<EmailIcon />} colorScheme="teal" variant="solid">
       Email
     </Button>
@@ -64,7 +72,7 @@ export const WithIcon = () => (
     >
       Call us
     </Button>
-  </Stack>
+  </HStack>
 )
 
 export const withReactIcons = () => (
@@ -80,9 +88,18 @@ export const withReactIcons = () => (
 
 export const WithLoading = () => (
   <Stack direction="row" spacing={4} align="center">
-    <Button isLoading colorScheme="teal" variant="solid">
+    <Button isLoading colorScheme="teal">
       Email
     </Button>
+
+    <Button
+      isLoading
+      colorScheme="blue"
+      spinner={<BeatLoader size={8} color="white" />}
+    >
+      Click me
+    </Button>
+
     <Button
       isLoading
       loadingText="Submitting..."
@@ -106,16 +123,47 @@ export const customComposition = () => (
   </Button>
 )
 
-// export const WithButtonGroup = () => (
-//   <ButtonGroup variant="solid">
-//     <Button colorScheme="green">Save</Button>
-//     <Button variant="outline">Cancel</Button>
-//   </ButtonGroup>
-// )
+export const iconButton = () => (
+  <HStack>
+    <IconButton aria-label="Search database" icon={<SearchIcon />} />
 
-// export const iconButton = () => (
-//   <ButtonGroup>
-//     <IconButton fontSize="24px" aria-label="Add to friends" icon={AddIcon} />
-//     <IconButton aria-label="Call us now" isRound icon={PhoneIcon} />
-//   </ButtonGroup>
-// )
+    <IconButton
+      colorScheme="blue"
+      aria-label="Search database"
+      icon={<SearchIcon />}
+    />
+
+    <IconButton colorScheme="teal" aria-label="Call Segun" size="lg">
+      <PhoneIcon />
+    </IconButton>
+  </HStack>
+)
+
+export const WithButtonGroup = () => (
+  <ButtonGroup variant="outline">
+    <Button>Save</Button>
+    <Button ml="-px">Cancel</Button>
+  </ButtonGroup>
+)
+
+export const splitButton = () => (
+  <ButtonGroup variant="outline">
+    <Button mr="-px">Save</Button>
+    <IconButton
+      fontSize="2xl"
+      aria-label="Add to friends"
+      icon={<ChevronDownIcon />}
+    />
+  </ButtonGroup>
+)
+
+export const socialButton = () => (
+  <HStack>
+    <Button colorScheme="facebook" leftIcon={<FaFacebook />}>
+      Facebook
+    </Button>
+    <Button colorScheme="twitter" leftIcon={<FaTwitter />}>
+      Twitter
+    </Button>
+  </HStack>
+)
