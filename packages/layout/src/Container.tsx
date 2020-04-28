@@ -4,7 +4,9 @@ import { __DEV__ } from "@chakra-ui/utils"
 export type ContainerProps = PropsOf<typeof chakra.div>
 
 /**
- * Layout component used to wrap app or website content
+ * Container
+ *
+ * Mostly used to wrap app or website content
  *
  * It sets `margin-left` and `margin-right` to `auto`,
  * to keep it's content centered.

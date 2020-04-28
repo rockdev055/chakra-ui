@@ -4,6 +4,8 @@ import { __DEV__ } from "@chakra-ui/utils"
 export type KbdProps = PropsOf<typeof Kbd>
 
 /**
+ * Keyboard key
+ *
  * Semantic component to render a keyboard shortcut
  * within an application.
  *

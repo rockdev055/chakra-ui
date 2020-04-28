@@ -63,13 +63,13 @@ export function orientation<T = string>(horizontal: T, vertical: T) {
     props.orientation === "horizontal" ? horizontal : vertical
 }
 
-type GlobalStyles = { global?: SystemProps | ((props: Props) => SystemProps) }
+type RootStyles = { root?: SystemProps | ((props: Props) => SystemProps) }
 
 type ElementStyles = {
   [K in keyof JSX.IntrinsicElements]?: SystemProps
 }
 
-export type Styles = ElementStyles & GlobalStyles
+export type Styles = ElementStyles & RootStyles
 
 export function getOrientationStyle<T>(options: {
   orientation?: "vertical" | "horizontal"

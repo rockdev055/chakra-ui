@@ -4,7 +4,7 @@ import * as React from "react"
 import { useInputGroup } from "./Input.group"
 import { __DEV__ } from "@chakra-ui/utils"
 
-type OmittedTypes = "disabled" | "required" | "readOnly" | "size"
+type OmittedTypes = "disabled" | "required" | "readOnly"
 
 interface InputOptions {
   /**
@@ -25,11 +25,8 @@ interface InputOptions {
   isFullWidth?: boolean
 }
 
-export interface InputProps
-  extends Omit<PropsOf<typeof StyledInput>, OmittedTypes>,
-    FormControlOptions {
-  size?: string
-}
+export type InputProps = Omit<PropsOf<typeof StyledInput>, OmittedTypes> &
+  FormControlOptions
 
 const StyledInput = chakra<"input", InputOptions>("input", {
   themeKey: "Input",
@@ -37,19 +34,13 @@ const StyledInput = chakra<"input", InputOptions>("input", {
     !["focusBorderColor", "errorBorderColor"].includes(prop),
 })
 
-/**
- * Input
- *
- * Element that allows users enter single valued data.
- */
-
 export const Input = React.forwardRef(
   (props: InputProps, ref: React.Ref<HTMLInputElement>) => {
     const inputProps = useFormControl<HTMLInputElement>(props)
     const group = useInputGroup()
 
     const variant = group?.variant || props.variant
-    const size = group?.size || props.size
+    const size = (group?.size || props.size) as any
 
     const inputStyle = useComponentStyle({
       themeKey: "Input",

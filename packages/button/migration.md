@@ -3,7 +3,7 @@
 ## Changes
 
 - Ensure consistent usage of the `icon` prop. `leftIcon` and `rightIcon` props
-  are now accepts a react element not react element type.
+  are now react elements not react element types.
 
   Here's what I mean
 
@@ -19,14 +19,6 @@
 
 ## New Features
 
-- Add support for `spinner` prop to allow you render custom spinners.
+- Spinner uses the same alignment as the leftIcon and respects the `iconSpacing`
 
-```jsx
-<Button
-  isLoading
-  colorScheme="blue"
-  spinner={<BeatLoader size={8} color="white" />}
->
-  Click me
-</Button>
-```
+- Add support for `spinner` prop to allow users add their custom spinners.

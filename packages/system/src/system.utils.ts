@@ -3,10 +3,6 @@ import { pseudoSelectors } from "@chakra-ui/parser"
 import { css } from "@chakra-ui/css"
 import { isString, UnionStringArray, __DEV__ } from "@chakra-ui/utils"
 
-/**
- * Carefully selected html elements for chakra components.
- * This is mostly for `chakra.<element>` syntax.
- */
 export const domElements = [
   "a",
   "abbr",
@@ -14,25 +10,35 @@ export const domElements = [
   "area",
   "article",
   "aside",
+  "audio",
   "b",
+  "base",
   "bdi",
   "bdo",
   "big",
   "blockquote",
+  "body",
+  "br",
   "button",
+  "canvas",
   "caption",
   "cite",
   "circle",
   "code",
   "col",
+  "colgroup",
+  "data",
+  "datalist",
   "dd",
   "del",
   "details",
   "dfn",
+  "dialog",
   "div",
   "dl",
   "dt",
   "em",
+  "embed",
   "fieldset",
   "figcaption",
   "figure",
@@ -44,36 +50,58 @@ export const domElements = [
   "h4",
   "h5",
   "h6",
+  "head",
   "header",
+  "hgroup",
   "hr",
+  "html",
   "i",
+  "iframe",
   "img",
   "input",
   "ins",
   "kbd",
+  "keygen",
   "label",
   "legend",
   "li",
+  "link",
   "main",
+  "map",
   "mark",
+  "menu",
+  "menuitem",
+  "meta",
+  "meter",
   "nav",
+  "noscript",
+  "object",
   "ol",
   "optgroup",
   "option",
   "output",
   "p",
   "path",
+  "param",
   "picture",
   "pre",
+  "progress",
   "q",
   "rect",
+  "rp",
+  "rt",
+  "ruby",
   "s",
   "svg",
+  "samp",
+  "script",
   "section",
   "select",
   "small",
+  "source",
   "span",
   "strong",
+  "style",
   "sub",
   "summary",
   "sup",
@@ -85,10 +113,15 @@ export const domElements = [
   "th",
   "thead",
   "time",
+  "title",
   "tr",
+  "track",
   "u",
   "ul",
+  "var",
   "video",
+  "wbr",
+  "webview",
 ] as const
 
 export type DOMElements = UnionStringArray<typeof domElements>
@@ -115,18 +148,13 @@ export function truncateProp({ isTruncated }: any) {
 }
 
 export function applyProp(tag: React.ElementType) {
-  return (props: any) => {
-    const { theme, apply: applyProp } = props
-    const shouldAutoApply = theme?.config?.shouldMapStylesToElement
+  return ({ theme, apply: applyProp }: any) => {
+    const shouldAutoApply = theme?.settings?.autoApplyStylesToElements
     const defaultApply = !!shouldAutoApply ? `styles.${tag}` : undefined
     const apply = applyProp ?? defaultApply
 
     if (!apply) return undefined
 
-    /**
-     * css function knows how to resolve the `apply` prop
-     * so need to use `get(...)` function.
-     */
     return css({ apply })(theme)
   }
 }
@@ -153,6 +181,6 @@ function getComponentName(primitive: React.ComponentType | string) {
     (__DEV__ ? isString(primitive) && primitive : false) ||
     (!isString(primitive) && primitive.displayName) ||
     (!isString(primitive) && primitive.name) ||
-    "ChakraComponent"
+    "Component"
   )
 }

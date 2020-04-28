@@ -56,10 +56,6 @@ export const Stack = forwardRef((props: StackProps, ref: React.Ref<any>) => {
     ...rest
   } = props
 
-  /**
-   * If we ever run into SSR issues with this, check this post to find a fix for it:
-   * @see https://medium.com/@emmenko/patching-lobotomized-owl-selector-for-emotion-ssr-5a582a3c424c
-   */
   const selector = "> * + *"
 
   const styles = {
@@ -139,10 +135,7 @@ if (__DEV__) {
   Stack.displayName = "Stack"
 }
 
-/**
- * Layout component that stacks its children horizontally
- */
-export const HStack = (props: Omit<StackProps, "direction">) => (
+export const HStack = (props: StackProps) => (
   <Stack align="center" {...props} direction="row" />
 )
 
@@ -150,10 +143,7 @@ if (__DEV__) {
   HStack.displayName = "HStack"
 }
 
-/**
- * Layout component that stacks its children vertically
- */
-export const VStack = (props: Omit<StackProps, "direction">) => (
+export const VStack = (props: StackProps) => (
   <Stack align="center" {...props} direction="column" />
 )
 

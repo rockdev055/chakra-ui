@@ -8,9 +8,12 @@ interface DividerOptions {
 export type DividerProps = PropsOf<typeof Divider>
 
 /**
- * Layout component used to visually separate content in a list or group.
+ * Divider
  *
- * It display a thin horizontal or vertical line, and renders a `hr` tag.
+ * Used to group content in lists and layouts.
+ *
+ * It display a thin horizontal or vertical line,
+ * and renders a `hr` tag.
  *
  * @see Docs https://chakra-ui.com/code
  */
