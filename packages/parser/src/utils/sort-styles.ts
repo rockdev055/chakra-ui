@@ -1,8 +1,8 @@
-import { Dict, objectKeys } from "@chakra-ui/utils"
+import { Dict } from "@chakra-ui/utils"
 
 export function sort(obj: Dict) {
   const next: Dict = {}
-  objectKeys(obj)
+  Object.keys(obj)
     .sort((a, b) =>
       a.localeCompare(b, undefined, {
         numeric: true,

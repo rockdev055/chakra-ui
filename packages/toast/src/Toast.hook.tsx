@@ -1,34 +1,25 @@
-import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
-  ALERT_STATUSES,
-} from "@chakra-ui/alert"
-import { CloseButton } from "@chakra-ui/close-button"
-import { chakra, ThemeProvider, useTheme } from "@chakra-ui/system"
-import { isFunction, merge } from "@chakra-ui/utils"
+import { ThemeProvider, useTheme, chakra } from "@chakra-ui/system"
+import { isString, isFunction } from "@chakra-ui/utils"
 import * as React from "react"
 import { toast } from "./Toast.class"
-import { RenderProps, ToastOptions, ToastId } from "./Toast.types"
+import { RenderProps, ToastOptions } from "./Toast.types"
 
-export interface UseToastOptions {
+export interface NotifyOptions {
   /**
    * The placement of the toast
-   *
-   * @default "bottom"
    */
   position?: ToastOptions["position"]
   /**
-   * The delay before the toast hides (in milliseconds)
-   * If set to `null`, toast will never dismiss.
-   *
+   * The delay before a toast hides (in milliseconds)
    * @default 5000 ( = 5000ms )
    */
   duration?: ToastOptions["duration"]
   /**
    * Render a component toast component.
-   * Any component passed will receive 2 props: `id` and `onClose`.
+   * Any component passed will receive 2 props:
+   * `id` and `onClose`.
+   *
+   * @param props props passed to custom component
    */
   render?(props: RenderProps): React.ReactNode
   /**
@@ -42,121 +33,60 @@ export interface UseToastOptions {
   /**
    * If `true`, toast will show a close button
    */
-  isClosable?: boolean
-  /**
-   * The alert component `variant` to use
-   */
-  variant?: string
-  /**
-   * The status of the toast.
-   */
-  status?: keyof typeof ALERT_STATUSES
-  /**
-   * The `id` of the toast.
-   *
-   * Mostly used when you need to prevent duplicate.
-   * By default, we generate a unique `id` for each toast
-   */
-  id?: ToastId
+  isClosable?: string
 }
 
-export type IToast = UseToastOptions
+/**
+ * The fallback toast component
+ * @param props
+ */
+const Close = (props: any) => (
+  <button data-toast-close-btn="" type="button" aria-label="Close" {...props}>
+    <span aria-hidden="true">×</span>
+  </button>
+)
 
-const Toast = (props: any) => {
-  const { status, variant, id, title, isClosable, onClose, description } = props
-
+const Toast = ({ id, title, onClose, children }: any) => {
   return (
-    <Alert
-      status={status}
-      variant={variant}
+    <chakra.div
+      bg="white"
+      color="gray.800"
+      padding="1rem"
+      margin="8px"
       id={id}
-      textAlign="left"
-      boxShadow="lg"
-      borderRadius="md"
-      alignItems="start"
-      margin={2}
-      paddingRight={8}
+      data-toast-alert=""
+      boxShadow="rgba(52, 58, 64, 0.15) 0px 1px 10px 0px,
+    rgba(52, 58, 64, 0.1) 0px 6px 12px 0px,
+    rgba(52, 58, 64, 0.12) 0px 6px 15px -2px"
     >
-      <AlertIcon />
-      <chakra.div flex="1">
-        {title && <AlertTitle>{title}</AlertTitle>}
-        {description && (
-          <AlertDescription marginTop="px" lineHeight="short">
-            {description}
-          </AlertDescription>
-        )}
-      </chakra.div>
-      {isClosable && (
-        <CloseButton
-          size="sm"
-          onClick={onClose}
-          position="absolute"
-          right="4px"
-          top="4px"
-        />
-      )}
-    </Alert>
+      {isString(title) ? <div data-toaster-alert-text="">{title}</div> : title}
+      {children}
+      {onClose && <Close onClick={onClose} />}
+    </chakra.div>
   )
 }
 
-const defaults = {
-  duration: 5000,
-  position: "bottom",
-  variant: "solid",
-} as const
-
-/**
- * React hook used to create a function that can be used
- * to show toasts in an application.
- */
 export function useToast() {
   const theme = useTheme()
 
-  function toastImpl(options: UseToastOptions) {
-    const { render } = options
+  function notify(options: NotifyOptions) {
+    const { render, title, description } = options
 
-    const Message = (props: RenderProps) => (
-      <ThemeProvider theme={theme}>
-        {isFunction(render) ? (
-          render(props)
-        ) : (
-          <Toast {...{ ...props, ...opts }} />
-        )}
-      </ThemeProvider>
-    )
-
-    const opts = merge(defaults, options)
-
-    return toast.notify(Message, opts)
-  }
-
-  toastImpl.close = toast.close
-  toastImpl.closeAll = toast.closeAll
-
-  // toasts can only be updated if they have a valid id
-  toastImpl.update = (id: ToastId, options: Omit<UseToastOptions, "id">) => {
-    const { render, ...rest } = options
-
-    if (!id) return
-
-    const opts = merge(defaults, rest) as any
-
-    toast.update(id, {
-      ...opts,
-      message: props => (
+    toast.notify(
+      props => (
         <ThemeProvider theme={theme}>
           {isFunction(render) ? (
             render(props)
           ) : (
-            <Toast {...{ ...props, ...opts }} />
+            <Toast title={title} {...props}>
+              {description}
+            </Toast>
           )}
         </ThemeProvider>
       ),
-    })
+      options,
+    )
   }
-  toastImpl.isActive = toast.isActive
 
-  return toastImpl
+  return notify
 }
-
-export default useToast

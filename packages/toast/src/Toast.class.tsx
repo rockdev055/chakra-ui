@@ -1,69 +1,55 @@
-import { isBrowser } from "@chakra-ui/utils"
-import * as React from "react"
 import { render } from "react-dom"
-import { Methods, ToastManager } from "./Toast.manager"
-import { ToastId, ToastMessage, ToastOptions } from "./Toast.types"
+import * as React from "react"
+import { ToastManager } from "./Toast.manager"
+import { ToastMessage, ToastPosition, ToastOptions } from "./Toast.types"
 
-// Toast's portal id
-const portalId = "chakra-toast-portal"
+const isBrowser =
+  typeof window !== "undefined" && typeof window.document !== "undefined"
+
+const PORTAL_ID = "chakra-toast-portal"
 
 class Toaster {
-  private createToast?: Methods["notify"]
-  private removeAll?: Methods["closeAll"]
-  private closeToast?: Methods["close"]
-  private updateToast?: Methods["update"]
-  private isToastActive?: Methods["isActive"]
+  createToast?: Function
+  removeAll?: Function
+  closeToast?: Function
 
-  /**
-   * Initialize the manager and mount it in the DOM
-   * inside the portal node
-   */
   constructor() {
     if (!isBrowser) return
+    let portalElement: HTMLElement
+    const existingPortalElement = document.getElementById(PORTAL_ID)
 
-    let portal: HTMLElement
-    const existingPortal = document.getElementById(portalId)
-
-    if (existingPortal) {
-      portal = existingPortal
+    if (existingPortalElement) {
+      portalElement = existingPortalElement
     } else {
-      const div = document.createElement("div")
-      div.id = portalId
-      document.body?.appendChild(div)
-      portal = div
+      const el = document.createElement("div")
+      el.id = PORTAL_ID
+      document.body?.appendChild(el)
+      portalElement = el
     }
 
-    render(<ToastManager notify={this.bindFunctions} />, portal)
-  }
-
-  private bindFunctions = (methods: Methods) => {
-    this.createToast = methods.notify
-    this.removeAll = methods.closeAll
-    this.closeToast = methods.close
-    this.updateToast = methods.update
-    this.isToastActive = methods.isActive
-  }
-
-  notify = (message: ToastMessage, options: Partial<ToastOptions> = {}) => {
-    return this.createToast?.(message, options)
-  }
-
-  close = (id: ToastId) => {
-    this.closeToast?.(id)
+    render(<ToastManager notify={this.bindNotify} />, portalElement)
   }
 
   closeAll = () => {
     this.removeAll?.()
   }
 
-  update = (id: ToastId, options: Partial<ToastOptions> = {}) => {
-    this.updateToast?.(id, options)
-    window.scrollBy({ top: 10 })
-    window.scrollBy({ top: -10 })
+  bindNotify = (
+    createToast: Function,
+    removeAll: Function,
+    closeToast: Function,
+  ) => {
+    this.createToast = createToast
+    this.removeAll = removeAll
+    this.closeToast = closeToast
   }
 
-  isActive = (id: ToastId) => {
-    return this.isToastActive?.(id)
+  notify = (message: ToastMessage, options: Partial<ToastOptions> = {}) => {
+    return this.createToast?.(message, options)
+  }
+
+  close = (toast: { id: string; position: ToastPosition }) => {
+    this.closeToast?.(toast.id, toast.position)
   }
 }
 

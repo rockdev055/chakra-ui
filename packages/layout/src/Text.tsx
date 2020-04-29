@@ -4,7 +4,9 @@ import { __DEV__ } from "@chakra-ui/utils"
 export type TextProps = PropsOf<typeof Text>
 
 /**
- * Used to render texts or paragraphs.
+ * Text
+ *
+ * Just to render texts or paragraphs.
  *
  * @see Docs https://chakra-ui.com/text
  */

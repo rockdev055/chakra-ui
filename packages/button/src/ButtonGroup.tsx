@@ -1,18 +1,13 @@
-import { chakra, PropsOf, ThemingProps } from "@chakra-ui/system"
-import { createContext, __DEV__ } from "@chakra-ui/utils"
+import { chakra, PropsOf } from "@chakra-ui/system"
+import { getValidChildren, __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
 
 export type ButtonGroupProps = PropsOf<typeof chakra.div>
 
-const [ButtonGroupCtxProvider, useButtonGroup] = createContext<ThemingProps>({
-  strict: false,
-  name: "ButtonGroupContext",
-})
-
-export { useButtonGroup }
-
 export const ButtonGroup = (props: ButtonGroupProps) => {
-  const { size, colorScheme, variant, ...rest } = props
+  const { size, colorScheme, variant, children, ...rest } = props
+
+  const validChildren = getValidChildren(children)
 
   const css = {
     "> *:first-of-type:not(:last-of-type)": { borderRightRadius: 0 },
@@ -20,16 +15,24 @@ export const ButtonGroup = (props: ButtonGroupProps) => {
     "> *:not(:first-of-type):last-of-type": { borderLeftRadius: 0 },
   }
 
+  const clones = validChildren.map(child => {
+    return React.cloneElement(child as any, {
+      size,
+      colorScheme: child.props.colorScheme || colorScheme,
+      variant: child.props.variant || variant,
+      _focus: { boxShadow: "outline", zIndex: 1 },
+    })
+  })
+
   return (
-    <ButtonGroupCtxProvider value={{ size, colorScheme, variant }}>
-      <chakra.div
-        display="flex"
-        role="group"
-        whiteSpace="nowrap"
-        sx={css}
-        {...rest}
-      />
-    </ButtonGroupCtxProvider>
+    <chakra.div
+      display="flex"
+      role="group"
+      whiteSpace="nowrap"
+      sx={css}
+      {...rest}
+      children={clones}
+    />
   )
 }
 

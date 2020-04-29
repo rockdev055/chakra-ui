@@ -1,30 +1,15 @@
-import { objectKeys } from "@chakra-ui/utils"
 import * as React from "react"
 import { Toast } from "./Toast"
-import {
-  ToastId,
-  ToastMessage,
-  ToastOptions,
-  ToastPosition,
-} from "./Toast.types"
-import { findToast, getToastPosition } from "./Toast.utils"
-
-export interface Methods {
-  notify: (message: ToastMessage, options: CreateToastOptions) => ToastId
-  closeAll: () => void
-  close: (id: ToastId) => void
-  update: (id: ToastId, options: CreateToastOptions) => void
-  isActive: (id: ToastId) => boolean
-}
+import { ToastPosition, ToastOptions, ToastMessage } from "./Toast.types"
 
 interface Props {
-  notify: (methods: Methods) => void
+  notify: (createToast: Function, closeAll: Function, close: Function) => void
 }
 
 type State = { [K in ToastPosition]: ToastOptions[] }
 
 type CreateToastOptions = Partial<
-  Pick<ToastOptions, "status" | "duration" | "position" | "id">
+  Pick<ToastOptions, "type" | "duration" | "position">
 >
 
 /**
@@ -52,16 +37,7 @@ export class ToastManager extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props)
-
-    const methods = {
-      notify: this.notify,
-      closeAll: this.closeAll,
-      close: this.closeToast,
-      update: this.updateToast,
-      isActive: this.isVisible,
-    }
-
-    props.notify(methods)
+    props.notify(this.notify, this.closeAll, this.closeToast)
   }
 
   /**
@@ -72,41 +48,39 @@ export class ToastManager extends React.Component<Props, State> {
     const toast = this.createToast(message, options)
     const { position, id } = toast
 
-    this.setState(prevToasts => {
-      /**
-       * - If the toast is positioned at the top edges, the
-       * recent toast stacks on top of the other toasts.
-       *
-       * - If the toast is positioned at the bottom edges, the recent
-       * toast stacks below the other toasts.
-       */
-      const isTop = position.includes("top")
+    /**
+     * - If the toast is positioned at the top edges, the
+     * recent toast stacks on top of the other toasts.
+     *
+     * - If the toast is positioned at the bottom edges, the recent
+     * toast stacks below the other toasts.
+     */
+    const isTop = position.includes("top")
 
+    this.setState(prevState => {
       return {
-        ...prevToasts,
+        ...prevState,
         [position]: isTop
-          ? [toast, ...prevToasts[position]]
-          : [...prevToasts[position], toast],
+          ? [toast, ...prevState[position]]
+          : [...prevState[position], toast],
       }
     })
 
-    return id
+    return { id, position }
   }
 
   /**
-   * Update a specific toast with new options based on the
-   * passed `id`
+   * Close all toasts at once
    */
-  updateToast = (id: ToastId, options: CreateToastOptions) => {
+  closeAll = () => {
     this.setState(prevState => {
       const nextState = { ...prevState }
-      const { position, index } = findToast(nextState, id)
 
-      if (position && index !== -1) {
-        nextState[position][index] = {
-          ...nextState[position][index],
-          ...options,
-        }
+      for (const position in nextState) {
+        const _position = position as keyof State
+        nextState[_position] = nextState[_position].map(toast => {
+          return { ...toast, requestClose: true }
+        })
       }
 
       return nextState
@@ -114,48 +88,34 @@ export class ToastManager extends React.Component<Props, State> {
   }
 
   /**
-   * Close all toasts at once
-   */
-  closeAll = () => {
-    objectKeys(this.state).forEach(position => {
-      this.state[position].forEach(toast => {
-        this.closeToast(toast.id)
-      })
-    })
-  }
-
-  /**
    * Create properties for a new toast
    */
   createToast = (message: ToastMessage, options: CreateToastOptions) => {
-    const id = options.id ?? ++ToastManager.counter
+    const id = ++ToastManager.counter
 
-    const position = options.position ?? "top"
+    const position = options?.position ?? "top"
 
     return {
       id,
       message,
       position,
+      showing: true,
       duration: options.duration,
-      onRequestRemove: () => this.removeToast(String(id), position),
-      status: options.status,
+      onRequestRemove: () => this.deleteToast(String(id), position),
+      type: options.type,
     }
   }
 
   /**
    * Requests to close a toast based on it's id and position
    */
-  closeToast = (id: ToastId) => {
+  closeToast = (id: string, position: ToastPosition) => {
     this.setState(prevState => {
-      const position = getToastPosition(prevState, id)
-
-      if (!position) return prevState
-
       return {
         ...prevState,
         [position]: prevState[position].map(toast => ({
           ...toast,
-          requestClose: toast.id == id,
+          requestClose: toast.id === id,
         })),
       }
     })
@@ -164,18 +124,13 @@ export class ToastManager extends React.Component<Props, State> {
   /**
    * Delete a toast record at it's position
    */
-  removeToast = (id: ToastId, position: ToastPosition) => {
+  deleteToast = (id: string, position: ToastPosition) => {
     this.setState(prevState => {
       return {
         ...prevState,
-        [position]: prevState[position].filter(toast => toast.id != id),
+        [position]: prevState[position].filter(toast => toast.id !== id),
       }
     })
-  }
-
-  isVisible = (id: ToastId) => {
-    const { position } = findToast(this.state, id)
-    return Boolean(position)
   }
 
   /**
@@ -183,6 +138,7 @@ export class ToastManager extends React.Component<Props, State> {
    */
   getStyle = (position: ToastPosition) => {
     const style: React.CSSProperties = {
+      maxWidth: "560px",
       position: "fixed",
       zIndex: 5500,
       pointerEvents: "none",
@@ -213,17 +169,18 @@ export class ToastManager extends React.Component<Props, State> {
   }
 
   render() {
-    return objectKeys(this.state).map(position => {
-      const toasts = this.state[position]
+    return Object.keys(this.state).map(position => {
+      const _position = position as keyof State
+      const toasts = this.state[_position]
       return (
         <span
           key={position}
-          id={"chakra-toast-manager-" + position}
-          style={this.getStyle(position)}
+          id={"chakra-toast-manager-" + _position}
+          style={this.getStyle(_position)}
         >
-          {toasts.map(toast => (
-            <Toast position={position} key={toast.id} {...toast} />
-          ))}
+          {toasts.map(toast => {
+            return <Toast position={_position} key={toast.id} {...toast} />
+          })}
         </span>
       )
     })

@@ -1,8 +1,7 @@
 import { Icon } from "@chakra-ui/icon"
 import { chakra, ChakraProps, PropsOf } from "@chakra-ui/system"
 import { getValidChildren, __DEV__ } from "@chakra-ui/utils"
-import * as React from "react"
-import { cloneElement, forwardRef, Ref } from "react"
+import React, { cloneElement, forwardRef } from "react"
 
 interface ListOptions {
   /**
@@ -22,11 +21,13 @@ interface ListOptions {
 export type ListProps = PropsOf<typeof chakra.ul> & ListOptions
 
 /**
+ * List
+ *
  * List is used to display list items, it renders a `<ul>` by default.
  *
  * @see Docs https://chakra-ui.com/list
  */
-export const List = forwardRef((props: ListProps, ref: Ref<any>) => {
+export const List = forwardRef((props: ListProps, ref: React.Ref<any>) => {
   const {
     children,
     styleType = "none",

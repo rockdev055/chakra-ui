@@ -1,7 +1,6 @@
 import { chakra, css, PropsOf, SystemProps, useTheme } from "@chakra-ui/system"
 import { getValidChildren, mapResponsive, __DEV__ } from "@chakra-ui/utils"
-import * as React from "react"
-import { forwardRef, Ref } from "react"
+import React, { forwardRef } from "react"
 
 export type WrapProps = PropsOf<typeof chakra.div> & {
   /**
@@ -19,6 +18,8 @@ export type WrapProps = PropsOf<typeof chakra.div> & {
 }
 
 /**
+ * Wrap
+ *
  * Layout component used to stack elements that differ in length
  * and are liable to wrap.
  *
@@ -28,7 +29,7 @@ export type WrapProps = PropsOf<typeof chakra.div> & {
  *
  * @see Docs https://chakra-ui.com/wrap
  */
-export const Wrap = forwardRef((props: WrapProps, ref: Ref<any>) => {
+export const Wrap = forwardRef((props: WrapProps, ref: React.Ref<any>) => {
   const { spacing = 2, children, justify, ...rest } = props
 
   const theme = useTheme()
@@ -60,8 +61,9 @@ export const Wrap = forwardRef((props: WrapProps, ref: Ref<any>) => {
         listStyleType="none"
         padding="0"
         margin={ulSpacing}
-        children={clones}
-      />
+      >
+        {clones}
+      </chakra.ul>
     </chakra.div>
   )
 })
