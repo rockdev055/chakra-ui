@@ -1,14 +1,6 @@
 import * as React from "react"
 import { chakra, PropsOf } from "@chakra-ui/system"
 import { Icon, IconProps } from "@chakra-ui/icon"
-import { __DEV__ } from "@chakra-ui/utils"
-
-/**
- * CloseButton - Theming
- *
- * To style the input globally, change the styles in
- * `theme.components.CloseButton`
- */
 
 const StyledButton = chakra("button", {
   themeKey: "CloseButton",
@@ -25,12 +17,6 @@ const StyledButton = chakra("button", {
   },
 })
 
-/**
- * CloseIcon
- *
- * The icon for the close button.
- */
-
 const CloseIcon = (props: IconProps) => (
   <Icon focusable="false" aria-hidden {...props}>
     <path
@@ -40,35 +26,11 @@ const CloseIcon = (props: IconProps) => (
   </Icon>
 )
 
-export type CloseButtonProps = PropsOf<typeof StyledButton> & {
-  /**
-   * If `true`, the close button will be disabled.
-   */
-  isDisabled?: boolean
-}
-
-/**
- * CloseButton
- *
- * A button with a close icon.
- *
- * It is used to handle the close functionality in feedback and overlay components
- * like Alerts, Toasts, Drawers and Modals.
- */
+export type CloseButtonProps = PropsOf<typeof StyledButton>
 
 export const CloseButton = (props: CloseButtonProps) => {
-  const {
-    children = <CloseIcon width="1em" height="1em" />,
-    isDisabled,
-    ...rest
-  } = props
-  return (
-    <StyledButton disabled={isDisabled} {...rest}>
-      {children}
-    </StyledButton>
-  )
+  const { children = <CloseIcon width="1em" height="1em" />, ...rest } = props
+  return <StyledButton {...rest}>{children}</StyledButton>
 }
 
-if (__DEV__) {
-  CloseButton.displayName = "CloseButton"
-}
+export default CloseButton
