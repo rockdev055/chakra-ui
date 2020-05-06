@@ -32,10 +32,6 @@ interface IImage {
    */
   htmlHeight?: string | number;
   /**
-   * Defines loading strategy
-   */
-  loading?: "eager" | "lazy";
-  /**
    * Opt out of the `fallbackSrc` logic and use the `Image` directly
    */
   ignoreFallback?: boolean;
