@@ -67,22 +67,15 @@ export const css = (styleObject: StyleObjectOrFn) => (props: PropsOrTheme) => {
         continue
       }
 
-      if (config === true) {
-        const style = responsive(key, value, config)
-        computedStyles = merge(computedStyles, style)
-        continue
-      }
-
       /**
        * If no config exists and `value` is still an array
        * run it through `css` in-case it contains style props
        */
-      if (isArray(value)) {
-        const val = value.map((v: any) => css(v)(theme))
-        const style = responsive(key, val, config)
-        computedStyles = merge(computedStyles, style)
-        continue
-      }
+      const _value = value.map((v: any) => css(v)(theme))
+
+      const style = responsive(key, _value, config)
+      computedStyles = merge(computedStyles, style)
+      continue
     }
 
     if (config?.properties) {

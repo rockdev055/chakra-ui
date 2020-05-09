@@ -97,7 +97,7 @@ test("selects the correct tab with keyboard navigation", () => {
 })
 
 test("focuses the correct tab with manual keyboard navigation", async () => {
-  const { getByRole, getByText } = render(
+  const { getByRole, getByText, debug } = render(
     <Tabs isManual>
       <TabList>
         <Tab>Tab 1</Tab>

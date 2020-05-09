@@ -1,16 +1,12 @@
 {
   "name": "@chakra-ui/descendant",
   "version": "0.0.1",
-  "description": "Register child nodes of a react element for better accessibility",
+  "description": "description",
   "keywords": [
-    "dom",
-    "children",
-    "accessbility",
-    "descendants",
-    "child",
-    "hooks",
-    "chakra ui",
-    "react"
+    "theme",
+    "theming",
+    "ui mode",
+    "ui"
   ],
   "author": "Segun Adebayo <sage@adebayosegun.com>",
   "homepage": "https://github.com/chakra-ui/chakra-ui#readme",

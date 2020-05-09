@@ -1,4 +1,6 @@
-import { useEffect } from "react"
+// Credit: https://overreacted.io/making-setinterval-declarative-with-react-hooks/
+
+import * as React from "react"
 import { useLatestRef } from "./useLatestRef"
 
 /**
@@ -10,7 +12,7 @@ import { useLatestRef } from "./useLatestRef"
 export function useInterval(callback: () => void, delay: number | null) {
   const savedCallback = useLatestRef(callback)
 
-  useEffect(() => {
+  React.useEffect(() => {
     const tick = () => {
       savedCallback.current?.()
     }

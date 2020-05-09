@@ -1,9 +1,8 @@
 import { FormControlOptions, useFormControl } from "@chakra-ui/form-control"
 import { chakra, PropsOf, useComponentStyle } from "@chakra-ui/system"
-import { __DEV__, cx } from "@chakra-ui/utils"
 import * as React from "react"
-import { forwardRef, Ref } from "react"
 import { useInputGroup } from "./Input.group"
+import { __DEV__ } from "@chakra-ui/utils"
 
 type OmittedTypes = "disabled" | "required" | "readOnly" | "size"
 
@@ -51,15 +50,13 @@ const StyledInput = chakra<"input", InputOptions>("input", {
  * Element that allows users enter single valued data.
  */
 
-export const Input = forwardRef(
-  (props: InputProps, ref: Ref<HTMLInputElement>) => {
+export const Input = React.forwardRef(
+  (props: InputProps, ref: React.Ref<HTMLInputElement>) => {
     const inputProps = useFormControl<HTMLInputElement>(props)
     const group = useInputGroup()
 
     const variant = group?.variant || props.variant
     const size = group?.size || props.size
-
-    const theming = { variant, size } as any
 
     const inputStyle = useComponentStyle({
       themeKey: "Input",
@@ -67,33 +64,15 @@ export const Input = forwardRef(
       size,
     })
 
-    const groupProps = {} as InputProps
-
-    if (group?.leftElement?.isMounted) {
-      groupProps.paddingLeft = inputStyle?.minHeight
-    }
-
-    if (group?.rightElement?.isMounted) {
-      groupProps.paddingRight = inputStyle?.minHeight
-    }
-
-    if (group?.leftAddon?.isMounted) {
-      groupProps.borderLeftRadius = 0
-    }
-
-    if (group?.rightAddon?.isMounted) {
-      groupProps.borderRightRadius = 0
-    }
-
-    const _className = cx("chakra-input", props.className)
+    const themingProps = { variant, size } as any
 
     return (
       <StyledInput
         ref={ref}
-        {...groupProps}
         {...inputProps}
-        {...theming}
-        className={_className}
+        {...themingProps}
+        {...(group?.hasRightElement && { paddingRight: inputStyle?.height })}
+        {...(group?.hasLeftElement && { paddingLeft: inputStyle?.height })}
       />
     )
   },

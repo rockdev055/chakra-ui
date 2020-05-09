@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react"
+import * as React from "react"
 import { useControllableProp } from "./useControllable"
 import { usePrevious } from "./usePrevious"
 
@@ -12,33 +12,37 @@ export interface UseDisclosureProps {
 export function useDisclosure(props: UseDisclosureProps = {}) {
   const { onClose: onCloseProp, onOpen: onOpenProp } = props
 
-  const [isOpenState, setIsOpen] = useState(props.defaultIsOpen || false)
+  const [isOpenState, setIsOpen] = React.useState(props.defaultIsOpen || false)
   const [isControlled, isOpen] = useControllableProp(props.isOpen, isOpenState)
 
   const prevIsOpen = usePrevious(isOpen)
 
-  const onClose = useCallback(() => {
+  const onClose = React.useCallback(() => {
     if (!isControlled) {
       setIsOpen(false)
     }
-    onCloseProp?.()
+    if (onCloseProp) {
+      onCloseProp()
+    }
   }, [isControlled, onCloseProp])
 
-  const onOpen = useCallback(() => {
+  const onOpen = React.useCallback(() => {
     if (!isControlled) {
       setIsOpen(true)
     }
-    onOpenProp?.()
+    if (onOpenProp) {
+      onOpenProp()
+    }
   }, [isControlled, onOpenProp])
 
-  const onToggle = useCallback(() => {
+  const onToggle = React.useCallback(() => {
     const action = isOpen ? onClose : onOpen
     action()
   }, [isOpen, onOpen, onClose])
 
   return {
-    isOpen: !!isOpen,
-    prevIsOpen: !!prevIsOpen,
+    isOpen: Boolean(isOpen),
+    prevIsOpen: Boolean(prevIsOpen),
     onOpen,
     onClose,
     onToggle,

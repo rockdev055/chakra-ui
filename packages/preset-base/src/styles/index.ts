@@ -12,8 +12,6 @@ const styles: Styles = {
     "*, *::before, &::after": {
       borderColor: mode("gray.200", "whiteAlpha.300")(props),
     },
-    fontFeatureSettings: "pnum",
-    fontVariantNumeric: "proportional-nums",
   }),
   h1: {
     fontSize: 40,

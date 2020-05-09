@@ -1,30 +1,29 @@
-import { ThemingProps } from "@chakra-ui/system"
-import { createContext, __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
-import { useMemo } from "react"
+import { chakra, PropsOf, SystemProps, css, useTheme } from "@chakra-ui/system"
+import { useId } from "@chakra-ui/hooks"
+import { useCheckboxGroup, UseCheckboxGroupProps } from "./CheckboxGroup.hook"
 import {
-  useCheckboxGroup,
-  UseCheckboxGroupProps,
-  UseCheckboxGroupReturn,
-} from "./CheckboxGroup.hook"
+  getValidChildren,
+  omit,
+  __DEV__,
+  mapResponsive,
+} from "@chakra-ui/utils"
 
 export type CheckboxGroupProps = UseCheckboxGroupProps &
-  Omit<ThemingProps, "orientation"> & { children?: React.ReactNode }
-
-export type CheckboxGroupContext = Pick<
-  UseCheckboxGroupReturn,
-  "onChange" | "value"
-> &
-  Omit<ThemingProps, "orientation">
-
-const [CheckboxGroupCtxProvider, useCheckboxGroupCtx] = createContext<
-  CheckboxGroupContext
->({
-  name: "CheckboxGroupContext",
-  strict: false,
-})
-
-export { useCheckboxGroupCtx }
+  Omit<PropsOf<typeof chakra.div>, "onChange" | "value"> & {
+    /**
+     * The name of the checkbox group
+     */
+    name?: string
+    /**
+     * The space between the children checkboxes
+     */
+    spacing?: SystemProps["margin"]
+    /**
+     * The direction to stack the children checkboxes
+     */
+    direction?: SystemProps["flexDirection"]
+  }
 
 /**
  * CheckboxGroup
@@ -35,27 +34,63 @@ export { useCheckboxGroupCtx }
  * @see Docs https://chakra-ui.com/checkbox
  *
  */
-export const CheckboxGroup = (props: CheckboxGroupProps) => {
-  const { colorScheme, size, variant, children } = props
-  const { value, onChange } = useCheckboxGroup(props)
-
-  const group = useMemo(
-    () => ({
-      size,
-      onChange,
+export const CheckboxGroup = React.forwardRef(
+  (props: CheckboxGroupProps, ref: React.Ref<any>) => {
+    const {
+      name,
       colorScheme,
-      value,
-      variant,
-    }),
-    [size, onChange, colorScheme, value, variant],
-  )
+      size,
+      spacing = 2,
+      direction = "row",
+      children,
+      ...rest
+    } = props
+    const theme = useTheme()
 
-  return (
-    <CheckboxGroupCtxProvider value={group}>
-      {children}
-    </CheckboxGroupCtxProvider>
-  )
-}
+    const computedName = useId(name, "checkbox")
+    const { value, onChange } = useCheckboxGroup(props)
+
+    const childSpacing = mapResponsive(spacing, value => {
+      const { margin } = css({ margin: value })(theme)
+      return `calc(${margin} / 2)`
+    })
+
+    const containerSpacing = mapResponsive(spacing, value => {
+      const { margin } = css({ margin: value })(theme)
+      return `calc(${margin} / 2 * -1)`
+    })
+
+    const validChildren = getValidChildren(children)
+
+    const clones = validChildren.map((child, index) => {
+      return (
+        <chakra.div key={index} margin={childSpacing}>
+          {React.cloneElement(child, {
+            size,
+            onChange,
+            colorScheme,
+            name: `${computedName}-${index}`,
+            isChecked: value.includes(child.props.value),
+          })}
+        </chakra.div>
+      )
+    })
+
+    return (
+      <chakra.div
+        ref={ref}
+        role="group"
+        display="flex"
+        flexWrap="wrap"
+        flexDirection={direction}
+        margin={containerSpacing}
+        {...omit(rest, ["onChange"])}
+      >
+        {clones}
+      </chakra.div>
+    )
+  },
+)
 
 if (__DEV__) {
   CheckboxGroup.displayName = "CheckboxGroup"

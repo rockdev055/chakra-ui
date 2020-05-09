@@ -1,9 +1,13 @@
 import { UseCheckboxProps, useCheckbox } from "@chakra-ui/checkbox"
 import { chakra, PropsOf } from "@chakra-ui/system"
 import * as React from "react"
-import { forwardRef } from "react"
-import { __DEV__, cx, dataAttr } from "@chakra-ui/utils"
+import { __DEV__ } from "@chakra-ui/utils"
 
+/**
+ * StyledSwitch
+ *
+ * Wrapper element around the Switch component
+ */
 const StyledSwitch = chakra("label", {
   baseStyle: {
     display: "inline-block",
@@ -12,59 +16,52 @@ const StyledSwitch = chakra("label", {
 })
 
 /**
- * Switch Track - Theming
+ * Switch Track
  *
- * To style the switch track globally, change the styles in
+ * Element for the Switch track
+ *
+ * To style the element, change the styles in
  * `theme.components.Switch` under the `Track` key
  */
-const StyledTrack = chakra("div", {
-  themeKey: "Switch.Track",
-  baseStyle: {
-    display: "inline-flex",
-    flexShrink: 0,
-    justifyContent: "flex-start",
-    boxSizing: "content-box",
-    cursor: "pointer",
-  },
-})
+
+const StyledTrack = chakra("div", { themeKey: "Switch.Track" })
 
 /**
- * Switch Thumb - Theming
+ * Switch Thumb
+ *
+ * Element for the Switch thumb
  *
  * To style the element, change the styles in
  * `theme.components.Switch` under the `Thumb` key
  */
-const StyledThumb = chakra("div", {
-  themeKey: "Switch.Thumb",
-})
+
+const StyledThumb = chakra("div", { themeKey: "Switch.Thumb" })
 
 export type SwitchProps = Omit<UseCheckboxProps, "isIndeterminate"> &
   Omit<PropsOf<typeof StyledSwitch>, "onChange" | "defaultChecked">
 
-export const Switch = forwardRef(
+export const Switch = React.forwardRef(
   (props: SwitchProps, ref: React.Ref<HTMLInputElement>) => {
-    const { colorScheme, size, variant, className, ...rest } = props
+    const { colorScheme, size, variant } = props
     const { state, getInputProps, getCheckboxProps, htmlProps } = useCheckbox(
-      rest,
+      props,
     )
 
-    const theming = { colorScheme, size, variant }
-    const input = getInputProps({ ref })
-    const checkbox = getCheckboxProps() as any
+    const themingProps = { colorScheme, size, variant }
 
     return (
-      <StyledSwitch className={cx("chakra-switch", className)} {...htmlProps}>
-        <input className="chakra-switch__input" {...input} />
+      <StyledSwitch data-chakra-switch="" {...htmlProps}>
+        <input data-chakra-switch-input="" {...getInputProps({ ref })} />
         <StyledTrack
-          className="chakra-switch__track"
-          {...theming}
-          {...checkbox}
+          {...themingProps}
+          data-chakra-switch-track=""
+          {...(getCheckboxProps() as any)}
         >
           <StyledThumb
-            {...theming}
-            className="chakra-switch__thumb"
-            data-checked={dataAttr(state.isChecked)}
-            data-hover={dataAttr(state.isHovered)}
+            {...themingProps}
+            data-chakra-switch-thumb=""
+            data-checked={state.isChecked ? "" : undefined}
+            data-hover={state.isHovered ? "" : undefined}
           />
         </StyledTrack>
       </StyledSwitch>

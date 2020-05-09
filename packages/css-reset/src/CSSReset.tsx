@@ -33,7 +33,6 @@ const CSSReset = () => (
       h6,
       p,
       dl,
-      dd,
       blockquote,
       ol,
       ul {

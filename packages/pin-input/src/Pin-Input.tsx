@@ -1,5 +1,5 @@
 import { chakra, PropsOf, ThemingProps } from "@chakra-ui/system"
-import { createContext, __DEV__, ariaAttr, cx } from "@chakra-ui/utils"
+import { createContext, __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
 import {
   UsePinInputProps,
@@ -24,9 +24,8 @@ const [PinInputCtxProvider, usePinInputContext] = createContext<
   PinInputContext
 >({
   strict: true,
-  name: "PinInputContext",
   errorMessage:
-    "Chakra UI: PinInputField can only be used within PinInput component",
+    "[Chakra UI]: usePinInputContext can only be used within a PinInputCtxProvider",
 })
 
 export type PinInputProps = UsePinInputProps &
@@ -88,30 +87,22 @@ const StyledInput = chakra<"input", InputOptions>("input", {
     !["focusBorderColor", "errorBorderColor"].includes(prop),
 })
 
-export const PinInputField = React.forwardRef(
-  (props: PinInputFieldProps, ref: React.Ref<HTMLInputElement>) => {
-    const { className, ...rest } = props
-    const context = usePinInputContext()
-    const ownProps = usePinInputField({ context, ref, ...rest })
-
-    const { size, variant, colorScheme } = context
-    const theming = { size, variant, colorScheme } as any
-
-    const _className = cx("chakra-pin-input", className)
-
-    return (
-      <StyledInput
-        ref={ref}
-        textAlign="center"
-        disabled={context.isDisabled}
-        aria-invalid={ariaAttr(context.isInvalid)}
-        className={_className}
-        {...theming}
-        {...ownProps}
-      />
-    )
-  },
-)
+export function PinInputField(props: PinInputFieldProps) {
+  const context = usePinInputContext()
+  const hookProps = usePinInputField({ context })
+  const { size, variant, colorScheme } = context
+  const themingProps = { size, variant, colorScheme } as any
+  return (
+    <StyledInput
+      textAlign="center"
+      disabled={context.isDisabled}
+      aria-invalid={context.isInvalid}
+      {...themingProps}
+      {...props}
+      {...hookProps}
+    />
+  )
+}
 
 if (__DEV__) {
   PinInputField.displayName = "PinInputField"

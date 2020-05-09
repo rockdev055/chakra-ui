@@ -4,78 +4,65 @@ import {
   ThemingProps,
   useThemeDefaultProps,
 } from "@chakra-ui/system"
-import { createContext, cx, __DEV__ } from "@chakra-ui/utils"
+import { createContext, __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
-import { forwardRef, useState, Ref } from "react"
 
-type GroupContext = Omit<ReturnType<typeof useProvider>, "htmlProps">
+interface InputGroupContext {
+  variant?: string
+  size?: string
+  hasLeftElement: boolean
+  setHasLeftElement: React.Dispatch<React.SetStateAction<boolean>>
+  hasRightElement: boolean
+  setHasRightElement: React.Dispatch<React.SetStateAction<boolean>>
+}
 
-const [InputGroupProvider, useInputGroup] = createContext<GroupContext>({
+const [InputGroupProvider, useInputGroup] = createContext<InputGroupContext>({
   strict: false,
-  name: "InputGroupContext",
 })
 
 export { useInputGroup }
 
 export type InputGroupProps = PropsOf<typeof chakra.div> & ThemingProps
 
-export const InputGroup = forwardRef(
-  (props: InputGroupProps, ref: Ref<any>) => {
-    const { className, ...rest } = props
-    const { htmlProps, ...context } = useProvider(rest)
+/**
+ * InputGroup
+ *
+ * Wrapper element used to enhance an input with an InputAddon
+ * or an InputElement
+ */
 
-    const _className = cx("chakra-input__group", className)
-
-    return (
-      <chakra.div
-        className={_className}
-        ref={ref}
-        width="100%"
-        display="flex"
-        position="relative"
-        {...htmlProps}
-      >
-        <InputGroupProvider value={context} children={props.children} />
-      </chakra.div>
-    )
-  },
-)
-
-if (__DEV__) {
-  InputGroup.displayName = "InputGroup"
-}
-
-function useMounted() {
-  const [isMounted, setMounted] = useState(false)
-  const mount = () => setMounted(true)
-  const unmount = () => setMounted(false)
-  return { isMounted, mount, unmount }
-}
-
-type UseMountedReturn = ReturnType<typeof useMounted>
-
-function useProvider(props: any) {
+export const InputGroup = (props: InputGroupProps) => {
   const defaults = useThemeDefaultProps("Input")
 
   const {
     children,
     size = defaults?.size,
     variant = defaults?.variant,
-    ...htmlProps
+    ...rest
   } = props
 
-  const leftElement = useMounted() as UseMountedReturn | undefined
-  const rightElement = useMounted() as UseMountedReturn | undefined
-  const leftAddon = useMounted() as UseMountedReturn | undefined
-  const rightAddon = useMounted() as UseMountedReturn | undefined
+  const [hasLeftElement, setHasLeftElement] = React.useState(false)
+  const [hasRightElement, setHasRightElement] = React.useState(false)
 
-  return {
-    leftElement,
-    rightElement,
-    leftAddon,
-    rightAddon,
-    htmlProps,
-    size,
-    variant,
-  }
+  const context = React.useMemo(
+    () => ({
+      size,
+      variant,
+      hasLeftElement,
+      setHasLeftElement,
+      hasRightElement,
+      setHasRightElement,
+    }),
+    [hasLeftElement, hasRightElement, size, variant],
+  )
+
+  return (
+    <chakra.div display="flex" position="relative" {...rest}>
+      <InputGroupProvider value={context}>{children}</InputGroupProvider>
+    </chakra.div>
+  )
+}
+
+if (__DEV__) {
+  InputGroup.displayName = "InputGroup"
 }

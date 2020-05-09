@@ -78,5 +78,3 @@ export function useCheckboxGroup(props: UseCheckboxGroupProps = {}) {
     setValue: updateValue,
   }
 }
-
-export type UseCheckboxGroupReturn = ReturnType<typeof useCheckboxGroup>

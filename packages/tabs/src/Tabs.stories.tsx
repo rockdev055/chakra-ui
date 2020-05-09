@@ -53,14 +53,18 @@ export const withIndicator = () => (
   <Tabs variant="unstyled" isManual>
     <TabList>
       <Tab>Settings</Tab>
-      <Tab _disabled={{ color: "gray.400" }} isDisabled>
-        Billings
-      </Tab>
+      <Tab isDisabled>Billings</Tab>
       <Tab>Preferences</Tab>
       <Tab>Shut Down</Tab>
     </TabList>
 
-    <TabIndicator mt="-36px" zIndex={-1} height="34px" bg="green.200" />
+    <TabIndicator
+      mt="-33px"
+      zIndex={-1}
+      height="34px"
+      bg="green.400"
+      borderRadius="6px"
+    />
 
     <TabPanels>
       <TabPanel>Settings</TabPanel>

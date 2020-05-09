@@ -9,9 +9,7 @@ const sizes: ComponentTheme["sizes"] = {
     Thumb: {
       width: "0.75rem",
       height: "0.75rem",
-      _checked: {
-        transform: "translateX(0.625rem)",
-      },
+      _checked: { transform: `translateX(0.625rem)` },
     },
   },
   md: {
@@ -22,9 +20,7 @@ const sizes: ComponentTheme["sizes"] = {
     Thumb: {
       width: "1rem",
       height: "1rem",
-      _checked: {
-        transform: "translateX(0.875rem)",
-      },
+      _checked: { transform: `translateX(0.875rem)` },
     },
   },
   lg: {
@@ -35,9 +31,7 @@ const sizes: ComponentTheme["sizes"] = {
     Thumb: {
       width: "1.5rem",
       height: "1.5rem",
-      _checked: {
-        transform: "translateX(1.375rem)",
-      },
+      _checked: { transform: `translateX(1.375rem)` },
     },
   },
 }
@@ -45,41 +39,30 @@ const sizes: ComponentTheme["sizes"] = {
 const Switch: ComponentTheme = {
   defaultProps: {
     size: "md",
-    colorScheme: "blue",
   },
   baseStyle: props => ({
     Track: {
       borderRadius: "full",
+      justifyContent: "flex-start",
+      boxSizing: "content-box",
       padding: "2px",
-      transition: "all 120ms",
+      cursor: "pointer",
       bg: mode("gray.300", "whiteAlpha.400")(props),
-      _focus: {
-        boxShadow: "outline",
-      },
+      _focus: { boxShadow: "outline" },
       _disabled: {
         opacity: 0.4,
         cursor: "not-allowed",
       },
-      _checked: {
-        bg: mode(`${props.colorScheme}.500`, `${props.colorScheme}.200`)(props),
-      },
+      _checked: { bg: `${props.colorScheme}.500` },
     },
     Thumb: {
       bg: "white",
       transition: "transform 250ms",
       borderRadius: "full",
-      transform: "translateX(0)",
+      transform: `translateX(0)`,
     },
   }),
   sizes,
-}
-
-export const SwitchTokens = {
-  SIZES: {
-    sm: "sm",
-    md: "md",
-    lg: "lg",
-  },
 }
 
 export default Switch

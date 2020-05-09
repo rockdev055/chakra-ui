@@ -3,11 +3,13 @@
 exports[`FormControl renders correctly in default state 1`] = `
 <DocumentFragment>
   <div
-    class="chakra-form-control css-1kxonj9"
+    class="css-79elbk"
+    data-chakra-form-control=""
     role="group"
   >
     <label
-      class="chakra-form__label css-1q2bw9z"
+      class="css-1q2bw9z"
+      data-chakra-form-label=""
       for="name"
       id="name-label"
     >
@@ -15,12 +17,13 @@ exports[`FormControl renders correctly in default state 1`] = `
     </label>
     <input
       aria-describedby="name-helptext"
-      class="css-6pjrhx"
+      class="css-1ug6p1x"
       id="name"
       placeholder="Name"
     />
     <div
-      class="chakra-form__helper-text css-1qoocny"
+      class="css-1qoocny"
+      data-chakra-form-helper-text=""
       id="name-helptext"
     >
       Enter your name please!
@@ -32,11 +35,13 @@ exports[`FormControl renders correctly in default state 1`] = `
 exports[`FormControl renders correctly when invalid 1`] = `
 <DocumentFragment>
   <div
-    class="chakra-form-control css-1kxonj9"
+    class="css-79elbk"
+    data-chakra-form-control=""
     role="group"
   >
     <label
-      class="chakra-form__label css-1q2bw9z"
+      class="css-1q2bw9z"
+      data-chakra-form-label=""
       data-invalid=""
       for="name"
       id="name-label"
@@ -46,19 +51,21 @@ exports[`FormControl renders correctly when invalid 1`] = `
     <input
       aria-describedby="name-feedback name-helptext"
       aria-invalid="true"
-      class="css-6pjrhx"
+      class="css-1ug6p1x"
       id="name"
       placeholder="Name"
     />
     <div
-      class="chakra-form__helper-text css-1qoocny"
+      class="css-1qoocny"
+      data-chakra-form-helper-text=""
       id="name-helptext"
     >
       Enter your name please!
     </div>
     <svg
       aria-hidden="true"
-      class="chakra-form__error-icon css-1gn1kov"
+      class="css-1gn1kov"
+      data-form-error-icon=""
       focusable="false"
       role="presentation"
       viewBox="0 0 24 24"
@@ -70,7 +77,8 @@ exports[`FormControl renders correctly when invalid 1`] = `
     </svg>
     <div
       aria-live="polite"
-      class="chakra-form__error-message css-v1r939"
+      class="css-v1r939"
+      data-chakra-form-error-message=""
       id="name-feedback"
     >
       Your name is invalid
@@ -82,11 +90,13 @@ exports[`FormControl renders correctly when invalid 1`] = `
 exports[`FormControl renders correctly when required 1`] = `
 <DocumentFragment>
   <div
-    class="chakra-form-control css-1kxonj9"
+    class="css-79elbk"
+    data-chakra-form-control=""
     role="group"
   >
     <label
-      class="chakra-form__label css-1q2bw9z"
+      class="css-1q2bw9z"
+      data-chakra-form-label=""
       for="name"
       id="name-label"
     >
@@ -94,18 +104,20 @@ exports[`FormControl renders correctly when required 1`] = `
     </label>
     <span
       aria-hidden="true"
-      class="chakra-form__required-indicator css-i02c70"
+      class="css-i02c70"
+      data-chakra-required-indicator=""
       role="presentation"
     />
     <input
       aria-describedby="name-helptext"
       aria-required="true"
-      class="css-6pjrhx"
+      class="css-1ug6p1x"
       id="name"
       placeholder="Name"
     />
     <div
-      class="chakra-form__helper-text css-1qoocny"
+      class="css-1qoocny"
+      data-chakra-form-helper-text=""
       id="name-helptext"
     >
       Enter your name please!

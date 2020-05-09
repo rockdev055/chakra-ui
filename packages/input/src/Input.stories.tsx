@@ -8,19 +8,6 @@ import {
   InputRightElement,
   InputGroup,
 } from "."
-import { Stack } from "@chakra-ui/layout"
-import {
-  FormControl,
-  FormHelperText,
-  FormLabel,
-  FormErrorMessage,
-} from "@chakra-ui/form-control"
-import { PhoneIcon, CheckIcon } from "@chakra-ui/icons"
-
-Stack.defaultProps = {
-  align: "start",
-  spacing: "24px",
-}
 
 export default {
   title: "Input",
@@ -33,82 +20,132 @@ export default {
   ],
 }
 
-export const Basic = () => <Input placeholder="Basic input" />
+/**
+ * A simple input component
+ */
+
+export const Basic = () => {
+  return <Input placeholder="Basic input" />
+}
+
+/**
+ * A controlled input component
+ */
 
 export const Controlled = () => {
-  const [value, setValue] = React.useState("Starting...")
+  const [value, setValue] = React.useState("")
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setValue(event.target.value)
 
   return (
-    <>
-      <Input
-        value={value}
-        onChange={handleChange}
-        placeholder="Controlled input"
-      />
-      <pre>{JSON.stringify(value, null, 2)}</pre>
-    </>
+    <Input
+      value={value}
+      onChange={handleChange}
+      placeholder="Controlled input"
+    />
   )
 }
 
-export const WithSizes = () => {
-  return (
-    <Stack>
-      {["sm", "md", "lg"].map(size => (
-        <Input size={size} placeholder="This is an input component" />
-      ))}
-    </Stack>
-  )
+/**
+ * Pass the `size` prop to change the size and height of the input component.
+ *
+ *  @type {('sm'|'md'|'lg' })}
+ */
+
+export const Sizes = () => {
+  return ["sm", "md", "lg"].map(size => (
+    <Input
+      size={size}
+      marginBottom="1rem"
+      placeholder="This is an input component"
+    />
+  ))
 }
 
-export const WithStates = () => (
-  <Stack>
-    <Input placeholder="Idle" />
-    <Input isInvalid placeholder="isInvalid" />
-    <Input isDisabled placeholder="isDisabled" />
+/**
+ * - Pass the `isInvalid` prop to put the input component in an invalid state
+ * - Pass the `isDisabled` prop to put the input component in a disabled state
+ * - Pass the `isReadOnly` prop to put the input component in a read-only state
+ */
+
+export const States = () => (
+  <>
+    <Input placeholder="Idle" marginBottom="1rem" />
+    <Input isInvalid placeholder="isInvalid" marginBottom="1rem" />
+    <Input isDisabled placeholder="isDisabled" marginBottom="1rem" />
     <Input isReadOnly placeholder="isReadonly" />
-  </Stack>
+  </>
 )
 
-export const WithVariants = () => (
-  <Stack>
-    <Input variant="outline" placeholder="Outline" />
-    <Input variant="filled" placeholder="Filled" />
-    <Input variant="flushed" placeholder="Flushed" />
+/**
+ * Control the visual appearance of the input component
+ * by passing the `variant` prop.
+ *
+ * @type {('outline'|'filled'|'flushed'|'unstyled' })}
+ */
+
+export const Variants = () => (
+  <>
+    <Input variant="outline" placeholder="Outline" marginBottom="1rem" />
+    <Input variant="filled" placeholder="Filled" marginBottom="1rem" />
+    <Input variant="flushed" placeholder="Flushed" marginBottom="1rem" />
     <Input variant="unstyled" placeholder="Unstyled" />
-  </Stack>
+  </>
 )
 
-export const WithInputAddon = () => (
-  <Stack>
+/**
+ * Add addons to the left and right of the input component,
+ * using the InputGroup, InputAddon, InputLeftAddon and
+ * InputRightAddon components.
+ *
+ * Any react child component can be used inside the input
+ * component.
+ */
+
+export const LeftAndRightAddon = () => (
+  <>
     <InputGroup>
       <InputLeftAddon children="+234" />
-      <Input placeholder="Phone number..." />
+      <Input borderLeftRadius="0" placeholder="Phone number..." />
     </InputGroup>
+
+    <br />
 
     <InputGroup size="sm">
       <InputLeftAddon children="https://" />
-      <Input placeholder="website.com" />
+      <Input borderRadius="0" placeholder="website.com" />
       <InputRightAddon children=".com" />
     </InputGroup>
-  </Stack>
+  </>
 )
 
-export const WithInputElement = () => (
-  <Stack>
-    <InputGroup>
-      <InputLeftElement children={<PhoneIcon color="gray.300" />} />
+/**
+ * Example of a custom element inside the input component using the InputGroup,
+ * InputLeftElement and InputRightElement components.
+ *
+ * Any valid html element or react component can be used inside the input
+ * component.
+ */
+
+export const ElementInsideInput = () => (
+  <>
+    <InputGroup marginBottom="1rem">
+      <InputLeftElement children={"P"} />
       <Input type="phone" placeholder="Phone number" />
     </InputGroup>
 
     <InputGroup>
       <InputLeftElement color="gray.300" fontSize="1.2em" children="$" />
       <Input placeholder="Enter amount" />
-      <InputRightElement children={<CheckIcon color="green.500" />} />
+      <InputRightElement children={"C"} />
     </InputGroup>
-  </Stack>
+  </>
 )
+
+/**
+ * PasswordInput component composed with InputGroup, Input
+ * and InputRightElement components
+ */
 
 export function PasswordInput() {
   const [show, setShow] = React.useState(false)
@@ -122,7 +159,7 @@ export function PasswordInput() {
         placeholder="Enter password"
       />
       <InputRightElement width="4.5rem">
-        <chakra.button onClick={handleClick}>
+        <chakra.button h="1.75rem" onClick={handleClick}>
           {show ? "Hide" : "Show"}
         </chakra.button>
       </InputRightElement>
@@ -130,61 +167,37 @@ export function PasswordInput() {
   )
 }
 
-export const WithFocusAndErrorColors = () => (
-  <Stack spacing="10">
-    <Input focusBorderColor="lime" placeholder="Here is a sample placeholder" />
+/**
+ * Pass the `focusBorderColor` prop to change the border color of
+ * the input component in the focused state
+ *
+ * Pass the `errorBorderColor` prop to change the border color of
+ * the input component in the invalid state
+ *
+ * The value of these props can be set to a color in the theme object,
+ * or a raw CSS value.
+ */
 
+export const FocusAndErrorColors = () => (
+  <>
+    <Input focusBorderColor="lime" placeholder="Here is a sample placeholder" />
+    <br />
     <Input
       focusBorderColor="pink.400"
       placeholder="Here is a sample placeholder"
     />
-
+    <br />
     <Input
       isInvalid
       errorBorderColor="red.300"
       placeholder="Here is a sample placeholder"
     />
-
+    <br />
     <Input
       isInvalid
       errorBorderColor="crimson"
       placeholder="Here is a sample placeholder"
     />
-  </Stack>
+    <br />
+  </>
 )
-
-function FormError(props: any) {
-  return (
-    <FormErrorMessage
-      mt="0"
-      bg="red.500"
-      color="white"
-      px="1"
-      lineHeight="1em"
-      borderRadius="sm"
-      {...props}
-    />
-  )
-}
-
-export const WithFormControl = () => {
-  const [isError, setIsError] = React.useState(false)
-  return (
-    <Stack>
-      <FormControl id="first-name" isInvalid={isError}>
-        <chakra.div display="flex" mb="2">
-          <FormLabel mb="0" lineHeight="1em">
-            Amount
-          </FormLabel>
-          <FormError>is invalid!</FormError>
-        </chakra.div>
-        <InputGroup>
-          <InputLeftElement children="USD" />
-          <Input placeholder="Enter amount" />
-        </InputGroup>
-        <FormHelperText>Keep it very short and sweet!</FormHelperText>
-      </FormControl>
-      <button onClick={() => setIsError(s => !s)}>Toggle Invalid</button>
-    </Stack>
-  )
-}

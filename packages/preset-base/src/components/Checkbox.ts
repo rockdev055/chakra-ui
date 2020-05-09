@@ -1,13 +1,16 @@
-import { ComponentTheme, mode, Props } from "./utils"
+import { ComponentTheme, mode } from "./utils"
 
-const baseStyle = (props: Props) => {
-  const { colorScheme: c } = props
-
-  return {
-    Control: {
-      transition: "box-shadow 250ms",
+const Checkbox: ComponentTheme = {
+  defaultProps: {
+    size: "md",
+    colorScheme: "blue",
+  },
+  baseStyle: props => {
+    const { colorScheme: c } = props
+    return {
+      transition: "background-color 120ms, box-shadow 250ms",
       border: "2px solid",
-      borderRadius: "sm",
+      borderRadius: "md",
       borderColor: "inherit",
       color: "white",
       _checked: {
@@ -33,37 +36,19 @@ const baseStyle = (props: Props) => {
         bg: mode("gray.100", "whiteAlpha.100")(props),
         borderColor: mode("gray.100", "transparent")(props),
       },
-      _focus: { boxShadow: "outline" },
-      _invalid: { borderColor: mode("red.500", "red.300")(props) },
-    },
-    Label: {
-      _disabled: { opacity: 0.4 },
-    },
-  }
-}
-
-const sizes = {
-  sm: {
-    Control: { height: 3, width: 3 },
-    Label: { fontSize: "sm" },
+      _focus: {
+        boxShadow: "outline",
+      },
+      _invalid: {
+        borderColor: mode("red.500", "red.300")(props),
+      },
+    }
   },
-  md: {
-    Control: { width: 4, height: 4 },
-    Label: { fontSize: "md" },
+  sizes: {
+    lg: { width: 5, height: 5 },
+    md: { width: 4, height: 4 },
+    sm: { height: "auto", width: "auto" },
   },
-  lg: {
-    Control: { width: 5, height: 5 },
-    Label: { fontSize: "lg" },
-  },
-}
-
-const Checkbox: ComponentTheme = {
-  defaultProps: {
-    size: "md",
-    colorScheme: "blue",
-  },
-  baseStyle,
-  sizes,
 }
 
 export default Checkbox
