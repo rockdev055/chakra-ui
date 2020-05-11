@@ -1,7 +1,6 @@
 import { __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
 import { Button, ButtonProps } from "./Button"
-import { forwardRef, Ref, isValidElement, cloneElement } from "react"
 
 export type IconButtonProps = Omit<
   ButtonProps,
@@ -12,8 +11,8 @@ export type IconButtonProps = Omit<
   "aria-label": string
 }
 
-export const IconButton = forwardRef(
-  (props: IconButtonProps, ref: Ref<any>) => {
+export const IconButton = React.forwardRef(
+  (props: IconButtonProps, ref: React.Ref<any>) => {
     const { icon, children, isRound, "aria-label": ariaLabel, ...rest } = props
 
     /**
@@ -34,7 +33,9 @@ export const IconButton = forwardRef(
         aria-label={ariaLabel}
         {...rest}
       >
-        {isValidElement(btnIcon) ? cloneElement(btnIcon, a11yProps) : null}
+        {React.isValidElement(btnIcon)
+          ? React.cloneElement(btnIcon, a11yProps)
+          : null}
       </Button>
     )
   },

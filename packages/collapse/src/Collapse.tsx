@@ -7,38 +7,13 @@ import {
 import { ariaAttr, cx, mergeRefs, __DEV__ } from "@chakra-ui/utils"
 import { useRect } from "@reach/rect"
 import * as React from "react"
-import {
-  cloneElement,
-  forwardRef,
-  useState,
-  Children,
-  useRef,
-  Ref,
-} from "react"
+import { cloneElement, forwardRef, useState } from "react"
 
 export type CollapseProps = PropsOf<typeof chakra.div> & {
-  /**
-   * If `true`, the content will be visible
-   */
   isOpen?: boolean
-  /**
-   * The height you want the content in it's collapsed state.
-   * @default 0
-   */
   startingHeight?: number
-  /**
-   * Custom styles for the Transition component's appear, entered and exiting states
-   */
   config?: TransitionProps["styles"]
-  /**
-   * If `true`, the opacity of the content will be animated
-   * @default true
-   */
   animateOpacity?: boolean
-  /**
-   * The CSS `transition` to apply for the collapse animation
-   * @default "height 200ms ease, opacity 200ms ease, transform 200ms ease"
-   */
   transition?: string
 }
 
@@ -58,7 +33,9 @@ export const Collapse = forwardRef(
 
     const [hidden, setHidden] = useState(true)
 
-    type ChildElement = React.ReactElement<{ ref: Ref<any> }>
+    type ChildElement = React.ReactElement<{
+      ref: React.Ref<any>
+    }>
 
     let child = children
 
@@ -69,9 +46,9 @@ export const Collapse = forwardRef(
       child = <div>{children}</div> // fallback
     }
 
-    const _child = Children.only(child) as ChildElement
+    const _child = React.Children.only(child) as ChildElement
 
-    const ref = useRef<HTMLDivElement>(null)
+    const ref = React.useRef<HTMLDivElement>(null)
 
     const rect = useRect(ref, true)
     const height = rect?.height ?? 0
