@@ -1,7 +1,5 @@
 import { PropsOf, chakra } from "@chakra-ui/system"
-import { cx, __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
-import { forwardRef, Ref } from "react"
 
 const fallbackIcon = {
   path: (
@@ -21,7 +19,7 @@ const StyledSvg = chakra("svg", { themeKey: "Icon" })
 
 export type IconProps = PropsOf<typeof StyledSvg>
 
-export const Icon = forwardRef((props: IconProps, ref: Ref<any>) => {
+export function Icon(props: IconProps) {
   const {
     as,
     size,
@@ -31,14 +29,10 @@ export const Icon = forwardRef((props: IconProps, ref: Ref<any>) => {
     role = "presentation",
     focusable = false,
     children,
-    className,
     ...rest
   } = props
 
-  const _className = cx("chakra-icon", className)
-
   const sharedProps = {
-    ref,
     display: "inline-block",
     lineHeight: "1em",
     size,
@@ -47,14 +41,18 @@ export const Icon = forwardRef((props: IconProps, ref: Ref<any>) => {
     role,
     flexShrink: 0,
     boxSize,
-    className: _className,
   }
 
-  /**
-   * If you're using an icon library like `react-icons`
-   */
+  // If you're using an icon-library like `react-icons`
   if (as && typeof as !== "string") {
-    return <StyledSvg as={as} {...sharedProps} {...rest} />
+    return (
+      <StyledSvg
+        data-chakra-custom-icon=""
+        as={as}
+        {...sharedProps}
+        {...rest}
+      />
+    )
   }
 
   const _path = children ?? fallbackIcon.path
@@ -70,10 +68,6 @@ export const Icon = forwardRef((props: IconProps, ref: Ref<any>) => {
       {_path}
     </StyledSvg>
   )
-})
-
-if (__DEV__) {
-  Icon.displayName = "Icon"
 }
 
 export default Icon

@@ -1,3 +1,4 @@
+import { useDimensions, useSafeLayoutEffect } from "@chakra-ui/hooks"
 import {
   chakra,
   PropsOf,
@@ -6,7 +7,7 @@ import {
 } from "@chakra-ui/system"
 import { createContext, cx, __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
-import { forwardRef, useState, Ref } from "react"
+import { useRef, useState } from "react"
 
 type GroupContext = Omit<ReturnType<typeof useProvider>, "htmlProps">
 
@@ -19,8 +20,8 @@ export { useInputGroup }
 
 export type InputGroupProps = PropsOf<typeof chakra.div> & ThemingProps
 
-export const InputGroup = forwardRef(
-  (props: InputGroupProps, ref: Ref<any>) => {
+export const InputGroup = React.forwardRef(
+  (props: InputGroupProps, ref: React.Ref<any>) => {
     const { className, ...rest } = props
     const { htmlProps, ...context } = useProvider(rest)
 
@@ -45,11 +46,26 @@ if (__DEV__) {
   InputGroup.displayName = "InputGroup"
 }
 
+function useMeasurement() {
+  const [hasMeasured, setHasMeasured] = useState(false)
+  const [mounted, setMounted] = useState(false)
+  const ref = useRef<any>(null)
+
+  const rect = useDimensions(ref, true)?.borderBox
+  useSafeLayoutEffect(() => {
+    if (rect) {
+      setHasMeasured(true)
+    }
+  }, [rect])
+
+  return { ref, rect, mounted, setMounted, hasMeasured }
+}
+
+type UseMeasurementReturn = ReturnType<typeof useMeasurement>
+
 function useMounted() {
-  const [isMounted, setMounted] = useState(false)
-  const mount = () => setMounted(true)
-  const unmount = () => setMounted(false)
-  return { isMounted, mount, unmount }
+  const [mounted, setMounted] = useState(false)
+  return { mounted, setMounted }
 }
 
 type UseMountedReturn = ReturnType<typeof useMounted>
@@ -64,8 +80,9 @@ function useProvider(props: any) {
     ...htmlProps
   } = props
 
-  const leftElement = useMounted() as UseMountedReturn | undefined
-  const rightElement = useMounted() as UseMountedReturn | undefined
+  const leftElement = useMeasurement() as UseMeasurementReturn | undefined
+  const rightElement = useMeasurement() as UseMeasurementReturn | undefined
+
   const leftAddon = useMounted() as UseMountedReturn | undefined
   const rightAddon = useMounted() as UseMountedReturn | undefined
 

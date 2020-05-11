@@ -1,4 +1,11 @@
-import { chakra, css, Prop, PropsOf, SystemProps } from "@chakra-ui/system"
+import {
+  chakra,
+  css,
+  PropsOf,
+  Prop,
+  SystemProps,
+  useTheme,
+} from "@chakra-ui/system"
 import {
   Dict,
   getValidChildren,
@@ -47,9 +54,9 @@ export const StackDivider = chakra("hr", {
 export const Stack = forwardRef((props: StackProps, ref: React.Ref<any>) => {
   const {
     direction = "column",
-    align = "flex-start",
-    justify,
-    spacing = "0.5rem",
+    justify = "flex-start",
+    align = "center",
+    spacing = 2,
     wrap,
     children,
     divider,
@@ -135,4 +142,26 @@ export const Stack = forwardRef((props: StackProps, ref: React.Ref<any>) => {
 
 if (__DEV__) {
   Stack.displayName = "Stack"
+}
+
+/**
+ * Layout component that stacks its children horizontally
+ */
+export const HStack = (props: Omit<StackProps, "direction">) => (
+  <Stack align="center" {...props} direction="row" />
+)
+
+if (__DEV__) {
+  HStack.displayName = "HStack"
+}
+
+/**
+ * Layout component that stacks its children vertically
+ */
+export const VStack = (props: Omit<StackProps, "direction">) => (
+  <Stack align="center" {...props} direction="column" />
+)
+
+if (__DEV__) {
+  VStack.displayName = "VStack"
 }

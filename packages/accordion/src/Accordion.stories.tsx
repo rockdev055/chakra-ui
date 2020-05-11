@@ -5,13 +5,11 @@ import {
   AccordionItem,
   AccordionPanel,
   AccordionIcon,
-} from "."
+} from "./Accordion"
 import { chakra } from "@chakra-ui/system"
-import { Container } from "@chakra-ui/layout"
 
 export default {
   title: "Accordion",
-  decorators: [(story: Function) => <Container mt={4}>{story()}</Container>],
 }
 
 /**
@@ -25,24 +23,14 @@ export const Basic = () => (
   <Accordion>
     <AccordionItem>
       <h2>
-        <AccordionButton>
-          <chakra.div flex="1" textAlign="left">
-            Section 1 title
-          </chakra.div>
-          <AccordionIcon />
-        </AccordionButton>
+        <AccordionButton>Section 1 title</AccordionButton>
       </h2>
       <AccordionPanel>Panel 1</AccordionPanel>
     </AccordionItem>
 
     <AccordionItem>
       <h2>
-        <AccordionButton>
-          <chakra.div flex="1" textAlign="left">
-            Section 2 title
-          </chakra.div>
-          <AccordionIcon />
-        </AccordionButton>
+        <AccordionButton>Section 2 title</AccordionButton>
       </h2>
       <AccordionPanel>Panel 2</AccordionPanel>
     </AccordionItem>
@@ -120,11 +108,8 @@ export const allowMultiple = () => (
 export const stylingExpanded = () => (
   <Accordion allowToggle>
     <AccordionItem>
-      <AccordionButton _expanded={{ bg: "tomato", color: "white" }}>
-        <chakra.div flex="1" textAlign="left">
-          Click me to see a different style
-        </chakra.div>
-        <AccordionIcon />
+      <AccordionButton _expanded={{ bg: "red.100", color: "red.500" }}>
+        Section title
       </AccordionButton>
       <AccordionPanel>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod

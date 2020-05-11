@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/system"
 import { split, __DEV__, cx } from "@chakra-ui/utils"
 import * as React from "react"
-import { cloneElement, forwardRef, Ref } from "react"
+import { cloneElement, forwardRef } from "react"
 
 type Omitted = "disabled" | "required" | "readOnly" | "size"
 
@@ -59,8 +59,8 @@ export type SelectFieldProps = Omit<PropsOf<typeof StyledSelect>, Omitted> & {
 /**
  * The native `select` element enhanced for accessibility and validation.
  */
-export const SelectField = forwardRef(
-  (props: SelectFieldProps, ref: Ref<HTMLSelectElement>) => {
+export const SelectField = React.forwardRef(
+  (props: SelectFieldProps, ref: React.Ref<HTMLSelectElement>) => {
     const { children, placeholder, ...rest } = props
     const fieldProps = useFormControl<HTMLSelectElement>(props)
 
@@ -84,7 +84,7 @@ if (__DEV__) {
 
 type RootProps = Omit<PropsOf<typeof chakra.div>, "color">
 
-export interface SelectProps extends SelectFieldProps {
+export type SelectProps = SelectFieldProps & {
   rootProps?: RootProps
   icon?: React.ReactElement<any>
   iconSize?: any
@@ -94,31 +94,32 @@ export interface SelectProps extends SelectFieldProps {
  * React component used to select one item from a list of options.
  */
 export const Select = forwardRef(
-  (props: SelectProps, ref: Ref<HTMLSelectElement>) => {
-    const {
-      rootProps,
-      placeholder,
-      icon,
-      iconSize = "1.25rem",
-      color,
-      isFullWidth,
-      ...rest
-    } = props
+  (props: SelectProps, ref: React.Ref<HTMLSelectElement>) => {
+    const { rootProps, placeholder, icon, iconSize = 5, color, ...rest } = props
 
-    const opacity = props.isDisabled ? 0.5 : undefined
-    const [layoutProps, otherProps] = split(rest, layoutPropNames as any[])
+    const opacity = props.isReadOnly || props.isDisabled ? 0.5 : undefined
+
+    /**
+     * To use an icon in the select, we had to wrap in a `position: relative` wrapper
+     * Due to this, when users pass layout style props, we should apply to the wrapper but
+     * forward all other props to the `select` itself.
+     *
+     * So we'll split the props and extract all layout props (to apply on the root)
+     */
+    const [root, select] = split(rest, layoutPropNames as any[])
+
     const styles = useComponentStyle({ themeKey: "Select", ...props })
 
     return (
       <chakra.div
         position="relative"
-        width={isFullWidth ? "100%" : "auto"}
+        width="100%"
         color={color}
         className="chakra-select__wrapper"
-        {...layoutProps}
+        {...root}
         {...rootProps}
       >
-        <SelectField ref={ref} placeholder={placeholder} {...otherProps}>
+        <SelectField ref={ref} placeholder={placeholder} {...(select as any)}>
           {props.children}
         </SelectField>
 

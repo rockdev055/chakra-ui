@@ -15,7 +15,6 @@ import {
   FormLabel,
   FormErrorMessage,
 } from "@chakra-ui/form-control"
-import { PhoneIcon, CheckIcon } from "@chakra-ui/icons"
 
 Stack.defaultProps = {
   align: "start",
@@ -33,7 +32,13 @@ export default {
   ],
 }
 
-export const Basic = () => <Input placeholder="Basic input" />
+/**
+ * A simple input component
+ */
+
+export const Basic = () => {
+  return <Input placeholder="Basic input" />
+}
 
 export const Controlled = () => {
   const [value, setValue] = React.useState("Starting...")
@@ -98,14 +103,14 @@ export const WithInputAddon = () => (
 export const WithInputElement = () => (
   <Stack>
     <InputGroup>
-      <InputLeftElement children={<PhoneIcon color="gray.300" />} />
+      <InputLeftElement children={"+234"} />
       <Input type="phone" placeholder="Phone number" />
     </InputGroup>
 
     <InputGroup>
       <InputLeftElement color="gray.300" fontSize="1.2em" children="$" />
       <Input placeholder="Enter amount" />
-      <InputRightElement children={<CheckIcon color="green.500" />} />
+      <InputRightElement children={"C"} />
     </InputGroup>
   </Stack>
 )
@@ -116,12 +121,8 @@ export function PasswordInput() {
 
   return (
     <InputGroup size="md">
-      <Input
-        pr="4.5rem"
-        type={show ? "text" : "password"}
-        placeholder="Enter password"
-      />
-      <InputRightElement width="4.5rem">
+      <Input type={show ? "text" : "password"} placeholder="Enter password" />
+      <InputRightElement>
         <chakra.button onClick={handleClick}>
           {show ? "Hide" : "Show"}
         </chakra.button>

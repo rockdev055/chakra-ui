@@ -28,7 +28,6 @@ import Editable from "./Editable"
 import Progress from "./Progress"
 import Textarea from "./Textarea"
 import Stat from "./Stat"
-import Skeleton from "./Skeleton"
 
 export default {
   Accordion,
@@ -62,5 +61,4 @@ export default {
   Editable,
   Progress,
   Stat,
-  Skeleton,
 }
