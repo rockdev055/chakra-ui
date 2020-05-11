@@ -1,37 +1,54 @@
 import * as React from "react"
 import { useRadio, Radio, useRadioGroup, RadioGroup } from "."
 import { chakra } from "@chakra-ui/system"
-import { Stack, Wrap, SimpleGrid, Container } from "@chakra-ui/layout"
-import { UseRadioProps } from "./Radio.hook"
+import { Stack } from "@chakra-ui/layout"
 
 export default {
   title: "Radio",
-  decorators: [(story: Function) => <Container mt="40px">{story()}</Container>],
+  decorators: [
+    (story: Function) => (
+      <chakra.div maxWidth="500px" mx="auto" mt="40px">
+        {story()}
+      </chakra.div>
+    ),
+  ],
 }
+/**
+ * A simple radio component.
+ */
 
 export const Basic = () => <Radio>Hello</Radio>
 
+/**
+ * Pass the `isDisabled` prop set to true, to have the radio in the
+ * disabled state.
+ */
+
 export const Disabled = () => <Radio isDisabled>Disabled</Radio>
 
-export const Readonly = () => (
-  <Radio mt="40px" isChecked isReadOnly size="lg" colorScheme="green">
+/**
+ * Pass the `isReadOnly` prop set to true, to have the radio in the
+ * readonly state.
+ */
+
+export const RadioOnly = () => (
+  <Radio marginTop="40px" isChecked isReadOnly size="lg" colorScheme="green">
     I'm a readonly radio
   </Radio>
 )
 
-export const WithSizes = () => {
+/**
+ * Pass the `size` prop to change the size of the radio.
+ * Values can be either sm, md or lg.
+ */
+
+export const Sizes = () => {
   const sizes = ["sm", "md", "lg"]
 
   return (
     <>
       {sizes.map(size => (
-        <Radio
-          key={size}
-          size={size}
-          name="sample"
-          ml="1rem"
-          colorScheme="green"
-        >
+        <Radio size={size} marginLeft="1rem" colorScheme="red">
           Option
         </Radio>
       ))}
@@ -39,60 +56,84 @@ export const WithSizes = () => {
   )
 }
 
+/**
+ * Default RadioGroup
+ */
+
 export const radioGroup = () => {
   return (
     <RadioGroup defaultValue="Option 1" onChange={console.log}>
-      <Stack>
-        <Radio value="Option 1">Option 1</Radio>
-        <Radio value="Option 2">Option 2</Radio>
-        <Radio value="Option 3">Option 3</Radio>
-      </Stack>
+      <Radio value="Option 1">Option 1</Radio>
+      <Radio value="Option 2">Option 2</Radio>
+      <Radio value="Option 3">Option 3</Radio>
     </RadioGroup>
   )
 }
 
-export const GroupWithStack = () => {
+/**
+ * Pass the `direction` prop to change the orientation of the RadioGroup.
+ * `direction` can be either row or column, it is row by default
+ */
+
+export const radioGroupDirection = () => {
   return (
-    <RadioGroup defaultValue="Option 1" onChange={console.log}>
-      <Stack>
-        <Radio value="Option 1">Option 1</Radio>
-        <Radio value="Option 2">Option 2</Radio>
-        <Radio value="Option 3">Option 3</Radio>
-      </Stack>
+    <RadioGroup
+      direction="column"
+      defaultValue="Option 1"
+      onChange={console.log}
+    >
+      <Radio value="Option 1">Option 1</Radio>
+      <Radio value="Option 2">Option 2</Radio>
+      <Radio value="Option 3">Option 3</Radio>
     </RadioGroup>
   )
 }
 
-export const GroupWithWrap = () => {
-  const range = Array.from(Array(10)).map((_, i) => i + 1)
+/**
+ * Pass the `spacing` prop to change the spacing between
+ * the children radios of the RadioGroup.
+ */
+
+export const radioGroupSpacing = () => {
   return (
-    <RadioGroup onChange={console.log} defaultValue="Option 1">
-      <Wrap spacing={[2, 4, 6]}>
-        {range.map(num => (
-          <Radio key={num} value={`Option ${num}`}>{`Option ${num}`}</Radio>
+    <RadioGroup spacing={10} defaultValue="Option 1" onChange={console.log}>
+      <Radio value="Option 1">Option 1</Radio>
+      <Radio value="Option 2">Option 2</Radio>
+      <Radio value="Option 3">Option 3</Radio>
+    </RadioGroup>
+  )
+}
+
+/**
+ * The `spacing` and `direction` props take responsvie values
+ * to help achieve flexible layouts in applications.
+ */
+
+export const responsiveRadioGroup = () => {
+  return (
+    <RadioGroup
+      spacing={[2, 4, 6]}
+      onChange={console.log}
+      defaultValue="Option 1"
+      direction={["column", "row"]}
+    >
+      {Array.from(Array(10))
+        .map((_, i) => i + 1)
+        .map(item => (
+          <Radio value={`Option ${item}`}>{`Option ${item}`}</Radio>
         ))}
-      </Wrap>
     </RadioGroup>
   )
 }
 
-export const GroupWithSimpleGrid = () => {
-  const range = Array.from(Array(10)).map((_, i) => i + 1)
-  return (
-    <RadioGroup onChange={console.log} defaultValue="Option 1">
-      <SimpleGrid columns={2} spacing={[2, 4, 6]}>
-        {range.map(num => (
-          <Radio key={num} value={`Option ${num}`}>{`Option ${num}`}</Radio>
-        ))}
-      </SimpleGrid>
-    </RadioGroup>
-  )
-}
+/**
+ * Compose a custom RadioGroup component using the `useRadioGroup` hook.
+ */
 
-export const WithHook = () => {
+export const WithTheming = () => {
   const options = ["react", "vue", "svelte"]
 
-  const { getRadioProps, getRootProps } = useRadioGroup({
+  const { getRootProps, getRadioProps } = useRadioGroup({
     name: "test",
     defaultValue: "vue",
     onChange: console.log,
@@ -110,10 +151,12 @@ export const WithHook = () => {
 }
 
 /**
- * Compose a custom RadioCard component using the `useRadio` hook.
+ * Compose a custom RadioButton component using the `useRadio` hook.
  */
-function RadioCard(props: UseRadioProps & { children?: React.ReactNode }) {
-  const { getInputProps, getCheckboxProps } = useRadio(props)
+
+function RadioButton(props: any) {
+  const { children, ...rest } = props
+  const { getInputProps, getCheckboxProps } = useRadio(rest)
 
   return (
     <chakra.label>
@@ -127,27 +170,31 @@ function RadioCard(props: UseRadioProps & { children?: React.ReactNode }) {
         px={5}
         py={3}
       >
-        {props.children}
+        {children}
       </chakra.div>
     </chakra.label>
   )
 }
 
+/**
+ * Compose a custom Radio component using the `useRadio` hook.
+ */
+
 export function CustomRadioCard() {
   const options = ["react", "vue", "svelte"]
 
   const { getRootProps, getRadioProps } = useRadioGroup({
-    name: "framework",
+    name: "test",
     defaultValue: "vue",
     onChange: console.log,
   })
 
   return (
     <Stack direction="row" {...getRootProps()}>
-      {options.map(value => (
-        <RadioCard key={value} {...getRadioProps({ value })}>
-          {value}
-        </RadioCard>
+      {options.map(option => (
+        <RadioButton {...getRadioProps({ value: option })}>
+          {option}
+        </RadioButton>
       ))}
     </Stack>
   )

@@ -92,7 +92,7 @@ export function useRadio(props: UseRadioProps = {}) {
 
   const ref = useRef<HTMLInputElement>(null)
 
-  const [isCheckedState, setChecked] = useState(Boolean(defaultIsChecked))
+  const [isCheckedState, setCheckedState] = useState(Boolean(defaultIsChecked))
 
   const [isControlled, isChecked] = useControllableProp(
     isCheckedProp,
@@ -106,7 +106,7 @@ export function useRadio(props: UseRadioProps = {}) {
     }
 
     if (!isControlled) {
-      setChecked(event.target.checked)
+      setCheckedState(event.target.checked)
     }
 
     onChange?.(event)
@@ -114,7 +114,7 @@ export function useRadio(props: UseRadioProps = {}) {
 
   const trulyDisabled = isDisabled && !isFocusable
 
-  const onKeyDown = useCallback(
+  const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
       if (event.key === " ") {
         setActive.on()
@@ -123,7 +123,7 @@ export function useRadio(props: UseRadioProps = {}) {
     [setActive],
   )
 
-  const onKeyUp = useCallback(
+  const handleKeyUp = useCallback(
     (event: KeyboardEvent) => {
       if (event.key === " ") {
         setActive.off()
@@ -147,16 +147,14 @@ export function useRadio(props: UseRadioProps = {}) {
       ...props,
       "data-active": dataAttr(isActive),
       "data-hover": dataAttr(isHovered),
-      "data-disabled": dataAttr(isDisabled),
-      "data-invalid": dataAttr(isInvalid),
       "data-checked": dataAttr(isChecked),
       "data-focus": dataAttr(isFocused),
       "data-readonly": dataAttr(isReadOnly),
       "aria-hidden": true,
-      onMouseDown: callAllHandlers(props.onMouseDown, setActive.on),
-      onMouseUp: callAllHandlers(props.onMouseUp, setActive.off),
-      onMouseEnter: callAllHandlers(props.onMouseEnter, setHovering.on),
-      onMouseLeave: callAllHandlers(props.onMouseLeave, setHovering.off),
+      onPointerDown: callAllHandlers(props.onPointerDown, setActive.on),
+      onPointerUp: callAllHandlers(props.onPointerUp, setActive.off),
+      onPointerEnter: callAllHandlers(props.onPointerEnter, setHovering.on),
+      onPointerLeave: callAllHandlers(props.onPointerLeave, setHovering.off),
     }),
     getInputProps: (props: Dict = {}) => ({
       ...props,
@@ -168,8 +166,8 @@ export function useRadio(props: UseRadioProps = {}) {
       onChange: callAllHandlers(props.onChange, handleChange),
       onBlur: callAllHandlers(props.onBlur, setFocused.off),
       onFocus: callAllHandlers(props.onFocus, setFocused.on),
-      onKeyDown: callAllHandlers(props.onKeyDown, onKeyDown),
-      onKeyUp: callAllHandlers(props.onKeyUp, onKeyUp),
+      onKeyDown: callAllHandlers(props.onKeyDown, handleKeyDown),
+      onKeyUp: callAllHandlers(props.onKeyUp, handleKeyUp),
       "aria-required": ariaAttr(isRequired),
       checked: isChecked,
       disabled: trulyDisabled,
@@ -178,24 +176,6 @@ export function useRadio(props: UseRadioProps = {}) {
       "aria-disabled": ariaAttr(isDisabled),
       style: visuallyHiddenStyle,
     }),
-    getLabelProps: (props: Dict = {}) => {
-      /**
-       * Prevent `onBlur` being fired when the checkbox label is touched
-       */
-      const stop = (event: React.SyntheticEvent) => {
-        event.preventDefault()
-        event.stopPropagation()
-      }
-      return {
-        ...props,
-        style: { ...props.style, touchAction: "none" },
-        onMouseDown: callAllHandlers(props.onMouseDown, stop),
-        onTouchStart: callAllHandlers(props.onTouchState, stop),
-        "data-disabled": dataAttr(isDisabled),
-        " data-checked": dataAttr(isChecked),
-        "data-invalid": dataAttr(isInvalid),
-      }
-    },
     htmlProps,
   }
 }

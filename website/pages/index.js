@@ -30,12 +30,12 @@ const Feature = ({ title, icon, children, ...props }) => {
     <Box {...props}>
       <Flex
         borderRadius="full"
-        boxSize={12}
+        size={12}
         bg="teal.500"
         align="center"
         justify="center"
       >
-        <Box boxSize={6} color="white" as={icon} />
+        <Box size={6} color="white" as={icon} />
       </Flex>
       <Heading as="h2" size="md" fontWeight="semibold" mt="1em" mb="0.5em">
         {title}
@@ -165,7 +165,7 @@ export default () => {
             disabled
             code={sampleCode.trim()}
           >
-            <Box display={{ md: "flex" }} alignItems="flex-start">
+            <Box d={{ md: "flex" }} alignItems="flex-start">
               <LiveEditor
                 padding={20}
                 style={{
@@ -174,7 +174,7 @@ export default () => {
                   flex: 2,
                 }}
               />
-              <Box boxSize={8} />
+              <Box size={8} />
               <Box
                 p={6}
                 flex="1"
@@ -199,7 +199,13 @@ export default () => {
 
       <Box as="footer" mt={12} textAlign="center">
         <Text fontSize="sm">Designed & Developed by Segun Adebayo</Text>
-        <Stack mt={4} direction="row" spacing="12px" justify="center">
+        <Stack
+          shouldWrapChildren
+          mt={4}
+          isInline
+          spacing="12px"
+          justify="center"
+        >
           <FooterLink
             href="https://github.com/segunadebayo"
             icon={DiGithubBadge}

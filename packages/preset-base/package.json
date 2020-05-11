@@ -1,6 +1,6 @@
 {
   "name": "@chakra-ui/preset-base",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "The default theme for chakra components",
   "keywords": [
     "theme",
@@ -42,12 +42,12 @@
     "lint:types": "tsc --noEmit"
   },
   "dependencies": {
-    "@chakra-ui/color": "1.0.0"
+    "@chakra-ui/color": "0.0.1"
   },
   "devDependencies": {
-    "@chakra-ui/system": "1.0.0"
+    "@chakra-ui/system": "0.0.1"
   },
   "peerDependencies": {
-    "@chakra-ui/system": "1.0.0"
+    "@chakra-ui/system": "0.0.1"
   }
 }

@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import lightTheme from "prism-react-renderer/themes/nightOwlLight"
 import darkTheme from "prism-react-renderer/themes/nightOwl"
 import { LiveProvider, LiveEditor, LiveError, LivePreview } from "react-live"
+// import Highlight, { defaultProps } from "prism-react-renderer";
 import { mdx } from "@mdx-js/react"
 import * as Chakra from "@chakra-ui/core"
 import * as Formik from "formik"
@@ -56,7 +57,7 @@ const CopyButton = props => (
     size="sm"
     position="absolute"
     textTransform="uppercase"
-    colorScheme="teal"
+    variantColor="teal"
     fontSize="xs"
     height="24px"
     top={0}
@@ -67,7 +68,7 @@ const CopyButton = props => (
 )
 
 const EditableNotice = props => {
-  const [colorMode] = useColorMode()
+  const { colorMode } = useColorMode()
   const bg = { light: "#fbfbfb", dark: "#011627" }
 
   return (
@@ -99,7 +100,7 @@ const StarIcon = props => {
       m="2px"
       as="svg"
       fill="current"
-      boxSize="3"
+      size="3"
       viewBox="0 0 24 24"
       {...props}
     >
@@ -121,7 +122,7 @@ const CodeBlock = ({
   const language = className && className.replace(/language-/, "")
   const { onCopy, hasCopied } = useClipboard(editorCode)
 
-  const [colorMode] = useColorMode()
+  const { colorMode } = useColorMode()
   const themes = { light: lightTheme, dark: darkTheme }
   const theme = themes["dark"]
 
@@ -129,6 +130,7 @@ const CodeBlock = ({
     theme,
     language,
     code: editorCode,
+    transformCode: code => "/** @jsx mdx */" + code,
     scope: {
       ...Chakra,
       ...Formik,
@@ -180,6 +182,27 @@ const CodeBlock = ({
       <LiveEditor padding={20} style={liveEditorStyle} />
     </LiveProvider>
   )
+
+  // return (
+  //   <Highlight
+  //     {...defaultProps}
+  //     theme={theme}
+  //     code={children.trim()}
+  //     language={language}
+  //   >
+  //     {({ className, style, tokens, getLineProps, getTokenProps }) => (
+  //       <pre className={className} style={{ ...style, ...highlightStyle }}>
+  //         {tokens.map((line, i) => (
+  //           <div key={i} {...getLineProps({ line, key: i })}>
+  //             {line.map((token, key) => (
+  //               <span key={key} {...getTokenProps({ token, key })} />
+  //             ))}
+  //           </div>
+  //         ))}
+  //       </pre>
+  //     )}
+  //   </Highlight>
+  // );
 }
 
 CodeBlock.defaultProps = {

@@ -13,8 +13,7 @@ import {
   removeItem,
   __DEV__,
 } from "@chakra-ui/utils"
-import * as React from "react"
-import { cloneElement, useState, useRef } from "react"
+import React, { cloneElement, useState, useRef } from "react"
 import * as warn from "./Accordion.warning"
 
 export type ExpandedIndex = number | number[]

@@ -1,28 +1,31 @@
+/** @jsx jsx */
 import {
   Box,
+  Callout,
   Code,
   Heading,
   Kbd,
+  PseudoBox,
   Text,
-  chakra,
-  Alert,
   useColorMode,
 } from "@chakra-ui/core"
+import { jsx } from "@emotion/core"
 import NextLink from "next/link"
 import { forwardRef } from "react"
 import CodeBlock from "./CodeBlock"
 
-const Pre = props => <chakra.div my="2em" borderRadius="sm" {...props} />
+const Pre = props => <Box my="2em" borderRadius="sm" {...props} />
 
 const Table = props => (
-  <chakra.table textAlign="left" mt="32px" width="full" {...props} />
+  <Box as="table" textAlign="left" mt="32px" width="full" {...props} />
 )
 
 const THead = props => {
-  const [colorMode] = useColorMode()
+  const { colorMode } = useColorMode()
   const bg = { light: "gray.50", dark: "whiteAlpha.100" }
   return (
-    <chakra.th
+    <Box
+      as="th"
       bg={bg[colorMode]}
       fontWeight="semibold"
       p={2}
@@ -33,7 +36,8 @@ const THead = props => {
 }
 
 const TData = props => (
-  <chakra.td
+  <Box
+    as="td"
     p={2}
     borderTopWidth="1px"
     borderColor="inherit"
@@ -44,7 +48,7 @@ const TData = props => (
 )
 
 const Link = forwardRef((props, ref) => (
-  <chakra.a
+  <PseudoBox
     as="a"
     ref={ref}
     color="teal.500"
@@ -76,10 +80,10 @@ const DocsHeading = props => (
     }}
     {...props}
   >
-    <chakra.div pointerEvents="auto">
+    <Box pointerEvents="auto">
       {props.children}
       {props.id && (
-        <chakra.a
+        <PseudoBox
           aria-label="anchor"
           as="a"
           color="teal.500"
@@ -91,9 +95,9 @@ const DocsHeading = props => (
           href={`#${props.id}`}
         >
           #
-        </chakra.a>
+        </PseudoBox>
       )}
-    </chakra.div>
+    </Box>
   </Heading>
 )
 
@@ -131,8 +135,7 @@ const MDXComponents = {
   ol: props => <Box as="ol" pt="8px" pl="16px" {...props} />,
   li: props => <Box as="li" pb="4px" {...props} />,
   blockquote: props => (
-    <Alert
-      role="presentation"
+    <Callout
       mt={4}
       variant="left-accent"
       status="warning"

@@ -1,16 +1,16 @@
-import { IconProps } from "@chakra-ui/icon"
 import { chakra, PropsOf, SystemProps } from "@chakra-ui/system"
-import { cx, Omit, __DEV__ } from "@chakra-ui/utils"
+import { Omit, __DEV__, cx, dataAttr } from "@chakra-ui/utils"
 import * as React from "react"
-import { useCheckbox, UseCheckboxProps } from "./Checkbox.hook"
+import { UseCheckboxProps, useCheckbox } from "./Checkbox.hook"
 import { CheckboxIcon } from "./Checkbox.icon"
-import { useCheckboxGroupContext } from "./CheckboxGroup"
+import { IconProps } from "@chakra-ui/icon"
+import { useCheckboxGroupCtx } from "./CheckboxGroup"
 
 /**
  * Checkbox - Theming
  *
  * To style the checkbox globally, change the styles in
- * `theme.components.Checkbox` under the `Control` key
+ * `theme.components.Checkbox`
  */
 const StyledControl = chakra("div", {
   themeKey: "Checkbox.Control",
@@ -27,9 +27,6 @@ const StyledControl = chakra("div", {
 
 const StyledLabel = chakra("div", {
   themeKey: "Checkbox.Label",
-  baseStyle: {
-    userSelect: "none",
-  },
 })
 
 const StyledWrapper = chakra("label", {
@@ -76,7 +73,7 @@ export type CheckboxProps = Omitted &
  */
 export const Checkbox = React.forwardRef(
   (props: CheckboxProps, ref: React.Ref<HTMLInputElement>) => {
-    const group = useCheckboxGroupContext()
+    const group = useCheckboxGroupCtx()
 
     const {
       iconSize = "0.625rem",
@@ -87,7 +84,6 @@ export const Checkbox = React.forwardRef(
       size = group?.size,
       className,
       children,
-      ...checkboxProps
     } = props
 
     let isChecked = props.isChecked
@@ -100,17 +96,19 @@ export const Checkbox = React.forwardRef(
       onChange = group.onChange
     }
 
-    const {
-      state,
-      getInputProps,
-      getCheckboxProps,
-      getLabelProps,
-      htmlProps,
-    } = useCheckbox({
-      ...checkboxProps,
+    const { state, getInputProps, getCheckboxProps, htmlProps } = useCheckbox({
+      ...props,
       isChecked,
       onChange,
     })
+
+    /**
+     * Prevent the `input` onBlur being fired when you mousedown on the checkbox label
+     */
+    const stop = (event: React.SyntheticEvent) => {
+      event.preventDefault()
+      event.stopPropagation()
+    }
 
     const _className = cx("chakra-checkbox", className)
 
@@ -138,8 +136,13 @@ export const Checkbox = React.forwardRef(
           <StyledLabel
             className="chakra-checkbox__label"
             {...theming}
-            {...getLabelProps()}
             marginLeft={labelSpacing}
+            userSelect="none"
+            onMouseDown={stop}
+            onTouchStart={stop}
+            data-disabled={dataAttr(state.isDisabled)}
+            data-checked={dataAttr(state.isChecked)}
+            data-invalid={dataAttr(state.isInvalid)}
             children={children}
           />
         )}

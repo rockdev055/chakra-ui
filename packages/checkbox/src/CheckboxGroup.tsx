@@ -17,22 +17,25 @@ export type CheckboxGroupContext = Pick<
 > &
   Omit<ThemingProps, "orientation">
 
-const [CheckboxGroupContextProvider, useCheckboxGroupContext] = createContext<
+const [CheckboxGroupCtxProvider, useCheckboxGroupCtx] = createContext<
   CheckboxGroupContext
 >({
   name: "CheckboxGroupContext",
   strict: false,
 })
 
-export { useCheckboxGroupContext }
+export { useCheckboxGroupCtx }
 
 /**
+ * CheckboxGroup
+ *
  * Used for multiple checkboxes which are bound in one group,
  * and it indicates whether one or more options are selected.
  *
  * @see Docs https://chakra-ui.com/checkbox
+ *
  */
-export function CheckboxGroup(props: CheckboxGroupProps) {
+export const CheckboxGroup = (props: CheckboxGroupProps) => {
   const { colorScheme, size, variant, children } = props
   const { value, onChange } = useCheckboxGroup(props)
 
@@ -48,9 +51,9 @@ export function CheckboxGroup(props: CheckboxGroupProps) {
   )
 
   return (
-    <CheckboxGroupContextProvider value={group}>
+    <CheckboxGroupCtxProvider value={group}>
       {children}
-    </CheckboxGroupContextProvider>
+    </CheckboxGroupCtxProvider>
   )
 }
 
