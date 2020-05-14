@@ -108,4 +108,8 @@ export type StyleProps = SpaceProps &
   OutlineProps &
   OtherProps
 
-export type SystemProps = StyleProps & PseudoProps<StyleProps>
+export interface TruncateProps {
+  isTruncated?: boolean
+}
+
+export type SystemProps = StyleProps & PseudoProps<StyleProps> & TruncateProps
