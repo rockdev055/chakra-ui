@@ -1,7 +1,13 @@
 import * as React from "react"
 import { pseudoSelectors } from "@chakra-ui/parser"
 import { css } from "@chakra-ui/css"
-import { isString, UnionStringArray, __DEV__ } from "@chakra-ui/utils"
+import {
+  isString,
+  UnionStringArray,
+  __DEV__,
+  isNumber,
+  get,
+} from "@chakra-ui/utils"
 
 /**
  * Carefully selected html elements for chakra components.
@@ -104,13 +110,32 @@ export function pseudoProps({ theme, ...props }: any) {
   return result
 }
 
-export function truncateProp({ isTruncated }: any) {
+export function truncateProp({ isTruncated, lineClamp }: any) {
+  if (isNumber(lineClamp)) {
+    return {
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      display: "-webkit-box",
+      WebkitBoxOrient: "vertical",
+      WebkitLineClamp: lineClamp,
+    }
+  }
+
   if (isTruncated) {
     return {
       overflow: "hidden",
       textOverflow: "ellipsis",
       whiteSpace: "nowrap",
     }
+  }
+}
+
+export function layerStyleProp({ layerStyle, textStyle, theme }: any) {
+  if (layerStyle) {
+    return get(theme, `layerStyles.${layerStyle}`)
+  }
+  if (textStyle) {
+    return get(theme, `textStyles.${textStyle}`)
   }
 }
 

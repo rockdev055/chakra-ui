@@ -1,5 +1,5 @@
 import * as React from "react"
-import { useLiveRegion } from "."
+import useLiveRegion from "./live-region.hook"
 
 export default {
   title: "Live Region",
