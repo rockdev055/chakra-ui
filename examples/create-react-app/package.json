@@ -1,11 +1,16 @@
 {
   "name": "create-react-app",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "dependencies": {
-    "@chakra-ui/core": "latest",
-    "@chakra-ui/preset-base": "latest",
-    "react-scripts": "3.4.1"
+    "@types/jest": "24.0.18",
+    "@types/node": "12.7.11",
+    "@types/react": "16.9.5",
+    "@types/react-dom": "16.9.1",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
+    "react-scripts": "3.2.0",
+    "typescript": "3.6.3"
   },
   "scripts": {
     "start": "react-scripts start",
