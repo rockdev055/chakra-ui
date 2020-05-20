@@ -296,14 +296,13 @@ const MenuList = ({ onKeyDown, onBlur, ...props }) => {
 
   // Close the menu on blur
   const handleBlur = event => {
-    const target = event.relatedTarget || document.activeElement;
     if (
       closeOnBlur &&
       isOpen &&
       menuRef.current &&
       buttonRef.current &&
-      !menuRef.current.contains(target) &&
-      !buttonRef.current.contains(target)
+      !menuRef.current.contains(event.relatedTarget) &&
+      !buttonRef.current.contains(event.relatedTarget)
     ) {
       closeMenu();
     }
