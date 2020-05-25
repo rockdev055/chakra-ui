@@ -1,18 +1,25 @@
 import CSSReset from "@chakra-ui/css-reset"
 import theme from "@chakra-ui/theme"
-import { ChakraProvider } from "@chakra-ui/core"
+import {
+  ColorModeProvider,
+  GlobalStyle,
+  ThemeProvider,
+} from "@chakra-ui/system"
 import { addDecorator } from "@storybook/react"
 import * as React from "react"
 
-export const Chakra: React.FC = ({ children }) => (
-  <ChakraProvider theme={theme}>
-    <CSSReset />
-    {children}
-  </ChakraProvider>
+export const ChakraProvider: React.FC = ({ children }) => (
+  <ThemeProvider theme={theme}>
+    <ColorModeProvider>
+      <GlobalStyle />
+      <CSSReset />
+      {children}
+    </ColorModeProvider>
+  </ThemeProvider>
 )
 
 addDecorator((StoryFn: Function) => (
-  <Chakra>
+  <ChakraProvider>
     <StoryFn />
-  </Chakra>
+  </ChakraProvider>
 ))

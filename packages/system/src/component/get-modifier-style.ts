@@ -18,19 +18,6 @@ function checkModifiers(
   return isInOptions || isInProps
 }
 
-function preProcess(style: any, props: any) {
-  if (!style) return
-  const out = {} as any
-  for (const key in style) {
-    if (key in props) {
-      out[key] = props[key]
-    } else {
-      out[key] = style[key]
-    }
-  }
-  return out
-}
-
 /**
  * Gets the modifier styles for a component.
  * Chakra UI assumes that most component will need
@@ -85,8 +72,8 @@ export function getModifierStyles(
    * can compute the styles based on theme.
    */
   for (const modifier of modifiers) {
-    const _modifier = modifierMap[modifier]
-    const value = computedProps[_modifier]
+    const _modifier = modifierMap[modifier as keyof typeof modifierMap]
+    const value = computedProps[_modifier as keyof typeof props]
 
     if (!value) continue
 
@@ -111,12 +98,13 @@ export function getModifierStyles(
      * })
      * ```
      */
-    const modifierInOptions = options?.[modifier]
+    const modifierInOptions = options?.[modifier as keyof ChakraOptions]
 
     const modifierStylesOrFn =
       modifierInOptions && runIfFn(modifierInOptions, props)
 
-    const modifierStylesInOptions = modifierStylesOrFn?.[value]
+    const modifierStylesInOptions =
+      modifierStylesOrFn?.[value as keyof typeof modifierInOptions]
 
     /**
      * Get styles from options if it exists else, get styles from theme
@@ -127,9 +115,7 @@ export function getModifierStyles(
 
     if (!styleObjectOrFn) continue
 
-    let style = runIfFn(styleObjectOrFn, computedProps) as Dict | undefined
-
-    style = preProcess(style, computedProps)
+    const style = runIfFn(styleObjectOrFn, computedProps) as Dict | undefined
 
     if (!style) continue
 

@@ -1,6 +1,5 @@
-import React from "react"
-import { chakra, PropsOf, pseudoPropNames } from "@chakra-ui/system"
-import { __DEV__, split } from "@chakra-ui/utils"
+import { chakra, PropsOf } from "@chakra-ui/system"
+import { __DEV__ } from "@chakra-ui/utils"
 
 export type BoxProps = PropsOf<typeof Box>
 

@@ -91,18 +91,12 @@ const theme2 = {
 }
 
 export const Test = () => {
-  const result = parser({
-    theme: theme2,
-    width: ["100%", null, "50%"],
-    color: ["red", "green", "blue"],
-  })
+  // const result = css({
+  //   width: ["100%", null, "50%"],
+  //   color: ["red", "green", "blue"],
+  // })(theme2)
 
-  console.log(result)
+  // console.log(result)
 
-  return (
-    <div>
-      <pre>{JSON.stringify(result, null, 2)}</pre>
-      <pre>{JSON.stringify(styles, null, 2)}</pre>
-    </div>
-  )
+  return <div css={styles}>Testing</div>
 }

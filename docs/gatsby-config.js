@@ -17,19 +17,7 @@ module.exports = {
     },
     `gatsby-plugin-chakra-ui`,
     `gatsby-plugin-lodash`,
-    {
-      resolve: `gatsby-plugin-mdx`,
-      options: {
-        gatsbyRemarkPlugins: [
-          {
-            resolve: `gatsby-remark-autolink-headers`,
-            options: {
-              icon: false,
-            },
-          },
-        ],
-      },
-    },
+    `gatsby-plugin-mdx`,
     "gatsby-plugin-catch-links",
     "gatsby-plugin-react-helmet",
     {

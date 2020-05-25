@@ -9,7 +9,7 @@ import {
   Alert,
   useColorModeValue,
 } from "@chakra-ui/core"
-import CodeBlock from "./code-block"
+import CodeBlock from "./CodeBlock"
 
 const Pre = (props) => <chakra.div my="2em" borderRadius="sm" {...props} />
 
@@ -88,9 +88,7 @@ const DocsHeading = (props) => (
 )
 
 const MDXComponents = {
-  h1: (props) => (
-    <Heading as="h1" size="xl" my="1em" _first={{ mt: 0 }} {...props}></Heading>
-  ),
+  h1: (props) => <Heading as="h1" size="xl" my="1em" {...props}></Heading>,
   h2: (props) => (
     <DocsHeading as="h2" fontWeight="semibold" size="lg" {...props} />
   ),

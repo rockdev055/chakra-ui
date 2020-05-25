@@ -1,6 +1,5 @@
 const path = require("path")
 const { createFilePath } = require("gatsby-source-filesystem")
-const { sortPostNodes } = require("./utils")
 
 exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions
@@ -46,13 +45,7 @@ exports.createPages = async ({ graphql, actions }) => {
       {
         allMdx {
           nodes {
-            frontmatter {
-              title
-              order
-            }
-
             fields {
-              collection
               slug
             }
           }
@@ -61,13 +54,7 @@ exports.createPages = async ({ graphql, actions }) => {
     `,
   )
 
-  const { nodes } = result.data.allMdx
-  const sortedNodes = sortPostNodes(nodes)
-
-  sortedNodes.forEach((node, index) => {
-    const previous = index === 0 ? null : sortedNodes[index - 1]
-    const next =
-      index === sortedNodes.length - 1 ? null : sortedNodes[index + 1]
+  result.data.allMdx.nodes.forEach((node) => {
     const slug = node.fields.slug
     createPage({
       // we use the generated slug for the path
@@ -85,10 +72,6 @@ exports.createPages = async ({ graphql, actions }) => {
         // this is attached so `layout.js` knows to use the sidebar layout for
         // these pages
         layout: "docs",
-
-        // previous and next pages
-        previous,
-        next,
       },
     })
   })

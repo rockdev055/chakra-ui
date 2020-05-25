@@ -26,9 +26,13 @@ function createStyled<T extends As, P = {}>(
 ) {
   return function (...interpolations: any[]) {
     const Styled = forwardRef(({ as, ...props }: any, ref: Ref<any>) => {
+      // Get the color mode and theme from context
       const { theme, colorMode } = useChakra()
+
+      // We'll store the final css object of style props here
       let computedStyles: CSSObject = {}
 
+      // For each style interpolation, we'll pass the theme and colorMode
       const propsWithTheme = { theme, colorMode, ...props }
 
       /**
@@ -58,8 +62,11 @@ function createStyled<T extends As, P = {}>(
        * })
        */
       if (options) {
-        const styles = getComponentStyles(propsWithTheme, options)
-        computedStyles = { ...computedStyles, ...styles } as CSSObject
+        const componentStyles = getComponentStyles(propsWithTheme, options)
+        computedStyles = {
+          ...computedStyles,
+          ...componentStyles,
+        } as CSSObject
       }
 
       // Resolve each interpolation and add result to final style

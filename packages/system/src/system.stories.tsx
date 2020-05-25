@@ -6,19 +6,21 @@ export default {
   title: "styled",
 }
 
-const Heading = chakra("h1", { themeKey: "Heading" })
-const Btn = chakra("button", {
-  themeKey: "Button",
-  baseStyle: { outline: 0 },
-})
+const Motion = chakra(motion.div)
 
-export const withHeading = () => (
-  <div>
-    <Heading fontSize={["50px", "50px", "100px"]}>Welcome</Heading>
-    <Btn height="60px" minWidth="400px" fontSize="20px">
-      Welcome
-    </Btn>
-  </div>
+export const WithFramerMotion = () => (
+  <Motion
+    boxSize="40px"
+    bg="red.300"
+    drag
+    whileTap={{ scale: 1.3 }}
+    dragConstraints={{
+      top: 0,
+      left: 0,
+      right: 50,
+      bottom: 50,
+    }}
+  />
 )
 
 export const LineClamp = () => (
