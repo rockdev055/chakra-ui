@@ -22,4 +22,3 @@ GitHub Sponsor, then please send a PR to have your name listed below:
 
 - Bolaji Ayodeji
 - Olaoluwa Faniyi
-- Ivan Dalmet
