@@ -1,0 +1,51 @@
+---
+title: Advanced
+description: Documentation for the component theming API.
+order: 3
+---
+
+# Theming with Color mode
+
+Now that you understand how to use Chakra UI theming API. Let's take a step
+further and see if we can adapt the button to color mode.
+
+Here's how it works, when defining the styles for the sizes or variants, you can
+either pass a style object or a function that returns a style object.
+
+```tsx live=false
+const Button = chakra("button", {
+  baseStyle: StyleObjectOrFunction,
+  sizes: StyleObjectOrFunction,
+  variants: StyleObjectOrFunction,
+})
+
+type StyleObjectOrFunction = StyleObject | ((props: Options) => StyleObject)
+
+type Options = {
+  theme: Theme
+  colorMode: "light" | "dark"
+  colorScheme: string
+}
+```
+
+Here's an example of how to create a simple badge that changes it's background
+based on color mode.
+
+> Switch to dark mode and see how how the badge background changes
+
+```jsx isManual=true
+const Badge = chakra("span", {
+  baseStyle: ({ colorMode }) => ({
+    bg: colorMode === "dark" ? "green.300" : "green.500",
+    color: colorMode === "dark" ? "gray.800" : "white",
+    textTransform: "uppercase",
+    fontWeight: "semibold",
+    letterSpacing: "0.02em",
+    padding: "4px",
+    borderRadius: "2px",
+    fontSize: "12px",
+  }),
+})
+
+render(<Badge>This is a badge</Badge>)
+```
