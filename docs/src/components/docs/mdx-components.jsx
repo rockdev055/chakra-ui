@@ -1,6 +1,7 @@
 import React from "react"
 import {
   Box,
+  Code,
   Heading,
   Kbd,
   Text,
@@ -105,15 +106,7 @@ const MDXComponents = {
     <DocsHeading as="h3" size="md" fontWeight="medium" {...props}></DocsHeading>
   ),
   inlineCode: (props) => (
-    <chakra.code
-      fontFamily="mono"
-      color="teal.400"
-      fontWeight="semibold"
-      fontSize="0.9em"
-      {...props}
-    >
-      {`\`${props.children}\``}
-    </chakra.code>
+    <Code colorScheme="yellow" fontSize="0.84em" {...props} />
   ),
   code: CodeBlock,
   pre: Pre,
