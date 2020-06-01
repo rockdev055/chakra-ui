@@ -1,10 +1,11 @@
 import * as React from "react"
 import { sortBy, upperFirst, camelCase } from "lodash/fp"
 import { graphql, useStaticQuery } from "gatsby"
-import { Box, Heading, Badge } from "@chakra-ui/core"
+import { Box, Heading, Badge, useColorModeValue } from "@chakra-ui/core"
 import { ComponentLink, TopNavLink } from "./nav-link"
 
-const sortNodes = sortBy(["frontmatter.order", "frontmatter.title"])
+const sortByOrder = sortBy(["frontmatter.order"])
+const sortByTitle = sortBy(["frontmatter.title"])
 
 const useLinksQuery = () => {
   return useStaticQuery(
@@ -27,7 +28,6 @@ const useLinksQuery = () => {
           nodes {
             frontmatter {
               title
-              order
             }
             fields {
               slug
@@ -40,7 +40,6 @@ const useLinksQuery = () => {
           nodes {
             frontmatter {
               title
-              order
             }
             fields {
               slug
@@ -51,7 +50,6 @@ const useLinksQuery = () => {
           nodes {
             frontmatter {
               title
-              order
             }
             fields {
               slug
@@ -65,7 +63,7 @@ const useLinksQuery = () => {
 
 const MainLinks = () => {
   const { main } = useLinksQuery()
-  const nodes = sortNodes(main.nodes)
+  const nodes = sortByOrder(main.nodes)
 
   return nodes.map(({ frontmatter, fields }) => (
     <TopNavLink key={frontmatter.title} href={fields.slug}>
@@ -76,7 +74,7 @@ const MainLinks = () => {
 
 const ComponentLinks = () => {
   const { components } = useLinksQuery()
-  const nodes = sortNodes(components.nodes)
+  const nodes = sortByTitle(components.nodes)
 
   return nodes.map(({ frontmatter: { title }, fields: { slug } }) => (
     <ComponentLink key={title} href={slug}>
@@ -87,7 +85,7 @@ const ComponentLinks = () => {
 
 const UtilitiesLinks = () => {
   const { utilities } = useLinksQuery()
-  const nodes = sortNodes(utilities.nodes)
+  const nodes = sortByTitle(utilities.nodes)
 
   return nodes.map(({ frontmatter, fields }) => (
     <ComponentLink key={frontmatter.title} href={fields.slug}>
@@ -98,7 +96,7 @@ const UtilitiesLinks = () => {
 
 const ThemingLinks = () => {
   const { theming } = useLinksQuery()
-  const nodes = sortNodes(theming.nodes)
+  const nodes = sortByOrder(theming.nodes)
 
   return nodes.map(({ frontmatter, fields }) => (
     <ComponentLink key={frontmatter.title} href={fields.slug}>
@@ -110,7 +108,7 @@ const ThemingLinks = () => {
 const NavGroupHeading = (props) => (
   <Heading
     size="xs"
-    color="gray.400"
+    color={useColorModeValue("gray.500", "whiteAlpha.600")}
     letterSpacing="wide"
     mb={2}
     textTransform="uppercase"
