@@ -27,14 +27,15 @@ export const PaginationLink = (props) => {
   )
 }
 
-export const Pagination = ({ previous, next, ...rest }) => {
+export const Pagination = ({ previous, next }) => {
   return (
     <SimpleGrid
       as="nav"
       aria-label="pagination"
+      mt="3rem"
+      mb="80px"
       spacing="40px"
       columns={2}
-      {...rest}
     >
       {previous ? (
         <PaginationLink

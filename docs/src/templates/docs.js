@@ -7,40 +7,32 @@ import { GithubLink } from "../components/github-edit-link"
 import { Pagination } from "../components/pagination"
 import SEO from "../components/seo"
 
-function LastEdited(props) {
-  const { modifiedTime, editUrl, ...rest } = props
-  return (
-    <Flex
-      as="footer"
-      alignItems="center"
-      justifyContent="space-between"
-      {...rest}
-    >
-      <Box fontSize="sm" opacity={0.7}>
-        Last updated: {modifiedTime}
-      </Box>
-      <GithubLink path={editUrl} />
-    </Flex>
-  )
-}
-
 // memoized to prevent from re-rendering on in-page anchor link navigation
-const Body = (props) => {
-  const { relativePath, body, previous, next, modifiedTime } = props
-  return (
-    <Box mx="auto" maxW="46rem" mt="1em">
-      <MDXRenderer>{body}</MDXRenderer>
-      {relativePath && (
-        <LastEdited
-          mt="3rem"
-          modifiedTime={modifiedTime}
-          editUrl={relativePath}
-        />
-      )}
-      <Pagination mt="4rem" mb="80px" previous={previous} next={next} />
-    </Box>
-  )
-}
+const Body = React.memo(
+  (props) => {
+    const { relativePath, body, previous, next, modifiedTime } = props
+    return (
+      <Box mx="auto" maxW="46rem" mt="1em">
+        <MDXRenderer>{body}</MDXRenderer>
+        <Pagination previous={previous} next={next} />
+        {relativePath && (
+          <Flex
+            as="footer"
+            mt={12}
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Box fontSize="sm" opacity={0.7}>
+              Last Edited: {modifiedTime}
+            </Box>
+            <GithubLink path={relativePath} />
+          </Flex>
+        )}
+      </Box>
+    )
+  },
+  (prev, next) => prev.pathname === next.pathname,
+)
 
 const Docs = ({ data, pageContext }) => {
   const location = useLocation()
