@@ -4,7 +4,7 @@ description: How to use the theming API in chakra
 order: 2
 ---
 
-# Learn Theming
+# Theming Basics
 
 ## Design a button component
 
@@ -86,7 +86,10 @@ Here's what it looks like:
 
 ```jsx isManual=true
 const Button = chakra("button", {
-  baseStyle: { fontWeight: "semibold", textTransform: "uppercase" },
+  baseStyle: {
+    fontWeight: "semibold",
+    textTransform: "uppercase",
+  },
   sizes: {
     small: {
       padding: "8px",
