@@ -1,5 +1,5 @@
 {
+  "installCommand": "codesandbox:ci",
   "buildCommand": "build",
-  "packages": ["packages/chakra-ui"],
-  "sandboxes": ["27i2n"]
+  "sandboxes": ["tender-leakey-6ms6x"]
 }
