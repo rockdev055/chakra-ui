@@ -7,7 +7,7 @@ import {
 import { getValidChildren, cx, __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
 import { forwardRef, Ref, cloneElement } from "react"
-import { baseStyle } from "./avatar"
+import { baseStyle } from "./Avatar"
 
 const ExcessLabel = chakra("span", {
   themeKey: "Avatar.ExcessLabel",

@@ -5,7 +5,7 @@ import {
 } from "@chakra-ui/transition"
 import { ensureFocus } from "@chakra-ui/utils"
 import * as React from "react"
-import { useMenuContext } from "./menu"
+import { useMenuContext } from "./Menu"
 
 export interface MenuTransitionProps {
   transformOrigin?: string

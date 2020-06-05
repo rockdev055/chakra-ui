@@ -1,9 +1,6 @@
 const _ = require("lodash/fp")
-const { Octokit } = require("@octokit/rest")
-
-const octokit = new Octokit({
-  auth: "b452f7c3d86fcffa6bd1fd82dd4614ec757437ea",
-})
+const getFileContributors = require("file-contributors").default
+require("isomorphic-fetch")
 
 const compareCollections = (
   { fields: { collection: a } },
@@ -43,7 +40,16 @@ const getRelativePagePath = (fileAbsolutePath) => {
 }
 
 const getNodeContributors = async (node) => {
-  return []
+  const relativePath = getRelativePagePath(node.fileAbsolutePath)
+  const fileContributors = await getFileContributors(
+    "chakra-ui",
+    "chakra-ui",
+    relativePath,
+  )
+  const contributors = fileContributors.map(
+    ({ login: name, avatar_url: image }) => ({ name, image }),
+  )
+  return contributors
 }
 
 module.exports = { sortPostNodes, getRelativePagePath, getNodeContributors }

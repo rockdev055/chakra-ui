@@ -40,13 +40,7 @@ exports.onCreateNode = async ({ node, actions, getNode }) => {
     })
 
     if (collection === "guides") {
-      const contributors = getNodeContributors(node)
-      console.log("contributors", contributors)
-      // createNodeField({
-      //   name: 'creator',
-      //   node,
-      //   value: contributors[0]
-      // })
+      const contributors = await getNodeContributors(node)
       createNodeField({
         name: "contributors",
         node,
@@ -56,8 +50,7 @@ exports.onCreateNode = async ({ node, actions, getNode }) => {
   }
 }
 
-exports.createSchemaCustomization = (props) => {
-  const { actions, schema } = props
+exports.createSchemaCustomization = ({ actions, schema }) => {
   const { createTypes } = actions
 
   // define types for `Mdx.fields.contributors`
@@ -77,7 +70,7 @@ exports.createSchemaCustomization = (props) => {
       fields: {
         contributors: {
           type: "[Contributor!]!",
-          async resolve(source) {
+          resolve(source) {
             return source.contributors || []
           },
         },

@@ -1,4 +1,4 @@
-import Input, { InputProps, InputTokens } from "./input"
+import Input, { InputProps, InputTokens } from "./Input"
 import { ComponentTheme } from "./utils"
 
 const PinInput: ComponentTheme<InputProps> = {

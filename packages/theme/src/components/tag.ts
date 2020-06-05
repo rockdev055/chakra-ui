@@ -1,5 +1,5 @@
 import { ComponentTheme } from "./utils"
-import Badge, { BadgeTokens } from "./badge"
+import Badge, { BadgeTokens } from "./Badge"
 
 const Tag: ComponentTheme = {
   defaultProps: {
