@@ -40,7 +40,13 @@ exports.onCreateNode = async ({ node, actions, getNode }) => {
     })
 
     if (collection === "guides") {
-      const contributors = await getNodeContributors(node)
+      const contributors = getNodeContributors(node)
+      console.log("contributors", contributors)
+      // createNodeField({
+      //   name: 'creator',
+      //   node,
+      //   value: contributors[0]
+      // })
       createNodeField({
         name: "contributors",
         node,
@@ -63,7 +69,6 @@ exports.createSchemaCustomization = (props) => {
     type Contributor {
       name: String!
       image: String!
-      url: String!
     }
   `,
     // we use buildObjectType here so we can default `contributors` to `[]`
@@ -72,7 +77,7 @@ exports.createSchemaCustomization = (props) => {
       fields: {
         contributors: {
           type: "[Contributor!]!",
-          resolve(source) {
+          async resolve(source) {
             return source.contributors || []
           },
         },

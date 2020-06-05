@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Text, Link } from "@chakra-ui/core"
+import { Box, Flex } from "@chakra-ui/core"
 import { useLocation } from "@reach/router"
 import { graphql } from "gatsby"
 import { MDXRenderer } from "gatsby-plugin-mdx"
@@ -24,27 +24,9 @@ function LastEdited(props) {
 }
 
 const Body = (props) => {
-  const {
-    title,
-    description,
-    contributors,
-    relativePath,
-    body,
-    modifiedTime,
-  } = props
-  const creator = contributors[0]
+  const { contributors, relativePath, body, modifiedTime } = props
   return (
     <Box mx="auto" maxW="48rem" mt="1em">
-      <Heading as="h1">{title}</Heading>
-      <Text>{description}</Text>
-      {creator && (
-        <Text>
-          by{" "}
-          <Link href={creator.url} isExternal>
-            {creator.name}
-          </Link>
-        </Text>
-      )}
       <MDXRenderer>{body}</MDXRenderer>
       {relativePath && (
         <LastEdited
@@ -70,8 +52,6 @@ const Guides = ({ data, pageContext }) => {
       <Body
         pathname={location.pathname}
         body={body}
-        title={title}
-        description={description}
         previous={previous}
         next={next}
         slug={slug}
@@ -93,7 +73,6 @@ export const query = graphql`
         contributors {
           name
           image
-          url
         }
       }
       frontmatter {
