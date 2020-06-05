@@ -1,5 +1,5 @@
 import * as React from "react"
-import { useStaticQuery, graphql } from "gatsby"
+import { useStaticQuery, graphql, Link as GatsbyLink } from "gatsby"
 import {
   Box,
   Heading,
@@ -9,45 +9,45 @@ import {
   Flex,
   Avatar,
   SimpleGrid,
+  chakra,
 } from "@chakra-ui/core"
 
 function GuidePreview(props) {
-  const { title, children, createdAt, birthTime, contributors, ...rest } = props
+  const { title, children, createdAt, birthTime, url, ...rest } = props
   return (
-    <Flex
-      transition="all 0.3s"
-      _hover={{ boxShadow: "md", cursor: "pointer" }}
-      direction="column"
-      justify-content="space-between"
-      as="article"
-      padding="24px"
-      borderWidth="1px"
-      borderRadius="lg"
-      {...rest}
-    >
-      <Box flex="1">
-        <Heading
-          mb="2"
-          lineHeight="1.4"
-          size="md"
-          as="h3"
-          fontWeight="semibold"
-        >
-          {title}
-        </Heading>
-        <Text>{children}</Text>
-      </Box>
-      <Flex justify="space-between" mt="6" color="gray.500" width="100%">
-        <Stack direction="row" flex="1">
-          <Avatar size="xs" />
-          <Text fontSize="sm">dsfdfsdd</Text>
-        </Stack>
-        <Text fontSize="sm">
-          <span>Created at: </span>
-          <time dateTime={birthTime}>{createdAt}</time>
-        </Text>
+    <chakra.a as={GatsbyLink} to={url}>
+      <Flex
+        transition="all 0.3s"
+        direction="column"
+        height="100%"
+        borderWidth="1px"
+        justify-content="space-between"
+        as="article"
+        boxShadow="sm"
+        _hover={{ boxShadow: "lg" }}
+        borderRadius="lg"
+        overflow="hidden"
+        padding="3rem"
+        {...rest}
+      >
+        <Box flex="1">
+          <Heading mb="24px" lineHeight="1.4" size="md" as="h2">
+            {title}
+          </Heading>
+          <Text>{children}</Text>
+        </Box>
+        <Flex justify="space-between" mt="6" color="gray.500" width="100%">
+          <Stack align="center" direction="row" flex="1">
+            <Avatar size="sm" />
+            <Text fontSize="sm">Segun Adebayo</Text>
+          </Stack>
+          <Text fontSize="sm">
+            <span>Created at: </span>
+            <time dateTime={birthTime}>{createdAt}</time>
+          </Text>
+        </Flex>
       </Flex>
-    </Flex>
+    </chakra.a>
   )
 }
 
@@ -57,6 +57,7 @@ function Guides() {
       allMdx(filter: { fields: { collection: { eq: "guides" } } }) {
         nodes {
           fields {
+            slug
             contributors {
               name
               image
@@ -81,7 +82,7 @@ function Guides() {
     <Box pt="56px">
       <Box py="80px">
         <Container maxWidth="lg">
-          <Heading as="h1" size="xl" mb="3">
+          <Heading as="h1" size="2xl" mb="3">
             Guides
           </Heading>
           <Text>A list of guides for using Chakra UI with any project.</Text>
@@ -91,12 +92,13 @@ function Guides() {
         <SimpleGrid columns={[1, 1, 2]} spacing="24px">
           {allMdx.nodes.map(
             ({
-              fields: { contributors },
+              fields: { contributors, slug },
               frontmatter: { title, description },
               parent: { createdAt, birthTime },
             }) => (
               <GuidePreview
                 key={title}
+                url={slug}
                 title={title}
                 birthTime={birthTime}
                 createdAt={createdAt}
