@@ -1,10 +1,11 @@
 const path = require("path")
 const { createFilePath } = require("gatsby-source-filesystem")
+const getFileContributors = require("file-contributors").default
+require("isomorphic-fetch")
 
 const {
   sortPostNodes,
-  getRelativePagePath,
-  getNodeContributors,
+  getRelativeDocsPath: getRelativeDocPath,
 } = require("./utils")
 
 exports.onCreateNode = async ({ node, actions, getNode }) => {
@@ -15,6 +16,8 @@ exports.onCreateNode = async ({ node, actions, getNode }) => {
     // get the `collection` using the parent `File` node's `relativeDirectory`
     const { relativeDirectory } = getNode(node.parent)
     const collection = relativeDirectory.length ? relativeDirectory : "main"
+
+    console.log("collection", collection)
 
     // use `gatsby-source-filesystem` to create our slug
     const relativeFilePath = createFilePath({
@@ -40,7 +43,12 @@ exports.onCreateNode = async ({ node, actions, getNode }) => {
     })
 
     if (collection === "guides") {
-      const contributors = await getNodeContributors(node)
+      const contributors = await getFileContributors(
+        "chakra-ui",
+        "chakra-ui",
+        relativeFilePath,
+      )
+      console.log("contributors", contributors)
       createNodeField({
         name: "contributors",
         node,
@@ -48,36 +56,6 @@ exports.onCreateNode = async ({ node, actions, getNode }) => {
       })
     }
   }
-}
-
-exports.createSchemaCustomization = ({ actions, schema }) => {
-  const { createTypes } = actions
-
-  // define types for `Mdx.fields.contributors`
-  const typeDefs = [
-    `
-    type Mdx implements Node {
-      fields: MdxFields
-    }
-    type Contributor {
-      name: String!
-      image: String!
-    }
-  `,
-    // we use buildObjectType here so we can default `contributors` to `[]`
-    schema.buildObjectType({
-      name: "MdxFields",
-      fields: {
-        contributors: {
-          type: "[Contributor!]!",
-          resolve(source) {
-            return source.contributors || []
-          },
-        },
-      },
-    }),
-  ]
-  createTypes(typeDefs)
 }
 
 exports.createPages = async ({ graphql, actions }) => {
@@ -124,7 +102,7 @@ exports.createPages = async ({ graphql, actions }) => {
     const next =
       index === sortedNodes.length - 1 ? null : sortedNodes[index + 1]
     const slug = node.fields.slug
-    const relativePath = getRelativePagePath(node.fileAbsolutePath)
+    const relativePath = getRelativeDocPath(node.fileAbsolutePath)
     const edge = edges[index]
     const { modifiedTime, birthTime } = edge.node.parent
 
