@@ -10,6 +10,7 @@
     "ui",
     "chakra",
     "style-props",
+    "styled-system",
     "design-system"
   ],
   "author": "Segun Adebayo <sage@adebayosegun.com>",
