@@ -1,4 +1,4 @@
-import { chakra, PropsOf, SystemProps } from "@chakra-ui/system"
+import { chakra, PropsOf, SystemProps, forwardRef } from "@chakra-ui/system"
 import * as React from "react"
 import { UseImageProps, useImage } from "./use-image"
 import { __DEV__, omit } from "@chakra-ui/utils"
@@ -38,7 +38,7 @@ interface ImageOptions {
   ignoreFallback?: boolean
 }
 
-const StyledImage = chakra.img
+const StyledImage = chakra("img")
 
 export type ImageProps = UseImageProps &
   PropsOf<typeof StyledImage> &
@@ -50,54 +50,52 @@ export type ImageProps = UseImageProps &
  *
  * @see Docs https://chakra-ui.com/components/image
  */
-export const Image = React.forwardRef(
-  (props: ImageProps, ref: React.Ref<HTMLImageElement>) => {
-    const {
-      fallbackSrc,
-      fallback,
-      src,
-      align,
-      fit,
-      ignoreFallback,
-      crossOrigin,
-      ...rest
-    } = props
+export const Image = forwardRef<ImageProps, "img">(function Image(props, ref) {
+  const {
+    fallbackSrc,
+    fallback,
+    src,
+    align,
+    fit,
+    ignoreFallback,
+    crossOrigin,
+    ...rest
+  } = props
 
-    const status = useImage(props)
+  const status = useImage(props)
 
-    const shared = {
-      ref,
-      objectFit: fit,
-      objectPosition: align,
-      ...(ignoreFallback ? rest : omit(rest, ["onError", "onLoad"])),
-    }
+  const shared = {
+    ref,
+    objectFit: fit,
+    objectPosition: align,
+    ...(ignoreFallback ? rest : omit(rest, ["onError", "onLoad"])),
+  }
 
-    if (status !== "loaded") {
-      /**
-       * If user passed a custom fallback component,
-       * let's render it here.
-       */
-      if (fallback) return fallback
-
-      return (
-        <StyledImage
-          className="chakra-image__placeholder"
-          src={fallbackSrc}
-          {...shared}
-        />
-      )
-    }
+  if (status !== "loaded") {
+    /**
+     * If user passed a custom fallback component,
+     * let's render it here.
+     */
+    if (fallback) return fallback
 
     return (
       <StyledImage
-        src={src}
-        crossOrigin={crossOrigin}
-        className="chakra-image"
+        className="chakra-image__placeholder"
+        src={fallbackSrc}
         {...shared}
       />
     )
-  },
-)
+  }
+
+  return (
+    <StyledImage
+      src={src}
+      crossOrigin={crossOrigin}
+      className="chakra-image"
+      {...shared}
+    />
+  )
+})
 
 if (__DEV__) {
   Image.displayName = "Image"
