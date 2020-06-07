@@ -11,7 +11,6 @@ import {
   SimpleGrid,
   chakra,
 } from "@chakra-ui/core"
-import SEO from "../components/seo"
 
 function GuidePreview(props) {
   const {
@@ -89,45 +88,38 @@ function Guides() {
   `)
 
   return (
-    <>
-      <SEO
-        title="Chakra UI Guides"
-        description="Community-created guides for using Chakra UI"
-        slug="/guides"
-      />
-      <Box pt="56px">
-        <Box py="80px">
-          <Container maxWidth="lg">
-            <Heading as="h1" size="2xl" mb="3">
-              Guides
-            </Heading>
-            <Text>A list of guides for using Chakra UI with any project.</Text>
-          </Container>
-        </Box>
+    <Box pt="56px">
+      <Box py="80px">
         <Container maxWidth="lg">
-          <SimpleGrid columns={[1, 1, 2]} spacing="24px">
-            {allMdx.nodes.map(
-              ({
-                fields: { contributors, slug },
-                frontmatter: { title, description },
-                parent: { createdAt, birthTime },
-              }) => (
-                <GuidePreview
-                  key={title}
-                  url={slug}
-                  title={title}
-                  birthTime={birthTime}
-                  createdAt={createdAt}
-                  contributors={contributors}
-                >
-                  {description}
-                </GuidePreview>
-              ),
-            )}
-          </SimpleGrid>
+          <Heading as="h1" size="2xl" mb="3">
+            Guides
+          </Heading>
+          <Text>A list of guides for using Chakra UI with any project.</Text>
         </Container>
       </Box>
-    </>
+      <Container maxWidth="lg">
+        <SimpleGrid columns={[1, 1, 2]} spacing="24px">
+          {allMdx.nodes.map(
+            ({
+              fields: { contributors, slug },
+              frontmatter: { title, description },
+              parent: { createdAt, birthTime },
+            }) => (
+              <GuidePreview
+                key={title}
+                url={slug}
+                title={title}
+                birthTime={birthTime}
+                createdAt={createdAt}
+                contributors={contributors}
+              >
+                {description}
+              </GuidePreview>
+            ),
+          )}
+        </SimpleGrid>
+      </Container>
+    </Box>
   )
 }
 
