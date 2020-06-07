@@ -1,11 +1,6 @@
 import { useBoolean, useId, useSafeLayoutEffect } from "@chakra-ui/hooks"
-import { Icon, IconProps } from "@chakra-ui/icon"
-import {
-  chakra,
-  PropsOf,
-  useComponentStyle,
-  forwardRef,
-} from "@chakra-ui/system"
+import Icon from "@chakra-ui/icon"
+import { chakra, PropsOf, useComponentStyle } from "@chakra-ui/system"
 import {
   callAllHandlers,
   createContext,
@@ -151,8 +146,8 @@ export type FormControlProps = FormControlContext &
  * This is commonly used in form elements such as `input`,
  * `select`, `textarea`, etc.
  */
-export const FormControl = forwardRef<FormControlProps, "div">(
-  function FormControl(props, ref) {
+export const FormControl = React.forwardRef(
+  (props: FormControlProps, ref: React.Ref<any>) => {
     const { htmlProps, ...context } = useProvider(props)
 
     const _className = cx("chakra-form-control", props.className)
@@ -192,27 +187,26 @@ export type FormLabelProps = PropsOf<typeof StyledLabel>
  *
  * ♿️ Accessibilty: Every form field should have a form label.
  */
-export const FormLabel = forwardRef<FormLabelProps, "label">(function FormLabel(
-  props,
-  ref,
-) {
-  const field = useFormControlContext()
+export const FormLabel = React.forwardRef(
+  (props: FormLabelProps, ref: React.Ref<any>) => {
+    const field = useFormControlContext()
 
-  return (
-    <StyledLabel
-      {...props}
-      className={cx("chakra-form__label", props.className)}
-      ref={ref}
-      data-focus={dataAttr(field?.isFocused)}
-      data-disabled={dataAttr(field?.isDisabled)}
-      data-invalid={dataAttr(field?.isInvalid)}
-      data-loading={dataAttr(field?.isLoading)}
-      data-readonly={dataAttr(field?.isReadOnly)}
-      id={props.id ?? field?.labelId}
-      htmlFor={props.htmlFor ?? field?.id}
-    />
-  )
-})
+    return (
+      <StyledLabel
+        {...props}
+        className={cx("chakra-form__label", props.className)}
+        ref={ref}
+        data-focus={dataAttr(field?.isFocused)}
+        data-disabled={dataAttr(field?.isDisabled)}
+        data-invalid={dataAttr(field?.isInvalid)}
+        data-loading={dataAttr(field?.isLoading)}
+        data-readonly={dataAttr(field?.isReadOnly)}
+        id={props.id ?? field?.labelId}
+        htmlFor={props.htmlFor ?? field?.id}
+      />
+    )
+  },
+)
 
 if (__DEV__) {
   FormLabel.displayName = "FormLabel"
@@ -238,8 +232,8 @@ export type RequiredIndicatorProps = PropsOf<typeof StyledIndicator>
  * Used to show a "required" text or an asterisks (*) to indicate that
  * a field is required.
  */
-export const RequiredIndicator = forwardRef<RequiredIndicatorProps, "span">(
-  function RequiredIndicator(props, ref) {
+export const RequiredIndicator = React.forwardRef(
+  (props: RequiredIndicatorProps, ref: React.Ref<any>) => {
     const field = useFormControlContext()
 
     if (!field?.isRequired) return null
@@ -273,8 +267,8 @@ export type HelpTextProps = PropsOf<typeof StyledHelperText>
  * about the field, such as how it will be used and what
  * types in values should be provided
  */
-export const FormHelperText = forwardRef<HelpTextProps, "div">(
-  function FormHelperText(props, ref) {
+export const FormHelperText = React.forwardRef(
+  (props: HelpTextProps, ref: React.Ref<any>) => {
     const field = useFormControlContext()
 
     /**
@@ -326,8 +320,8 @@ export type FormErrorMessageProps = PropsOf<typeof StyledErrorText>
  * Used to provide feedback about an invalid input,
  * and suggest clear instrctions on how to fix it.
  */
-export const FormErrorMessage = forwardRef<FormErrorMessageProps, "div">(
-  function FormErrorMessage(props, ref) {
+export const FormErrorMessage = React.forwardRef(
+  (props: FormErrorMessageProps, ref: React.Ref<any>) => {
     const field = useFormControlContext()
 
     if (!field?.isInvalid) return null
@@ -396,12 +390,14 @@ export function useFormControl<T extends HTMLElement>(
   }
 }
 
+export type FormErrorIconProps = PropsOf<typeof Icon>
+
 /**
  * Used as the visual indicator that a field is invalid or
  * a field has incorrect values.
  */
-export const FormErrorIcon = forwardRef<IconProps, "svg">(
-  function FormErrorIcon(props, ref) {
+export const FormErrorIcon = React.forwardRef(
+  (props: FormErrorIconProps, ref: React.Ref<any>) => {
     const styles = useComponentStyle({ themeKey: "Form.ErrorIcon" })
     const field = useFormControlContext()
 

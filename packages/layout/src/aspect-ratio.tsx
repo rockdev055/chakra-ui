@@ -1,5 +1,4 @@
 import { __DEV__, cx } from "@chakra-ui/utils"
-import { forwardRef } from "@chakra-ui/system"
 import * as React from "react"
 import { Box, BoxProps } from "./box"
 
@@ -18,10 +17,10 @@ export type AspectRatioProps = BoxProps & AspectRatioOptions
  * React component used to cropping media (videos, images and maps)
  * to a desired aspect ratio.
  *
- * @see Docs https://chakra-ui.com/components/aspect-ratio
+ * @see Docs https://chakra-ui.com/components/aspectratio
  */
-export const AspectRatio = forwardRef<AspectRatioProps, "div">(
-  function AspectRatio(props, ref) {
+export const AspectRatio = React.forwardRef(
+  (props: AspectRatioProps, ref: React.Ref<any>) => {
     const { ratio = 4 / 3, children, className, ...rest } = props
 
     // enforce single child

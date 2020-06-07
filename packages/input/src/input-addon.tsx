@@ -1,5 +1,5 @@
 import { useSafeLayoutEffect } from "@chakra-ui/hooks"
-import { chakra, PropsOf, forwardRef } from "@chakra-ui/system"
+import { chakra, PropsOf } from "@chakra-ui/system"
 import { cx, __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
 import { useInputGroup } from "./input-group"
@@ -46,9 +46,10 @@ export type InputAddonProps = PropsOf<typeof StyledAddon> & {
  * Element to append or prepend to an input
  */
 
-export const InputAddon = forwardRef<InputAddonProps, "div">(
-  function InputAddonProps(props, ref) {
+export const InputAddon = React.forwardRef(
+  (props: InputAddonProps, ref: React.Ref<any>) => {
     const { placement = "left", ...rest } = props
+
     const placementStyles = placements[placement] ?? {}
     const group = useInputGroup()
 
@@ -74,25 +75,22 @@ if (__DEV__) {
  * Element to append to the left of an input
  */
 
-export const InputLeftAddon = forwardRef<InputAddonProps, "div">(
-  function InputLeftAddon(props, ref) {
-    const { leftAddon } = useInputGroup()
+export const InputLeftAddon = (props: InputAddonProps) => {
+  const { leftAddon } = useInputGroup()
 
-    useSafeLayoutEffect(() => {
-      leftAddon?.mount()
-      return () => leftAddon?.unmount()
-    }, [])
+  useSafeLayoutEffect(() => {
+    leftAddon?.mount()
+    return () => leftAddon?.unmount()
+  }, [])
 
-    return (
-      <InputAddon
-        ref={ref}
-        placement="left"
-        {...props}
-        className={cx("chakra-input__left-addon", props.className)}
-      />
-    )
-  },
-)
+  return (
+    <InputAddon
+      placement="left"
+      {...props}
+      className={cx("chakra-input__left-addon", props.className)}
+    />
+  )
+}
 
 if (__DEV__) {
   InputLeftAddon.displayName = "InputLeftAddon"
@@ -104,25 +102,22 @@ if (__DEV__) {
  * Element to append to the right of an input
  */
 
-export const InputRightAddon = forwardRef<InputAddonProps, "div">(
-  function InputRightAddon(props, ref) {
-    const { rightAddon } = useInputGroup()
+export const InputRightAddon = (props: InputAddonProps) => {
+  const { rightAddon } = useInputGroup()
 
-    useSafeLayoutEffect(() => {
-      rightAddon?.mount()
-      return () => rightAddon?.unmount()
-    }, [])
+  useSafeLayoutEffect(() => {
+    rightAddon?.mount()
+    return () => rightAddon?.unmount()
+  }, [])
 
-    return (
-      <InputAddon
-        ref={ref}
-        placement="right"
-        {...props}
-        className={cx("chakra-input__right-addon", props.className)}
-      />
-    )
-  },
-)
+  return (
+    <InputAddon
+      placement="right"
+      {...props}
+      className={cx("chakra-input__right-addon", props.className)}
+    />
+  )
+}
 
 if (__DEV__) {
   InputRightAddon.displayName = "InputRightAddon"

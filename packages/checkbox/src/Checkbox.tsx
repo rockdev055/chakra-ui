@@ -1,5 +1,5 @@
 import { IconProps } from "@chakra-ui/icon"
-import { chakra, PropsOf, forwardRef, SystemProps } from "@chakra-ui/system"
+import { chakra, PropsOf, SystemProps } from "@chakra-ui/system"
 import { cx, Omit, __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
 import { useCheckbox, UseCheckboxProps } from "./use-checkbox"
@@ -42,15 +42,13 @@ const StyledWrapper = chakra("label", {
   },
 })
 
-type BaseControlProps = Omit<
+type Omitted = Omit<
   PropsOf<typeof StyledControl>,
   "onChange" | "defaultChecked"
 >
 
-type Omitted = "size" | "checked" | "defaultChecked"
-
-export type CheckboxProps = BaseControlProps &
-  Omit<PropsOf<"input">, Omitted> &
+export type CheckboxProps = Omitted &
+  Omit<PropsOf<"input">, "size"> &
   UseCheckboxProps & {
     /**
      * The color of the check icon
@@ -65,7 +63,7 @@ export type CheckboxProps = BaseControlProps &
      * The spacing between the checkbox and it's label text
      * @default 0.5rem
      */
-    spacing?: SystemProps["marginLeft"]
+    labelSpacing?: SystemProps["marginLeft"]
   }
 
 /**
@@ -76,13 +74,13 @@ export type CheckboxProps = BaseControlProps &
  *
  * @see Docs https://chakra-ui.com/components/checkbox
  */
-export const Checkbox = forwardRef<CheckboxProps, "input", Omitted>(
-  function Checkbox(props, ref) {
+export const Checkbox = React.forwardRef(
+  (props: CheckboxProps, ref: React.Ref<HTMLInputElement>) => {
     const group = useCheckboxGroupContext()
 
     const {
       iconSize = "0.625rem",
-      spacing = "0.5rem",
+      labelSpacing = "0.5rem",
       iconColor,
       variant = group?.variant,
       colorScheme = group?.colorScheme,
@@ -141,7 +139,7 @@ export const Checkbox = forwardRef<CheckboxProps, "input", Omitted>(
             className="chakra-checkbox__label"
             {...theming}
             {...getLabelProps()}
-            marginLeft={spacing}
+            marginLeft={labelSpacing}
             children={children}
           />
         )}

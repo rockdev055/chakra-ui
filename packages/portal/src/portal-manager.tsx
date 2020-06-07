@@ -7,11 +7,10 @@ interface PortalManagerContext {
   zIndex?: number
 }
 
-const [PortalManagerContextProvider, usePortalManager] = createContext<
+const [PortalManagerCtxProvider, usePortalManager] = createContext<
   PortalManagerContext
 >({
   strict: false,
-  name: "PortalManagerContext",
 })
 
 export { usePortalManager }
@@ -67,10 +66,10 @@ export function PortalManager(props: PortalManagerProps) {
   }
 
   return (
-    <PortalManagerContextProvider value={context}>
+    <PortalManagerCtxProvider value={context}>
       {children}
       <div className="chakra-portal-manager" ref={ref} />
-    </PortalManagerContextProvider>
+    </PortalManagerCtxProvider>
   )
 }
 

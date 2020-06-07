@@ -1,5 +1,4 @@
 import * as React from "react"
-import { __DEV__ } from "@chakra-ui/utils"
 
 export interface DataListProps<T> {
   /**
@@ -38,8 +37,4 @@ export function DataList<T>(props: DataListProps<T>) {
         })}
     </React.Fragment>
   )
-}
-
-if (__DEV__) {
-  DataList.displayName = "DataList"
 }

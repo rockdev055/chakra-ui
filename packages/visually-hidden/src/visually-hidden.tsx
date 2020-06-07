@@ -1,5 +1,4 @@
 import { chakra } from "@chakra-ui/system"
-import { __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
 
 /**
@@ -26,10 +25,6 @@ export const VisuallyHidden = chakra("span", {
   attrs: { style: visuallyHiddenStyle },
 })
 
-if (__DEV__) {
-  VisuallyHidden.displayName = "VisuallyHidden"
-}
-
 /**
  * Visually hidden input component for designing
  * custom input components using the html `input`
@@ -38,9 +33,5 @@ if (__DEV__) {
 export const VisuallyHiddenInput = chakra("input", {
   attrs: { style: visuallyHiddenStyle },
 })
-
-if (__DEV__) {
-  VisuallyHiddenInput.displayName = "VisuallyHiddenInput"
-}
 
 export default VisuallyHidden

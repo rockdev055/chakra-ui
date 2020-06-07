@@ -3,7 +3,6 @@ import {
   chakra,
   PropsOf,
   SystemProps,
-  forwardRef,
   useComponentStyle,
   pseudoSelectors,
 } from "@chakra-ui/system"
@@ -71,14 +70,11 @@ export interface ButtonOptions {
   spinner?: React.ReactElement
 }
 
-// TS: union of types to omit
-type Omitted = "disabled"
-
-export type ButtonProps = Omit<PropsOf<typeof StyledButton>, Omitted> &
+export type ButtonProps = Omit<PropsOf<typeof StyledButton>, "disabled"> &
   ButtonOptions
 
-export const Button = forwardRef<ButtonProps, "button", Omitted>(
-  function Button(props, ref) {
+export const Button = React.forwardRef(
+  (props: ButtonProps, ref: React.Ref<any>) => {
     const group = useButtonGroup()
 
     const {
@@ -158,7 +154,7 @@ if (__DEV__) {
   Button.displayName = "Button"
 }
 
-function ButtonIcon(props: PropsOf<typeof chakra.span>) {
+const ButtonIcon = (props: PropsOf<typeof chakra.span>) => {
   const a11yProps = {
     "aria-hidden": true,
     focusable: false,
@@ -186,7 +182,7 @@ type ButtonSpinnerProps = PropsOf<typeof chakra.div> & {
   spacing?: SystemProps["margin"]
 }
 
-function ButtonSpinner(props: ButtonSpinnerProps) {
+const ButtonSpinner = (props: ButtonSpinnerProps) => {
   const {
     label,
     spacing,

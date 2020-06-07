@@ -1,6 +1,7 @@
 import { UseCheckboxProps, useCheckbox } from "@chakra-ui/checkbox"
-import { chakra, PropsOf, forwardRef } from "@chakra-ui/system"
+import { chakra, PropsOf } from "@chakra-ui/system"
 import * as React from "react"
+import { forwardRef } from "react"
 import { __DEV__, cx, dataAttr } from "@chakra-ui/utils"
 
 const StyledSwitch = chakra("label", {
@@ -37,38 +38,39 @@ const StyledThumb = chakra("div", {
   themeKey: "Switch.Thumb",
 })
 
-type Omitted = "onChange" | "defaultChecked" | "checked"
-
 export type SwitchProps = Omit<UseCheckboxProps, "isIndeterminate"> &
-  Omit<PropsOf<typeof StyledSwitch>, Omitted>
+  Omit<PropsOf<typeof StyledSwitch>, "onChange" | "defaultChecked">
 
-export const Switch = forwardRef<SwitchProps, "input", Omitted>(function Switch(
-  props,
-  ref,
-) {
-  const { colorScheme, size, variant, className, ...rest } = props
-  const { state, getInputProps, getCheckboxProps, htmlProps } = useCheckbox(
-    rest,
-  )
+export const Switch = forwardRef(
+  (props: SwitchProps, ref: React.Ref<HTMLInputElement>) => {
+    const { colorScheme, size, variant, className, ...rest } = props
+    const { state, getInputProps, getCheckboxProps, htmlProps } = useCheckbox(
+      rest,
+    )
 
-  const theming = { colorScheme, size, variant }
-  const input = getInputProps({ ref })
-  const checkbox = getCheckboxProps() as any
+    const theming = { colorScheme, size, variant }
+    const input = getInputProps({ ref })
+    const checkbox = getCheckboxProps() as any
 
-  return (
-    <StyledSwitch className={cx("chakra-switch", className)} {...htmlProps}>
-      <input className="chakra-switch__input" {...input} />
-      <StyledTrack className="chakra-switch__track" {...theming} {...checkbox}>
-        <StyledThumb
+    return (
+      <StyledSwitch className={cx("chakra-switch", className)} {...htmlProps}>
+        <input className="chakra-switch__input" {...input} />
+        <StyledTrack
+          className="chakra-switch__track"
           {...theming}
-          className="chakra-switch__thumb"
-          data-checked={dataAttr(state.isChecked)}
-          data-hover={dataAttr(state.isHovered)}
-        />
-      </StyledTrack>
-    </StyledSwitch>
-  )
-})
+          {...checkbox}
+        >
+          <StyledThumb
+            {...theming}
+            className="chakra-switch__thumb"
+            data-checked={dataAttr(state.isChecked)}
+            data-hover={dataAttr(state.isHovered)}
+          />
+        </StyledTrack>
+      </StyledSwitch>
+    )
+  },
+)
 
 if (__DEV__) {
   Switch.displayName = "Switch"

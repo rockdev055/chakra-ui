@@ -3,10 +3,10 @@ import {
   PropsOf,
   SystemProps,
   ChakraComponent,
-  forwardRef,
 } from "@chakra-ui/system"
 import { getValidChildren, __DEV__, cx } from "@chakra-ui/utils"
 import * as React from "react"
+import { cloneElement, forwardRef, Ref } from "react"
 
 export type BreadcrumbSeparatorProps = PropsOf<typeof chakra.div> & {
   spacing?: SystemProps["mx"]
@@ -15,20 +15,17 @@ export type BreadcrumbSeparatorProps = PropsOf<typeof chakra.div> & {
 /**
  * React component that separates each breadcrumb link
  */
-export const BreadcrumbSeparator = forwardRef<BreadcrumbSeparatorProps, "span">(
-  function BreadcrumbSeparator(props, ref) {
-    const { spacing, ...rest } = props
-    return <chakra.span ref={ref} role="presentation" mx={spacing} {...rest} />
-  },
+export const BreadcrumbSeparator = forwardRef(
+  ({ spacing, ...props }: BreadcrumbSeparatorProps, ref: Ref<any>) => (
+    <chakra.span ref={ref} role="presentation" mx={spacing} {...props} />
+  ),
 )
 
 if (__DEV__) {
   BreadcrumbSeparator.displayName = "BreadcrumbSeparator"
 }
 
-interface LinkOptions {
-  isCurrentPage?: boolean
-}
+type LinkOptions = { isCurrentPage?: boolean }
 
 type LinkComp = ChakraComponent<"a">
 
@@ -44,19 +41,37 @@ const StyledLink = chakra("a", {
  * It renders a `span` when it's the current link. Otherwise,
  * it renders an anchor tag.
  */
-export const BreadcrumbLink = forwardRef<BreadcrumbLinkProps, "a">(
-  function BreadcrumbLink(props, ref) {
-    const { isCurrentPage, as, className, ...rest } = props
-    const _className = cx("chakra-breadcrumb__link", className)
-    const sharedProps = { ref, as, ...rest, className: _className }
+function BreadcrumbLinkImpl(props: BreadcrumbLinkProps, ref: Ref<any>) {
+  const { isCurrentPage, as, className, ...rest } = props
 
-    if (isCurrentPage) {
-      return <chakra.span aria-current="page" {...sharedProps} />
-    }
+  const _className = cx("chakra-breadcrumb__link", className)
 
-    return <StyledLink {...sharedProps} />
-  },
-)
+  const sharedProps = { ref, as, ...rest, className: _className }
+
+  if (isCurrentPage) {
+    return <chakra.span aria-current="page" {...sharedProps} />
+  }
+
+  return <StyledLink {...sharedProps} />
+}
+
+/**
+ * React component that represent a single breadcrumb item's link.
+ *
+ * It also supports `as` prop which can be used to integrate
+ * third-party routing libraries
+ *
+ * @example
+ *
+ * ```jsx
+ *  <BreadcrumbLink as={Link} to="/home" replace>
+ *     Breadcrumb 1
+ *   </BreadcrumbLink>
+ * ```
+ *
+ * @see Docs https://chakra-ui.com/components/breadcrumbs
+ */
+export const BreadcrumbLink = forwardRef(BreadcrumbLinkImpl) as LinkComp
 
 if (__DEV__) {
   BreadcrumbLink.displayName = "BreadcrumbLink"
@@ -81,8 +96,8 @@ export type BreadcrumbItemProps = BreadcrumbItemOptions &
  *
  * @see Docs https://chakra-ui.com/components/breadcrumbs
  */
-export const BreadcrumbItem = forwardRef<BreadcrumbItemProps, "li">(
-  function BreadcrumbItem(props, ref) {
+export const BreadcrumbItem = forwardRef(
+  (props: BreadcrumbItemProps, ref: Ref<any>) => {
     const {
       isCurrentPage,
       separator,
@@ -97,13 +112,13 @@ export const BreadcrumbItem = forwardRef<BreadcrumbItemProps, "li">(
 
     const clones = validChildren.map((child) => {
       if (child.type === BreadcrumbLink) {
-        return React.cloneElement(child as React.ReactElement<any>, {
+        return cloneElement(child as React.ReactElement<any>, {
           isCurrentPage,
         })
       }
 
       if (child.type === BreadcrumbSeparator) {
-        return React.cloneElement(child as React.ReactElement<any>, {
+        return cloneElement(child as React.ReactElement<any>, {
           spacing,
           children: child.props.children || separator,
         })
@@ -156,8 +171,8 @@ export type BreadcrumbProps = PropsOf<typeof chakra.nav> & BreadcrumbOptions
  *
  * @see Docs https://chakra-ui.com/components/breadcrumbs
  */
-export const Breadcrumb = forwardRef<BreadcrumbProps, "nav">(
-  function Breadcrumb(props, ref) {
+export const Breadcrumb = forwardRef(
+  (props: BreadcrumbProps, ref: Ref<any>) => {
     const {
       children,
       spacing = "0.5rem",
@@ -170,7 +185,7 @@ export const Breadcrumb = forwardRef<BreadcrumbProps, "nav">(
     const count = validChildren.length
 
     const clones = validChildren.map((child, index) =>
-      React.cloneElement(child as React.ReactElement<any>, {
+      cloneElement(child as React.ReactElement<any>, {
         separator,
         spacing,
         isLastChild: count === index + 1,

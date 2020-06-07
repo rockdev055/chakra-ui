@@ -1,10 +1,4 @@
-import {
-  useDisclosure,
-  useIds,
-  useBoolean,
-  useEventListener,
-} from "@chakra-ui/hooks"
-import { useToken, useColorModeValue } from "@chakra-ui/system"
+import { useDisclosure, useIds, useBoolean } from "@chakra-ui/hooks"
 import { Placement, usePopper } from "@chakra-ui/popper"
 import * as React from "react"
 import { useBlurOutside, useFocusOnHide, useFocusOnShow } from "./popover.utils"
@@ -71,13 +65,9 @@ export interface UsePopoverProps {
    * The size of the popover arrow
    */
   arrowSize?: number
-  /**
-   * The `box-shadow` of the popover arrow
-   */
-  arrowShadowColor?: string
 }
 
-export function usePopover(props: UsePopoverProps = {}) {
+export function usePopover (props: UsePopoverProps = {}) {
   const {
     closeOnBlur = true,
     closeOnEsc = true,
@@ -86,9 +76,6 @@ export function usePopover(props: UsePopoverProps = {}) {
     gutter,
     id,
     arrowSize,
-    returnFocus = true,
-    autoFocus = true,
-    arrowShadowColor,
   } = props
 
   const { isOpen, onClose, onToggle } = useDisclosure(props)
@@ -107,26 +94,21 @@ export function usePopover(props: UsePopoverProps = {}) {
     "popover-body",
   )
 
-  const fallbackShadowColor = useColorModeValue("gray.200", "whiteAlpha.300")
-  const shadowColor = arrowShadowColor ?? fallbackShadowColor
-  const arrowColor = useToken("colors", shadowColor, arrowShadowColor)
-
   const { popper, reference, arrow } = usePopper({
     placement,
     gutter,
     forceUpdate: isOpen,
     arrowSize,
-    arrowShadowColor: arrowColor,
   })
 
   useFocusOnHide(popoverRef, {
-    autoFocus: returnFocus,
+    autoFocus: true,
     visible: isOpen,
     focusRef: triggerRef,
   })
 
   useFocusOnShow(popoverRef, {
-    autoFocus: autoFocus,
+    autoFocus: true,
     visible: isOpen,
     focusRef: initialFocusRef,
   })

@@ -1,4 +1,4 @@
-import { chakra, PropsOf, forwardRef } from "@chakra-ui/system"
+import { chakra, PropsOf } from "@chakra-ui/system"
 import { __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
 
@@ -20,9 +20,9 @@ if (__DEV__) {
  * As a constraint, you can't pass size related props
  * Only `size` would be allowed
  */
-type Omitted = "size" | "boxSize" | "width" | "height" | "w" | "h"
+type SizeProps = "size" | "boxSize" | "width" | "height" | "w" | "h"
 
-export type SquareProps = Omit<BoxProps, Omitted> & {
+export type SquareProps = Omit<BoxProps, SizeProps> & {
   /**
    * The size (width and height) of the square
    */
@@ -33,37 +33,34 @@ export type SquareProps = Omit<BoxProps, Omitted> & {
   centerContent?: boolean
 }
 
-export const Square = forwardRef<SquareProps, "div">(function Square(
-  props,
-  ref,
-) {
-  const { size, centerContent = true, ...rest } = props
-  const centerProps: BoxProps = centerContent
-    ? { display: "flex", alignItems: "center", justifyContent: "center" }
-    : {}
-  return (
-    <Box
-      flexShrink={0}
-      flexGrow={0}
-      boxSize={size}
-      ref={ref}
-      {...centerProps}
-      {...rest}
-    />
-  )
-})
+export const Square = React.forwardRef(
+  (props: SquareProps, ref: React.Ref<any>) => {
+    const { size, centerContent = true, ...rest } = props
+    const centerProps: BoxProps = centerContent
+      ? { display: "flex", alignItems: "center", justifyContent: "center" }
+      : {}
+    return (
+      <Box
+        flexShrink={0}
+        flexGrow={0}
+        boxSize={size}
+        ref={ref}
+        {...centerProps}
+        {...rest}
+      />
+    )
+  },
+)
 
 if (__DEV__) {
   Square.displayName = "Square"
 }
 
-export const Circle = forwardRef<SquareProps, "div">(function Circle(
-  props,
-  ref,
-) {
-  const { size, ...rest } = props
-  return <Square size={size as any} ref={ref} borderRadius="9999px" {...rest} />
-})
+export const Circle = React.forwardRef(
+  (props: SquareProps, ref: React.Ref<any>) => {
+    return <Square ref={ref} borderRadius="9999px" {...props} />
+  },
+)
 
 if (__DEV__) {
   Circle.displayName = "Circle"

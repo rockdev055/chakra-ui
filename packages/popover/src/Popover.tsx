@@ -1,6 +1,6 @@
 import { CloseButton, CloseButtonProps } from "@chakra-ui/close-button"
 import { useSafeLayoutEffect } from "@chakra-ui/hooks"
-import { chakra, PropsOf, forwardRef } from "@chakra-ui/system"
+import { chakra, PropsOf } from "@chakra-ui/system"
 import {
   createContext,
   isFunction,
@@ -10,11 +10,11 @@ import {
 import * as React from "react"
 import { usePopover, UsePopoverProps, UsePopoverReturn } from "./use-popover"
 
-const [PopoverContextProvider, usePopoverContext] = createContext<
-  UsePopoverReturn
->({
-  name: "PopoverContext",
-})
+const [PopoverCtxProvider, usePopoverContext] = createContext<UsePopoverReturn>(
+  {
+    name: "PopoverContext",
+  },
+)
 
 export type PopoverProps = UsePopoverProps & {
   /**
@@ -36,11 +36,11 @@ export const Popover = (props: PopoverProps) => {
   const context = usePopover(hookProps)
 
   return (
-    <PopoverContextProvider value={context}>
+    <PopoverCtxProvider value={context}>
       {isFunction(children)
         ? children({ isOpen: context.isOpen, onClose: context.onClose })
         : children}
-    </PopoverContextProvider>
+    </PopoverCtxProvider>
   )
 }
 
@@ -89,13 +89,13 @@ export type PopoverContentProps = PropsOf<typeof StyledContent>
  * The popover's content wrapper that includes all
  * accessibility requirements for a popover
  */
-export const PopoverContent = forwardRef<PopoverContentProps, "section">(
-  function PopoverContent(props, ref) {
+export const PopoverContent = React.forwardRef(
+  (props: PopoverContentProps, ref: React.Ref<any>) => {
     const { getPopoverProps } = usePopoverContext()
 
     return (
       <StyledContent
-        className="chakra-popover__content"
+        data-chakra-popover-content=""
         {...getPopoverProps({ ...props, ref })}
       />
     )
@@ -125,8 +125,8 @@ export type PopoverHeaderProps = PropsOf<typeof StyledHeader>
  * for the popover's content and it's first announced by
  * screenreaders.
  */
-export const PopoverHeader = forwardRef<PopoverHeaderProps, "header">(
-  function PopoverHeader(props, ref) {
+export const PopoverHeader = React.forwardRef(
+  (props: PopoverHeaderProps, ref: React.Ref<any>) => {
     const { headerId, setHasHeader } = usePopoverContext()
 
     useSafeLayoutEffect(() => {
@@ -136,7 +136,7 @@ export const PopoverHeader = forwardRef<PopoverHeaderProps, "header">(
 
     return (
       <StyledHeader
-        className="chakra-popover__header"
+        data-chakra-popover-header=""
         {...props}
         id={headerId}
         ref={ref}
@@ -167,8 +167,8 @@ const StyledBody = chakra("div", {
  * Serves as the main content area for the popover. Should contain
  * at least one interactive element.
  */
-export const PopoverBody = forwardRef<PopoverBodyProps, "div">(
-  function PopoverBody(props, ref) {
+export const PopoverBody = React.forwardRef(
+  (props: PopoverBodyProps, ref: React.Ref<any>) => {
     const { bodyId, setHasBody } = usePopoverContext()
 
     useSafeLayoutEffect(() => {
@@ -176,14 +176,7 @@ export const PopoverBody = forwardRef<PopoverBodyProps, "div">(
       return () => setHasBody.off()
     }, [])
 
-    return (
-      <StyledBody
-        className="chakra-popover__body"
-        {...props}
-        id={bodyId}
-        ref={ref}
-      />
-    )
+    return <StyledBody {...props} id={bodyId} ref={ref} />
   },
 )
 
@@ -191,16 +184,7 @@ if (__DEV__) {
   PopoverBody.displayName = "PopoverBody"
 }
 
-export const PopoverFooter = chakra("footer", {
-  themeKey: "Popover.Footer",
-  attrs: {
-    className: "chakra-popover__footer",
-  },
-})
-
-if (__DEV__) {
-  PopoverFooter.displayName = "PopoverFooter"
-}
+export const PopoverFooter = chakra("footer", { themeKey: "Popover.Footer" })
 
 export type PopoverCloseButtonProps = CloseButtonProps
 
@@ -237,13 +221,7 @@ export type PopoverArrowProps = PropsOf<typeof StyledArrow>
 
 export const PopoverArrow = (props: PopoverArrowProps) => {
   const { getArrowProps } = usePopoverContext()
-  return (
-    <StyledArrow
-      className="chakra-popover__arrow"
-      bg="inherit"
-      {...getArrowProps(props)}
-    />
-  )
+  return <StyledArrow bg="inherit" {...getArrowProps(props)} />
 }
 
 if (__DEV__) {

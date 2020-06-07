@@ -1,6 +1,6 @@
 {
   "installCommand": "prestart",
   "buildCommand": "build",
-  "sandboxes": ["/examples/create-react-app"],
+  "sandboxes": ["tender-leakey-6ms6x"],
   "packages": ["packages/*"]
 }

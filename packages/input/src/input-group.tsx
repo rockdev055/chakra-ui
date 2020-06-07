@@ -3,7 +3,6 @@ import {
   PropsOf,
   ThemingProps,
   useThemeDefaultProps,
-  forwardRef,
 } from "@chakra-ui/system"
 import { createContext, cx, __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
@@ -19,8 +18,8 @@ export { useInputGroup }
 
 export type InputGroupProps = PropsOf<typeof chakra.div> & ThemingProps
 
-export const InputGroup = forwardRef<InputGroupProps, "div">(
-  function InputGroup(props, ref) {
+export const InputGroup = React.forwardRef(
+  (props: InputGroupProps, ref: React.Ref<any>) => {
     const { className, ...rest } = props
     const { htmlProps, ...context } = useProvider(rest)
 
@@ -47,8 +46,8 @@ if (__DEV__) {
 
 function useMounted() {
   const [isMounted, setMounted] = React.useState(false)
-  const mount = React.useCallback(() => setMounted(true), [])
-  const unmount = React.useCallback(() => setMounted(false), [])
+  const mount = () => setMounted(true)
+  const unmount = () => setMounted(false)
   return { isMounted, mount, unmount }
 }
 

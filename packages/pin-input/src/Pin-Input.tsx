@@ -1,4 +1,4 @@
-import { chakra, PropsOf, ThemingProps, forwardRef } from "@chakra-ui/system"
+import { chakra, PropsOf, ThemingProps } from "@chakra-ui/system"
 import { createContext, __DEV__, ariaAttr, cx } from "@chakra-ui/utils"
 import * as React from "react"
 import {
@@ -88,8 +88,8 @@ const StyledInput = chakra<"input", InputOptions>("input", {
     !["focusBorderColor", "errorBorderColor"].includes(prop),
 })
 
-export const PinInputField = forwardRef<PinInputFieldProps, "input">(
-  function PinInputField(props, ref) {
+export const PinInputField = React.forwardRef(
+  (props: PinInputFieldProps, ref: React.Ref<HTMLInputElement>) => {
     const { className, ...rest } = props
     const context = usePinInputContext()
     const ownProps = usePinInputField({ context, ref, ...rest })

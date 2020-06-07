@@ -8,8 +8,6 @@ import {
   ModalOverlayProps,
   ModalOverlay,
 } from "@chakra-ui/modal"
-import { forwardRef } from "@chakra-ui/system"
-import { __DEV__ } from "@chakra-ui/utils"
 
 interface TransitionStyles {
   content: React.CSSProperties
@@ -20,17 +18,21 @@ const TransitionContext = React.createContext<TransitionStyles>({
   content: {},
   overlay: {},
 })
-
 TransitionContext.displayName = "TransitionContext"
 const useTransitionContext = () => React.useContext(TransitionContext)
 
-interface DrawerTransitionProps {
+export interface DrawerProps extends ModalProps {
+  placement?: SlideProps["placement"]
+  isFullHeight?: boolean
+}
+
+export interface DrawerTransitionProps {
   in: boolean
   children: (styles: TransitionStyles) => React.ReactNode
   placement: SlideProps["placement"]
 }
 
-function DrawerTransition(props: DrawerTransitionProps) {
+export function DrawerTransition(props: DrawerTransitionProps) {
   const { in: inProp, children, placement } = props
   return (
     <Slide in={inProp} placement={placement}>
@@ -43,15 +45,6 @@ function DrawerTransition(props: DrawerTransitionProps) {
       )}
     </Slide>
   )
-}
-
-if (__DEV__) {
-  DrawerTransition.displayName = "DrawerTransition"
-}
-
-export interface DrawerProps extends ModalProps {
-  placement?: SlideProps["placement"]
-  isFullHeight?: boolean
 }
 
 export function Drawer(props: DrawerProps) {
@@ -69,12 +62,8 @@ export function Drawer(props: DrawerProps) {
   )
 }
 
-if (__DEV__) {
-  Drawer.displayName = "Drawer"
-}
-
-export const DrawerContent = forwardRef<ModalContentProps, "section">(
-  function DrawerContent(props, ref) {
+export const DrawerContent = React.forwardRef(
+  (props: ModalContentProps, ref: React.Ref<any>) => {
     const { content: styles } = useTransitionContext()
     return (
       <ModalContent
@@ -90,12 +79,8 @@ export const DrawerContent = forwardRef<ModalContentProps, "section">(
   },
 )
 
-if (__DEV__) {
-  DrawerContent.displayName = "DrawerContent"
-}
-
-export const DrawerOverlay = forwardRef<ModalOverlayProps, "div">(
-  function DrawerOverlay(props, ref) {
+export const DrawerOverlay = React.forwardRef(
+  (props: ModalOverlayProps, ref: React.Ref<any>) => {
     const { overlay: styles } = useTransitionContext()
     return (
       <ModalOverlay
@@ -107,10 +92,6 @@ export const DrawerOverlay = forwardRef<ModalOverlayProps, "div">(
     )
   },
 )
-
-if (__DEV__) {
-  DrawerOverlay.displayName = "DrawerOverlay"
-}
 
 export {
   ModalBody as DrawerBody,

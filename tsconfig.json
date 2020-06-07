@@ -19,7 +19,6 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "allowJs": true,
-    "preserveSymlinks": true,
     "outDir": "dist/esm"
   },
   "include": ["types"],

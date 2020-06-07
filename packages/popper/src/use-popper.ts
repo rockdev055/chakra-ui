@@ -17,12 +17,11 @@ export interface UsePopperProps {
   forceUpdate?: boolean
   flip?: boolean
   arrowSize?: number
-  arrowShadowColor?: string
   eventsEnabled?: boolean
   modifiers?: Modifier<any>[]
 }
 
-export function usePopper(props: UsePopperProps) {
+export function usePopper (props: UsePopperProps) {
   const {
     placement: initialPlacement = "bottom",
     offset: offsetProp,
@@ -31,7 +30,6 @@ export function usePopper(props: UsePopperProps) {
     forceUpdate = true,
     flip = true,
     arrowSize = 10,
-    arrowShadowColor,
     gutter = arrowSize,
     eventsEnabled = true,
     modifiers,
@@ -103,7 +101,7 @@ export function usePopper(props: UsePopperProps) {
             name: "updateState",
             phase: "write",
             enabled: true,
-            fn({ state }) {
+            fn ({ state }) {
               setPlacement(state.placement)
               setPopoverStyles(state.styles.popper as React.CSSProperties)
               setArrowStyles(state.styles.arrow as React.CSSProperties)
@@ -119,16 +117,7 @@ export function usePopper(props: UsePopperProps) {
         popper.current = null
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    originalPlacement,
-    fixed,
-    forceUpdate,
-    flip,
-    offset,
-    preventOverflow,
-    eventsEnabled,
-  ])
+  }, [originalPlacement, fixed, forceUpdate, flip, offset, preventOverflow])
 
   useSafeLayoutEffect(() => {
     const id = requestAnimationFrame(() => {
@@ -143,7 +132,7 @@ export function usePopper(props: UsePopperProps) {
 
   const computedArrowStyles: React.CSSProperties = {
     ...arrowStyles,
-    ...getArrowStyles(placement, arrowSize, arrowShadowColor),
+    ...getArrowStyles(placement, arrowSize),
   }
 
   return {

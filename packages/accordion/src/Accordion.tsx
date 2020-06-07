@@ -1,6 +1,6 @@
 import { Collapse } from "@chakra-ui/collapse"
 import { ChevronDownIcon, IconProps } from "@chakra-ui/icons"
-import { chakra, PropsOf, forwardRef } from "@chakra-ui/system"
+import { chakra, PropsOf } from "@chakra-ui/system"
 import {
   createContext,
   isFunction,
@@ -39,21 +39,22 @@ export type AccordionProps = UseAccordionProps &
  * for all accordion items.
  *
  * It wraps all accordion items in a `div` for better grouping.
- * @see Docs https://chakra-ui.com/components/accordion
  */
-export const Accordion = forwardRef<AccordionProps, "div">((props, ref) => {
-  const { children, htmlProps, ...context } = useAccordion(props)
+export const Accordion = React.forwardRef(
+  (props: AccordionProps, ref: React.Ref<any>) => {
+    const { children, htmlProps, ...context } = useAccordion(props)
 
-  const _className = cx("chakra-accordion", props.className)
+    const _className = cx("chakra-accordion", props.className)
 
-  return (
-    <AccordionContextProvider value={context}>
-      <StyledRoot ref={ref} {...htmlProps} className={_className}>
-        {children}
-      </StyledRoot>
-    </AccordionContextProvider>
-  )
-})
+    return (
+      <AccordionContextProvider value={context}>
+        <StyledRoot ref={ref} {...htmlProps} className={_className}>
+          {children}
+        </StyledRoot>
+      </AccordionContextProvider>
+    )
+  },
+)
 
 if (__DEV__) {
   Accordion.displayName = "Accordion"
@@ -91,8 +92,8 @@ export type AccordionItemProps = Omit<PropsOf<typeof StyledItem>, "children"> &
  *
  * It also provides context for the accordion button and panel.
  */
-export const AccordionItem = forwardRef<AccordionItemProps, "div">(
-  function AccordionItem(props, ref) {
+export const AccordionItem = React.forwardRef(
+  (props: AccordionItemProps, ref: React.Ref<any>) => {
     const { children, className } = props
     const { getRootProps, ...context } = useAccordionItem(props)
 
@@ -153,8 +154,8 @@ export type AccordionButtonProps = PropsOf<typeof StyledButton>
  * Note 🚨: Each accordion button must be wrapped in an heading tag,
  * that is appropriate for the information architecture of the page.
  */
-export const AccordionButton = forwardRef<AccordionButtonProps, "button">(
-  function AccordionButton(props, ref) {
+export const AccordionButton = React.forwardRef(
+  (props: AccordionButtonProps, ref: React.Ref<any>) => {
     const _className = cx("chakra-accordion__button", props.className)
     const { getButtonProps } = useAccordionItemContext()
     const buttonProps = getButtonProps({ ...props, ref })
@@ -186,8 +187,8 @@ export type AccordionPanelProps = PropsOf<typeof StyledPanel>
  *
  * It uses the `Collapse` component to animate it's height.
  */
-export const AccordionPanel = forwardRef<AccordionPanelProps, "div">(
-  function AccordionPanel(props, ref) {
+export const AccordionPanel = React.forwardRef(
+  (props: AccordionPanelProps, ref: React.Ref<any>) => {
     const { getPanelProps, isOpen } = useAccordionItemContext()
     /**
      * remove `hidden` prop, 'coz we're using height animation

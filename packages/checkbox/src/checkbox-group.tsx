@@ -1,6 +1,7 @@
 import { ThemingProps } from "@chakra-ui/system"
 import { createContext, __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
+import { useMemo } from "react"
 import {
   useCheckboxGroup,
   UseCheckboxGroupProps,
@@ -35,7 +36,7 @@ export function CheckboxGroup(props: CheckboxGroupProps) {
   const { colorScheme, size, variant, children } = props
   const { value, onChange } = useCheckboxGroup(props)
 
-  const group = React.useMemo(
+  const group = useMemo(
     () => ({
       size,
       onChange,

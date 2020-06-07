@@ -2,7 +2,6 @@ import * as React from "react"
 import {
   chakra,
   PropsOf,
-  forwardRef,
   ThemingProvider,
   useThemingContext,
   useThemeDefaultProps,
@@ -30,8 +29,8 @@ export type StatLabelProps = PropsOf<typeof StyledLabel>
  * To style the StatLabel globally, change the styles in
  * `theme.components.Stat` under the `Label` key.
  */
-export const StatLabel = forwardRef<StatLabelProps, "dt">(
-  function StatLabel(props, ref) {
+export const StatLabel = React.forwardRef(
+  (props: StatLabelProps, ref: React.Ref<any>) => {
     const { className, ...rest } = props
     const theming = useThemingContext()
     const _className = cx("chakra-stat__label", className)
@@ -59,8 +58,8 @@ const StyledHelpText = chakra("p", {
 
 export type StatHelpTextProps = PropsOf<typeof StyledHelpText>
 
-export const StatHelpText = forwardRef<StatHelpTextProps, "p">(
-  function StatHelpText(props, ref) {
+export const StatHelpText = React.forwardRef(
+  (props: StatHelpTextProps, ref: React.Ref<any>) => {
     const { className, ...rest } = props
     const theming = useThemingContext()
     const _className = cx("chakra-stat__help-text", className)
@@ -89,8 +88,8 @@ export const StyledNumber = chakra("dd", {
 
 export type StatNumberProps = PropsOf<typeof StyledNumber>
 
-export const StatNumber = forwardRef<StatNumberProps, "dd">(
-  function StatNumber(props, ref) {
+export const StatNumber = React.forwardRef(
+  (props: StatNumberProps, ref: React.Ref<any>) => {
     const { className, ...rest } = props
     const theming = useThemingContext()
     const _className = cx("chakra-stat__number", className)
@@ -190,8 +189,8 @@ const StyledStat = chakra("div", {
 
 export type StatProps = PropsOf<typeof StyledStat>
 
-export const Stat = forwardRef<StatProps, "div">(
-  function Stat(props, ref) {
+export const Stat = React.forwardRef(
+  (props: StatProps, ref: React.Ref<any>) => {
     const defaults = useThemeDefaultProps("Stat")
     const {
       size = defaults?.size,
