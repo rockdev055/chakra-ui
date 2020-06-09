@@ -6,7 +6,7 @@ import { PropsOf } from "@chakra-ui/system"
 export default {
   title: "Avatar",
   decorators: [
-    (Story: any) => (
+    (Story: Function) => (
       <Box mx="auto" maxW="500px" mt="40px">
         <Story />
       </Box>
