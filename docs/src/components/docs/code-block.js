@@ -4,10 +4,13 @@ import * as Icons from "@chakra-ui/icons"
 import * as Formik from "formik"
 import theme from "prism-react-renderer/themes/nightOwl"
 import React, { useState } from "react"
+import * as IOIcons from "react-icons/ai"
 import FocusLock from "react-focus-lock"
-import * as ReactIcons from "react-icons/md"
+import * as MDIcons from "react-icons/md"
+import * as FaIcons from "react-icons/fa"
 import { LiveEditor, LiveError, LivePreview, LiveProvider } from "react-live"
 import Lorem from "react-lorem-component"
+import * as Loaders from "react-spinners"
 
 export const liveEditorStyle = {
   fontSize: 14,
@@ -90,14 +93,8 @@ const StarIcon = (props) => {
   )
 }
 
-const CodeBlock = ({
-  className,
-  live = true,
-  manual,
-  render,
-  children,
-  ...props
-}) => {
+const CodeBlock = (props) => {
+  const { className, live = true, manual, render, children, ...rest } = props
   const [editorCode, setEditorCode] = useState(children.trim())
 
   const language = className && className.replace(/language-/, "")
@@ -110,14 +107,17 @@ const CodeBlock = ({
     scope: {
       ...Chakra,
       ...Formik,
-      ...ReactIcons,
+      ...MDIcons,
+      ...IOIcons,
+      ...FaIcons,
       ...Icons,
+      ...Loaders,
       StarIcon,
       FocusLock,
       Lorem,
     },
     noInline: manual,
-    ...props,
+    ...rest,
   }
 
   const onChange = (newCode) => setEditorCode(newCode.trim())
