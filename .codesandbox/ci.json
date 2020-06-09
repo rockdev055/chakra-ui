@@ -1,5 +1,6 @@
 {
+  "installCommand": "prestart",
   "buildCommand": "build",
-  "packages": ["packages/chakra-ui"],
-  "sandboxes": ["27i2n"]
+  "sandboxes": ["/examples/create-react-app"],
+  "packages": ["packages/*"]
 }
