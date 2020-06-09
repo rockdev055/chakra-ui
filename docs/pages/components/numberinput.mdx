@@ -26,9 +26,6 @@ It follows the
 [WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#spinbutton)
 for the Spinbutton widget.
 
-> 🚨 Version (v0.4.0) introduced a change to this component's API. Kindly update
-> accordingly.
-
 ## Import
 
 Chakra UI exports 5 components for the NumberInput.
@@ -158,6 +155,31 @@ support this use case.
 </NumberInput>
 ```
 
+### Formatting and Parsing the value
+
+```jsx
+function Example() {
+  const format = (val) => `$` + val
+  const parse = (val) => val.replace(/^\$/, "")
+
+  const [value, setValue] = React.useState("1.53")
+
+  return (
+    <NumberInput
+      onChange={(valueString) => setValue(parse(valueString))}
+      value={format(value)}
+      max={50}
+    >
+      <NumberInputField />
+      <NumberInputStepper>
+        <NumberIncrementStepper />
+        <NumberDecrementStepper />
+      </NumberInputStepper>
+    </NumberInput>
+  )
+}
+```
+
 ### Changing the size of the input
 
 Like the `Input` component, you can pass the `size` prop to change the size of
@@ -226,23 +248,53 @@ function SliderInput() {
 
   return (
     <Flex>
-      <NumberInput
-        maxW="100px"
-        mr="2rem"
-        value={value}
-        onChange={handleChange}
-      />
+      <NumberInput maxW="100px" mr="2rem" value={value} onChange={handleChange}>
+        <NumberInputField />
+        <NumberInputStepper>
+          <NumberIncrementStepper />
+          <NumberDecrementStepper />
+        </NumberInputStepper>
+      </NumberInput>
       <Slider flex="1" value={value} onChange={handleChange}>
-        <SliderTrack />
-        <SliderFilledTrack />
-        <SliderThumb
-          fontSize="sm"
-          width="32px"
-          height="20px"
-          children={value}
-        />
+        <SliderTrack>
+          <SliderFilledTrack />
+        </SliderTrack>
+        <SliderThumb fontSize="sm" boxSize="32px" children={value} />
       </Slider>
     </Flex>
+  )
+}
+```
+
+### Create a mobile spinner
+
+Sometimes, you might need to create a mobile version of the number input. Here's
+how you can leverage the `useNumberInput` hook to build one.
+
+```jsx
+function HookUsage() {
+  const {
+    getInputProps,
+    getIncrementButtonProps,
+    getDecrementButtonProps,
+  } = useNumberInput({
+    step: 0.01,
+    defaultValue: 1.53,
+    min: 1,
+    max: 6,
+    precision: 2,
+  })
+
+  const inc = getIncrementButtonProps()
+  const dec = getDecrementButtonProps()
+  const input = getInputProps({ isReadOnly: true })
+
+  return (
+    <HStack maxW="320px">
+      <Button {...inc}>+</Button>
+      <Input {...input} />
+      <Button {...dec}>-</Button>
+    </HStack>
   )
 }
 ```
@@ -264,13 +316,11 @@ function SliderInput() {
 ### Keyboard Navigation
 
 - When you hit the <kbd>⬆</kbd> or <kbd>⬇</kbd> key, the input value will be
-  increased or decreased by `step`
+  increased or decreased by `step`.
 - Holding down <kbd>Shift</kbd> and pressing <kbd>⬆</kbd> or <kbd>⬇</kbd> will
-  update the value by `10 * step`
+  update the value by `10 * step`.
 - Holding down <kbd>Ctrl</kbd> or <kbd>⌘</kbd>, and pressing <kbd>⬆</kbd> or
-
-  <kbd>⬆</kbd> will update the value by `0.1 * step`
-
+  <kbd>⬆</kbd> will update the value by `0.1 * step`.
 - Long pressing the up and down stepper buttons will update the value at
   intervals.
 
@@ -307,5 +357,5 @@ NumberInputStepper composes `Flex` so you can pass all `Flex` props.
 
 ### NumberDecrementStepper and NumberIncrementStepper Props
 
-NumberDecrementStepper and NumberIncrementStepper composes the `PseudoBox` props
-so you can pass all `PseudoBox` props.
+NumberDecrementStepper and NumberIncrementStepper composes the `Box` props so
+you can pass all `Box` props.
