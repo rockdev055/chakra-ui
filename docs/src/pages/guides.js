@@ -6,9 +6,9 @@ import {
   Text,
   Container,
   Stack,
+  Flex,
   Avatar,
   chakra,
-  Badge,
 } from "@chakra-ui/core"
 import SEO from "../components/seo"
 
@@ -20,52 +20,40 @@ function GuidePreview(props) {
     birthTime,
     url,
     contributors,
-    tags,
     ...rest
   } = props
   const creator = contributors[0] || {}
   return (
-    <Box as="article" {...rest}>
-      <Heading mb="3" color="teal.500" lineHeight="1.4" size="md">
-        <chakra.a
-          as={GatsbyLink}
-          to={url}
-          _hover={{ color: "teal.600", textDecor: "underline" }}
-        >
-          {title}
-        </chakra.a>
-      </Heading>
-
-      <Text as="time" color="gray.600" fontSize="sm" dateTime={birthTime}>
-        {createdAt}
-      </Text>
-
-      <Stack mt="5" align="center" direction="row">
-        <Avatar size="sm" name={creator.name} src={creator.image} />
-        <Text fontSize="sm" fontWeight="semibold">
-          <chakra.a
-            href={creator.url}
-            target="__blank"
-            _hover={{ textDecor: "underline" }}
-          >
-            {creator.name}
-          </chakra.a>
-        </Text>
-      </Stack>
-
-      <Text mt="3">{children}</Text>
-
-      <Stack mt="4" direction="row" align="baseline">
-        <Text fontWeight="bold" fontSize="sm">
-          Tags:
-        </Text>
-        {tags.map((tag) => (
-          <Badge colorScheme="teal" key={tag}>
-            {tag}
-          </Badge>
-        ))}
-      </Stack>
-    </Box>
+    <chakra.a as={GatsbyLink} to={url} width="100%">
+      <Flex
+        transition="all 0.3s"
+        direction="column"
+        height="100%"
+        justify-content="space-between"
+        as="article"
+        padding="32px"
+        borderWidth="1px"
+        borderRadius="lg"
+        _hover={{ boxShadow: "md" }}
+        {...rest}
+      >
+        <Box flex="1">
+          <Heading mb="4" lineHeight="1.4" size="md">
+            {title}
+          </Heading>
+          <Text>{children}</Text>
+        </Box>
+        <Flex justify="space-between" mt="6" color="gray.500" width="100%">
+          <Stack align="center" direction="row" flex="1">
+            <Avatar size="sm" name={creator.name} src={creator.image} />
+            <Text fontSize="sm">{creator.name}</Text>
+          </Stack>
+          <Text fontSize="sm">
+            <time dateTime={birthTime}>{createdAt}</time>
+          </Text>
+        </Flex>
+      </Flex>
+    </chakra.a>
   )
 }
 
@@ -79,13 +67,11 @@ function Guides() {
             contributors {
               name
               image
-              url
             }
           }
-          excerpt
           frontmatter {
             title
-            tags
+            description
           }
           parent {
             ... on File {
@@ -107,21 +93,20 @@ function Guides() {
       />
       <Box pt="56px">
         <Box py="80px">
-          <Container maxWidth="md">
+          <Container maxWidth="lg">
             <Heading as="h1" size="xl" mb="3">
               Guides
             </Heading>
             <Text>A list of guides for using Chakra UI with any project.</Text>
           </Container>
         </Box>
-        <Container maxWidth="md">
-          <Stack spacing="4rem">
+        <Container maxWidth="lg">
+          <Stack spacing="40px">
             {allMdx.nodes.map(
               ({
                 fields: { contributors, slug },
-                frontmatter: { title, tags },
+                frontmatter: { title, description },
                 parent: { createdAt, birthTime },
-                excerpt,
               }) => (
                 <GuidePreview
                   key={title}
@@ -130,9 +115,8 @@ function Guides() {
                   birthTime={birthTime}
                   createdAt={createdAt}
                   contributors={contributors}
-                  tags={tags}
                 >
-                  {excerpt}
+                  {description}
                 </GuidePreview>
               ),
             )}
