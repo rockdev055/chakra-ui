@@ -54,10 +54,12 @@ const Badge: ComponentTheme = {
   },
 }
 
-export const BadgeVariants = {
-  solid: "solid",
-  subtle: "subtle",
-  outline: "outline",
+export const BadgeTokens = {
+  variants: {
+    solid: "solid",
+    subtle: "subtle",
+    outline: "outline",
+  },
 }
 
 export default Badge

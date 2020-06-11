@@ -4,16 +4,15 @@ import { stringToColor, isDark } from "@chakra-ui/color"
 import { SystemProps } from "@chakra-ui/system"
 
 function getSize(size: string) {
-  const themeSize = sizes[size as keyof typeof sizes]
+  const inferredSize = sizes[size as keyof typeof sizes]
 
   const styles: SystemProps = {
     width: size,
     height: size,
-    fontSize: `calc(${themeSize ?? size} / 2.5)`,
+    fontSize: `calc(${inferredSize ?? size} / 2.5)`,
   }
-
   if (size !== "100%") {
-    styles.lineHeight = themeSize ?? size
+    styles["lineHeight"] = inferredSize ?? size
   }
 
   return {
@@ -23,12 +22,14 @@ function getSize(size: string) {
 }
 
 function getRootStyle(props: Props & { name?: string }) {
-  const { name, theme: t } = props
+  const bg = props.name ? stringToColor(props.name) : "gray.400"
 
-  const bg = name ? stringToColor(name) : "gray.400"
-  const isBgDark = isDark(bg)(t)
+  const color = props.name
+    ? isDark(bg)(props.theme)
+      ? "white"
+      : "gray.800"
+    : "white"
 
-  const color = name ? (isBgDark ? "white" : "gray.800") : "white"
   const borderColor = mode("white", "gray.800")(props)
 
   return {
@@ -69,15 +70,17 @@ const Avatar: ComponentTheme<{ name?: string }> = {
   },
 }
 
-export const AvatarSizes = {
-  "2xs": "2xs",
-  xs: "xs",
-  sm: "sm",
-  md: "md",
-  lg: "lg",
-  xl: "xl",
-  "2xl": "2xl",
-  full: "full",
+export const AvatarTokens = {
+  sizes: {
+    "2xs": "2xs",
+    xs: "xs",
+    sm: "sm",
+    md: "md",
+    lg: "lg",
+    xl: "xl",
+    "2xl": "2xl",
+    full: "full",
+  },
 }
 
 export default Avatar

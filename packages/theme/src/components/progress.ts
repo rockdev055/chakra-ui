@@ -4,42 +4,34 @@ import { ComponentTheme, mode } from "./utils"
 type ProgressTheme = ComponentTheme<{ isIndeterminate?: boolean }>
 
 const getProgressBg: ProgressTheme["baseStyle"] = (props) => {
-  const { colorScheme: c, theme: t, isIndeterminate } = props
-
+  const { colorScheme: c, theme: t } = props
   const bg = mode(`${c}.500`, `${c}.200`)(props)
 
-  const gradient = `linear-gradient(
-    to right,
-    transparent 0%,
-    ${getColor(t, bg)} 50%,
-    transparent 100%
-  )`
-
-  return {
-    bg: isIndeterminate ? gradient : bg,
+  if (props.isIndeterminate) {
+    return {
+      bg: `linear-gradient(
+        to right,
+        transparent 0%,
+        ${getColor(t, bg)} 50%,
+        transparent 100%
+      )`,
+    }
   }
+  return { bg }
 }
 
 const sizes: ProgressTheme["sizes"] = {
   xs: {
-    Track: {
-      height: "0.25rem",
-    },
+    Track: { height: "0.25rem" },
   },
   sm: {
-    Track: {
-      height: "0.5rem",
-    },
+    Track: { height: "0.5rem" },
   },
   md: {
-    Track: {
-      height: "0.75rem",
-    },
+    Track: { height: "0.75rem" },
   },
   lg: {
-    Track: {
-      height: "1rem",
-    },
+    Track: { height: "1rem" },
   },
 }
 
@@ -65,11 +57,13 @@ const Progress: ProgressTheme = {
   sizes,
 }
 
-export const ProgressSizes = {
-  lg: "lg",
-  sm: "sm",
-  md: "md",
-  xs: "xs",
+export const ProgressTokens = {
+  sizes: {
+    lg: "lg",
+    sm: "sm",
+    md: "md",
+    xs: "xs",
+  },
 }
 
 export default Progress

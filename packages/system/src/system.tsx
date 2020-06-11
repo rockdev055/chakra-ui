@@ -1,4 +1,3 @@
-import React from "react"
 import { parser as systemProps } from "@chakra-ui/parser"
 import createStyled from "./create-styled"
 import { As, ChakraComponent, Options } from "./system.types"
@@ -44,7 +43,6 @@ export const chakra = (styled as unknown) as CreateChakraComponent &
   ChakraJSXElements
 
 domElements.forEach((tag) => {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
   chakra[tag] = chakra(tag)
 })
