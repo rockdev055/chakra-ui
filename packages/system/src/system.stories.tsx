@@ -1,12 +1,13 @@
 /**@jsx jsx */
 import { motion } from "framer-motion"
-import { chakra, jsx, useComponentStyle, forwardRefWithAs, PropsOf } from "."
+import { chakra, jsx, useComponentStyle, PropsOf } from "."
 
 export default {
   title: "styled",
 }
 
 const Heading = chakra("h1", { themeKey: "Heading" })
+
 const Btn = chakra("button", {
   themeKey: "Button",
   baseStyle: { outline: 0 },
@@ -198,14 +199,14 @@ export const UseComponentStyle = () => {
 }
 
 /**
- * Just like theme-ui, you can use the `sx` prop to style
+ * Just like theme-ui, you can use the `cx` prop to style
  * regular jsx elements.
  *
  * PS: This requires the jsx pragma at the top of your file
  */
 export const SxProp = () => (
   <h1
-    sx={{
+    cx={{
       color: "red.100",
       transition: "all 0.3s",
       padding: "30px",

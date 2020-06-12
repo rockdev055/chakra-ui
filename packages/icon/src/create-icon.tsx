@@ -31,20 +31,18 @@ export function createIcon(options: CreateIconOptions) {
     displayName,
   } = options
 
-  const Component = React.forwardRef(
-    function Component(props: IconProps, ref: React.Ref<any>) {
-      const { boxSize = "1em", ...rest } = props
-      return (
-        <Icon ref={ref} as="svg" boxSize={boxSize} viewBox={viewBox} {...rest}>
-          {path ?? <path fill="currentColor" d={pathDefinition} />}
-        </Icon>
-      )
-    },
-  )
+  const Comp = forwardRef<IconProps, "svg">(function Comp(props, ref) {
+    const { boxSize = "1em", ...rest } = props
+    return (
+      <Icon ref={ref} as="svg" boxSize={boxSize} viewBox={viewBox} {...rest}>
+        {path ?? <path fill="currentColor" d={pathDefinition} />}
+      </Icon>
+    )
+  })
 
   if (__DEV__) {
-    Component.displayName = displayName
+    Comp.displayName = displayName
   }
 
-  return Component
+  return Comp
 }
