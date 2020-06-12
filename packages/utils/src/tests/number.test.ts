@@ -5,7 +5,7 @@ import {
   percentToValue,
   roundValueToStep,
   clampValue,
-} from "../src"
+} from "../number"
 
 test("should round number to specific precision", () => {
   expect(toPrecision(1.4567, 2)).toStrictEqual("1.46")

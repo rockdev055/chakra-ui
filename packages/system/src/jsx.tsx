@@ -42,22 +42,27 @@ export const jsx = (
   ...children: React.ReactNode[]
 ) => emotion.apply(undefined, [type, parse(props), ...children])
 
-interface SxProp {
-  sx?: SystemStyleObject
-}
-
 /**
  * Merge `sx` into the react module declaration,
  * so it can be accessible anywhere jsx is imported
  */
 declare module "react" {
-  interface Attributes extends SxProp {}
+  interface Attributes {
+    sx?: SystemStyleObject
+  }
 }
 
 declare global {
   // eslint-disable-next-line
   namespace JSX {
-    interface IntrinsicAttributes extends SxProp {}
+    interface IntrinsicAttributes {
+      /**
+       * The sx prop lets you style elements inline, using values from your
+       * theme. To use the sx prop, add the custom pragma as a comment to the
+       * top of your module and import the jsx function.
+       */
+      sx?: SystemStyleObject
+    }
   }
 }
 

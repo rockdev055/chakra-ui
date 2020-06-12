@@ -1,4 +1,4 @@
-import { runIfFn, callAllHandlers } from "../src"
+import { runIfFn, callAllHandlers } from "../function"
 
 test("should run function if function or else return value", () => {
   expect(runIfFn(() => 1 + 1)).toStrictEqual(2)

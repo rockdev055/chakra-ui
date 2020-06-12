@@ -4,7 +4,7 @@ import {
   getOwnerDocument,
   getWindow,
   normalizeEventKey,
-} from "../src"
+} from "../dom"
 
 test("should get window object", () => {
   expect(getWindow()).toBe(window)

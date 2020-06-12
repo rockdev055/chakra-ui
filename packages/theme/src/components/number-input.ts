@@ -48,10 +48,12 @@ const NumberInput: ComponentTheme = {
   },
 }
 
-export const NumberInputSizes = {
-  sm: "sm",
-  md: "md",
-  lg: "lg",
+export const NumberInputTokens = {
+  sizes: {
+    sm: "sm",
+    md: "md",
+    lg: "lg",
+  },
 }
 
 export default NumberInput

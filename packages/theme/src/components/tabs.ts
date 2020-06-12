@@ -162,19 +162,20 @@ const Tabs: ComponentTheme = {
   },
 }
 
-export const TabSizes = {
-  sm: "sm",
-  md: "md",
-  lg: "lg",
-}
-
-export const TabVariants = {
-  line: "line",
-  enclosed: "enclosed",
-  "soft-rounded": "soft-rounded",
-  "enclosed-colored": "enclosed-colored",
-  "solid-rounded": "solid-rounded",
-  unstyled: "unstyled",
+export const TabTokens = {
+  sizes: {
+    sm: "sm",
+    md: "md",
+    lg: "lg",
+  },
+  variants: {
+    line: "line",
+    enclosed: "enclosed",
+    "soft-rounded": "soft-rounded",
+    "enclosed-colored": "enclosed-colored",
+    "solid-rounded": "solid-rounded",
+    unstyled: "unstyled",
+  },
 }
 
 export default Tabs

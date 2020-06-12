@@ -14,7 +14,7 @@ import {
   isInputEvent,
   isEmpty,
   isNotEmptyObject,
-} from "../src"
+} from "../assertion"
 
 test("is number", () => {
   expect(isNumber(1.2)).toBeTruthy()

@@ -1,13 +1,12 @@
 /**@jsx jsx */
 import { motion } from "framer-motion"
-import { chakra, jsx, useComponentStyle, PropsOf } from "."
+import { chakra, jsx, useComponentStyle, forwardRefWithAs, PropsOf } from "."
 
 export default {
   title: "styled",
 }
 
 const Heading = chakra("h1", { themeKey: "Heading" })
-
 const Btn = chakra("button", {
   themeKey: "Button",
   baseStyle: { outline: 0 },

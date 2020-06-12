@@ -1,6 +1,6 @@
 import { render } from "@chakra-ui/test-utils"
 import * as React from "react"
-import { useComponentStyle, useThemeDefaultProps, useChakra } from "../src"
+import { useComponentStyle, useThemeDefaultProps, useChakra } from ".."
 
 test("should get component style", () => {
   const Style = () => {

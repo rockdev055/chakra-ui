@@ -1,4 +1,11 @@
-import { omit, pick, split, get, getWithDefault, filterUndefined } from "../src"
+import {
+  omit,
+  pick,
+  split,
+  get,
+  getWithDefault,
+  filterUndefined,
+} from "../object"
 
 const object = { a: 1, b: 2, c: { d: 3 } }
 

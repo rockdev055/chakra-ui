@@ -1,4 +1,4 @@
-import { mapResponsive } from "../src"
+import { mapResponsive } from "../responsive"
 
 const arr = [2, 3]
 const obj = { sm: 2, md: 3 }
