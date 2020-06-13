@@ -104,9 +104,7 @@ interface ApplyProperty {
 }
 
 type PseudoStyles = {
-  [K in keyof Pseudos]?: K extends "_before" | "_after"
-    ? SystemStyleObject & { content?: string }
-    : SystemStyleObject
+  [K in keyof Pseudos]?: SystemStyleObject & { content?: string }
 }
 
 export type SystemStyleObject =

@@ -64,11 +64,4 @@ const InputAddon = {
   },
 }
 
-export const InputAddonVariants = {
-  outline: "outline",
-  filled: "filled",
-  flushed: "flushed",
-  unstyled: "unstyled",
-}
-
 export default InputAddon
