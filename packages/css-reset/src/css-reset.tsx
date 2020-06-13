@@ -1,7 +1,7 @@
 import { Global } from "@emotion/core"
 import * as React from "react"
 
-export const CSSReset = () => (
+const CSSReset = () => (
   <Global
     styles={`
       html {
@@ -231,6 +231,10 @@ export const CSSReset = () => (
 
       hr {
         border-top-width: 1px;
+      }
+
+      img {
+        border-style: solid;
       }
 
       textarea {
