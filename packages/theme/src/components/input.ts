@@ -16,6 +16,7 @@ const getDefaults = (props: VariantProps) => ({
 
 function getOutlineStyle(props: VariantProps): StyleProps {
   const { theme: t } = props
+
   const { focusBorderColor: fc, errorBorderColor: ec } = getDefaults(props)
 
   return {
@@ -43,6 +44,7 @@ function getOutlineStyle(props: VariantProps): StyleProps {
 
 function getFilledStyle(props: VariantProps): StyleProps {
   const { theme: t } = props
+
   const { focusBorderColor: fc, errorBorderColor: ec } = getDefaults(props)
 
   return {
@@ -141,17 +143,18 @@ const Input: InputTheme = {
   },
 }
 
-export const InputSizes = {
-  sm: "sm",
-  md: "md",
-  lg: "lg",
-}
-
-export const InputVariants = {
-  outline: "outline",
-  filled: "filled",
-  flushed: "flushed",
-  unstyled: "unstyled",
+export const InputTokens = {
+  sizes: {
+    sm: "sm",
+    md: "md",
+    lg: "lg",
+  },
+  variants: {
+    outline: "outline",
+    filled: "filled",
+    flushed: "flushed",
+    unstyled: "unstyled",
+  },
 }
 
 export default Input

@@ -5,6 +5,7 @@
     "lib": ["dom", "esnext"],
     "declaration": true,
     "sourceMap": true,
+    "importHelpers": true,
     "moduleResolution": "node",
     "skipLibCheck": true,
     "strict": true,
@@ -17,8 +18,17 @@
     "jsx": "react",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "preserveSymlinks": true
+    "allowJs": true,
+    "preserveSymlinks": true,
+    "outDir": "dist/esm"
   },
-  "include": ["packages"],
-  "exclude": ["node_modules"]
+  "include": ["types"],
+  "exclude": [
+    "node_modules",
+    "node_modules/gatsby-interface",
+    "node_modules/@theme-ui",
+    "**/*.test.js",
+    "**/*.test.ts",
+    "**/*.test.tsx"
+  ]
 }

@@ -13,7 +13,7 @@ export interface MenuTransitionProps {
   styles?: TransitionProps["styles"]
 }
 
-export function MenuTransition(props: MenuTransitionProps) {
+export const MenuTransition = (props: MenuTransitionProps) => {
   const { transformOrigin = "top left", children, styles } = props
   const menu = useMenuContext()
 

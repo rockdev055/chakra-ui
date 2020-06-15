@@ -20,7 +20,7 @@ import {
   UseTabsProps,
 } from "./use-tabs"
 
-interface ThemingContext extends ThemingProps {
+type ThemingContext = ThemingProps & {
   /**
    * If `true`, tabs will stretch to width of the tablist.
    */
@@ -52,10 +52,7 @@ export { useThemingContext as useTabsThemingContext }
  * Provides context and logic for all tabs components. It doesn't render
  * any DOM node.
  */
-export const Tabs = React.forwardRef(function Tabs(
-  props: TabsProps,
-  ref: React.Ref<any>,
-) {
+export const Tabs = forwardRef<TabsProps, "div">(function Tabs(props, ref) {
   /**
    * Gets the default props for `variant` and `size` from `theme.components.Tabs`
    */
@@ -115,7 +112,7 @@ export type TabProps = Omit<UseTabProps, "context"> & PropsOf<typeof StyledTab>
  * The tab button used to activate a specific tab panel. It renders a `button`,
  * and is responsible for automatic and manual selection modes.
  */
-export const Tab = forwardRef<TabProps>(function Tab(props, ref) {
+export const Tab = forwardRef<TabProps, "button">(function Tab(props, ref) {
   const { className, ...htmlProps } = props
   const { isFitted, ...theming } = useThemingContext()
   const tabProps = useTab({ ...htmlProps, ref })
@@ -155,9 +152,9 @@ export type TabListProps = Omit<UseTabListProps, "context"> &
  * Used to manage a list of tab buttons. It renders a `div` by default,
  * and is responsible the keyboard interaction between tabs.
  */
-export const TabList = React.forwardRef(function TabList(
-  props: TabListProps,
-  ref: React.Ref<any>,
+export const TabList = forwardRef<TabListProps, "div">(function TabList(
+  props,
+  ref,
 ) {
   const { className, ...htmlProps } = props
   const { isFitted, ...theming } = useThemingContext()
@@ -189,9 +186,9 @@ export type TabPanelProps = PropsOf<typeof StyledTabPanel>
  *
  * Used to render the content for a specific tab.
  */
-export const TabPanel = React.forwardRef(function TabPanel(
-  props: TabPanelProps,
-  ref: React.Ref<any>,
+export const TabPanel = forwardRef<TabPanelProps, "div">(function TabPanel(
+  props,
+  ref,
 ) {
   const { className, ...htmlProps } = props
   const panelProps = useTabPanel({ ...htmlProps, ref })
@@ -213,9 +210,9 @@ export type TabPanelsProps = PropsOf<typeof chakra.div>
  *
  * It renders a `div` by default.
  */
-export const TabPanels = React.forwardRef(function TabPanels(
-  props: TabPanelsProps,
-  ref: React.Ref<any>,
+export const TabPanels = forwardRef<TabPanelsProps, "div">(function TabPanels(
+  props,
+  ref,
 ) {
   const { className, ...htmlProps } = props
   const panelsProp = useTabPanels(htmlProps)
@@ -236,26 +233,25 @@ export type TabIndicatorProps = PropsOf<typeof chakra.div>
  * Used to render an active tab indicator that animates between
  * selected tabs.
  */
-export const TabIndicator = React.forwardRef(function TabIndicator(
-  props: TabIndicatorProps,
-  ref: React.Ref<any>,
-) {
-  const { className, style, ...htmlProps } = props
+export const TabIndicator = forwardRef<TabIndicatorProps, "div">(
+  function TabIndicator(props, ref) {
+    const { className, style, ...htmlProps } = props
 
-  const styles = useTabIndicator()
+    const styles = useTabIndicator()
 
-  const _className = cx("chakra-tabs__tab-indicator", className)
-  const _style = { ...style, ...styles }
+    const _className = cx("chakra-tabs__tab-indicator", className)
+    const _style = { ...style, ...styles }
 
-  return (
-    <chakra.div
-      ref={ref}
-      className={_className}
-      style={_style}
-      {...htmlProps}
-    />
-  )
-})
+    return (
+      <chakra.div
+        ref={ref}
+        className={_className}
+        style={_style}
+        {...htmlProps}
+      />
+    )
+  },
+)
 
 if (__DEV__) {
   TabIndicator.displayName = "TabIndicator"

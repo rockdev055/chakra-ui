@@ -1,4 +1,4 @@
-import * as React from "react"
+import { RefObject } from "react"
 import { hasFocusWithin, ensureFocus } from "@chakra-ui/utils"
 import { useUpdateEffect } from "./use-update-effect"
 
@@ -13,7 +13,7 @@ export type UseFocusEffectOptions = {
  * @param options focus management options
  */
 export function useFocusEffect<T extends HTMLElement>(
-  ref: React.RefObject<T>,
+  ref: RefObject<T>,
   options: UseFocusEffectOptions,
 ) {
   const { shouldFocus, preventScroll } = options

@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { Link as GatsbyLink } from "gatsby"
 import {
   Box,
@@ -15,8 +15,8 @@ import { LiveProvider, LiveEditor, LiveError, LivePreview } from "react-live"
 import theme from "prism-react-renderer/themes/nightOwl"
 import * as Chakra from "@chakra-ui/core"
 import * as ReactMdIcons from "react-icons/md"
-import { Container } from "components/container"
-import { Footer } from "components/footer"
+import { Container } from "../components/container"
+import { Footer } from "../components/footer"
 
 const Feature = ({ title, icon, children, ...props }) => {
   return (
