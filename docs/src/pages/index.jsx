@@ -1,4 +1,4 @@
-import React from "react"
+import * as React from "react"
 import { Link as GatsbyLink } from "gatsby"
 import {
   Box,
@@ -8,6 +8,7 @@ import {
   Grid,
   Divider,
   Flex,
+  Icon,
 } from "@chakra-ui/core"
 import { DiGithubBadge } from "react-icons/di"
 import { MdAccessibility, MdPalette, MdGrain } from "react-icons/md"
@@ -28,7 +29,7 @@ const Feature = ({ title, icon, children, ...props }) => {
         align="center"
         justify="center"
       >
-        <Box boxSize={6} color="white" as={icon} />
+        <Icon boxSize={6} color="white" as={icon} />
       </Flex>
       <Heading as="h2" size="md" fontWeight="semibold" mt="1em" mb="0.5em">
         {title}
@@ -89,7 +90,7 @@ export default () => {
             <Box mt="6">
               <Button
                 as={GatsbyLink}
-                to="/getting-started"
+                to="/docs/getting-started"
                 size="lg"
                 colorScheme="teal"
               >

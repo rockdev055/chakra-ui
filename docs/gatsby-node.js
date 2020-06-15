@@ -5,7 +5,6 @@ const {
   sortPostNodes,
   getRelativePagePath,
   getNodeContributors,
-  getOrgMembers,
   readAllContributorsRc,
 } = require("./utils")
 
@@ -25,6 +24,7 @@ exports.onCreateNode = async ({ node, actions, getNode }) => {
       basePath: "pages",
       trailingSlash: false,
     })
+
     const slug = relativeFilePath.toLowerCase()
 
     // create `slug` field (`node.fields.slug`)
@@ -81,6 +81,7 @@ exports.createSchemaCustomization = (props) => {
       },
     }),
   ]
+
   createTypes(typeDefs)
 }
 
@@ -129,6 +130,7 @@ exports.createPages = async ({ graphql, actions }) => {
       index === sortedNodes.length - 1 ? null : sortedNodes[index + 1]
     const slug = node.fields.slug
     const relativePath = getRelativePagePath(node.fileAbsolutePath)
+
     const edge = edges[index]
     const { modifiedTime, birthTime } = edge.node.parent
 
@@ -184,22 +186,6 @@ exports.sourceNodes = async ({
       },
     }
     const node = { ...contributor, ...nodeMeta }
-    createNode(node)
-  })
-
-  const team = await getOrgMembers()
-  team.forEach((member) => {
-    const id = createNodeId(`team__${member.login}`)
-    const nodeContent = JSON.stringify(member)
-    const nodeMeta = {
-      id,
-      internal: {
-        type: "TeamMember",
-        content: nodeContent,
-        contentDigest: createContentDigest(member),
-      },
-    }
-    const node = { ...member, ...nodeMeta }
     createNode(node)
   })
 }

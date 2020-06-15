@@ -2,6 +2,7 @@ import * as React from "react"
 import { graphql } from "gatsby"
 import {
   Box,
+  Icon,
   Container,
   Heading,
   Text,
@@ -10,14 +11,14 @@ import {
   SimpleGrid,
   Link,
   Wrap,
-  Tooltip,
+  // Tooltip,
 } from "@chakra-ui/core"
 import { IoLogoTwitter, IoLogoGithub, IoIosGlobe } from "react-icons/io"
 import SEO from "../components/seo"
 
 const SocialLink = ({ icon, href }) => (
   <Link display="inline-block" href={href} isExternal>
-    <Box
+    <Icon
       as={icon}
       transition="all 0.2s"
       _hover={{ color: "teal.600" }}
@@ -61,23 +62,33 @@ function Contributor({ contributor }) {
 
   return (
     <Box>
-      <Tooltip hasArrow label={login} placement="top">
-        <Link href={`https://github.com/${login}`} isExternal>
-          <Avatar size="md" src={avatarUrl} />
-        </Link>
-      </Tooltip>
+      <Link href={`https://github.com/${login}`} isExternal>
+        <Avatar size="md" src={avatarUrl} />
+      </Link>
+      {/* <Tooltip hasArrow label={login} placement="top">
+      </Tooltip> */}
     </Box>
   )
 }
 
+const sortMembers = (a, b) => {
+  // segun comes first!
+  if (a.login === "segunadebayo") return -1
+  if (b.login === "segunadebayo") return 1
+
+  // everything else is alphabetical by login
+  return a.login.localeCompare(b.login, "en")
+}
+
 function Team({ data }) {
-  const { members, contributors } = data
-  const { nodes: memberNodes } = members
+  const { github, contributors } = data
+  const { nodes: memberNodes } = github.organization.membersWithRole
   const { nodes: contributorNodes } = contributors
   const memberLogins = memberNodes.map(({ login }) => login)
   const contributorsWithoutTeam = contributorNodes.filter(
     ({ login }) => !memberLogins.includes(login),
   )
+  const sortedMemberNodes = memberNodes.sort(sortMembers)
 
   return (
     <>
@@ -103,7 +114,7 @@ function Team({ data }) {
           <Stack spacing={8}>
             <Heading size="md">Core Team</Heading>
             <SimpleGrid columns={[1, 1, 2]} spacing="40px">
-              {memberNodes.map((member) => (
+              {sortedMemberNodes.map((member) => (
                 <Member key={member.login} member={member} />
               ))}
             </SimpleGrid>
@@ -129,17 +140,20 @@ function Team({ data }) {
 export default Team
 
 export const query = graphql`
-  query TeamAndContributorsQuery {
-    members: allTeamMember {
-      nodes {
-        avatarUrl
-        bio
-        githubUrl
-        id
-        name
-        login
-        twitterUsername
-        websiteUrl
+  query TeamQuery {
+    github {
+      organization(login: "chakra-ui") {
+        membersWithRole(first: 50) {
+          nodes {
+            avatarUrl
+            bio
+            login
+            name
+            twitterUsername
+            url
+            websiteUrl
+          }
+        }
       }
     }
     contributors: allChakraContributor {

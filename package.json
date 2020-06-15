@@ -1,18 +1,21 @@
 {
   "name": "chakra-ui",
   "private": true,
-  "workspaces": [
-    "packages/*",
-    "examples/*",
-    "tooling/*",
-    "docs"
-  ],
+  "workspaces": {
+    "packages": [
+      "packages/*",
+      "examples/*",
+      "tooling/*",
+      "docs"
+    ]
+  },
   "author": "Segun Adebayo <sage@adebayosegun.com>",
   "license": "MIT",
   "scripts": {
     "contrib:add": "all-contributors add",
-    "contrib:generate": "all-contributors generate",
+    "contrib:gen": "all-contributors generate",
     "prestart": "yarn && yarn bootstrap",
+    "boot": "yarn prestart && yarn build",
     "start": "yarn build && yarn storybook",
     "start:all": "yarn build && concurrently \"yarn docs develop\"  \"yarn storybook\" ",
     "build": "lerna run build --ignore @chakra-ui/test-utils --no-private --stream",
@@ -89,7 +92,8 @@
     "css": "yarn workspace @chakra-ui/css",
     "variant": "yarn workspace @chakra-ui/variant",
     "skeleton": "yarn workspace @chakra-ui/skeleton",
-    "skip-nav": "yarn workspace @chakra-ui/skip-nav"
+    "skip-nav": "yarn workspace @chakra-ui/skip-nav",
+    "babel-plugin": "yarn workspace babel-plugin-chakra-ui"
   },
   "czConfig": {
     "path": "node_modules/cz-conventional-changelog"
@@ -107,6 +111,7 @@
     "@storybook/addon-actions": "^6.0.0-beta.13",
     "@storybook/addon-knobs": "^6.0.0-beta.13",
     "@storybook/react": "^6.0.0-beta.13",
+    "@storybook/preset-typescript": "3.0.0",
     "@types/jest": "25.2.3",
     "@types/react-router-dom": "5.1.5",
     "@types/shelljs": "0.8.8",
@@ -114,7 +119,6 @@
     "@typescript-eslint/parser": "3.2.0",
     "all-contributors-cli": "6.16.0",
     "arg": "4.1.3",
-    "tslib": "2.0.0",
     "babel-eslint": "10.1.0",
     "babel-loader": "8.1.0",
     "bundlesize": "0.18.0",
@@ -126,7 +130,6 @@
     "emotion-theming": "10.0.27",
     "eslint": "7.2.0",
     "eslint-plugin-react": "7.20.0",
-    "eslint-config-react-app": "^5.2.1",
     "eslint-plugin-jest-dom": "2.1.0",
     "eslint-plugin-prettier": "3.1.3",
     "eslint-plugin-react-hooks": "4.0.4",
@@ -145,6 +148,8 @@
     "nodemon": "2.0.4",
     "prettier": "2.0.5",
     "react": "16.13.1",
+    "@types/react": "16.9.23",
+    "@types/react-dom": "16.9.8",
     "react-dom": "16.13.1",
     "react-icons": "3.10.0",
     "react-lorem-component": "^0.13.0",
@@ -154,6 +159,13 @@
     "rimraf": "3.0.2",
     "shelljs": "0.8.4",
     "ts-jest": "26.1.0",
-    "typescript": "3.9.5"
+    "typescript": "3.9.5",
+    "@babel/cli": "7.10.1",
+    "@babel/core": "7.10.2",
+    "@babel/preset-env": "7.10.2",
+    "@babel/preset-react": "7.10.1",
+    "@babel/preset-typescript": "7.10.1",
+    "@babel/plugin-proposal-class-properties": "7.10.1",
+    "@babel/runtime": "7.10.2"
   }
 }
