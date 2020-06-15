@@ -12,7 +12,7 @@ import {
   progress,
   GetProgressPropsOptions,
   stripe,
-} from "./Progress.utils"
+} from "./progress.utils"
 
 /**
  * ProgressLabel (Linear)
