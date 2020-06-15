@@ -1,7 +1,3 @@
-require("dotenv").config({
-  path: `.env.${process.env.NODE_ENV}`,
-})
-
 const siteMetadata = {
   title: "Chakra UI",
   description:
@@ -55,19 +51,15 @@ module.exports = {
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        name: `pages`,
-        path: `${__dirname}/pages`,
+        name: `docs`,
+        path: `${__dirname}/docs`,
       },
     },
     {
-      resolve: `gatsby-source-graphql`,
+      resolve: `gatsby-source-filesystem`,
       options: {
-        typeName: "GitHub",
-        fieldName: "github",
-        url: "https://api.github.com/graphql",
-        headers: {
-          Authorization: `Bearer ${process.env.GITHUB_API_TOKEN}`,
-        },
+        name: `guides`,
+        path: `${__dirname}/guides`,
       },
     },
     "gatsby-transformer-sharp",
