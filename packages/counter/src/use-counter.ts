@@ -126,7 +126,7 @@ export function useCounter(props: UseCounterProps = {}) {
       next = clamp(next as number)
       update(next)
     },
-    [clamp, props.min?.toString, stepProp, update, value],
+    [clamp, stepProp, update, value, props.min],
   )
 
   const decrement = React.useCallback(
@@ -143,7 +143,7 @@ export function useCounter(props: UseCounterProps = {}) {
       next = clamp(next as number)
       update(next)
     },
-    [clamp, props.min?.toString, stepProp, update, value],
+    [clamp, stepProp, update, value, props.min],
   )
 
   const reset = React.useCallback(() => {

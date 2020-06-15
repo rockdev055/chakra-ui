@@ -7,48 +7,27 @@ const Slider: ComponentTheme = {
   },
   sizes: {
     lg: (props) => ({
-      Thumb: {
-        width: "16px",
-        height: "16px",
-      },
+      Thumb: { width: "16px", height: "16px" },
       Track: getOrientationStyle({
         orientation: props.orientation,
-        horizontal: {
-          height: "4px",
-        },
-        vertical: {
-          width: "4px",
-        },
+        horizontal: { height: "4px" },
+        vertical: { width: "4px" },
       }),
     }),
     md: (props) => ({
-      Thumb: {
-        width: "14px",
-        height: "14px",
-      },
+      Thumb: { width: "14px", height: "14px" },
       Track: getOrientationStyle({
         orientation: props.orientation,
-        horizontal: {
-          height: "4px",
-        },
-        vertical: {
-          width: "4px",
-        },
+        horizontal: { height: "4px" },
+        vertical: { width: "4px" },
       }),
     }),
     sm: (props) => ({
-      Thumb: {
-        width: "10px",
-        height: "10px",
-      },
+      Thumb: { width: "10px", height: "10px" },
       Track: getOrientationStyle({
         orientation: props.orientation,
-        horizontal: {
-          height: "2px",
-        },
-        vertical: {
-          width: "2px",
-        },
+        horizontal: { height: "2px" },
+        vertical: { width: "2px" },
       }),
     }),
   },
@@ -61,12 +40,8 @@ const Slider: ComponentTheme = {
       },
       ...getOrientationStyle({
         orientation: props.orientation,
-        vertical: {
-          height: "100%",
-        },
-        horizontal: {
-          width: "100%",
-        },
+        vertical: { height: "100%" },
+        horizontal: { width: "100%" },
       }),
     },
     Track: {
@@ -114,10 +89,12 @@ const Slider: ComponentTheme = {
   }),
 }
 
-export const SliderSizes = {
-  lg: "lg",
-  sm: "sm",
-  md: "md",
+export const SliderTokens = {
+  sizes: {
+    lg: "lg",
+    sm: "sm",
+    md: "md",
+  },
 }
 
 export default Slider

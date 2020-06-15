@@ -1,3 +1,5 @@
+const path = require("path")
+
 module.exports = {
-  stories: ["../packages/tooltip/**/*.stories.tsx"],
+  stories: [path.join(__dirname, "../packages/collapse/**/*.stories.tsx")],
 }

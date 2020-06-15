@@ -217,6 +217,7 @@ export function useCheckbox(props: UseCheckboxProps = {}) {
       }
       return {
         ...props,
+        style: { ...props.style, touchAction: "none" },
         onMouseDown: callAllHandlers(props.onMouseDown, stop),
         onTouchStart: callAllHandlers(props.onTouchState, stop),
         "data-disabled": dataAttr(isDisabled),

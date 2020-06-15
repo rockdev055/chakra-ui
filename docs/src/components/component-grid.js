@@ -11,7 +11,7 @@ function useQuery() {
           relativePath
         }
       }
-      allMdx(filter: { fields: { collection: { eq: "docs/components" } } }) {
+      allMdx(filter: { fields: { collection: { eq: "components" } } }) {
         nodes {
           frontmatter {
             image

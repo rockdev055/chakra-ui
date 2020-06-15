@@ -1,6 +1,6 @@
 import { useTheme } from "@chakra-ui/system"
 import { Dict, isNumber, objectKeys } from "@chakra-ui/utils"
-import * as React from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 
 /**
  * useBreakpoint
@@ -19,12 +19,12 @@ export function useBreakpoint(defaultBreakpoint?: string) {
 
   const { breakpoints } = theme
 
-  const mediaQueries = React.useMemo(
+  const mediaQueries = useMemo(
     () => createMediaQueries({ xs: `0px`, ...breakpoints }),
     [breakpoints],
   )
 
-  const [currentBreakpoint, setCurrentBreakpoint] = React.useState(() => {
+  const [currentBreakpoint, setCurrentBreakpoint] = useState(() => {
     if (!defaultBreakpoint) return undefined
     const mediaQuery = mediaQueries.find(
       (query) => query.breakpoint === defaultBreakpoint,
@@ -40,7 +40,7 @@ export function useBreakpoint(defaultBreakpoint?: string) {
 
   const current = currentBreakpoint?.breakpoint
 
-  const update = React.useCallback(
+  const update = useCallback(
     (query: MediaQueryList, breakpoint: Breakpoint) => {
       if (query.matches && current !== breakpoint.breakpoint) {
         setCurrentBreakpoint(breakpoint)
@@ -49,7 +49,7 @@ export function useBreakpoint(defaultBreakpoint?: string) {
     [current],
   )
 
-  React.useEffect(() => {
+  useEffect(() => {
     const listeners: Listener[] = []
 
     mediaQueries.forEach(({ query, ...breakpoint }) => {
@@ -89,20 +89,20 @@ export function useBreakpoint(defaultBreakpoint?: string) {
  * @todo add useBreakpointValue hook
  */
 
-export interface Breakpoint {
+export type Breakpoint = {
   breakpoint: string
   maxWidth?: string
   minWidth: string
 }
 
-interface MediaQuery {
+type MediaQuery = {
   breakpoint: string
   maxWidth?: string
   minWidth: string
   query: string
 }
 
-interface Listener {
+type Listener = {
   mediaQuery: MediaQueryList
   handleChange: () => void
 }

@@ -41,7 +41,7 @@ function Search(props) {
     }
   }
 
-  useEventListener("keydown", onKeyDown)
+  useEventListener("keydown", onKeyDown, window)
 
   React.useEffect(() => {
     if (window) {
@@ -91,7 +91,7 @@ function Search(props) {
       boxSizing="content-box"
       display={["none", "none", "block"]}
       {...props}
-      __css={{
+      sx={{
         ".algolia-autocomplete": {
           width: "100%",
         },

@@ -57,10 +57,7 @@ const fadeIn = keyframes`
   to   { opacity: 1; }
 `
 
-export const Skeleton = React.forwardRef(function Skeleton(
-  props: SkeletonProps,
-  ref: React.Ref<any>,
-) {
+export const Skeleton = (props: SkeletonProps) => {
   const {
     startColor,
     endColor,
@@ -92,7 +89,7 @@ export const Skeleton = React.forwardRef(function Skeleton(
       {...rest}
     />
   )
-})
+}
 
 if (__DEV__) {
   Skeleton.displayName = "Skeleton"

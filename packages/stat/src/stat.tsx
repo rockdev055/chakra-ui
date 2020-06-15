@@ -1,14 +1,15 @@
-import { Icon, IconProps } from "@chakra-ui/icon"
+import * as React from "react"
 import {
   chakra,
   PropsOf,
+  forwardRef,
   ThemingProvider,
-  useThemeDefaultProps,
   useThemingContext,
+  useThemeDefaultProps,
 } from "@chakra-ui/system"
-import { cx, __DEV__ } from "@chakra-ui/utils"
+import { Icon, IconProps } from "@chakra-ui/icon"
+import { __DEV__, cx } from "@chakra-ui/utils"
 import { VisuallyHidden } from "@chakra-ui/visually-hidden"
-import * as React from "react"
 
 /**
  * Learn the Semantic HTML for stats:
@@ -29,15 +30,16 @@ export type StatLabelProps = PropsOf<typeof StyledLabel>
  * To style the StatLabel globally, change the styles in
  * `theme.components.Stat` under the `Label` key.
  */
-export const StatLabel = React.forwardRef(function StatLabel(
-  props: StatLabelProps,
-  ref: React.Ref<any>,
-) {
-  const { className, ...rest } = props
-  const theming = useThemingContext()
-  const _className = cx("chakra-stat__label", className)
-  return <StyledLabel ref={ref} className={_className} {...theming} {...rest} />
-})
+export const StatLabel = forwardRef<StatLabelProps, "dt">(
+  function StatLabel(props, ref) {
+    const { className, ...rest } = props
+    const theming = useThemingContext()
+    const _className = cx("chakra-stat__label", className)
+    return (
+      <StyledLabel ref={ref} className={_className} {...theming} {...rest} />
+    )
+  },
+)
 
 if (__DEV__) {
   StatLabel.displayName = "StatLabel"
@@ -57,17 +59,16 @@ const StyledHelpText = chakra("p", {
 
 export type StatHelpTextProps = PropsOf<typeof StyledHelpText>
 
-export const StatHelpText = React.forwardRef(function StatHelpText(
-  props: StatHelpTextProps,
-  ref: React.Ref<any>,
-) {
-  const { className, ...rest } = props
-  const theming = useThemingContext()
-  const _className = cx("chakra-stat__help-text", className)
-  return (
-    <StyledHelpText ref={ref} className={_className} {...theming} {...rest} />
-  )
-})
+export const StatHelpText = forwardRef<StatHelpTextProps, "p">(
+  function StatHelpText(props, ref) {
+    const { className, ...rest } = props
+    const theming = useThemingContext()
+    const _className = cx("chakra-stat__help-text", className)
+    return (
+      <StyledHelpText ref={ref} className={_className} {...theming} {...rest} />
+    )
+  },
+)
 
 if (__DEV__) {
   StatHelpText.displayName = "StatHelpText"
@@ -88,17 +89,16 @@ export const StyledNumber = chakra("dd", {
 
 export type StatNumberProps = PropsOf<typeof StyledNumber>
 
-export const StatNumber = React.forwardRef(function StatNumber(
-  props: StatNumberProps,
-  ref: React.Ref<any>,
-) {
-  const { className, ...rest } = props
-  const theming = useThemingContext()
-  const _className = cx("chakra-stat__number", className)
-  return (
-    <StyledNumber ref={ref} className={_className} {...theming} {...rest} />
-  )
-})
+export const StatNumber = forwardRef<StatNumberProps, "dd">(
+  function StatNumber(props, ref) {
+    const { className, ...rest } = props
+    const theming = useThemingContext()
+    const _className = cx("chakra-stat__number", className)
+    return (
+      <StyledNumber ref={ref} className={_className} {...theming} {...rest} />
+    )
+  },
+)
 
 if (__DEV__) {
   StatNumber.displayName = "StatNumber"
@@ -110,16 +110,14 @@ if (__DEV__) {
  * Indicator arrow to show a decrease in the stat.
  */
 
-export function StatDownArrow(props: IconProps) {
-  return (
-    <Icon mr={1} size="14px" color="red.400" verticalAlign="middle" {...props}>
-      <path
-        fill="currentColor"
-        d="M21,5H3C2.621,5,2.275,5.214,2.105,5.553C1.937,5.892,1.973,6.297,2.2,6.6l9,12 c0.188,0.252,0.485,0.4,0.8,0.4s0.611-0.148,0.8-0.4l9-12c0.228-0.303,0.264-0.708,0.095-1.047C21.725,5.214,21.379,5,21,5z"
-      />
-    </Icon>
-  )
-}
+export const StatDownArrow = (props: IconProps) => (
+  <Icon mr={1} size="14px" color="red.400" verticalAlign="middle" {...props}>
+    <path
+      fill="currentColor"
+      d="M21,5H3C2.621,5,2.275,5.214,2.105,5.553C1.937,5.892,1.973,6.297,2.2,6.6l9,12 c0.188,0.252,0.485,0.4,0.8,0.4s0.611-0.148,0.8-0.4l9-12c0.228-0.303,0.264-0.708,0.095-1.047C21.725,5.214,21.379,5,21,5z"
+    />
+  </Icon>
+)
 
 if (__DEV__) {
   StatDownArrow.displayName = "StatDownArrow"
@@ -192,33 +190,31 @@ const StyledStat = chakra("div", {
 
 export type StatProps = PropsOf<typeof StyledStat>
 
-export const Stat = React.forwardRef(function Stat(
-  props: StatProps,
-  ref: React.Ref<any>,
-) {
-  const defaults = useThemeDefaultProps("Stat")
+export const Stat = forwardRef<StatProps, "div">(
+  function Stat(props, ref) {
+    const defaults = useThemeDefaultProps("Stat")
+    const {
+      size = defaults?.size,
+      variant = defaults?.variant,
+      colorScheme = defaults?.colorScheme,
+      className,
+      children,
+      ...rest
+    } = props
 
-  const {
-    size = defaults?.size,
-    variant = defaults?.variant,
-    colorScheme = defaults?.colorScheme,
-    className,
-    children,
-    ...rest
-  } = props
+    const theming = { size, variant, colorScheme }
 
-  const theming = { size, variant, colorScheme }
+    const _className = cx("chakra-stat", className)
 
-  const _className = cx("chakra-stat", className)
-
-  return (
-    <ThemingProvider value={theming}>
-      <StyledStat className={_className} ref={ref} {...rest}>
-        <dl>{children}</dl>
-      </StyledStat>
-    </ThemingProvider>
-  )
-})
+    return (
+      <ThemingProvider value={theming}>
+        <StyledStat className={_className} ref={ref} {...rest}>
+          <dl>{children}</dl>
+        </StyledStat>
+      </ThemingProvider>
+    )
+  },
+)
 
 if (__DEV__) {
   Stat.displayName = "Stat"

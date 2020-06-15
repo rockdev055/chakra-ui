@@ -1,6 +1,6 @@
 import React from "react"
 import {
-  Icon,
+  Box,
   Flex,
   IconButton,
   useColorMode,
@@ -46,7 +46,7 @@ const NavLink = (props) => {
 const HeaderContent = () => {
   const [, toggleMode] = useColorMode()
   const text = useColorModeValue("dark", "light")
-  const SwitchIcon = useColorModeValue(FaMoon, FaSun)
+  const Icon = useColorModeValue(FaMoon, FaSun)
 
   return (
     <Flex boxSize="100%" px="6" align="center" justify="space-between">
@@ -79,10 +79,10 @@ const HeaderContent = () => {
             isExternal
             href="https://github.com/chakra-ui/chakra-ui/tree/master/packages/chakra-ui"
           >
-            <Icon as={DiGithubBadge} boxSize="8" color="current" />
+            <Box as={DiGithubBadge} boxSize="8" color="current" />
           </Link>
           <Link isExternal href="https://chakra-ui.netlify.com">
-            <Icon as={StorybookIcon} boxSize="6" color="current" />
+            <Box as={StorybookIcon} boxSize="6" color="current" />
           </Link>
         </Stack>
         <IconButton
@@ -92,7 +92,7 @@ const HeaderContent = () => {
           color="current"
           marginLeft="2"
           onClick={toggleMode}
-          icon={<SwitchIcon />}
+          icon={<Icon />}
         />
         <MobileNav />
       </Flex>

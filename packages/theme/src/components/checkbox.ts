@@ -1,23 +1,5 @@
 import { ComponentTheme, mode, Props } from "./utils"
 
-function getCheckedStyle(props: Props) {
-  const { colorScheme: c } = props
-  return {
-    bg: mode(`${c}.500`, `${c}.200`)(props),
-    borderColor: mode(`${c}.500`, `${c}.200`)(props),
-    color: mode("white", "gray.900")(props),
-    _hover: {
-      bg: mode(`${c}.600`, `${c}.300`)(props),
-      borderColor: mode(`${c}.600`, `${c}.300`)(props),
-    },
-    _disabled: {
-      borderColor: mode("gray.200", "transparent")(props),
-      bg: mode("gray.200", "whiteAlpha.300")(props),
-      color: mode("gray.500", "whiteAlpha.500")(props),
-    },
-  }
-}
-
 const baseStyle = (props: Props) => {
   const { colorScheme: c } = props
 
@@ -28,7 +10,20 @@ const baseStyle = (props: Props) => {
       borderRadius: "sm",
       borderColor: "inherit",
       color: "white",
-      _checked: getCheckedStyle(props),
+      _checked: {
+        bg: mode(`${c}.500`, `${c}.200`)(props),
+        borderColor: mode(`${c}.500`, `${c}.200`)(props),
+        color: mode("white", "gray.900")(props),
+        _hover: {
+          bg: mode(`${c}.600`, `${c}.300`)(props),
+          borderColor: mode(`${c}.600`, `${c}.300`)(props),
+        },
+        _disabled: {
+          borderColor: mode("gray.200", "transparent")(props),
+          bg: mode("gray.200", "whiteAlpha.300")(props),
+          color: mode("gray.500", "whiteAlpha.500")(props),
+        },
+      },
       _indeterminate: {
         bg: mode(`${c}.500`, `${c}.200`)(props),
         borderColor: mode(`${c}.500`, `${c}.200`)(props),
@@ -38,12 +33,8 @@ const baseStyle = (props: Props) => {
         bg: mode("gray.100", "whiteAlpha.100")(props),
         borderColor: mode("gray.100", "transparent")(props),
       },
-      _focus: {
-        boxShadow: "outline",
-      },
-      _invalid: {
-        borderColor: mode("red.500", "red.300")(props),
-      },
+      _focus: { boxShadow: "outline" },
+      _invalid: { borderColor: mode("red.500", "red.300")(props) },
     },
     Label: {
       _disabled: { opacity: 0.4 },
@@ -75,10 +66,12 @@ const Checkbox: ComponentTheme = {
   sizes,
 }
 
-export const CheckboxSizes = {
-  lg: "lg",
-  sm: "sm",
-  md: "md",
+export const CheckboxTokens = {
+  sizes: {
+    lg: "lg",
+    sm: "sm",
+    md: "md",
+  },
 }
 
 export default Checkbox

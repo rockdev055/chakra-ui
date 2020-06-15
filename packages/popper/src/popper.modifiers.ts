@@ -1,6 +1,6 @@
 import { Modifier } from "@popperjs/core"
 
-export const matchWidth: Modifier<"matchWidth", any> = {
+export const matchWidth: Modifier<any> = {
   name: "matchWidth",
   enabled: true,
   phase: "beforeWrite",

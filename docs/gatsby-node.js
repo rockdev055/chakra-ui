@@ -8,6 +8,8 @@ const {
   readAllContributorsRc,
 } = require("./utils")
 
+console.log(process.env.GITHUB_API_TOKEN)
+
 exports.onCreateNode = async ({ node, actions, getNode }) => {
   const { createNodeField } = actions
 
@@ -24,7 +26,6 @@ exports.onCreateNode = async ({ node, actions, getNode }) => {
       basePath: "pages",
       trailingSlash: false,
     })
-
     const slug = relativeFilePath.toLowerCase()
 
     // create `slug` field (`node.fields.slug`)
@@ -81,7 +82,6 @@ exports.createSchemaCustomization = (props) => {
       },
     }),
   ]
-
   createTypes(typeDefs)
 }
 
@@ -130,7 +130,6 @@ exports.createPages = async ({ graphql, actions }) => {
       index === sortedNodes.length - 1 ? null : sortedNodes[index + 1]
     const slug = node.fields.slug
     const relativePath = getRelativePagePath(node.fileAbsolutePath)
-
     const edge = edges[index]
     const { modifiedTime, birthTime } = edge.node.parent
 
