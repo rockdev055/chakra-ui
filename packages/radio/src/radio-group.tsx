@@ -7,9 +7,11 @@ import {
   UseRadioGroupReturn,
 } from "./use-radio-group"
 
-export interface RadioGroupContext
-  extends Pick<UseRadioGroupReturn, "onChange" | "value" | "name">,
-    Omit<ThemingProps, "orientation"> {}
+export type RadioGroupContext = Pick<
+  UseRadioGroupReturn,
+  "onChange" | "value" | "name"
+> &
+  Omit<ThemingProps, "orientation">
 
 const [RadioGroupContextProvider, useRadioGroupContext] = createContext<
   RadioGroupContext
@@ -30,46 +32,45 @@ export type RadioGroupProps = UseRadioGroupProps &
  *
  * @see Docs https://chakra-ui.com/components/radio
  */
-export const RadioGroup = forwardRef(function RadioGroup(
-  props: RadioGroupProps,
-  ref: React.Ref<any>,
-) {
-  const {
-    colorScheme,
-    size,
-    variant,
-    children,
-    className,
-    ...hookProps
-  } = props
-
-  const { value, onChange, getRootProps, name, htmlProps } = useRadioGroup(
-    hookProps,
-  )
-
-  const group = React.useMemo(
-    () => ({
-      name,
-      size,
-      onChange,
+export const RadioGroup = forwardRef<RadioGroupProps, "div">(
+  function RadioGroup(props, ref) {
+    const {
       colorScheme,
-      value,
+      size,
       variant,
-    }),
-    [size, name, onChange, colorScheme, value, variant],
-  )
+      children,
+      className,
+      ...hookProps
+    } = props
 
-  const groupProps = getRootProps({ ref, ...htmlProps })
-  const _className = cx("chakra-radio-group", className)
+    const { value, onChange, getRootProps, name, htmlProps } = useRadioGroup(
+      hookProps,
+    )
 
-  return (
-    <RadioGroupContextProvider value={group}>
-      <chakra.div {...groupProps} className={_className}>
-        {children}
-      </chakra.div>
-    </RadioGroupContextProvider>
-  )
-})
+    const group = React.useMemo(
+      () => ({
+        name,
+        size,
+        onChange,
+        colorScheme,
+        value,
+        variant,
+      }),
+      [size, name, onChange, colorScheme, value, variant],
+    )
+
+    const groupProps = getRootProps({ ref, ...htmlProps })
+    const _className = cx("chakra-radio-group", className)
+
+    return (
+      <RadioGroupContextProvider value={group}>
+        <chakra.div {...groupProps} className={_className}>
+          {children}
+        </chakra.div>
+      </RadioGroupContextProvider>
+    )
+  },
+)
 
 if (__DEV__) {
   RadioGroup.displayName = "RadioGroup"

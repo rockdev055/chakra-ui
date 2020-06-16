@@ -1,4 +1,4 @@
-import Checkbox, { CheckboxSizes } from "./checkbox"
+import Checkbox, { CheckboxTokens } from "./checkbox"
 import { ComponentTheme } from "./utils"
 
 const baseStyle = Checkbox.baseStyle as any
@@ -27,14 +27,11 @@ const Radio: ComponentTheme = {
   sizes: {
     ...Checkbox.sizes,
     sm: {
-      Control: {
-        width: 3,
-        height: 3,
-      },
+      Control: { width: 3, height: 3 },
     },
   },
 }
 
-export const RadioSizes = CheckboxSizes
+export const RadioTokens = CheckboxTokens
 
 export default Radio

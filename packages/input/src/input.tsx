@@ -54,7 +54,11 @@ const StyledInput = chakra<"input", InputOptions>("input", {
  *
  * Element that allows users enter single valued data.
  */
-export const Input = forwardRef<InputProps>(function Input(props, ref) {
+
+export const Input = forwardRef<InputProps, "input", Omitted>(function Input(
+  props,
+  ref,
+) {
   const inputProps = useFormControl<HTMLInputElement>(props)
   const group = useInputGroup()
 

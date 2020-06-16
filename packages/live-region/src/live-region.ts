@@ -57,7 +57,9 @@ export class LiveRegion {
   }
 
   public destroy() {
-    this.region.parentNode?.removeChild(this.region)
+    if (this.region.parentNode) {
+      this.region.parentNode.removeChild(this.region)
+    }
   }
 
   public clear() {

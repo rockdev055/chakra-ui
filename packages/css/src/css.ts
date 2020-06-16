@@ -103,5 +103,3 @@ export const css = (styleObject: StyleObjectOrFn) => (props: PropsOrTheme) => {
 
   return computedStyles
 }
-
-export default css

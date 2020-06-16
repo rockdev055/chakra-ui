@@ -250,9 +250,7 @@ export interface UseTabProps extends UseClickableProps {
  * A tab can be disabled and focusable, or both,
  * hence the use of `useClickable` to handle this scenario
  */
-export function useTab<P extends UseTabProps>(
-  props: P,
-): React.ButtonHTMLAttributes<any> {
+export function useTab<P extends UseTabProps>(props: P) {
   const { isDisabled, isFocusable, ...htmlProps } = props
 
   const {
