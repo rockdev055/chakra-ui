@@ -13,8 +13,6 @@ interface ContentProp {
   content?: string
 }
 
-export type PseudoProps<P> = {
-  [K in keyof Pseudos]?: K extends "_before" | "_after"
-    ? (P & ContentProp) | PseudoProps<P>
-    : P | PseudoProps<P>
+export type PseudoProps<Style> = {
+  [K in keyof Pseudos]?: (Style & ContentProp) | PseudoProps<Style>
 }

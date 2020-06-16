@@ -57,10 +57,7 @@ const fadeIn = keyframes`
   to   { opacity: 1; }
 `
 
-export const Skeleton = React.forwardRef(function Skeleton(
-  props: SkeletonProps,
-  ref: React.Ref<any>,
-) {
+export const Skeleton = (props: SkeletonProps) => {
   const {
     startColor,
     endColor,
@@ -76,7 +73,6 @@ export const Skeleton = React.forwardRef(function Skeleton(
   if (hasLoaded) {
     return (
       <chakra.div
-        ref={ref}
         className={_className}
         css={{ animation: `${fadeIn} ${fadeDuration}s` }}
         {...rest}
@@ -86,7 +82,6 @@ export const Skeleton = React.forwardRef(function Skeleton(
 
   return (
     <StyledSkeleton
-      ref={ref}
       startColor={startColor}
       endColor={endColor}
       speed={speed}
@@ -94,7 +89,7 @@ export const Skeleton = React.forwardRef(function Skeleton(
       {...rest}
     />
   )
-})
+}
 
 if (__DEV__) {
   Skeleton.displayName = "Skeleton"

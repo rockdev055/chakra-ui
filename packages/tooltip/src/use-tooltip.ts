@@ -1,4 +1,9 @@
-import { useDisclosure, useEventListener, useId } from "@chakra-ui/hooks"
+import {
+  useDisclosure,
+  useEventListener,
+  useId,
+  useMergeRefs,
+} from "@chakra-ui/hooks"
 import { Placement, usePopper, UsePopperProps } from "@chakra-ui/popper"
 import { callAllHandlers, mergeRefs, Dict } from "@chakra-ui/utils"
 import flushable from "flushable"
@@ -123,7 +128,7 @@ export function useTooltip(props: UseTooltipProps = {}) {
   }, [isOpen, tooltipId])
 
   const ref = React.useRef<any>(null)
-  const triggerRef = mergeRefs(ref, popper.reference.ref)
+  const triggerRef = useMergeRefs(ref, popper.reference.ref)
   const flushRef = React.useRef<Function>()
 
   React.useEffect(() => {
