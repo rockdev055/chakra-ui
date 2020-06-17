@@ -89,7 +89,7 @@ function Search(props) {
       position="relative"
       width="100%"
       boxSizing="content-box"
-      display={["none", "block", "block"]}
+      display={["none", "none", "block"]}
       {...props}
       __css={{
         ".algolia-autocomplete": {
