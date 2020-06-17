@@ -3,19 +3,21 @@ const path = require("path")
 const _ = require("lodash/fp")
 const { Octokit } = require("@octokit/rest")
 
-const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN })
+const octokit = new Octokit()
 
-const collections = ["main", "theming", "layout", "components", "utilities"]
 const compareCollections = (
   { fields: { collection: a } },
   { fields: { collection: b } },
 ) => {
-  const aIndex = collections.indexOf(a)
-  const bIndex = collections.indexOf(b)
+  // comparison when one or both are "main"
+  if (a === "main" && b === "main") return 0
+  if (a === "main" && b !== "main") return -1
+  if (a !== "main" && b === "main") return 1
 
-  if (aIndex === bIndex) return 0
-  if (aIndex > bIndex) return 1
-  if (aIndex < bIndex) return -1
+  // comparisons when neither are "main"
+  if (a < b) return -1
+  if (a > b) return 1
+  return 0
 }
 
 const groupByCollection = _.groupBy("fields.collection")
