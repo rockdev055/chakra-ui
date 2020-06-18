@@ -74,8 +74,6 @@ export const Radio = React.forwardRef(function Radio(
     onChange = group.onChange
   }
 
-  const name = group?.name || props?.name
-
   const theming = { variant, colorScheme, size }
 
   const {
@@ -83,7 +81,7 @@ export const Radio = React.forwardRef(function Radio(
     getCheckboxProps,
     getLabelProps,
     htmlProps: rest,
-  } = useRadio({ ...radioProps, isChecked, onChange, name })
+  } = useRadio({ ...radioProps, isChecked, onChange })
 
   const [layoutProps, otherProps] = split(rest, layoutPropNames as any)
 
