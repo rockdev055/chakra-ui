@@ -1,10 +1,5 @@
-import {
-  Props,
-  ComponentTheme,
-  mode,
-  getColor,
-  ink,
-} from "@chakra-ui/theme-tools"
+import { ink, getColor } from "@chakra-ui/color"
+import { Props, ComponentTheme, mode } from "./utils"
 
 function getSubtleStyle(props: Props) {
   const { theme: t, colorScheme: c } = props

@@ -1,7 +1,7 @@
 {
-  "name": "@chakra-ui/theme-tools",
+  "name": "@chakra-ui/color",
   "version": "1.0.0",
-  "description": "Set of helpers that makes theming and styling easier",
+  "description": "Helps with color manipulation",
   "keywords": [
     "theme",
     "theming",
@@ -30,13 +30,13 @@
   },
   "scripts": {
     "prebuild": "rimraf dist",
-    "start": "nodemon --watch src --exec yarn build -e ts,tsx",
+    "start": "nodemon --exec yarn build -e ts,tsx --ignore dist --ignore tests --ignore \"*.stories.tsx\"",
     "build": "concurrently yarn:build:*",
     "test": "jest --env=jsdom --passWithNoTests",
     "lint": "concurrently yarn:lint:*",
     "version": "yarn build",
-    "build:esm": "cross-env BABEL_ENV=esm babel src --root-mode upward --extensions .ts,.tsx -d dist/esm --source-maps",
-    "build:cjs": "cross-env BABEL_ENV=cjs babel src --root-mode upward --extensions .ts,.tsx -d dist/cjs --source-maps",
+    "build:esm": "BABEL_ENV=esm babel src --root-mode upward --extensions .ts,.tsx -d dist/esm --source-maps",
+    "build:cjs": "BABEL_ENV=cjs babel src --root-mode upward --extensions .ts,.tsx -d dist/cjs --source-maps",
     "build:types": "tsc --emitDeclarationOnly --declaration --declarationMap --declarationDir dist/types",
     "test:cov": "yarn test --coverage",
     "lint:src": "eslint src --ext .ts,.tsx --config ../../.eslintrc",
@@ -46,11 +46,5 @@
     "tinycolor2": "1.4.1",
     "@types/tinycolor2": "1.4.2",
     "@chakra-ui/utils": "1.0.0"
-  },
-  "peerDependencies": {
-    "@chakra-ui/system": "1.0.0"
-  },
-  "devDependencies": {
-    "@chakra-ui/system": "1.0.0"
   }
 }

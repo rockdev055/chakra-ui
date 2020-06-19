@@ -1,4 +1,4 @@
-import { ComponentTheme, mode } from "@chakra-ui/theme-tools"
+import { ComponentTheme, mode } from "./utils"
 
 const Kbd: ComponentTheme = {
   baseStyle: (props) => ({

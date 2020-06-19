@@ -1,15 +1,9 @@
-import {
-  ComponentTheme,
-  mode,
-  Props,
-  getColor,
-  ink,
-  transparentize,
-} from "@chakra-ui/theme-tools"
+import { getColor, ink, opacity } from "@chakra-ui/color"
+import { ComponentTheme, mode, Props } from "./utils"
 
 function getSolidStyle(props: Props) {
   const { colorScheme: c, theme: t } = props
-  const dark = transparentize(`${c}.500`, 0.6)(t)
+  const dark = opacity(`${c}.500`, 0.6)(t)
 
   return {
     bg: mode(`${c}.500`, dark)(props),
@@ -30,7 +24,7 @@ function getSubtleStyle(props: Props) {
 function getOutlineStyle(props: Props) {
   const { colorScheme: c, theme: t } = props
 
-  const dark = transparentize(`${c}.200`, 0.8)(t)
+  const dark = opacity(`${c}.200`, 0.8)(t)
   const light = getColor(t, `${c}.500`)
 
   const color = mode(light, dark)(props)

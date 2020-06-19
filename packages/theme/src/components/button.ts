@@ -1,9 +1,5 @@
-import {
-  Props,
-  mode,
-  ComponentTheme,
-  transparentize,
-} from "@chakra-ui/theme-tools"
+import { opacity } from "@chakra-ui/color"
+import { Props, mode, ComponentTheme } from "./utils"
 
 const grayGhostStyle = (props: Props) => ({
   color: mode(`inherit`, `whiteAlpha.900`)(props),
@@ -19,8 +15,8 @@ function getGhostStyle(props: Props) {
   const { colorScheme: c, theme: t } = props
   if (c === "gray") return grayGhostStyle(props)
 
-  const darkHover = transparentize(`${c}.200`, 0.12)(t)
-  const darkActive = transparentize(`${c}.200`, 0.24)(t)
+  const darkHover = opacity(`${c}.200`, 0.12)(t)
+  const darkActive = opacity(`${c}.200`, 0.24)(t)
 
   return {
     color: mode(`${c}.500`, `${c}.200`)(props),

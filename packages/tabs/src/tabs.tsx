@@ -228,16 +228,6 @@ if (__DEV__) {
   TabPanels.displayName = "TabPanels"
 }
 
-/**
- * TabIndicator - Theming
- *
- * To change the styles of tab indicator globally, update the styles in
- * `theme.components.Tabs` under the `TabIndicator` key
- */
-const StyledTabIndicator = chakra("div", {
-  themeKey: "Tabs.TabIndicator",
-})
-
 export type TabIndicatorProps = PropsOf<typeof chakra.div>
 
 /**
@@ -258,7 +248,7 @@ export const TabIndicator = React.forwardRef(function TabIndicator(
   const _style = { ...style, ...styles }
 
   return (
-    <StyledTabIndicator
+    <chakra.div
       ref={ref}
       className={_className}
       style={_style}

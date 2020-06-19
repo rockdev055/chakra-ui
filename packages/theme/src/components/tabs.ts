@@ -1,10 +1,5 @@
-import {
-  Props,
-  mode,
-  ComponentTheme,
-  StyleObject,
-  getColor,
-} from "@chakra-ui/theme-tools"
+import { Props, mode, ComponentTheme, StyleProps } from "./utils"
+import { getColor } from "@chakra-ui/color"
 
 function getLineStyle(props: Props) {
   const { colorScheme: c } = props
@@ -81,7 +76,7 @@ function getEnclosedColoredStyle(props: Props) {
   }
 }
 
-function getSoftRoundedStyle(props: any): StyleObject {
+function getSoftRoundedStyle(props: any): StyleProps {
   const { colorScheme: c, theme: t } = props
   return {
     Tab: {
@@ -97,7 +92,7 @@ function getSoftRoundedStyle(props: any): StyleObject {
   }
 }
 
-function getSolidRoundedStyle(props: Props): StyleObject {
+function getSolidRoundedStyle(props: Props): StyleProps {
   const { colorScheme: c } = props
   return {
     Tab: {

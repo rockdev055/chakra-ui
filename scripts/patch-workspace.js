@@ -44,9 +44,9 @@ function updateScripts(options) {
     prebuild: "rimraf dist",
     start: "nodemon --exec yarn build --watch src",
     "build:esm":
-      "cross-env BABEL_ENV=esm babel src --root-mode upward --extensions .ts,.tsx -d dist/esm --source-maps",
+      "BABEL_ENV=esm babel src --root-mode upward --extensions .ts,.tsx -d dist/esm --source-maps",
     "build:cjs":
-      "cross-env BABEL_ENV=esm babel src --root-mode upward --extensions .ts,.tsx -d dist/cjs --source-maps",
+      "BABEL_ENV=esm babel src --root-mode upward --extensions .ts,.tsx -d dist/cjs --source-maps",
     "build:types":
       "tsc --emitDeclarationOnly --declaration --declarationMap --declarationDir dist/types",
     build: "concurrently yarn:build:*",
