@@ -1,4 +1,4 @@
-import { ComponentTheme, mode, orient } from "@chakra-ui/theme-tools"
+import { ComponentTheme, mode, getOrientationStyle } from "./utils"
 
 const Slider: ComponentTheme = {
   defaultProps: {
@@ -11,7 +11,7 @@ const Slider: ComponentTheme = {
         width: "16px",
         height: "16px",
       },
-      Track: orient({
+      Track: getOrientationStyle({
         orientation: props.orientation,
         horizontal: {
           height: "4px",
@@ -26,10 +26,14 @@ const Slider: ComponentTheme = {
         width: "14px",
         height: "14px",
       },
-      Track: orient({
+      Track: getOrientationStyle({
         orientation: props.orientation,
-        horizontal: { height: "4px" },
-        vertical: { width: "4px" },
+        horizontal: {
+          height: "4px",
+        },
+        vertical: {
+          width: "4px",
+        },
       }),
     }),
     sm: (props) => ({
@@ -37,10 +41,14 @@ const Slider: ComponentTheme = {
         width: "10px",
         height: "10px",
       },
-      Track: orient({
+      Track: getOrientationStyle({
         orientation: props.orientation,
-        horizontal: { height: "2px" },
-        vertical: { width: "2px" },
+        horizontal: {
+          height: "2px",
+        },
+        vertical: {
+          width: "2px",
+        },
       }),
     }),
   },
@@ -51,7 +59,7 @@ const Slider: ComponentTheme = {
         cursor: "default",
         pointerEvents: "none",
       },
-      ...orient({
+      ...getOrientationStyle({
         orientation: props.orientation,
         vertical: {
           height: "100%",
@@ -82,7 +90,7 @@ const Slider: ComponentTheme = {
       _disabled: {
         bg: "gray.300",
       },
-      ...orient({
+      ...getOrientationStyle({
         orientation: props.orientation,
         vertical: {
           left: "50%",

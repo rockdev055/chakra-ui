@@ -1,4 +1,4 @@
-import { mode, ComponentTheme } from "@chakra-ui/theme-tools"
+import { mode, ComponentTheme } from "./utils"
 
 const Tooltip: ComponentTheme = {
   baseStyle: (props) => ({

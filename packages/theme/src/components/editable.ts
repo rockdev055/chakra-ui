@@ -1,4 +1,4 @@
-import { ComponentTheme } from "@chakra-ui/theme-tools"
+import { ComponentTheme } from "./utils"
 import { SystemProps } from "@chakra-ui/system"
 
 const base: SystemProps = {

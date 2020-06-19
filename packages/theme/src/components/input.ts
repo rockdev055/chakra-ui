@@ -1,10 +1,5 @@
-import {
-  ComponentTheme,
-  mode,
-  Props,
-  getColor,
-  StyleObject,
-} from "@chakra-ui/theme-tools"
+import { getColor } from "@chakra-ui/color"
+import { ComponentTheme, mode, Props, StyleProps } from "./utils"
 
 export interface InputProps {
   focusBorderColor?: string
@@ -19,7 +14,7 @@ const getDefaults = (props: VariantProps) => ({
   errorBorderColor: props.errorBorderColor || mode("red.500", "red.300")(props),
 })
 
-function getOutlineStyle(props: VariantProps): StyleObject {
+function getOutlineStyle(props: VariantProps): StyleProps {
   const { theme: t } = props
   const { focusBorderColor: fc, errorBorderColor: ec } = getDefaults(props)
 
@@ -46,7 +41,7 @@ function getOutlineStyle(props: VariantProps): StyleObject {
   }
 }
 
-function getFilledStyle(props: VariantProps): StyleObject {
+function getFilledStyle(props: VariantProps): StyleProps {
   const { theme: t } = props
   const { focusBorderColor: fc, errorBorderColor: ec } = getDefaults(props)
 
@@ -72,7 +67,7 @@ function getFilledStyle(props: VariantProps): StyleObject {
   }
 }
 
-function getFlushedStyle(props: VariantProps): StyleObject {
+function getFlushedStyle(props: VariantProps): StyleProps {
   const { theme: t } = props
 
   const { focusBorderColor: fc, errorBorderColor: ec } = getDefaults(props)
