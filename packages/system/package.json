@@ -34,7 +34,7 @@
   },
   "scripts": {
     "prebuild": "rimraf dist",
-    "start": "nodemon --exec yarn build -e ts,tsx --ignore dist --ignore tests --ignore \"*.stories.tsx\"",
+    "start": "nodemon --watch src --exec yarn build -e ts,tsx",
     "build": "concurrently yarn:build:*",
     "test": "jest --env=jsdom --passWithNoTests",
     "lint": "concurrently yarn:lint:*",
@@ -47,7 +47,7 @@
     "lint:types": "tsc --noEmit"
   },
   "devDependencies": {
-    "framer-motion": "1.10.0"
+    "framer-motion": "1.11.1"
   },
   "dependencies": {
     "@emotion/is-prop-valid": "0.8.8",

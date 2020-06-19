@@ -30,7 +30,7 @@
   },
   "scripts": {
     "prebuild": "rimraf dist",
-    "start": "nodemon --exec yarn build -e ts,tsx --ignore dist --ignore tests --ignore \"*.stories.tsx\"",
+    "start": "nodemon --watch src --exec yarn build -e ts,tsx",
     "build": "concurrently yarn:build:*",
     "test": "jest --env=jsdom --passWithNoTests",
     "lint": "concurrently yarn:lint:*",
@@ -43,7 +43,7 @@
     "lint:types": "tsc --noEmit"
   },
   "dependencies": {
-    "@reach/rect": "0.10.1",
+    "@reach/rect": "0.10.4",
     "@chakra-ui/transition": "1.0.0",
     "@chakra-ui/hooks": "1.0.0",
     "@chakra-ui/utils": "1.0.0",
