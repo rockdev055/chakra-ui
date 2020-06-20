@@ -31,11 +31,6 @@ const config: Config = {
   bgImage: {
     property: "backgroundImage",
   },
-  bgImg: {
-    property: "backgroundImage",
-    deprecated: true,
-    replacement: "bgImage",
-  },
   bgBlendMode: {
     property: "backgroundBlendMode",
   },
@@ -44,11 +39,6 @@ const config: Config = {
   },
   bgPosition: {
     property: "backgroundPosition",
-  },
-  bgPos: {
-    property: "backgroundPosition",
-    deprecated: true,
-    replacement: "bgPosition",
   },
   bgRepeat: {
     property: "backgroundRepeat",
@@ -97,19 +87,11 @@ export interface BackgroundProps {
   /**
    * The CSS `background-position` property
    */
-  bgPos?: ResponsiveValue<CSS.BackgroundPositionProperty<Length>>
-  /**
-   * The CSS `background-position` property
-   */
   backgroundPosition?: ResponsiveValue<CSS.BackgroundPositionProperty<Length>>
   /**
    * The CSS `background-image` property
    */
   bgImage?: ResponsiveValue<CSS.BackgroundImageProperty>
-  /**
-   * The CSS `background-image` property
-   */
-  bgImg?: ResponsiveValue<CSS.BackgroundImageProperty>
   /**
    * The CSS `background-repeat` property
    */

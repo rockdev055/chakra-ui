@@ -76,20 +76,18 @@ const Badge = chakra<"div", Props>("div", {
 ## Theming Subcomponents
 
 Many complex components in Chakra are not a single component, but multiple
-components that are composed together. Theming these components can be a bit
-tedious.
+components that are composed together.
 
-To solve this, we connected all components to a shared theming context so if you
-pass any theming props (`size`, `variant` or `colorScheme`) to the root or
-parent component, all sub-components can respond to that.
+Theming or styling them can be a bit tedious.
 
-Internally, all sub-components also receive the size, variant, and colorScheme
-prop.
+All components are connected to a shared theming context so if you pass any
+theming props (`size`, `variant` or `colorScheme`) to the root or parent
+component, all sub-components can respond to that.
 
-For example, the `Tabs` component looks like this:
+For example, the tabs component looks like this:
 
 ```jsx live=false
-// the `size` prop here is propagated to all subcomponents
+// the size prop here is propagated to all subcomponents
 <Tabs size="sm">
   <TabList>
     <Tab>Tab 1</Tab>
@@ -100,9 +98,12 @@ For example, the `Tabs` component looks like this:
 </Tabs>
 ```
 
+Internally, all sub-components also receive the size, variant, and colorScheme
+prop.
+
 ### Example
 
-An example of this is Chakra's `Tabs`: `TabList`, and `Tab` components.
+An example of this is Chakra's `Tabs`: `TabList`, and `Tab` componens.
 
 First thing we'll do is to use a nested `themeKey`.
 
@@ -113,7 +114,7 @@ const TabList = chakra("div", { themeKey: "Tabs.TabList" })
 const Tab = chakra("button", { themeKey: "Tabs.Tab" })
 ```
 
-Next, we define the theme for `Tabs`
+Next we define the theme for `Tabs`
 
 ```jsx live=false
 const theme = {
@@ -147,8 +148,11 @@ const theme = {
 }
 ```
 
-All Chakra components use this approach and you can component styles in the
-`chakra/components` folder.
+At first, it might seem like a lot to setup component styles, however, we've
+tested this API in a number of scenarios and it worked perfectly!
+
+All Chakra components use this approach as well. If you check the
+`chakra/components` folder, you'll see all component styles.
 
 #### Using color mode
 

@@ -27,15 +27,6 @@ export interface StyleConfig {
    * A function to transform the raw value based on the scale.
    */
   transform?: (value: any, scale: Scale, props: any) => any
-  /**
-   * Whether this prop is deprecated
-   */
-  deprecated?: boolean
-  /**
-   * If `deprecated` is `true`, what prop should it be replaced with
-   * PS: This is used in the `console.warn` message
-   */
-  replacement?: string
 }
 
 export type Config = { [prop: string]: StyleConfig | null | true }
@@ -69,19 +60,12 @@ export function transformConfig(config: Config, theme: Dict) {
       return
     }
 
-    const {
-      property,
-      properties,
-      scale,
-      transform,
-      fallbackScale,
-      ...rest
-    } = propConfig
+    const { property, properties, scale, transform, fallbackScale } = propConfig
 
     const _scale = scale && get(theme, scale, fallbackScale)
 
     if (property) {
-      result[prop] = { property, ...rest }
+      result[prop] = { property }
 
       if (transform) {
         result[prop]["transform"] = transform
@@ -96,7 +80,7 @@ export function transformConfig(config: Config, theme: Dict) {
 
     if (properties) {
       result[prop] = properties.map((property) => {
-        const mapResult: Dict = { property, ...rest }
+        const mapResult: Dict = { property }
 
         if (transform) {
           mapResult["transform"] = transform

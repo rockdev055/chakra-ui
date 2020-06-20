@@ -4,7 +4,7 @@ import {
   EditableInput,
   EditablePreview,
   useEditableControls,
-} from "../src/editable"
+} from "../src/Editable"
 import { useEditable } from "../src"
 import { chakra } from "@chakra-ui/system"
 

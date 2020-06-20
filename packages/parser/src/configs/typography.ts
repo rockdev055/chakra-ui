@@ -30,7 +30,7 @@ const config: Config = {
   textOverflow: true,
   textTransform: true,
   whiteSpace: true,
-  textDecoration: true,
+  textDecoration: { property: "textDecoration" },
   textDecor: { property: "textDecoration" },
 }
 
