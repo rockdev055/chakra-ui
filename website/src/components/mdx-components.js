@@ -44,7 +44,9 @@ const TData = (props) => (
 const Link = React.forwardRef((props, ref) => (
   <chakra.a
     ref={ref}
-    color="#068082"
+    color={useColorModeValue("teal.600", "teal.300")}
+    textDecor="underline"
+    transition="all 0.2s"
     cursor="pointer"
     outline="none"
     _hover={{ opacity: "0.8" }}
@@ -113,10 +115,10 @@ const MDXComponents = {
     <Heading
       as="h4"
       size="xs"
-      opacity={0.7}
       fontWeight="bold"
       textTransform="uppercase"
       letterSpacing="wide"
+      mt="6"
       {...props}
     />
   ),
