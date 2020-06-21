@@ -3,7 +3,6 @@ import createStyled from "./create-styled"
 import { As, ChakraComponent, Options } from "./system.types"
 import {
   applyProp,
-  componentProps,
   domElements,
   DOMElements,
   pseudoProps,
@@ -13,7 +12,6 @@ import {
 
 function styled<T extends As, P = {}>(component: T, options?: Options<T, P>) {
   return createStyled<T, P>(component, options)(
-    componentProps(options),
     systemProps,
     pseudoProps,
     applyProp(component),
