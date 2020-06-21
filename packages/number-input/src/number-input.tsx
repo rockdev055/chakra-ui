@@ -1,4 +1,4 @@
-import { TriangleDownIcon, TriangleUpIcon } from "./number-input.icons"
+import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons"
 import {
   chakra,
   PropsOf,
