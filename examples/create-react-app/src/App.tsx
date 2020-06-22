@@ -10,7 +10,6 @@ import {
   AccordionItem,
   AccordionButton,
   AccordionPanel,
-  FormLabel,
 } from "@chakra-ui/core"
 
 function App() {
@@ -21,7 +20,6 @@ function App() {
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
-        <FormLabel>Welcome</FormLabel>
         <Accordion allowToggle>
           <AccordionItem>
             <AccordionButton>Accordion 1</AccordionButton>
