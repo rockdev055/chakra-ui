@@ -6,11 +6,11 @@ const Divider: ComponentTheme = {
   },
   variants: {
     vertical: {
-      borderLeftWidth: "1px",
+      borderLeft: "1px",
       height: "100%",
     },
     horizontal: {
-      borderBottomWidth: "1px",
+      borderBottom: "1px",
       width: "100%",
     },
   },
