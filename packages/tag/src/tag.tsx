@@ -1,17 +1,9 @@
 import * as React from "react"
-import {
-  chakra,
-  PropsOf,
-  ThemingProps,
-  useStyleConfig,
-  StylesProvider,
-  omitThemingProps,
-  useStyles,
-} from "@chakra-ui/system"
+import { chakra, PropsOf } from "@chakra-ui/system"
 import { Icon, IconProps } from "@chakra-ui/icon"
 import { __DEV__ } from "@chakra-ui/utils"
 
-export type TagProps = PropsOf<typeof chakra.span> & ThemingProps
+export type TagProps = PropsOf<typeof Tag>
 
 /**
  * The tag component is used to label or categorize UI elements.
@@ -20,37 +12,30 @@ export type TagProps = PropsOf<typeof chakra.span> & ThemingProps
  *
  * @see Docs https://chakra-ui.com/components/tag
  */
-export const Tag = React.forwardRef(function Tag(props, ref) {
-  const styles = useStyleConfig("Tag", props)
-  const tagProps = omitThemingProps(props)
-  return (
-    <StylesProvider value={styles}>
-      <chakra.span
-        ref={ref}
-        {...tagProps}
-        __css={{
-          display: "inline-flex",
-          verticalAlign: "top",
-          alignItems: "center",
-          maxWidth: "100%",
-          fontWeight: "medium",
-          lineHeight: "1.2",
-          ...styles.container,
-        }}
-      />
-    </StylesProvider>
-  )
+export const Tag = chakra("span", {
+  themeKey: "Tag",
+  baseStyle: {
+    display: "inline-flex",
+    verticalAlign: "top",
+    alignItems: "center",
+    maxWidth: "100%",
+    fontWeight: "medium",
+    lineHeight: "1.2",
+  },
 })
 
 if (__DEV__) {
   Tag.displayName = "Tag"
 }
 
-export type TagLabelProps = PropsOf<typeof chakra.span>
+export type TagLabelProps = PropsOf<typeof TagLabel>
 
-export function TagLabel(props: TagLabelProps) {
-  const styles = useStyles()
-  return <chakra.span isTruncated {...props} __css={styles.label} />
+export const TagLabel = chakra("span", {
+  baseStyle: { lineHeight: 1.2 },
+})
+
+TagLabel.defaultProps = {
+  isTruncated: true,
 }
 
 if (__DEV__) {
@@ -100,6 +85,29 @@ export type TagCloseButtonProps = Omit<
   isDisabled?: boolean
 }
 
+const StyledButton = chakra("button", {
+  baseStyle: {
+    fontSize: "1em",
+    width: "1.25rem",
+    height: "1.25rem",
+    borderRadius: "sm",
+    marginLeft: "0.375rem",
+    marginRight: "-1",
+    display: "flex",
+    alignItems: "center",
+    transition: "all 0.2s",
+    opacity: 0.5,
+    _disabled: { opacity: 0.4 },
+    outline: "0",
+    _focus: {
+      boxShadow: "outline",
+      bg: "rgba(0, 0, 0, 0.14)",
+    },
+    _hover: { opacity: 0.8 },
+    _active: { opacity: 1 },
+  },
+})
+
 /**
  * TagCloseButton
  *
@@ -109,22 +117,7 @@ export type TagCloseButtonProps = Omit<
  */
 export const TagCloseButton = (props: TagCloseButtonProps) => {
   const { isDisabled, children = <TagCloseIcon />, ...rest } = props
-  const styles = useStyles()
-  return (
-    <chakra.button
-      {...rest}
-      type="button"
-      disabled={isDisabled}
-      children={children}
-      __css={{
-        display: "flex",
-        alignItems: "center",
-        outline: "0",
-        transition: "all 0.2s",
-        ...styles.closeButton,
-      }}
-    />
-  )
+  return <StyledButton disabled={isDisabled} children={children} {...rest} />
 }
 
 if (__DEV__) {

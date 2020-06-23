@@ -3,14 +3,13 @@ import {
   TransitionProps,
   TransitionStyles,
 } from "@chakra-ui/transition"
-import { focus, __DEV__ } from "@chakra-ui/utils"
+import { ensureFocus, __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
-import { useMenuContext } from "./use-menu"
-import { SystemStyleObject } from "@chakra-ui/system"
+import { useMenuContext } from "./menu"
 
 export interface MenuTransitionProps {
   transformOrigin?: string
-  children: (styles: SystemStyleObject) => React.ReactNode
+  children: TransitionProps["children"]
   styles?: TransitionProps["styles"]
 }
 
@@ -20,21 +19,20 @@ export function MenuTransition(props: MenuTransitionProps) {
 
   const defaultStyles: TransitionStyles = {
     init: {
-      opacity: 0.01,
+      opacity: 0,
       transformOrigin: transformOrigin,
       transform: "scale(0.8)",
       transitionTimingFunction: "cubic-bezier(0.175, 0.885, 0.320, 1.175)",
       transitionProperty: "opacity, transform",
+      transitionDuration: "200ms",
       willChange: "opacity, transform",
     },
     entered: {
       opacity: 1,
-      transitionDuration: "200ms",
       transform: "scale(1)",
     },
     exiting: {
-      opacity: 0.01,
-      transitionDuration: "100ms",
+      opacity: 0,
       transform: "scale(0.8)",
     },
   }
@@ -48,7 +46,7 @@ export function MenuTransition(props: MenuTransitionProps) {
         node.hidden = true
         node.style.pointerEvents = "auto"
         if (menu.buttonRef.current) {
-          focus(menu.buttonRef.current)
+          ensureFocus(menu.buttonRef.current)
         }
       }}
       onExit={(node) => {
@@ -57,7 +55,7 @@ export function MenuTransition(props: MenuTransitionProps) {
       onExiting={(node) => {
         node.style.pointerEvents = "none"
       }}
-      timeout={{ enter: 0, exit: menu.isOpen ? 200 : 100 }}
+      timeout={{ enter: 0, exit: 200 }}
       in={menu.isOpen}
       styles={styles ?? defaultStyles}
       unmountOnExit={false}

@@ -1,9 +1,4 @@
-import {
-  chakra,
-  PropsOf,
-  forwardRef,
-  SystemStyleObject,
-} from "@chakra-ui/system"
+import { chakra, PropsOf, forwardRef } from "@chakra-ui/system"
 import { __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
 
@@ -13,7 +8,7 @@ export type BoxProps = PropsOf<typeof Box>
  * Box is the most abstract component on top of which other chakra
  * components are built. It renders a `div` element by default.
  *
- * @see Docs https://chakra-ui.com/docs/layout/box
+ * @see Docs https://chakra-ui.com/components/box
  */
 export const Box = chakra.div
 
@@ -40,19 +35,16 @@ export type SquareProps = Omit<BoxProps, Omitted> & {
 
 export const Square = forwardRef<SquareProps>(function Square(props, ref) {
   const { size, centerContent = true, ...rest } = props
-  const centerStyles: SystemStyleObject = centerContent
+  const centerProps: BoxProps = centerContent
     ? { display: "flex", alignItems: "center", justifyContent: "center" }
     : {}
-
   return (
     <Box
-      ref={ref}
+      flexShrink={0}
+      flexGrow={0}
       boxSize={size}
-      __css={{
-        ...centerStyles,
-        flexShrink: 0,
-        flexGrow: 0,
-      }}
+      ref={ref}
+      {...centerProps}
       {...rest}
     />
   )

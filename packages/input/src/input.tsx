@@ -1,14 +1,13 @@
 import { FormControlOptions, useFormControl } from "@chakra-ui/form-control"
 import {
   chakra,
-  forwardRef,
   PropsOf,
-  useStyleConfig,
-  omitThemingProps,
-  ThemingProps,
+  useComponentStyle,
+  forwardRef,
 } from "@chakra-ui/system"
-import { cx, __DEV__ } from "@chakra-ui/utils"
+import { __DEV__, cx } from "@chakra-ui/utils"
 import * as React from "react"
+import { useInputGroup } from "./input-group"
 
 interface InputOptions {
   /**
@@ -31,12 +30,24 @@ interface InputOptions {
 
 type Omitted = "disabled" | "required" | "readOnly" | "size"
 
-export type InputProps = Omit<PropsOf<typeof chakra.input>, Omitted> &
-  InputOptions &
-  ThemingProps &
-  FormControlOptions & {
-    size?: string
-  }
+export interface InputProps
+  extends Omit<PropsOf<typeof StyledInput>, Omitted>,
+    FormControlOptions {
+  size?: string
+}
+
+/**
+ * Input - Theming
+ *
+ * To style the input globally, change the styles in
+ * `theme.components.Input`
+ */
+
+const StyledInput = chakra<"input", InputOptions>("input", {
+  themeKey: "Input",
+  shouldForwardProp: (prop) =>
+    !["focusBorderColor", "errorBorderColor"].includes(prop),
+})
 
 /**
  * Input
@@ -44,16 +55,46 @@ export type InputProps = Omit<PropsOf<typeof chakra.input>, Omitted> &
  * Element that allows users enter single valued data.
  */
 export const Input = forwardRef<InputProps>(function Input(props, ref) {
-  const styles = useStyleConfig("Input", props)
-  const realProps = omitThemingProps(props)
-  const input = useFormControl<HTMLInputElement>(realProps)
+  const inputProps = useFormControl<HTMLInputElement>(props)
+  const group = useInputGroup()
+
+  const variant = props.variant ?? group?.variant
+  const size = props.size ?? group?.size
+
+  const theming = { variant, size } as any
+
+  const inputStyle = useComponentStyle({
+    themeKey: "Input",
+    variant,
+    size,
+  })
+
+  const groupProps = {} as InputProps
+
+  if (group?.leftElement?.isMounted) {
+    groupProps.paddingLeft = inputStyle?.minHeight
+  }
+
+  if (group?.rightElement?.isMounted) {
+    groupProps.paddingRight = inputStyle?.minHeight
+  }
+
+  if (group?.leftAddon?.isMounted) {
+    groupProps.borderLeftRadius = 0
+  }
+
+  if (group?.rightAddon?.isMounted) {
+    groupProps.borderRightRadius = 0
+  }
+
   const _className = cx("chakra-input", props.className)
 
   return (
-    <chakra.input
-      {...input}
-      __css={styles.field}
+    <StyledInput
       ref={ref}
+      {...groupProps}
+      {...inputProps}
+      {...theming}
       className={_className}
     />
   )
@@ -62,6 +103,3 @@ export const Input = forwardRef<InputProps>(function Input(props, ref) {
 if (__DEV__) {
   Input.displayName = "Input"
 }
-
-//@ts-ignore
-Input.groupId = "Input"

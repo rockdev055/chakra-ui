@@ -2,7 +2,6 @@
 title: Tag
 package: "@chakra-ui/tag"
 image: "components/tags.svg"
-description: Tag component is used for items that need to be labeled
 ---
 
 import ComponentLinks from "../../src/components/component-links"
@@ -40,7 +39,7 @@ import { Tag, TagIcon, TagLabel, TagCloseButton } from "@chakra-ui/core"
 ```
 
 ```jsx
-<Stack spacing={4} direction="row">
+<Stack spacing={4} isInline>
   {["sm", "md", "lg"].map((size) => (
     <Tag size={size} key={size} colorScheme="gray">
       Gray
@@ -52,7 +51,7 @@ import { Tag, TagIcon, TagLabel, TagCloseButton } from "@chakra-ui/core"
 ## With left icon
 
 ```jsx
-<Stack spacing={4} direction="row">
+<Stack spacing={4} isInline>
   {["sm", "md", "lg"].map((size) => (
     <Tag size={size} key={size} colorScheme="cyan">
       <TagIcon icon="add" size="12px" />
@@ -65,7 +64,7 @@ import { Tag, TagIcon, TagLabel, TagCloseButton } from "@chakra-ui/core"
 ## With right icon
 
 ```jsx
-<Stack spacing={4} direction="row">
+<Stack spacing={4} isInline>
   <Tag colorScheme="cyan">
     <TagLabel>Green</TagLabel>
     <TagIcon icon="check" size="12px" />
@@ -82,7 +81,7 @@ import { Tag, TagIcon, TagLabel, TagCloseButton } from "@chakra-ui/core"
 ## With close button
 
 ```jsx
-<Stack spacing={4} direction="row">
+<Stack spacing={4} isInline>
   {["sm", "md", "lg"].map((size) => (
     <Tag
       size={size}

@@ -15,13 +15,7 @@ const Btn = chakra("button", {
 
 export const withHeading = () => (
   <div>
-    <Heading
-      fontSize={["50px", "50px", "100px"]}
-      color="tomato"
-      sx={{ color: "teal.500" }}
-    >
-      Welcome
-    </Heading>
+    <Heading fontSize={["50px", "50px", "100px"]}>Welcome</Heading>
     <Btn height="60px" minWidth="400px" fontSize="20px">
       Welcome
     </Btn>
@@ -212,7 +206,7 @@ export const UseComponentStyle = () => {
  */
 export const SxProp = () => (
   <h1
-    sx={{
+    __css={{
       color: "red.100",
       transition: "all 0.3s",
       padding: "30px",

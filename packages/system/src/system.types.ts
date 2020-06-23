@@ -2,57 +2,96 @@ import { ColorMode } from "@chakra-ui/color-mode"
 import { SystemProps } from "@chakra-ui/parser"
 import { Dict } from "@chakra-ui/utils"
 import * as React from "react"
-import { SystemStyleObject } from "@chakra-ui/css"
+import { ValidHTMLProps } from "./should-forward-prop"
 
-export interface UseStyleConfigOptions<P = {}> {
-  parts?: string[]
+export interface Options<T extends As, P> {
+  /**
+   * The key of this component in `theme.components`.
+   */
+  themeKey?: string
+  /**
+   * Additional props to attach to the component
+   * You can use a function to make it dynamic.
+   *
+   * NB: Adding `P` to this type leads to weird issues,
+   * so we types `props` in `Attrs` to be any for now.
+   */
+  attrs?: Attrs<T>
+  /**
+   * Base style object to apply to this component
+   * NB: This style is theme-aware so you can use all style props
+   */
   baseStyle?: BaseStyle<P>
+  /**
+   * A boolean indicating if the component should avoid re-rendering
+   * when props haven't changed. This uses `React.memo(...)`
+   */
+  pure?: boolean
+  /**
+   * Whether we should forward prop to the underlying component.
+   *
+   * Useful when using `createChakra` with custom components, or using
+   * custom prop name to control component styles.
+   */
+  shouldForwardProp?(prop: string): boolean
+  /**
+   * The component's visual style variants
+   */
   variants?: ModifierStyle<P>
+  /**
+   * The component's size variations
+   */
   sizes?: ModifierStyle<P>
 }
 
-interface ColorModeProps {
-  colorMode?: ColorMode
-}
+type ColorModeProps = { colorMode?: ColorMode }
 
 type BaseStyle<P> =
   | SystemProps
   | ((props: P & ThemingProps & ColorModeProps) => SystemProps)
 
-export interface ThemingProps {
+type Attrs<T extends As> = PropsOf<T> | ((props: any) => PropsOf<T>)
+
+export type ThemingProps = {
+  /**
+   * The variant (or visual style) of the component.
+   * Components can have multiple variants.
+   */
   variant?: string
+  /**
+   * The size of the component.
+   * Components can come in different sizes.
+   */
   size?: string
+  /**
+   * The color scheme of the component.
+   * Mostly used to style component `variants`
+   */
   colorScheme?: string
+  /**
+   * The orientation of the component.
+   * Mostly used to change component `baseStyle`
+   * or `variants` style
+   */
   orientation?: "vertical" | "horizontal"
 }
 
-interface ValidHTMLProps {
-  htmlWidth?: string | number
-  htmlHeight?: string | number
-  htmlSize?: string | number
-}
-
-export interface ChakraProps extends SystemProps, ValidHTMLProps {
-  children?: React.ReactNode
-  /**
-   * apply styles defined in `theme.layerStyles`
-   */
-  layerStyle?: string
-  /**
-   * apply styles defined in `theme.textStyles`
-   */
-  textStyle?: string
+export interface ApplyProp {
   /**
    * Reference styles from any component or key in the theme.
    *
    * @example
+   *
    * ```jsx
-   * <Box apply="styles.h3">This is a div</Box>
+   * <chakra.div apply="styles.h3">This is a div</chakra.div>
    * ```
    *
    * This will apply styles defined in `theme.styles.h3`
    */
   apply?: string
+}
+
+interface TruncateProps {
   /**
    * if `true`, it'll render an ellipsis when the text exceeds the width of the viewport or maxWidth set.
    */
@@ -61,11 +100,27 @@ export interface ChakraProps extends SystemProps, ValidHTMLProps {
    * Used to truncate text at a specific number of lines
    */
   noOfLines?: number
+}
+
+interface LayerStyles {
   /**
-   * Used for internal css management
-   * @private
+   * apply styles defined in `theme.layerStyles`
    */
-  __css?: SystemStyleObject
+  layerStyle?: string
+  /**
+   * apply styles defined in `theme.textStyles`
+   */
+  textStyle?: string
+}
+
+export interface ChakraProps
+  extends SystemProps,
+    TruncateProps,
+    ValidHTMLProps,
+    ThemingProps,
+    ApplyProp,
+    LayerStyles {
+  children?: React.ReactNode
 }
 
 export type As = React.ElementType<any>
@@ -82,14 +137,14 @@ export type WithAs<P, T extends As> = P &
 
 /**
  * Integrating with `framer-motion` makes transition prop throw
- * an TS error, since `transition` is part of Chakra's props.
+ * an error, since `transition` is part of Chakra's props.
  *
  * To support `framer-motion`, we'll omit transition prop from chakra props
  * if you do this `chakra(motion.div)`
  */
-export type WithChakra<P> = P extends { transition?: any }
-  ? P & Omit<ChakraProps, "transition">
-  : P & ChakraProps
+export type WithChakra<Props> = Props extends { transition?: any }
+  ? Props & Omit<ChakraProps, "transition">
+  : Props & ChakraProps
 
 /**
  * This is most clunky part of the types :), bare with me.
@@ -145,6 +200,39 @@ export type ForwardRefComponent<P> = Exotic<P> & {
 }
 
 /**
+ * Extracts the component theming (variant, size) props that
+ * should be used.
+ *
+ * @template T the theme object
+ * @template K the theme key of the component
+ */
+export type ExtractThemingProps<
+  T extends { components: any },
+  K
+> = K extends string
+  ? T["components"][K] extends undefined
+    ? undefined
+    : T["components"][K] extends {
+        variants: infer V
+      }
+    ? T["components"][K] extends {
+        sizes: infer S
+      }
+      ? {
+          variant?: keyof V
+          size?: keyof S
+        }
+      : {
+          variant?: keyof V
+        }
+    : T["components"][K] extends {
+        sizes: infer S
+      }
+    ? { size?: keyof S }
+    : undefined
+  : undefined
+
+/**
  * The component style can either be a style object or  a function that returns a
  * style object.
  */
@@ -162,5 +250,5 @@ interface ModifierProps {
   colorScheme: string
   orientation: "horizontal" | "vertical"
   colorMode: "light" | "dark"
-  theme: Dict
+  theme: Record<string, any>
 }

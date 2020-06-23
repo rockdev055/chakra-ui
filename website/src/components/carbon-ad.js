@@ -74,7 +74,7 @@ function CarbonAd() {
     script.id = "_carbonads_js"
   }, [])
 
-  return <chakra.span ref={ref} sx={carbonAd} />
+  return <chakra.span ref={ref} __css={carbonAd} />
 }
 
 export default CarbonAd

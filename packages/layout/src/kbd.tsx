@@ -1,13 +1,7 @@
-import * as React from "react"
-import {
-  chakra,
-  PropsOf,
-  useStyleConfig,
-  omitThemingProps,
-} from "@chakra-ui/system"
-import { __DEV__, cx } from "@chakra-ui/utils"
+import { chakra, PropsOf } from "@chakra-ui/system"
+import { __DEV__ } from "@chakra-ui/utils"
 
-export type KbdProps = PropsOf<typeof chakra.kbd>
+export type KbdProps = PropsOf<typeof Kbd>
 
 /**
  * Semantic component to render a keyboard shortcut
@@ -21,24 +15,11 @@ export type KbdProps = PropsOf<typeof chakra.kbd>
  *
  * @see Docs https://chakra-ui.com/components/kbd
  */
-export const Kbd = React.forwardRef(function Heading(
-  props: KbdProps,
-  ref: React.Ref<any>,
-) {
-  const styles = useStyleConfig("Kbd", props)
-  const { className, ...rest } = omitThemingProps(props)
-
-  return (
-    <chakra.kbd
-      ref={ref}
-      className={cx("chakra-kbd", props.className)}
-      {...rest}
-      __css={{
-        fontFamily: "mono",
-        ...styles.kbd,
-      }}
-    />
-  )
+export const Kbd = chakra("kbd", {
+  themeKey: "Kbd",
+  baseStyle: {
+    fontFamily: "mono",
+  },
 })
 
 if (__DEV__) {

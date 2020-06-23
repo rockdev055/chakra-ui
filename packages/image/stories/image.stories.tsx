@@ -5,6 +5,10 @@ export default {
   title: "Image",
 }
 
+/**
+ * The basic usage is very similar to using the
+ * `img` tag
+ */
 export const Basic = () => (
   <Image src="https://bit.ly/dan-abramov" alt="welcome" />
 )
@@ -65,21 +69,3 @@ export const withNativeWidth = () => (
     }}
   />
 )
-
-export const Bug = () => {
-  const [src, setSrc] = React.useState("")
-
-  const onClick = () => {
-    setSrc(
-      "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
-    )
-  }
-
-  return (
-    <div>
-      <Image src={src} />
-      <button onClick={onClick}>set image</button>
-      <p>src set to Avatar: {src}</p>
-    </div>
-  )
-}

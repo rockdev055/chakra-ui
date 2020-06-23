@@ -1,34 +1,24 @@
-import { Sizes } from "@chakra-ui/theme-tools"
-import input from "./input"
+import Input, { InputProps, InputVariants } from "./input"
+import { ComponentTheme } from "@chakra-ui/theme-tools"
 
-const register = {
-  parts: ["input"],
-  sizes: input.register.sizes,
-  variants: input.register.variants,
-} as const
-
-const baseStyle = input.baseStyle
-const variants = input.variants
-
-const sizes: Sizes<typeof register> = {
-  lg: {
-    input: {
+const PinInput: ComponentTheme<InputProps> = {
+  defaultProps: Input.defaultProps,
+  baseStyle: Input.baseStyle,
+  variants: Input.variants,
+  sizes: {
+    lg: {
       fontSize: "lg",
       width: 12,
       height: 12,
       borderRadius: "md",
     },
-  },
-  md: {
-    input: {
+    md: {
       fontSize: "md",
       width: 10,
       height: 10,
       borderRadius: "md",
     },
-  },
-  sm: {
-    input: {
+    sm: {
       fontSize: "sm",
       width: 8,
       height: 8,
@@ -37,14 +27,12 @@ const sizes: Sizes<typeof register> = {
   },
 }
 
-const defaultProps = input.defaultProps
-
-const pinInput = {
-  register,
-  defaultProps,
-  baseStyle,
-  variants,
-  sizes,
+export const PinInputSizes = {
+  lg: "lg",
+  md: "md",
+  sm: "sm",
 }
 
-export default pinInput
+export const PinInputVariants = InputVariants
+
+export default PinInput

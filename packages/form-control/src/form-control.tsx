@@ -2,16 +2,19 @@ import { useBoolean, useId, useSafeLayoutEffect } from "@chakra-ui/hooks"
 import { Icon, IconProps } from "@chakra-ui/icon"
 import {
   chakra,
-  forwardRef,
   PropsOf,
-  useStyles,
-  StylesProvider,
-  useStyleConfig,
-  omitThemingProps,
+  useComponentStyle,
+  forwardRef,
 } from "@chakra-ui/system"
-import { createContext, cx, __DEV__ } from "@chakra-ui/utils"
+import {
+  callAllHandlers,
+  createContext,
+  cx,
+  dataAttr,
+  ariaAttr,
+  __DEV__,
+} from "@chakra-ui/utils"
 import * as React from "react"
-import { useFormControlLabel } from "./use-form-control"
 
 export interface FormControlOptions {
   /**
@@ -68,7 +71,7 @@ interface FormControlContext extends FormControlOptions {
 
 type FieldContext = Omit<ReturnType<typeof useProvider>, "htmlProps">
 
-const [FormControlContextProvider, useFormControlContext] = createContext<
+const [FormControlCtxProvider, useFormControlContext] = createContext<
   FieldContext
 >({
   strict: false,
@@ -126,7 +129,19 @@ function useProvider(props: FormControlContext) {
   return context
 }
 
-export type FormControlProps = FormControlContext & PropsOf<typeof chakra.div>
+const StyledFormControl = chakra("div", {
+  themeKey: "Form.Root",
+  baseStyle: {
+    width: "100%",
+    position: "relative",
+  },
+  attrs: {
+    role: "group",
+  },
+})
+
+export type FormControlProps = FormControlContext &
+  PropsOf<typeof StyledFormControl>
 
 /**
  * FormControl
@@ -141,27 +156,14 @@ export const FormControl = forwardRef<FormControlProps>(function FormControl(
   props,
   ref,
 ) {
-  const styles = useStyleConfig("Form", props)
-  const realProps = omitThemingProps(props)
-  const { htmlProps, ...context } = useProvider(realProps)
+  const { htmlProps, ...context } = useProvider(props)
 
   const _className = cx("chakra-form-control", props.className)
 
   return (
-    <FormControlContextProvider value={context}>
-      <StylesProvider value={styles}>
-        <chakra.div
-          role="group"
-          ref={ref}
-          {...htmlProps}
-          className={_className}
-          __css={{
-            width: "100%",
-            position: "relative",
-          }}
-        />
-      </StylesProvider>
-    </FormControlContextProvider>
+    <FormControlCtxProvider value={context}>
+      <StyledFormControl ref={ref} {...htmlProps} className={_className} />
+    </FormControlCtxProvider>
   )
 })
 
@@ -169,7 +171,13 @@ if (__DEV__) {
   FormControl.displayName = "FormControl"
 }
 
+/**
+ * Label - Theming
+ *
+ * To style form labels globally, change the styles in `theme.components.FormLabel`
+ */
 const StyledLabel = chakra("label", {
+  themeKey: "Form.Label",
   baseStyle: {
     display: "block",
     textAlign: "left",
@@ -190,16 +198,20 @@ export const FormLabel = forwardRef<FormLabelProps>(function FormLabel(
   props,
   ref,
 ) {
-  const { className, ...rest } = props
-  const styles = useStyles()
-  const ownProps = useFormControlLabel(rest)
+  const field = useFormControlContext()
 
   return (
     <StyledLabel
-      ref={ref}
+      {...props}
       className={cx("chakra-form__label", props.className)}
-      __css={styles.label}
-      {...ownProps}
+      ref={ref}
+      data-focus={dataAttr(field?.isFocused)}
+      data-disabled={dataAttr(field?.isDisabled)}
+      data-invalid={dataAttr(field?.isInvalid)}
+      data-loading={dataAttr(field?.isLoading)}
+      data-readonly={dataAttr(field?.isReadOnly)}
+      id={props.id ?? field?.labelId}
+      htmlFor={props.htmlFor ?? field?.id}
     />
   )
 })
@@ -208,7 +220,21 @@ if (__DEV__) {
   FormLabel.displayName = "FormLabel"
 }
 
-export type RequiredIndicatorProps = PropsOf<typeof chakra.span>
+/**
+ * RequiredIndicator - Theming
+ *
+ * To style the required indicator globally, change the styled in
+ * `theme.components.Form` under the `RequiredIndicator` key
+ */
+const StyledIndicator = chakra("span", {
+  themeKey: "Form.RequiredIndicator",
+  attrs: {
+    role: "presentation",
+    "aria-hidden": true,
+  },
+})
+
+export type RequiredIndicatorProps = PropsOf<typeof StyledIndicator>
 
 /**
  * Used to show a "required" text or an asterisks (*) to indicate that
@@ -217,19 +243,15 @@ export type RequiredIndicatorProps = PropsOf<typeof chakra.span>
 export const RequiredIndicator = forwardRef<RequiredIndicatorProps>(
   function RequiredIndicator(props, ref) {
     const field = useFormControlContext()
-    const styles = useStyles()
 
     if (!field?.isRequired) return null
 
     const _className = cx("chakra-form__required-indicator", props.className)
 
     return (
-      <chakra.span
-        role="presentation"
-        aria-hidden
+      <StyledIndicator
         ref={ref}
         {...props}
-        __css={styles.requiredIndicator}
         className={_className}
         children={props.children || "*"}
       />
@@ -241,7 +263,17 @@ if (__DEV__) {
   RequiredIndicator.displayName = "RequiredIndicator"
 }
 
-export type HelpTextProps = PropsOf<typeof chakra.div>
+/**
+ * FormHelperText - Theming
+ *
+ * To style the required indicator globally, change the styled in
+ * `theme.components.Form` under the `HelperText` key
+ */
+const StyledHelperText = chakra("div", {
+  themeKey: "Form.HelperText",
+})
+
+export type HelpTextProps = PropsOf<typeof StyledHelperText>
 
 /**
  * FormHelperText
@@ -255,7 +287,6 @@ export const FormHelperText = forwardRef<HelpTextProps>(function FormHelperText(
   ref,
 ) {
   const field = useFormControlContext()
-  const styles = useStyles()
 
   /**
    * Notify the field context when the help text is rendered on
@@ -269,9 +300,8 @@ export const FormHelperText = forwardRef<HelpTextProps>(function FormHelperText(
   const _className = cx("chakra-form__helper-text", props.className)
 
   return (
-    <chakra.div
+    <StyledHelperText
       ref={ref}
-      __css={styles.helperText}
       {...props}
       className={_className}
       id={props.id ?? field?.helpTextId}
@@ -283,10 +313,20 @@ if (__DEV__) {
   FormHelperText.displayName = "FormHelperText"
 }
 
+/**
+ * ErrorText Theming
+ *
+ * To style the error text globally, change the styles in
+ * `theme.components.Form` under the `ErrorText` key
+ */
 const StyledErrorText = chakra("div", {
+  themeKey: "Form.ErrorText",
   baseStyle: {
     display: "flex",
     alignItems: "center",
+  },
+  attrs: {
+    "aria-live": "polite",
   },
 })
 
@@ -298,7 +338,6 @@ export type FormErrorMessageProps = PropsOf<typeof StyledErrorText>
  */
 export const FormErrorMessage = forwardRef<FormErrorMessageProps>(
   function FormErrorMessage(props, ref) {
-    const styles = useStyles()
     const field = useFormControlContext()
 
     if (!field?.isInvalid) return null
@@ -307,10 +346,8 @@ export const FormErrorMessage = forwardRef<FormErrorMessageProps>(
 
     return (
       <StyledErrorText
-        aria-live="polite"
         ref={ref}
         {...props}
-        __css={styles.errorText}
         className={_className}
         id={props.id ?? field?.feedbackId}
       />
@@ -322,6 +359,53 @@ if (__DEV__) {
   FormErrorMessage.displayName = "FormErrorMessage"
 }
 
+export type FormElementProps<T extends HTMLElement> = FormControlOptions & {
+  id?: string
+  onFocus?: React.FocusEventHandler<T>
+  onBlur?: React.FocusEventHandler<T>
+}
+
+/**
+ * React hook that provides the props that should be spread on to
+ * input fields (`input`, `select`, `textarea`, etc.).
+ *
+ * It provides a convenient way to control a form fields, validation
+ * and helper text.
+ */
+export function useFormControl<T extends HTMLElement>(
+  props: FormElementProps<T>,
+) {
+  const field = useFormControlContext()
+  const describedBy: string[] = []
+
+  if (field?.isInvalid) {
+    /**
+     * Error message must be described first
+     * in all scenarios
+     */
+    if (describedBy.length > 0) {
+      describedBy.unshift(field.feedbackId)
+    } else {
+      describedBy.push(field.feedbackId)
+    }
+  }
+  if (field?.hasHelpText) describedBy.push(field.helpTextId)
+  const ariaDescribedBy = describedBy.join(" ")
+
+  return {
+    ...props,
+    id: props.id ?? field?.id,
+    disabled: props.isDisabled || field?.isDisabled,
+    readOnly: props.isReadOnly || field?.isReadOnly,
+    "aria-invalid": ariaAttr(props.isInvalid || field?.isInvalid),
+    "aria-required": ariaAttr(props.isRequired || field?.isRequired),
+    "aria-readonly": ariaAttr(props.isReadOnly || field?.isReadOnly),
+    "aria-describedby": ariaDescribedBy || undefined,
+    onFocus: callAllHandlers(field?.onFocus, props.onFocus),
+    onBlur: callAllHandlers(field?.onBlur, props.onBlur),
+  }
+}
+
 /**
  * Used as the visual indicator that a field is invalid or
  * a field has incorrect values.
@@ -330,7 +414,7 @@ export const FormErrorIcon = forwardRef<IconProps>(function FormErrorIcon(
   props,
   ref,
 ) {
-  const styles = useStyles()
+  const styles = useComponentStyle({ themeKey: "Form.ErrorIcon" })
   const field = useFormControlContext()
 
   if (!field?.isInvalid) return null
@@ -341,8 +425,8 @@ export const FormErrorIcon = forwardRef<IconProps>(function FormErrorIcon(
     <Icon
       ref={ref}
       aria-hidden
+      __css={styles}
       {...props}
-      __css={styles.errorIcon}
       className={_className}
     >
       <path
