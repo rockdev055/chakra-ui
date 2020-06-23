@@ -12,6 +12,7 @@
     "style-props",
     "design-system"
   ],
+  "sideEffects": false,
   "author": "Segun Adebayo <sage@adebayosegun.com>",
   "homepage": "https://github.com/chakra-ui/chakra-ui#readme",
   "license": "MIT",
@@ -45,9 +46,6 @@
     "test:cov": "yarn test --coverage",
     "lint:src": "eslint src --ext .ts,.tsx --config ../../.eslintrc",
     "lint:types": "tsc --noEmit"
-  },
-  "devDependencies": {
-    "framer-motion": "1.11.1"
   },
   "dependencies": {
     "@chakra-ui/color-mode": "^1.0.0-next.1",
