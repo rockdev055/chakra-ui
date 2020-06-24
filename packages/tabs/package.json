@@ -1,6 +1,6 @@
 {
   "name": "@chakra-ui/tabs",
-  "version": "1.0.0-next.2",
+  "version": "1.0.0-next.1",
   "description": "Accessible Tabs component for React and Chakra UI",
   "keywords": [
     "react",
@@ -19,7 +19,6 @@
     "aria",
     "aria tabs"
   ],
-  "sideEffects": false,
   "author": "Segun Adebayo <sage@adebayosegun.com>",
   "homepage": "https://github.com/chakra-ui/chakra-ui#readme",
   "license": "MIT",
@@ -28,8 +27,7 @@
   "types": "dist/types/index.d.ts",
   "typings": "dist/types/index.d.ts",
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "publishConfig": {
     "access": "public"
@@ -56,13 +54,14 @@
     "lint:types": "tsc --noEmit"
   },
   "dependencies": {
-    "@chakra-ui/clickable": "^1.0.0-next.2",
-    "@chakra-ui/descendant": "^1.0.0-next.2",
-    "@chakra-ui/hooks": "^1.0.0-next.2",
-    "@chakra-ui/utils": "^1.0.0-next.2"
+    "@chakra-ui/clickable": "^1.0.0-next.1",
+    "@chakra-ui/descendant": "^1.0.0-next.1",
+    "@chakra-ui/hooks": "^1.0.0-next.1",
+    "@chakra-ui/utils": "^1.0.0-next.1"
   },
   "devDependencies": {
-    "@chakra-ui/system": "^1.0.0-next.2"
+    "@chakra-ui/system": "^1.0.0-next.1",
+    "@chakra-ui/theme": "^1.0.0-next.1"
   },
   "peerDependencies": {
     "@chakra-ui/system": "1.x",
