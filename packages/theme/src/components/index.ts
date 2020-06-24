@@ -16,7 +16,6 @@ import Menu from "./menu"
 import NumberInput from "./number-input"
 import Radio from "./radio"
 import Slider from "./slider"
-import Select from "./select"
 import Spinner from "./spinner"
 import Switch from "./switch"
 import Tabs from "./tabs"
@@ -57,7 +56,7 @@ export default {
   Tag,
   Modal,
   Kbd,
-  Select,
+  Select: Input,
   Textarea,
   PinInput,
   Popover,
