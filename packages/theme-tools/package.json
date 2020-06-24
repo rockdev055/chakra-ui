@@ -1,6 +1,6 @@
 {
   "name": "@chakra-ui/theme-tools",
-  "version": "1.0.0-next.2",
+  "version": "1.0.0-next.1",
   "description": "Set of helpers that makes theming and styling easier",
   "keywords": [
     "theme",
@@ -8,7 +8,6 @@
     "color",
     "utilities"
   ],
-  "sideEffects": false,
   "author": "Segun Adebayo <sage@adebayosegun.com>",
   "homepage": "https://github.com/chakra-ui/chakra-ui#readme",
   "license": "MIT",
@@ -17,8 +16,7 @@
   "types": "dist/types/index.d.ts",
   "typings": "dist/types/index.d.ts",
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "publishConfig": {
     "access": "public"
@@ -45,7 +43,7 @@
     "lint:types": "tsc --noEmit"
   },
   "dependencies": {
-    "@chakra-ui/utils": "^1.0.0-next.2",
+    "@chakra-ui/utils": "^1.0.0-next.1",
     "@types/tinycolor2": "1.4.2",
     "tinycolor2": "1.4.1"
   },
@@ -53,7 +51,7 @@
     "@chakra-ui/system": "1.x"
   },
   "devDependencies": {
-    "@chakra-ui/system": "^1.0.0-next.2"
+    "@chakra-ui/system": "^1.0.0-next.1"
   },
   "gitHead": "ce6fe489afaddba502a2611f1fb1dcedb991325b"
 }

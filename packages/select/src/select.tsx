@@ -39,6 +39,12 @@ interface SelectOptions extends FormControlOptions {
 
 const StyledSelect = chakra<"select", SelectOptions>("select", {
   themeKey: "Select",
+  baseStyle: {
+    appearance: "none",
+    width: "100%",
+    paddingBottom: "1px",
+    paddingRight: "2rem",
+  },
   shouldForwardProp: (prop) =>
     !["focusBorderColor", "errorBorderColor"].includes(prop),
 })
@@ -56,15 +62,15 @@ export const SelectField = React.forwardRef(function SelectField(
   props: SelectFieldProps,
   ref: React.Ref<any>,
 ) {
-  const { children, placeholder, className, ...rest } = props
+  const { children, placeholder, ...rest } = props
   const fieldProps = useFormControl<HTMLSelectElement>(props)
 
   return (
     <StyledSelect
       ref={ref}
-      className={cx("chakra-select", className)}
       {...(rest as any)}
       {...fieldProps}
+      className={cx("chakra-select", props.className)}
     >
       {placeholder && <option value="">{placeholder}</option>}
       {children}
@@ -111,6 +117,7 @@ export const Select = React.forwardRef(function Select(
     iconSize = "1.25rem",
     iconColor,
     color,
+    isFullWidth,
     ...rest
   } = props
 
@@ -121,9 +128,9 @@ export const Select = React.forwardRef(function Select(
   return (
     <chakra.div
       position="relative"
-      width="100%"
-      className="chakra-select__wrapper"
+      width={isFullWidth ? "100%" : "auto"}
       color={color}
+      className="chakra-select__wrapper"
       {...layoutProps}
       {...rootProps}
     >
