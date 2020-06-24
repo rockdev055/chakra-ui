@@ -13,16 +13,14 @@ export interface InputProps {
 
 type VariantProps = Props & Required<InputProps>
 
-function getDefaults(props: VariantProps) {
-  const { focusBorderColor: fc, errorBorderColor: ec } = props
-  return {
-    focusBorderColor: fc || mode("blue.500", "blue.300")(props),
-    errorBorderColor: ec || mode("red.500", "red.300")(props),
-  }
-}
+const getDefaults = (props: VariantProps) => ({
+  focusBorderColor:
+    props.focusBorderColor || mode("blue.500", "blue.300")(props),
+  errorBorderColor: props.errorBorderColor || mode("red.500", "red.300")(props),
+})
 
-function outline(props: VariantProps): StyleObject {
-  const { theme } = props
+function getOutlineStyle(props: VariantProps): StyleObject {
+  const { theme: t } = props
   const { focusBorderColor: fc, errorBorderColor: ec } = getDefaults(props)
 
   return {
@@ -32,28 +30,24 @@ function outline(props: VariantProps): StyleObject {
     _hover: {
       borderColor: mode("gray.300", "whiteAlpha.200")(props),
     },
-    _readOnly: {
-      boxShadow: "none !important",
-      userSelect: "all",
-    },
     _disabled: {
       opacity: 0.4,
       cursor: "not-allowed",
     },
     _focus: {
       zIndex: 1,
-      borderColor: getColor(theme, fc),
-      boxShadow: `0 0 0 1px ${getColor(theme, fc)}`,
+      borderColor: getColor(t, fc),
+      boxShadow: `0 0 0 1px ${getColor(t, fc)}`,
     },
     _invalid: {
-      borderColor: getColor(theme, ec),
-      boxShadow: `0 0 0 1px ${getColor(theme, ec)}`,
+      borderColor: getColor(t, ec),
+      boxShadow: `0 0 0 1px ${getColor(t, ec)}`,
     },
   }
 }
 
-function filled(props: VariantProps): StyleObject {
-  const { theme } = props
+function getFilledStyle(props: VariantProps): StyleObject {
+  const { theme: t } = props
   const { focusBorderColor: fc, errorBorderColor: ec } = getDefaults(props)
 
   return {
@@ -63,10 +57,6 @@ function filled(props: VariantProps): StyleObject {
     _hover: {
       bg: mode("gray.200", "whiteAlpha.100")(props),
     },
-    _readOnly: {
-      boxShadow: "none !important",
-      userSelect: "all",
-    },
     _disabled: {
       opacity: 0.4,
       cursor: "not-allowed",
@@ -74,16 +64,17 @@ function filled(props: VariantProps): StyleObject {
     _focus: {
       zIndex: 1,
       bg: "transparent",
-      borderColor: getColor(theme, fc),
+      borderColor: getColor(t, fc),
     },
     _invalid: {
-      borderColor: getColor(theme, ec),
+      borderColor: getColor(t, ec),
     },
   }
 }
 
-function flushed(props: VariantProps): StyleObject {
-  const { theme } = props
+function getFlushedStyle(props: VariantProps): StyleObject {
+  const { theme: t } = props
+
   const { focusBorderColor: fc, errorBorderColor: ec } = getDefaults(props)
 
   return {
@@ -92,16 +83,12 @@ function flushed(props: VariantProps): StyleObject {
     borderRadius: 0,
     paddingX: 0,
     bg: "transparent",
-    _readOnly: {
-      boxShadow: "none !important",
-      userSelect: "all",
-    },
     _focus: {
       zIndex: 1,
-      borderColor: getColor(theme, fc),
+      borderColor: getColor(t, fc),
     },
     _invalid: {
-      borderColor: getColor(theme, ec),
+      borderColor: getColor(t, ec),
     },
   }
 }
@@ -115,23 +102,23 @@ const unstyled = {
 const sizes: InputTheme["sizes"] = {
   lg: {
     fontSize: "lg",
-    paddingLeft: 4,
-    paddingRight: 4,
-    height: 12,
+    paddingX: 4,
+    paddingY: 2,
+    minHeight: 12,
     borderRadius: "md",
   },
   md: {
     fontSize: "md",
-    paddingLeft: 4,
-    paddingRight: 4,
-    height: 10,
+    paddingX: 4,
+    paddingY: 2,
+    minHeight: 10,
     borderRadius: "md",
   },
   sm: {
     fontSize: "sm",
-    paddingLeft: 3,
-    paddingRight: 3,
-    height: 8,
+    paddingX: 3,
+    paddingY: 1,
+    minHeight: 8,
     borderRadius: "sm",
   },
 }
@@ -146,15 +133,15 @@ const Input: InputTheme = {
   baseStyle: {
     width: "100%",
     outline: 0,
-    position: "relative",
-    appearance: "none",
-    transition: "all 0.2s",
+    lineHeight: 1,
+    transitionDuration: "0.2s",
+    transitionProperty: "box-shadow, border, color, background-color",
   },
   sizes,
   variants: {
-    outline,
-    filled,
-    flushed,
+    outline: getOutlineStyle,
+    filled: getFilledStyle,
+    flushed: getFlushedStyle,
     unstyled,
   },
 }
