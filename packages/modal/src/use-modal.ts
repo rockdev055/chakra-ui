@@ -73,7 +73,7 @@ export function useModal(props: UseModalProps) {
   const dialogRef = React.useRef<any>(null)
   const overlayRef = React.useRef<any>(null)
 
-  const [dialogId, headerId, bodyId] = useIds(
+  const [contentId, headerId, bodyId] = useIds(
     id,
     `chakra-modal`,
     `chakra-modal--header`,
@@ -158,7 +158,7 @@ export function useModal(props: UseModalProps) {
     getContentProps: (props: Dict = {}) => ({
       ...props,
       ref: mergeRefs(props.ref, dialogRef),
-      id: dialogId,
+      id: contentId,
       role: props.role || "dialog",
       tabIndex: -1,
       "aria-modal": true,
