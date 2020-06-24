@@ -50,7 +50,7 @@ export const NavLink = (props) => {
 }
 
 const HeaderContent = () => {
-  const { toggleColorMode: toggleMode } = useColorMode()
+  const [, toggleMode] = useColorMode()
   const text = useColorModeValue("dark", "light")
   const SwitchIcon = useColorModeValue(FaMoon, FaSun)
 
