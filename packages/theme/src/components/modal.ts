@@ -4,9 +4,13 @@ import { ComponentTheme, mode } from "@chakra-ui/theme-tools"
  * Since the `maxWidth` prop references theme.sizes internally,
  * we can leverage that to size our modals.
  */
-const getSize = (value: string) => ({
-  Content: { maxWidth: value },
-})
+function getSize(value: string) {
+  return {
+    Content: {
+      maxWidth: value,
+    },
+  }
+}
 
 export interface Props {
   scrollBehavior?: "inside" | "outside"

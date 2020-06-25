@@ -6,7 +6,7 @@ import {
   getColor,
 } from "@chakra-ui/theme-tools"
 
-function line(props: Props) {
+function getLineStyle(props: Props) {
   const { colorScheme: c } = props
   return {
     TabList: {
@@ -32,7 +32,7 @@ function line(props: Props) {
   }
 }
 
-function enclosed(props: Props) {
+function getEnclosedStyle(props: Props) {
   const { colorScheme: c } = props
   return {
     Tab: {
@@ -54,7 +54,7 @@ function enclosed(props: Props) {
   }
 }
 
-function enclosedColored(props: Props) {
+function getEnclosedColoredStyle(props: Props) {
   const { colorScheme: c } = props
   return {
     Tab: {
@@ -81,23 +81,23 @@ function enclosedColored(props: Props) {
   }
 }
 
-function softRounded(props: any): StyleObject {
-  const { colorScheme: c, theme } = props
+function getSoftRoundedStyle(props: any): StyleObject {
+  const { colorScheme: c, theme: t } = props
   return {
     Tab: {
       borderRadius: "full",
       fontWeight: "semibold",
       color: "gray.600",
       _selected: {
-        color: getColor(theme, `${c}.700`),
-        bg: getColor(theme, `${c}.100`),
+        color: getColor(t, `${c}.700`),
+        bg: getColor(t, `${c}.100`),
       },
     },
     TabList: {},
   }
 }
 
-function solidRounded(props: Props): StyleObject {
+function getSolidRoundedStyle(props: Props): StyleObject {
   const { colorScheme: c } = props
   return {
     Tab: {
@@ -127,7 +127,9 @@ const Tabs: ComponentTheme = {
         boxShadow: "outline",
       },
     },
-    TabList: {},
+    TabList: {
+      display: "flex",
+    },
     TabPanel: {
       padding: 4,
     },
@@ -156,11 +158,11 @@ const Tabs: ComponentTheme = {
     },
   },
   variants: {
-    line: line,
-    enclosed: enclosed,
-    "soft-rounded": softRounded,
-    "enclosed-colored": enclosedColored,
-    "solid-rounded": solidRounded,
+    line: getLineStyle,
+    enclosed: getEnclosedStyle,
+    "soft-rounded": getSoftRoundedStyle,
+    "enclosed-colored": getEnclosedColoredStyle,
+    "solid-rounded": getSolidRoundedStyle,
     unstyled: {},
   },
 }

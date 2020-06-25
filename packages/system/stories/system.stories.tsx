@@ -206,7 +206,7 @@ export const UseComponentStyle = () => {
  */
 export const SxProp = () => (
   <h1
-    sx={{
+    __css={{
       color: "red.100",
       transition: "all 0.3s",
       padding: "30px",

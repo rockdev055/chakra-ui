@@ -99,10 +99,10 @@ export const WithInputElement = () => (
   <Stack>
     <InputGroup>
       <InputLeftElement children={<PhoneIcon color="gray.300" />} />
-      <Input pl="60px" type="phone" placeholder="Phone number" />
+      <Input type="phone" placeholder="Phone number" />
     </InputGroup>
 
-    <InputGroup size="sm">
+    <InputGroup>
       <InputLeftElement color="gray.300" fontSize="1.2em" children="$" />
       <Input placeholder="Enter amount" />
       <InputRightElement children={<CheckIcon color="green.500" />} />
@@ -179,7 +179,7 @@ export const WithFormControl = () => {
           <FormError>is invalid!</FormError>
         </chakra.div>
         <InputGroup>
-          <InputLeftElement children="$" />
+          <InputLeftElement children="USD" />
           <Input placeholder="Enter amount" />
         </InputGroup>
         <FormHelperText>Keep it very short and sweet!</FormHelperText>
