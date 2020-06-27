@@ -5,9 +5,9 @@ import { getComponentDefaults, getComponentStyles } from "./component"
 import { useTheme } from "./theme-provider"
 
 export function useChakra<T extends Dict = Dict>() {
-  const { colorMode, toggleColorMode } = useColorMode()
+  const [colorMode, setColorMode] = useColorMode()
   const theme = useTheme() as T
-  return { colorMode, toggleColorMode, theme }
+  return { colorMode, setColorMode, theme }
 }
 
 interface UseComponentStyleProps {

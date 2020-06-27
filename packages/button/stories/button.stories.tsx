@@ -123,7 +123,7 @@ export const customComposition = () => (
 )
 
 export const iconButton = () => (
-  <Stack direction="row">
+  <Stack>
     <IconButton aria-label="Search database" icon={<SearchIcon />} />
 
     <IconButton
@@ -140,13 +140,13 @@ export const iconButton = () => (
 
 export const WithButtonGroup = () => (
   <ButtonGroup variant="outline">
-    <Button colorScheme="blue">Save</Button>
-    <Button>Cancel</Button>
+    <Button>Save</Button>
+    <Button ml="-px">Cancel</Button>
   </ButtonGroup>
 )
 
-export const attachedButtons = () => (
-  <ButtonGroup size="sm" isAttached variant="outline">
+export const splitButton = () => (
+  <ButtonGroup variant="outline">
     <Button mr="-px">Save</Button>
     <IconButton
       fontSize="2xl"
@@ -157,7 +157,7 @@ export const attachedButtons = () => (
 )
 
 export const socialButton = () => (
-  <Stack direction="row">
+  <Stack>
     <Button colorScheme="facebook" leftIcon={<FaFacebook />}>
       Facebook
     </Button>
