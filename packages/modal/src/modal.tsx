@@ -2,7 +2,6 @@ import { CloseButton, CloseButtonProps } from "@chakra-ui/close-button"
 import { FocusLock } from "@chakra-ui/focus-lock"
 import { useSafeLayoutEffect } from "@chakra-ui/hooks"
 import { Portal, PortalProps } from "@chakra-ui/portal"
-import { RemoveScroll } from "react-remove-scroll"
 import {
   chakra,
   PropsOf,
@@ -75,16 +74,6 @@ export interface ModalProps extends UseModalProps, ThemingProps {
    * that the modal will be attached to.
    */
   getContainer?: PortalProps["getContainer"]
-  /**
-   * If `true`, scrolling will be disabled on the `body` when the modal opens.
-   *  @default true
-   */
-  blockScrollOnMount?: boolean
-  /**
-   * Handle zoom/pinch gestures on iOS devices when scroll locking is enabled.
-   * Defaults to `false`.
-   */
-  allowPinchZoom?: boolean
 }
 
 /**
@@ -109,9 +98,7 @@ export function Modal(props: ModalProps) {
     variant = defaults?.variant,
     trapFocus = true,
     autoFocus = true,
-    blockScrollOnMount = true,
     isCentered,
-    allowPinchZoom = false,
     getContainer,
   } = props
 
@@ -136,12 +123,7 @@ export function Modal(props: ModalProps) {
           restoreFocus={returnFocusOnClose}
           contentRef={context.dialogRef}
         >
-          <RemoveScroll
-            allowPinchZoom={allowPinchZoom}
-            enabled={blockScrollOnMount}
-          >
-            {children}
-          </RemoveScroll>
+          {children}
         </FocusLock>
       </Portal>
     </ModalContextProvider>
@@ -160,7 +142,7 @@ type ContentOptions = Pick<ModalProps, "scrollBehavior">
  * To style the modal content globally, change the styles in
  * `theme.components.Modal` under the `Content` key
  */
-const StyledContent = chakra<"section", ContentOptions>("section", {
+const StyledContent = chakra("section", {
   themeKey: "Modal.Content",
   baseStyle: {
     display: "flex",
@@ -170,9 +152,6 @@ const StyledContent = chakra<"section", ContentOptions>("section", {
     _focus: {
       outline: 0,
     },
-  },
-  shouldForwardProp(prop) {
-    return !["scrollBehavior"].includes(prop)
   },
 })
 
@@ -189,20 +168,13 @@ export const ModalContent = React.forwardRef(function ModalContent(
   ref: React.Ref<any>,
 ) {
   const { className, ...rest } = props
-  const { getContentProps, variant, size, scrollBehavior } = useModalContext()
+  const { getContentProps, variant, size } = useModalContext()
   const contentProps = getContentProps({ ...rest, ref })
 
   const _className = cx("chakra-modal__content", className)
   const theming = { variant, size }
 
-  return (
-    <StyledContent
-      scrollBehavior={scrollBehavior}
-      className={_className}
-      {...theming}
-      {...contentProps}
-    />
-  )
+  return <StyledContent className={_className} {...theming} {...contentProps} />
 })
 
 if (__DEV__) {
