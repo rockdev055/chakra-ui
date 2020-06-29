@@ -7,9 +7,9 @@ import {
   transparentize,
 } from "@chakra-ui/theme-tools"
 
-function solid(props: Props) {
-  const { colorScheme: c, theme } = props
-  const dark = transparentize(`${c}.500`, 0.6)(theme)
+function getSolidStyle(props: Props) {
+  const { colorScheme: c, theme: t } = props
+  const dark = transparentize(`${c}.500`, 0.6)(t)
 
   return {
     bg: mode(`${c}.500`, dark)(props),
@@ -17,9 +17,9 @@ function solid(props: Props) {
   }
 }
 
-function subtle(props: Props) {
-  const { colorScheme: c, theme } = props
-  const darkBg = ink(`${c}.200`, "lowest")(theme)
+function getSubtleStyle(props: Props) {
+  const { colorScheme: c, theme: t } = props
+  const darkBg = ink(`${c}.200`, "lowest")(t)
 
   return {
     bg: mode(`${c}.100`, darkBg)(props),
@@ -27,11 +27,11 @@ function subtle(props: Props) {
   }
 }
 
-function outline(props: Props) {
-  const { colorScheme: c, theme } = props
+function getOutlineStyle(props: Props) {
+  const { colorScheme: c, theme: t } = props
 
-  const dark = transparentize(`${c}.200`, 0.8)(theme)
-  const light = getColor(theme, `${c}.500`)
+  const dark = transparentize(`${c}.200`, 0.8)(t)
+  const light = getColor(t, `${c}.500`)
 
   const color = mode(light, dark)(props)
 
@@ -54,9 +54,9 @@ const Badge: ComponentTheme = {
     fontWeight: "bold",
   },
   variants: {
-    solid,
-    outline,
-    subtle,
+    solid: getSolidStyle,
+    outline: getOutlineStyle,
+    subtle: getSubtleStyle,
   },
 }
 

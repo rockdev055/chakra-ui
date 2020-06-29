@@ -2,4 +2,6 @@
 
 ## Changes
 
-- Added support for `closeOnMouseDown` prop
+- Added support for `hideOnClick` prop
+- Added support for `hideOnMouseDown` prop
+- Improved tooltip rendering logic

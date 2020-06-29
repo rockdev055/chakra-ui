@@ -6,7 +6,7 @@ import {
   ink,
 } from "@chakra-ui/theme-tools"
 
-function subtle(props: Props) {
+function getSubtleStyle(props: Props) {
   const { theme: t, colorScheme: c } = props
 
   const light = getColor(t, `${c}.100`, c)
@@ -22,9 +22,9 @@ function subtle(props: Props) {
   }
 }
 
-function leftAccent(props: Props) {
+function getLeftAccentStyle(props: Props) {
   const { colorScheme: c } = props
-  const subtleStyle = subtle(props)
+  const subtleStyle = getSubtleStyle(props)
   return {
     Root: {
       paddingLeft: 3,
@@ -38,9 +38,9 @@ function leftAccent(props: Props) {
   }
 }
 
-function topAccent(props: Props) {
+function getTopAccentStyle(props: Props) {
   const { colorScheme: c } = props
-  const subtleStyle = subtle(props)
+  const subtleStyle = getSubtleStyle(props)
   return {
     Root: {
       paddingTop: 2,
@@ -54,7 +54,7 @@ function topAccent(props: Props) {
   }
 }
 
-function solid(props: Props) {
+function getSolidStyle(props: Props) {
   const { colorScheme: c } = props
   return {
     Root: {
@@ -79,10 +79,10 @@ const Alert: ComponentTheme = {
     },
   },
   variants: {
-    solid: solid,
-    subtle: subtle,
-    "left-accent": leftAccent,
-    "top-accent": topAccent,
+    solid: getSolidStyle,
+    subtle: getSubtleStyle,
+    "left-accent": getLeftAccentStyle,
+    "top-accent": getTopAccentStyle,
   },
 }
 

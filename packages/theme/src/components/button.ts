@@ -5,7 +5,7 @@ import {
   transparentize,
 } from "@chakra-ui/theme-tools"
 
-const grayGhost = (props: Props) => ({
+const grayGhostStyle = (props: Props) => ({
   color: mode(`inherit`, `whiteAlpha.900`)(props),
   _hover: {
     bg: mode(`gray.100`, `whiteAlpha.200`)(props),
@@ -15,9 +15,9 @@ const grayGhost = (props: Props) => ({
   },
 })
 
-function ghost(props: Props) {
+function getGhostStyle(props: Props) {
   const { colorScheme: c, theme: t } = props
-  if (c === "gray") return grayGhost(props)
+  if (c === "gray") return grayGhostStyle(props)
 
   const darkHover = transparentize(`${c}.200`, 0.12)(t)
   const darkActive = transparentize(`${c}.200`, 0.24)(t)
@@ -34,33 +34,31 @@ function ghost(props: Props) {
   }
 }
 
-function outline(props: Props) {
+function getOutlineStyle(props: Props) {
   const { colorScheme: c } = props
   const borderColor = mode(`gray.200`, `whiteAlpha.300`)(props)
 
   return {
     border: "1px solid",
     borderColor: c === "gray" ? borderColor : "currentColor",
-    ...ghost(props),
+    ...getGhostStyle(props),
   }
 }
 
-function graySolid(props: Props) {
-  return {
-    bg: mode(`gray.100`, `whiteAlpha.200`)(props),
-    _hover: {
-      bg: mode(`gray.200`, `whiteAlpha.300`)(props),
-    },
-    _active: {
-      bg: mode(`gray.300`, `whiteAlpha.400`)(props),
-    },
-  }
-}
+const graySolidStyle = (props: Props) => ({
+  bg: mode(`gray.100`, `whiteAlpha.200`)(props),
+  _hover: {
+    bg: mode(`gray.200`, `whiteAlpha.300`)(props),
+  },
+  _active: {
+    bg: mode(`gray.300`, `whiteAlpha.400`)(props),
+  },
+})
 
-function solid(props: Props) {
+function getSolidStyle(props: Props) {
   const { colorScheme: c } = props
 
-  if (c === "gray") return graySolid(props)
+  if (c === "gray") return graySolidStyle(props)
 
   return {
     bg: mode(`${c}.500`, `${c}.200`)(props),
@@ -70,7 +68,7 @@ function solid(props: Props) {
   }
 }
 
-function link(props: Props) {
+function getLinkStyle(props: Props) {
   const { colorScheme: c } = props
   return {
     padding: 0,
@@ -146,10 +144,10 @@ const Button: ComponentTheme = {
   sizes,
   variants: {
     unstyled,
-    solid,
-    ghost,
-    link,
-    outline,
+    solid: getSolidStyle,
+    ghost: getGhostStyle,
+    link: getLinkStyle,
+    outline: getOutlineStyle,
   },
 }
 

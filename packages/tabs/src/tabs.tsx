@@ -20,25 +20,22 @@ import {
   UseTabsProps,
 } from "./use-tabs"
 
-interface TabsOptions {
+interface ThemingContext extends ThemingProps {
   /**
    * If `true`, tabs will stretch to width of the tablist.
    */
   isFitted?: boolean
-  /**
-   * The alignment of the tabs
-   */
-  align?: "start" | "end" | "center"
 }
-
-interface ThemingContext extends ThemingProps, TabsOptions {}
 
 type DivProps = Omit<PropsOf<typeof chakra.div>, "onChange">
 
 export type TabsProps = UseTabsProps &
-  DivProps &
-  TabsOptions & {
+  DivProps & {
     children: React.ReactNode
+    /**
+     * If `true`, tabs will stretch to width of the tablist.
+     */
+    isFitted?: boolean
   }
 
 const [ThemingContextProvider, useThemingContext] = createContext<
@@ -71,7 +68,6 @@ export const Tabs = React.forwardRef(function Tabs(
     colorScheme = defaults?.colorScheme,
     isFitted,
     className,
-    align = "start",
     ...rest
   } = props
 
@@ -120,9 +116,9 @@ export type TabProps = Omit<UseTabProps, "context"> & PropsOf<typeof StyledTab>
  * and is responsible for automatic and manual selection modes.
  */
 export const Tab = forwardRef<TabProps>(function Tab(props, ref) {
-  const { className, ...rest } = props
+  const { className, ...htmlProps } = props
   const { isFitted, ...theming } = useThemingContext()
-  const tabProps = useTab({ ...rest, ref })
+  const tabProps = useTab({ ...htmlProps, ref })
 
   const _className = cx("chakra-tabs__tab", className)
 
@@ -148,9 +144,6 @@ if (__DEV__) {
  */
 const StyledTabList = chakra("div", {
   themeKey: "Tabs.TabList",
-  baseStyle: {
-    display: "flex",
-  },
 })
 
 export type TabListProps = Omit<UseTabListProps, "context"> &
@@ -166,26 +159,13 @@ export const TabList = React.forwardRef(function TabList(
   props: TabListProps,
   ref: React.Ref<any>,
 ) {
-  const { className, ...rest } = props
-  const { isFitted, align = "start", ...theming } = useThemingContext()
-  const tablistProps = useTabList({ ...rest, ref })
+  const { className, ...htmlProps } = props
+  const { isFitted, ...theming } = useThemingContext()
+  const tablistProps = useTabList({ ...htmlProps, ref })
 
   const _className = cx("chakra-tabs__tablist", className)
 
-  const alignments = {
-    end: "flex-end",
-    center: "center",
-    start: "flex-start",
-  }
-
-  return (
-    <StyledTabList
-      justifyContent={alignments[align]}
-      className={_className}
-      {...theming}
-      {...tablistProps}
-    />
-  )
+  return <StyledTabList className={_className} {...theming} {...tablistProps} />
 })
 
 if (__DEV__) {
@@ -213,8 +193,8 @@ export const TabPanel = React.forwardRef(function TabPanel(
   props: TabPanelProps,
   ref: React.Ref<any>,
 ) {
-  const { className, ...rest } = props
-  const panelProps = useTabPanel({ ...rest, ref })
+  const { className, ...htmlProps } = props
+  const panelProps = useTabPanel({ ...htmlProps, ref })
   const _className = cx("chakra-tabs__tab-panel", className)
   return <StyledTabPanel className={_className} {...panelProps} />
 })
@@ -237,8 +217,8 @@ export const TabPanels = React.forwardRef(function TabPanels(
   props: TabPanelsProps,
   ref: React.Ref<any>,
 ) {
-  const { className, ...rest } = props
-  const panelsProp = useTabPanels(rest)
+  const { className, ...htmlProps } = props
+  const panelsProp = useTabPanels(htmlProps)
 
   const _className = cx("chakra-tabs__tab-panels", className)
   return <chakra.div ref={ref} className={_className} {...panelsProp} />
@@ -270,7 +250,7 @@ export const TabIndicator = React.forwardRef(function TabIndicator(
   props: TabIndicatorProps,
   ref: React.Ref<any>,
 ) {
-  const { className, style, ...rest } = props
+  const { className, style, ...htmlProps } = props
 
   const styles = useTabIndicator()
 
@@ -282,7 +262,7 @@ export const TabIndicator = React.forwardRef(function TabIndicator(
       ref={ref}
       className={_className}
       style={_style}
-      {...rest}
+      {...htmlProps}
     />
   )
 })
