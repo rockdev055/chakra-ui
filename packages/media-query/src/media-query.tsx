@@ -1,4 +1,4 @@
-import { useMediaQuery } from "./use-media-query"
+import { useMediaQuery } from "@chakra-ui/hooks"
 import * as React from "react"
 import { useTheme } from "@chakra-ui/system"
 import { Dict, get, __DEV__ } from "@chakra-ui/utils"
@@ -14,6 +14,8 @@ interface VisibilityProps {
  *
  * React component to control the visibility of it's
  * children based on the current breakpoint
+ *
+ * @see Docs https://chakra-ui.com/components/visibility
  */
 function Visibility(props: VisibilityProps) {
   const { breakpoint, hide, children } = props
@@ -26,7 +28,7 @@ function Visibility(props: VisibilityProps) {
 
 export type HideProps = ShowProps
 
-export function Hide(props: HideProps) {
+export const Hide = (props: HideProps) => {
   const query = useQuery(props)
   return (
     <Visibility breakpoint={query} hide={true}>
@@ -35,7 +37,7 @@ export function Hide(props: HideProps) {
   )
 }
 
-if (__DEV__) {
+if(__DEV__) {
   Hide.displayName = "Hide"
 }
 
@@ -46,27 +48,20 @@ export interface ShowProps {
   children?: React.ReactNode
 }
 
-export function Show(props: ShowProps) {
+export const Show = (props: ShowProps) => {
   const query = useQuery(props)
   return <Visibility breakpoint={query}>{props.children}</Visibility>
 }
 
-if (__DEV__) {
+if(__DEV__) {
   Show.displayName = "Show"
 }
 
 const getBreakpoint = (theme: Dict, value: any) =>
   get(theme, `breakpoints.${value}`, value)
 
-export interface UseQueryProps {
-  breakpoint?: string
-  below?: string
-  above?: string
-}
-
-export function useQuery(props: UseQueryProps) {
+export const useQuery = (props: any) => {
   const { breakpoint = "", below, above } = props
-
   const theme = useTheme()
   const bpBelow = getBreakpoint(theme, below)
   const bpAbove = getBreakpoint(theme, above)
