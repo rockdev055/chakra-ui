@@ -5,15 +5,7 @@ import {
   parser,
   StyleConfig,
 } from "@chakra-ui/parser"
-import {
-  get,
-  isArray,
-  isObject,
-  isResponsiveObjectLike,
-  merge,
-  objectToArrayNotation,
-  runIfFn,
-} from "@chakra-ui/utils"
+import { get, isArray, isObject, merge, runIfFn } from "@chakra-ui/utils"
 import { CSSObject, StyleObjectOrFn } from "./css.types"
 import {
   determineTheme,
@@ -43,10 +35,8 @@ export const css = (styleObject: StyleObjectOrFn) => (props: PropsOrTheme) => {
   }
 
   for (const key in styles) {
-    let value = runIfFn(styles[key], theme)
-    if (isResponsiveObjectLike(value)) {
-      value = objectToArrayNotation(value)
-    }
+    const valueOrFn = styles[key]
+    const value = runIfFn(valueOrFn, theme)
 
     const config = parser.config[key] as StyleConfig | undefined
 
