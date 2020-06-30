@@ -107,38 +107,36 @@ export function getNextItemFromSearch<T>(
   itemToString: (item: T) => string,
   currentItem: T,
 ) {
-  if (searchString == null) {
-    return currentItem
-  }
+  if (!searchString) return null
 
-  // If current item doesn't exist, find the item that matches the search string
+  // If current value doesn't exist, find the item that match the search string
   if (!currentItem) {
     const foundItem = items.find((item) =>
       itemToString(item).toLowerCase().startsWith(searchString.toLowerCase()),
     )
-    return foundItem
+    return foundItem || currentItem
   }
 
   // Filter items for ones that match the search string (case insensitive)
-  const matchingItems = items.filter((item) =>
+  const searchResults = items.filter((item) =>
     itemToString(item).toLowerCase().startsWith(searchString.toLowerCase()),
   )
 
   // If there's a match, let's get the next item to select
-  if (matchingItems.length > 0) {
+  if (searchResults.length) {
     let nextIndex: number
 
     // If the currentItem is in the available items, we move to the next available option
-    if (matchingItems.includes(currentItem)) {
-      const currentIndex = matchingItems.indexOf(currentItem)
+    if (searchResults.includes(currentItem)) {
+      const currentIndex = searchResults.indexOf(currentItem)
       nextIndex = currentIndex + 1
-      if (nextIndex === matchingItems.length) {
+      if (nextIndex === searchResults.length) {
         nextIndex = 0
       }
-      return matchingItems[nextIndex]
+      return searchResults[nextIndex]
     } else {
       // Else, we pick the first item in the available items
-      nextIndex = items.indexOf(matchingItems[0])
+      nextIndex = items.indexOf(searchResults[0])
       return items[nextIndex]
     }
   }

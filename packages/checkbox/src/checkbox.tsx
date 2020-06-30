@@ -66,10 +66,6 @@ export type CheckboxProps = BaseControlProps &
      * @default 0.5rem
      */
     spacing?: SystemProps["marginLeft"]
-    /**
-     * If `true`, the checkbox should take up the full width of the parent.
-     */
-    isFullWidth?: boolean
   }
 
 /**
@@ -93,7 +89,6 @@ export const Checkbox = forwardRef<CheckboxProps>(function Checkbox(
     variant = group?.variant,
     colorScheme = group?.colorScheme,
     size = group?.size,
-    isFullWidth,
     className,
     children,
     ...rest
@@ -126,11 +121,7 @@ export const Checkbox = forwardRef<CheckboxProps>(function Checkbox(
   const theming = { variant, size, colorScheme }
 
   return (
-    <StyledWrapper
-      width={isFullWidth ? "100%" : undefined}
-      {...htmlProps}
-      className={_className}
-    >
+    <StyledWrapper {...htmlProps} className={_className}>
       <input className="chakra-checkbox__input" {...getInputProps({ ref })} />
       <StyledControl
         className="chakra-checkbox__control"

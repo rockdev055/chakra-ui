@@ -1,12 +1,15 @@
-import { chakra, forwardRef, PropsOf, SystemProps } from "@chakra-ui/system"
-import { cx, mergeRefs, ReactNodeOrRenderProp, __DEV__ } from "@chakra-ui/utils"
+import { chakra, PropsOf, forwardRef, SystemProps } from "@chakra-ui/system"
+import {
+  createContext,
+  cx,
+  mergeRefs,
+  __DEV__,
+  ReactNodeOrRenderProp,
+} from "@chakra-ui/utils"
 import * as React from "react"
 import {
-  MenuContextProvider,
-  useIsSubMenu,
   useMenu,
   useMenuButton,
-  useMenuContext,
   useMenuItem,
   UseMenuItemProps,
   useMenuList,
@@ -15,9 +18,26 @@ import {
   UseMenuOptionGroupProps,
   UseMenuOptionProps,
   UseMenuProps,
+  UseMenuReturn,
 } from "./use-menu"
 
-export interface MenuProps extends UseMenuProps {
+const [MenuContextProvider, useMenuContext] = createContext<UseMenuReturn>({
+  strict: false,
+  name: "MenuContext",
+})
+
+export { useMenuContext }
+
+//////////////////////////////////////////////////////////////////////////
+
+export function useMenuState() {
+  const { isOpen, onClose } = useMenuContext()
+  return { isOpen, onClose }
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+export type MenuProps = Omit<UseMenuProps, "context"> & {
   children: ReactNodeOrRenderProp<{ isOpen: boolean; onClose(): void }>
 }
 
@@ -28,7 +48,8 @@ export interface MenuProps extends UseMenuProps {
  * It doesn't render any DOM node.
  */
 export function Menu(props: MenuProps) {
-  const context = useMenu(props)
+  const parentCtx = useMenuContext()
+  const context = useMenu({ context: parentCtx, ...props })
   return (
     <MenuContextProvider value={context}>
       {typeof props.children === "function"
@@ -89,10 +110,13 @@ export const MenuButton = forwardRef<MenuButtonProps>(function MenuButton(
 ) {
   const { children, submenuIcon, ...rest } = props
 
-  const ownProps = useMenuButton(rest)
+  const context = useMenuContext()
+
+  const ownProps = useMenuButton({ context, ...rest })
   const ownRef = mergeRefs(ref, ownProps.ref)
 
-  const isSubmenu = useIsSubMenu()
+  const isSubmenu = context.hasParentMenu
+
   const Comp = isSubmenu ? StyledMenuItem : StyledMenuButton
 
   const getChildren = () => {
@@ -130,7 +154,8 @@ export const MenuList = React.forwardRef(function MenuList(
   props: MenuListProps,
   ref: React.Ref<any>,
 ) {
-  const ownProps = useMenuList(props)
+  const context = useMenuContext()
+  const ownProps = useMenuList({ context, ...props })
   const ownRef = mergeRefs(ownProps.ref, ref)
 
   return <StyledMenuList {...ownProps} ref={ownRef} />
@@ -184,11 +209,13 @@ export const MenuItem = forwardRef<MenuItemProps>(function MenuItem(
     ...htmlProps
   } = props
 
-  const ownProps = useMenuItem(htmlProps)
+  const context = useMenuContext()
+
+  const ownProps = useMenuItem({ context, ...htmlProps })
   const ownRef = mergeRefs(ownProps.ref, ref)
 
-  const shouldWrap = icon || command
-  const _children = shouldWrap ? (
+  const shouldWrapInSpan = icon || command
+  const _children = shouldWrapInSpan ? (
     <chakra.span flex="1">{children}</chakra.span>
   ) : (
     children
@@ -228,7 +255,9 @@ export const MenuItemOption = forwardRef<MenuItemOptionProps>(
   function MenuItemOption(props, ref) {
     const { icon, iconSpacing = "0.75rem", ...htmlProps } = props
 
-    const ownProps = useMenuOption(htmlProps)
+    const context = useMenuContext()
+    const ownProps = useMenuOption({ context, ...htmlProps })
+
     const ownRef = mergeRefs(ownProps.ref, ref)
 
     return (
@@ -307,7 +336,7 @@ if (__DEV__) {
 
 //////////////////////////////////////////////////////////////////////////
 
-export function MenuIcon(props: PropsOf<typeof chakra.span>) {
+export const MenuIcon = (props: PropsOf<typeof chakra.span>) => {
   const { className, children, ...rest } = props
 
   const child = React.Children.only(children)

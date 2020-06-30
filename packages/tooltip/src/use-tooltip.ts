@@ -52,10 +52,6 @@ export interface UseTooltipProps {
    * @default 10 ( = 10px )
    */
   arrowSize?: UsePopperProps["arrowSize"]
-  /**
-   * The Popper.js modifiers to use
-   */
-  modifiers?: UsePopperProps["modifiers"]
 }
 
 export function useTooltip(props: UseTooltipProps = {}) {
@@ -71,7 +67,6 @@ export function useTooltip(props: UseTooltipProps = {}) {
     isOpen: isOpenProp,
     defaultIsOpen,
     arrowSize = 10,
-    modifiers,
   } = props
 
   const { isOpen, onOpen, onClose } = useDisclosure({
@@ -85,7 +80,6 @@ export function useTooltip(props: UseTooltipProps = {}) {
     forceUpdate: isOpen,
     placement,
     arrowSize,
-    modifiers,
   })
 
   const tooltipId = useId(id, "tooltip")
