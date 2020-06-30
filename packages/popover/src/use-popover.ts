@@ -1,5 +1,5 @@
 import { useBoolean, useDisclosure, useIds } from "@chakra-ui/hooks"
-import { Placement, usePopper, UsePopperProps } from "@chakra-ui/popper"
+import { Placement, usePopper } from "@chakra-ui/popper"
 import { useColorModeValue, useToken } from "@chakra-ui/system"
 import { callAllHandlers, Dict, mergeRefs } from "@chakra-ui/utils"
 import * as React from "react"
@@ -70,10 +70,6 @@ export interface UsePopoverProps {
    * The `box-shadow` of the popover arrow
    */
   arrowShadowColor?: string
-  /**
-   * The Popper.js modifiers to use.
-   */
-  modifiers?: UsePopperProps["modifiers"]
 }
 
 export function usePopover(props: UsePopoverProps = {}) {
@@ -88,7 +84,6 @@ export function usePopover(props: UsePopoverProps = {}) {
     returnFocus = true,
     autoFocus = true,
     arrowShadowColor,
-    modifiers,
   } = props
 
   const { isOpen, onClose, onToggle } = useDisclosure(props)
@@ -117,7 +112,6 @@ export function usePopover(props: UsePopoverProps = {}) {
     forceUpdate: isOpen,
     arrowSize,
     arrowShadowColor: arrowColor,
-    modifiers,
   })
 
   useFocusOnHide(popoverRef, {

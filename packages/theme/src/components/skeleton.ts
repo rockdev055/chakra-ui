@@ -21,7 +21,7 @@ export const frame = (start: string, end: string) => keyframes`
 
 type CustomProps = Props & SkeletonProps
 
-export function baseStyle(props: CustomProps) {
+export function getBaseStyle(props: CustomProps) {
   const {
     startColor = mode("gray.100", "gray.800")(props),
     endColor = mode("gray.400", "gray.600")(props),
@@ -33,8 +33,6 @@ export function baseStyle(props: CustomProps) {
   const end = getColor(theme, endColor)
 
   return {
-    opacity: 0.7,
-    borderRadius: "2px",
     borderColor: start,
     background: end,
     animation: `${speed}s linear infinite alternate ${frame(start, end)}`,
@@ -42,7 +40,7 @@ export function baseStyle(props: CustomProps) {
 }
 
 const Skeleton: ComponentTheme<SkeletonProps> = {
-  baseStyle: baseStyle,
+  baseStyle: getBaseStyle,
 }
 
 export default Skeleton
