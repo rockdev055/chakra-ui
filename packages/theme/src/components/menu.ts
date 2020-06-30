@@ -2,19 +2,22 @@ import { Props, mode, ComponentTheme, copy } from "@chakra-ui/theme-tools"
 import { SystemProps } from "@chakra-ui/system"
 import Button from "./button"
 
-const menulist = (props: Props): SystemProps => ({
-  bg: mode(`#fff`, `gray.700`)(props),
-  boxShadow: mode(`sm`, `dark-lg`)(props),
-  color: "inherit",
-  outline: 0,
-  minWidth: "3xs",
-  paddingY: "2",
-  zIndex: "1",
-  borderRadius: "md",
-  borderWidth: "1px",
-})
+const menuListStyle = (props: Props): SystemProps => {
+  return {
+    bg: mode(`#fff`, `gray.700`)(props),
+    boxShadow: mode(`sm`, `dark-lg`)(props),
+    color: "inherit",
+    outline: 0,
+    minWidth: "3xs",
+    paddingY: "2",
+    zIndex: "1",
+    borderRadius: "md",
+    border: "1px solid",
+    borderColor: "inherit",
+  }
+}
 
-const menuitem = (props: Props): SystemProps => ({
+const menuItemStyle = (props: Props): SystemProps => ({
   width: "100%",
   outline: 0,
   textDecoration: "none",
@@ -40,8 +43,8 @@ const Menu: ComponentTheme = {
   defaultProps: Button.defaultProps,
   baseStyle: (props) => ({
     MenuButton: Button.baseStyle as SystemProps,
-    MenuList: menulist(props),
-    MenuItem: menuitem(props),
+    MenuList: menuListStyle(props),
+    MenuItem: menuItemStyle(props),
     MenuGroupTitle: {
       marginX: 4,
       marginY: 2,

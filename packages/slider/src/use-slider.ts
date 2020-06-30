@@ -14,7 +14,7 @@ import {
   createOnKeyDown,
   dataAttr,
   Dict,
-  focus,
+  ensureFocus,
   getBox,
   getOwnerDocument,
   merge,
@@ -368,7 +368,7 @@ export function useSlider(props: UseSliderProps) {
 
   useUpdateEffect(() => {
     if (thumbRef.current) {
-      focus(thumbRef.current)
+      ensureFocus(thumbRef.current)
     }
   }, [value])
 

@@ -1,5 +1,5 @@
 import { useUpdateEffect, useEventListener } from "@chakra-ui/hooks"
-import { focus, getFirstTabbableIn, isFocusable } from "@chakra-ui/utils"
+import { ensureFocus, getFirstTabbableIn, isFocusable } from "@chakra-ui/utils"
 import * as React from "react"
 
 /**
@@ -111,7 +111,7 @@ export function useFocusOnHide(
     if (isFocusableRef.current) return
 
     if (focusRef.current) {
-      focus(focusRef.current)
+      ensureFocus(focusRef.current)
     }
   }, [autoFocus, focusRef, visible, popoverRef, shouldFocus])
 }
@@ -142,7 +142,7 @@ export function useFocusOnShow(
   useUpdateEffect(() => {
     // if `autoFocus` is false, move focus to the `PopoverContent`
     if (!autoFocus && popoverRef.current) {
-      focus(popoverRef.current)
+      ensureFocus(popoverRef.current)
       return
     }
 
@@ -151,13 +151,13 @@ export function useFocusOnShow(
     if (!shouldFocus) return
 
     if (focusRef?.current) {
-      focus(focusRef.current)
+      ensureFocus(focusRef.current)
       return
     }
 
     if (popoverRef.current) {
       const firstTabbable = getFirstTabbableIn(popoverRef.current, true)
-      focus(firstTabbable ?? popoverRef.current)
+      ensureFocus(firstTabbable ?? popoverRef.current)
     }
   }, [visible, autoFocus, popoverRef, focusRef])
 }

@@ -39,7 +39,7 @@
     "lint:types": "tsc --noEmit"
   },
   "peerDependencies": {
-    "@chakra-ui/system": ">0.8",
+    "@chakra-ui/system": "1.x",
     "react": "16.x"
   },
   "devDependencies": {
