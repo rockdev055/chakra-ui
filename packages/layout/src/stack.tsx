@@ -174,12 +174,9 @@ if (__DEV__) {
 /**
  * A view that arranges its children in a horizontal line.
  */
-export const HStack = React.forwardRef(function HStack(
-  props: StackProps,
-  ref: React.Ref<any>,
-) {
-  return <Stack align="center" {...props} direction="row" ref={ref} />
-})
+export const HStack = (props: StackProps) => (
+  <Stack align="center" {...props} direction="row" />
+)
 
 if (__DEV__) {
   HStack.displayName = "HStack"
@@ -188,12 +185,9 @@ if (__DEV__) {
 /**
  * A view that arranges its children in a vertical line.
  */
-export const VStack = React.forwardRef(function VStack(
-  props: StackProps,
-  ref: React.Ref<any>,
-) {
-  return <Stack align="center" {...props} direction="column" ref={ref} />
-})
+export const VStack = (props: StackProps) => (
+  <Stack align="center" {...props} direction="column" />
+)
 
 if (__DEV__) {
   VStack.displayName = "VStack"

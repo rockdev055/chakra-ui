@@ -83,7 +83,7 @@ export const Collapse = React.forwardRef(function Collapse(
   const rect = useRect(ref, true)
   const height = rect?.height ?? 0
 
-  const defaultConfig: TransitionStyles = {
+  const styles: TransitionStyles = {
     init: {
       height: startingHeight,
       opacity: startingHeight ? 1 : 0,
@@ -103,7 +103,7 @@ export const Collapse = React.forwardRef(function Collapse(
   return (
     <Transition
       in={isOpen}
-      styles={config || defaultConfig}
+      styles={config || styles}
       onEntered={() => setHidden(false)}
       onExited={() => setHidden(true)}
       timeout={{ enter: 0, exit: timeout }}
