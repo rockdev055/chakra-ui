@@ -39,19 +39,7 @@ export type RadioProps = UseRadioProps &
      * @default 0.5rem
      */
     spacing?: SystemProps["marginLeft"]
-    /**
-     * If `true`, the radio will occupy the full width of it's parent container
-     */
-    isFullWidth?: boolean
   }
-
-const StyledWrapper = chakra("label", {
-  baseStyle: {
-    display: "inline-flex",
-    alignItems: "center",
-    verticalAlign: "top",
-  },
-})
 
 /**
  * Radio
@@ -73,7 +61,6 @@ export const Radio = React.forwardRef(function Radio(
     variant = group?.variant,
     size = group?.size,
     children,
-    isFullWidth,
     ...radioProps
   } = props
 
@@ -101,9 +88,11 @@ export const Radio = React.forwardRef(function Radio(
   const [layoutProps, otherProps] = split(rest, layoutPropNames as any)
 
   return (
-    <StyledWrapper
+    <chakra.label
       className="chakra-radio"
-      width={isFullWidth ? "full" : undefined}
+      display="inline-flex"
+      alignItems="center"
+      verticalAlign="top"
       {...layoutProps}
     >
       <input className="chakra-radio__input" {...getInputProps({ ref })} />
@@ -121,7 +110,7 @@ export const Radio = React.forwardRef(function Radio(
           children={children}
         />
       )}
-    </StyledWrapper>
+    </chakra.label>
   )
 })
 

@@ -26,7 +26,7 @@ function getCSS(props: GetCSS) {
      * return an array value and allow emotion do the rest.
      * By default, emotion can handle array style values
      */
-    return [cssStyles, sxStyles]
+    return [sxStyles, cssStyles]
   }
 }
 
