@@ -92,7 +92,6 @@ export const Button = forwardRef<ButtonProps>(function Button(props, ref) {
     colorScheme = group?.colorScheme,
     size = group?.size,
     className,
-    as,
     ...rest
   } = props
 
@@ -118,8 +117,7 @@ export const Button = forwardRef<ButtonProps>(function Button(props, ref) {
     <StyledButton
       disabled={isDisabled || isLoading}
       ref={ref}
-      as={as}
-      type={as ? undefined : type}
+      type={type}
       width={isFullWidth ? "100%" : undefined}
       data-active={dataAttr(isActive)}
       data-loading={dataAttr(isLoading)}
@@ -131,7 +129,7 @@ export const Button = forwardRef<ButtonProps>(function Button(props, ref) {
       {...rest}
     >
       {leftIcon && !isLoading && (
-        <ButtonIcon mr={iconSpacing} children={leftIcon} />
+        <ButtonIcon ml={-1} mr={iconSpacing} children={leftIcon} />
       )}
       {isLoading && (
         <ButtonSpinner
@@ -144,7 +142,7 @@ export const Button = forwardRef<ButtonProps>(function Button(props, ref) {
         ? loadingText || <chakra.span opacity={0} children={children} />
         : children}
       {rightIcon && !isLoading && (
-        <ButtonIcon ml={iconSpacing} children={rightIcon} />
+        <ButtonIcon ml={iconSpacing} mr={-1} children={rightIcon} />
       )}
     </StyledButton>
   )

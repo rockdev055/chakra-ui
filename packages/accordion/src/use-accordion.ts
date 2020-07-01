@@ -44,10 +44,6 @@ export interface UseAccordionProps {
    * The content of the accordion. Must be `AccordionItem`
    */
   children: React.ReactNode
-  /**
-   * If `true`, the accordion will add height transition
-   */
-  disableTransition?: boolean
 }
 
 type AccordionElement = React.ReactElement<{

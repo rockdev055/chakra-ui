@@ -23,19 +23,15 @@ import {
   cx,
   isString,
   dataAttr,
-  focus,
-  createContext,
+  ensureFocus,
 } from "@chakra-ui/utils"
 import * as React from "react"
 
-const [MenuContextProvider, useMenuContext] = createContext<UseMenuReturn>({
-  strict: false,
-  name: "MenuContext",
-})
-
-export { MenuContextProvider, useMenuContext }
-
 export interface UseMenuProps extends UsePopperProps {
+  /**
+   * The parent menu's context
+   */
+  context?: UseMenuReturn
   /**
    * Unique id to be used by menu and it's children
    */
@@ -59,10 +55,6 @@ export interface UseMenuProps extends UsePopperProps {
    * @default true
    */
   autoSelect?: boolean
-  /**
-   * The Popper.js modifiers to use
-   */
-  modifiers?: UsePopperProps["modifiers"]
 }
 
 /**
@@ -73,6 +65,7 @@ export interface UseMenuProps extends UsePopperProps {
  */
 export function useMenu(props: UseMenuProps) {
   const {
+    context,
     id,
     closeOnSelect = true,
     closeOnBlur = true,
@@ -81,14 +74,13 @@ export function useMenu(props: UseMenuProps) {
     gutter,
     fixed = true,
     preventOverflow,
-    modifiers,
   } = props
 
   /**
    * If this menu is a nested menu, that means
    * there's a parent menu context
    */
-  const parentMenu = useMenuContext() as UseMenuReturn | undefined
+  const parentMenu = context
 
   /**
    * Check if this menu is a nested menu or top level menu
@@ -115,7 +107,6 @@ export function useMenu(props: UseMenuProps) {
     forceUpdate: isOpen,
     gutter: hasParentMenu ? 0 : gutter,
     preventOverflow,
-    modifiers: hasParentMenu ? undefined : modifiers,
   })
 
   const [focusedIndex, setFocusedIndex] = React.useState(-1)
@@ -145,7 +136,7 @@ export function useMenu(props: UseMenuProps) {
   useUpdateEffect(() => {
     if (!isOpen && !hasParentMenu) {
       if (buttonRef.current) {
-        buttonRef.current.focus()
+        ensureFocus(buttonRef.current)
       }
     }
   }, [isOpen, hasParentMenu])
@@ -202,13 +193,17 @@ export interface UseMenuListProps {
   onMouseEnter?: React.MouseEventHandler
   onBlur?: React.FocusEventHandler
   onKeyDown?: React.KeyboardEventHandler
+  /**
+   * Return value from `useMenu` hook
+   */
+  context: UseMenuReturn
   style?: React.CSSProperties
   className?: string
   hidden?: boolean
 }
 
 export function useMenuList(props: UseMenuListProps) {
-  const menu = useMenuContext()
+  const { context: menu, ...htmlProps } = props
 
   const {
     focusedIndex,
@@ -258,18 +253,8 @@ export function useMenuList(props: UseMenuListProps) {
       )
       const isButton = target?.hasAttribute("aria-controls")
 
-      if (parentIsButton && isButton) {
+      if (parentIsButton || isButton) {
         return
-      }
-
-      /**
-       * Allow only one menu to be open at a time
-       */
-      const isRootButton = isButton && !hasParentMenu
-
-      if (isRootButton && closeOnBlur) {
-        onClose()
-        target.focus()
       }
 
       /**
@@ -363,7 +348,7 @@ export function useMenuList(props: UseMenuListProps) {
         if (hasParentMenu) {
           onClose()
           if (buttonRef.current) {
-            focus(buttonRef.current)
+            ensureFocus(buttonRef.current)
           }
         }
       },
@@ -386,8 +371,8 @@ export function useMenuList(props: UseMenuListProps) {
   )
 
   return {
-    ...props,
-    className: cx("chakra-menu__menu-list", props.className),
+    ...htmlProps,
+    className: cx("chakra-menu__menu-list", htmlProps.className),
     ref: mergeRefs(menuRef, popper.ref),
     tabIndex: -1,
     role: "menu",
@@ -395,7 +380,7 @@ export function useMenuList(props: UseMenuListProps) {
     hidden: !isOpen,
     "aria-orientation": "vertical" as React.AriaAttributes["aria-orientation"],
     "data-placement": placement,
-    style: { ...props.style, ...popper.style },
+    style: { ...htmlProps.style, ...popper.style },
     onMouseEnter: callAllHandlers(props.onMouseEnter, onMouseEnter),
     onKeyDown: callAllHandlers(props.onKeyDown, onKeyDown),
     onBlur: callAllHandlers(props.onBlur, onBlur),
@@ -416,10 +401,14 @@ export interface UseMenuButtonProps {
   onMouseLeave?: React.MouseEventHandler
   onKeyDown?: React.KeyboardEventHandler
   className?: string
+  /**
+   * Return value from `useMenu` hook
+   */
+  context: UseMenuReturn
 }
 
 export function useMenuButton(props: UseMenuButtonProps) {
-  const menu = useMenuContext()
+  const { context: menu, ...htmlProps } = props
 
   const {
     setFocusedIndex,
@@ -436,7 +425,7 @@ export function useMenuButton(props: UseMenuButtonProps) {
   const openAndFocusMenu = React.useCallback(() => {
     onOpen()
     if (menuRef.current) {
-      focus(menuRef.current)
+      ensureFocus(menuRef.current)
     }
   }, [onOpen, menuRef])
 
@@ -551,9 +540,9 @@ export function useMenuButton(props: UseMenuButtonProps) {
   })
 
   return {
-    ...props,
+    ...htmlProps,
     ref: mergeRefs(menu.buttonRef, menu.reference.ref),
-    className: cx("chakra-menu__menu-button", props.className),
+    className: cx("chakra-menu__menu-button", htmlProps.className),
     id: menu.buttonId,
     "data-active": dataAttr(menu.isOpen),
     "aria-expanded": menu.isOpen,
@@ -576,6 +565,10 @@ export function useMenuButton(props: UseMenuButtonProps) {
 
 export interface UseMenuItemProps {
   onMouseOut?: React.MouseEventHandler
+  /**
+   * Return value from `useMenu` hook
+   */
+  context: UseMenuReturn
   onClick?: React.MouseEventHandler
   isDisabled?: boolean
   isFocusable?: boolean
@@ -584,14 +577,13 @@ export interface UseMenuItemProps {
 
 export function useMenuItem(props: UseMenuItemProps) {
   const {
+    context: menu,
     onMouseOut: onMouseOutProp,
     onClick: onClickProp,
     isDisabled,
     isFocusable,
     ...htmlProps
   } = props
-
-  const menu = useMenuContext()
 
   const {
     domContext,
@@ -661,7 +653,7 @@ export function useMenuItem(props: UseMenuItemProps) {
   useUpdateEffect(() => {
     if (isFocused && !trulyDisabled) {
       if (ref.current) {
-        focus(ref.current)
+        ensureFocus(ref.current)
       }
     } else {
       if (document.activeElement !== menuRef.current) {
@@ -699,25 +691,27 @@ export interface UseMenuOptionProps extends UseMenuItemProps {
 
 export function useMenuOption(props: UseMenuOptionProps) {
   const {
+    context: menu,
     onMouseOut,
     onClick,
     isDisabled,
     isFocusable,
     type = "radio",
     isChecked,
-    ...rest
+    ...htmlProps
   } = props
 
   const ownProps = useMenuItem({
     isDisabled,
     isFocusable,
+    context: menu,
     onClick,
   })
 
   return {
-    ...rest,
+    ...htmlProps,
     ...ownProps,
-    className: cx("chakra-menu__menuitem-option", rest.className),
+    className: cx("chakra-menu__menuitem-option", htmlProps.className),
     role: `menuitem${type}`,
     "aria-checked": isChecked as React.AriaAttributes["aria-checked"],
   }
@@ -794,14 +788,4 @@ export function useMenuOptionGroup(props: UseMenuOptionGroupProps) {
     className: cx("chakra-menu__option-group", htmlProps.className),
     children: clones,
   }
-}
-
-export function useMenuState() {
-  const { isOpen, onClose } = useMenuContext()
-  return { isOpen, onClose }
-}
-
-export function useIsSubMenu() {
-  const menu = useMenuContext()
-  return menu.hasParentMenu
 }
