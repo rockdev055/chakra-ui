@@ -41,7 +41,7 @@ import {
 ### Changing the slider color
 
 ```jsx
-<Slider colorScheme="pink" defaultValue={30}>
+<Slider color="pink" defaultValue={30}>
   <SliderTrack>
     <SliderFilledTrack />
   </SliderTrack>
