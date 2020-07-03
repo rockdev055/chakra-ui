@@ -9,14 +9,12 @@
 <br>
 
 <p align="center">
+  <img alt="All Contributors" src="https://img.shields.io/github/contributors/chakra-ui/chakra-ui"/>
   <img alt="Bundle Size" src="https://badgen.net/bundlephobia/minzip/@chakra-ui/core"/>
-  <img alt="Language grade: JavaScript" src="https://img.shields.io/lgtm/grade/javascript/g/chakra-ui/chakra-ui.svg?logo=lgtm&logoWidth=18"/>
   <img alt="MIT License" src="https://img.shields.io/github/license/chakra-ui/chakra-ui"/>
   <img alt="NPM Downloads" src="https://img.shields.io/npm/dm/@chakra-ui/core.svg?style=flat"/>
   <img alt="Github Stars" src="https://badgen.net/github/stars/chakra-ui/chakra-ui" />
-  <a href="https://discord.gg/yxpPm4q">
-    <img alt="Discord" src="https://img.shields.io/discord/660863154703695893.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2" />
-  </a>
+  <a href="https://lernajs.io/"><img alt="Lerna" src="https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg" /></a>
 </p>
 <br />
 
@@ -285,7 +283,7 @@ Thanks goes to these wonderful people
     <td align="center"><a href="http://www.ivoilic.com"><img src="https://avatars1.githubusercontent.com/u/3476570?v=4" width="64px;" alt=""/><br /><sub><b>Ivo Ilić</b></sub></a><br /><a href="https://github.com/chakra-ui/chakra-ui/commits?author=ivoilic" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/avaneeshtripathi"><img src="https://avatars3.githubusercontent.com/u/20407975?v=4" width="64px;" alt=""/><br /><sub><b>Avaneesh Tripathi</b></sub></a><br /><a href="https://github.com/chakra-ui/chakra-ui/commits?author=avaneeshtripathi" title="Code">💻</a></td>
     <td align="center"><a href="http://habd.as"><img src="https://avatars3.githubusercontent.com/u/65664227?v=4" width="64px;" alt=""/><br /><sub><b>balibebas</b></sub></a><br /><a href="https://github.com/chakra-ui/chakra-ui/commits?author=balibebas" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://navin-moorthy.github.io/"><img src="https://avatars0.githubusercontent.com/u/39694575?v=4" width="64px;" alt=""/><br /><sub><b>Navin Moorthy</b></sub></a><br /><a href="https://github.com/chakra-ui/chakra-ui/commits?author=navin-moorthy" title="Code">💻</a></td>
+    <td align="center"><a href="https://navin-moorthy.github.io/"><img src="https://avatars0.githubusercontent.com/u/39694575?v=4" width="64px;" alt=""/><br /><sub><b>Navin Moorthy</b></sub></a><br /><a href="https://github.com/chakra-ui/chakra-ui/commits?author=navin-moorthy" title="Code">💻</a> <a href="https://github.com/chakra-ui/chakra-ui/commits?author=navin-moorthy" title="Documentation">📖</a></td>
   </tr>
 </table>
 
