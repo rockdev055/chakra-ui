@@ -1,9 +1,8 @@
-import { ColorModeProvider } from "@chakra-ui/color-mode"
-import { createContext, merge, Dict } from "@chakra-ui/utils"
-import { ThemeContext } from "@emotion/core"
+import { ColorModeProvider, useColorMode } from "@chakra-ui/color-mode"
+import css, { SystemStyleObject } from "@chakra-ui/css"
+import { createContext, Dict, get, merge, runIfFn } from "@chakra-ui/utils"
+import { Global, Interpolation, ThemeContext } from "@emotion/core"
 import * as React from "react"
-import { ThemingProps } from "./system.types"
-import { GlobalStyle } from "./global"
 
 export interface ThemeProviderProps {
   children?: React.ReactNode
@@ -28,7 +27,7 @@ export function useTheme<T extends object = Dict>() {
   )
   if (!theme) {
     throw Error(
-      "useTheme: `theme` is undefined. Seems you forgot to wrap your app in `<ThemeProvider />` or `<ChakraProvider />`",
+      "useTheme: `theme` is undefined. Seems you forgot to wrap your app in `<ChakraProvider />`",
     )
   }
 
@@ -57,9 +56,23 @@ export function ChakraProvider(props: ChakraProviderProps) {
   )
 }
 
-const [ThemingProvider, useThemingContext] = createContext<ThemingProps>({
-  strict: false,
-  name: "ThemingContext",
+const [StylesProvider, useStyles] = createContext<Dict<SystemStyleObject>>({
+  name: "StylesContext",
 })
 
-export { ThemingProvider, useThemingContext }
+export { StylesProvider, useStyles }
+
+export function GlobalStyle() {
+  const { colorMode } = useColorMode()
+  return (
+    <Global
+      styles={(theme) => {
+        const styleObjectOrFn = get(theme, "styles.global")
+        const bodyStyles = runIfFn(styleObjectOrFn, { theme, colorMode })
+        if (!bodyStyles) return
+        const styles = css({ body: bodyStyles })(theme)
+        return styles as Interpolation
+      }}
+    />
+  )
+}
