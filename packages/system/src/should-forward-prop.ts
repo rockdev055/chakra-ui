@@ -1,6 +1,6 @@
 import { propNames } from "@chakra-ui/parser"
-import { memoizeOne } from "@chakra-ui/utils"
-import isValid from "@emotion/is-prop-valid"
+import { Dict, memoizeOne, omit } from "@chakra-ui/utils"
+import isValidAttribute from "@emotion/is-prop-valid"
 
 const stylePropNames = [
   ...propNames,
@@ -12,7 +12,9 @@ const stylePropNames = [
 
 function createShouldForwardProp(props: any) {
   const regex = new RegExp(`^(${props.join("|")})$`)
-  return memoizeOne((prop: string) => isValid(prop) && !regex.test(prop))
+  return memoizeOne(
+    (prop: string) => isValidAttribute(prop) && !regex.test(prop),
+  )
 }
 
 const shouldForwardProp = createShouldForwardProp(stylePropNames)
@@ -29,8 +31,38 @@ export const validHTMLProps = {
   htmlSize: "size",
 }
 
-export function isPropValid(prop: string) {
+const isValidHTMLProp = (value: any): value is keyof ValidHTMLProps =>
+  value in validHTMLProps
+
+function isPropValid(prop: string) {
   const shouldPassThrough =
-    prop in validHTMLProps || ["sx", "css"].includes(prop)
+    validHTMLProps.hasOwnProperty(prop) || prop === "sx" || prop === "css"
   return shouldPassThrough ? true : shouldForwardProp(prop)
+}
+
+export function filterProps(props: Dict) {
+  const validProps: Dict = {}
+  for (const prop in props) {
+    if (!isPropValid(prop)) continue
+    const propKey = isValidHTMLProp(prop) ? validHTMLProps[prop] : prop
+    validProps[propKey] = props[prop]
+  }
+  return validProps
+}
+
+export function removeStyleProps(props: Dict) {
+  return omit(props, stylePropNames) as Dict
+}
+
+export function customShouldForwardProp(
+  fn: (propName: string) => boolean,
+  props: Dict,
+) {
+  const validProps: Dict = {}
+  for (const prop in props) {
+    if (fn(prop)) {
+      validProps[prop] = props[prop]
+    }
+  }
+  return validProps
 }
