@@ -26,11 +26,11 @@ export interface UseTooltipProps {
   /**
    * Callback to run when the tooltip shows
    */
-  onOpen?(): void
+  onShow?(): void
   /**
    * Callback to run when the tooltip hides
    */
-  onClose?(): void
+  onHide?(): void
   /**
    * The Popper.js placement of the tooltip
    */
@@ -60,12 +60,12 @@ export interface UseTooltipProps {
 
 export function useTooltip(props: UseTooltipProps = {}) {
   const {
-    showDelay = 200,
-    hideDelay = 200,
+    showDelay = 0,
+    hideDelay = 0,
     closeOnClick = true,
     closeOnMouseDown,
-    onOpen,
-    onClose,
+    onShow,
+    onHide,
     placement,
     id,
     isOpen: isOpenProp,
@@ -74,11 +74,11 @@ export function useTooltip(props: UseTooltipProps = {}) {
     modifiers,
   } = props
 
-  const { isOpen, onOpen: _onOpen, onClose: _onClose } = useDisclosure({
+  const { isOpen, onOpen, onClose } = useDisclosure({
     isOpen: isOpenProp,
     defaultIsOpen,
-    onOpen: onOpen,
-    onClose: onClose,
+    onOpen: onShow,
+    onClose: onHide,
   })
 
   const popper = usePopper({
@@ -97,31 +97,31 @@ export function useTooltip(props: UseTooltipProps = {}) {
   const exitTimeoutRef = React.useRef<NodeJS.Timeout>()
 
   const openWithDelay = () => {
-    enterTimeoutRef.current = setTimeout(_onOpen, showDelay)
+    enterTimeoutRef.current = setTimeout(onOpen, showDelay)
   }
 
   const closeWithDelay = () => {
     if (enterTimeoutRef.current) {
       clearTimeout(enterTimeoutRef.current)
     }
-    exitTimeoutRef.current = setTimeout(_onClose, hideDelay)
+    exitTimeoutRef.current = setTimeout(onClose, hideDelay)
   }
 
   const onClick = () => {
     if (closeOnClick) {
-      closeWithDelay()
+      onClose()
     }
   }
 
   const onMouseDown = () => {
     if (closeOnMouseDown) {
-      closeWithDelay()
+      onClose()
     }
   }
 
   const onKeyDown = (event: KeyboardEvent) => {
     if (isOpen && event.key === "Escape") {
-      closeWithDelay()
+      onClose()
     }
   }
 

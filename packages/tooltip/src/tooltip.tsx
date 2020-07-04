@@ -92,12 +92,12 @@ export const Tooltip = React.forwardRef(function Tooltip(
   const hiddenProps = pick(_tooltipProps, ["role", "id"])
 
   /**
-   * If the `label` is empty, there's no
+   * If the `label` or `aria-label` is empty, there's no
    * point showing the tooltip. Let's simply return back the children
    *
    * @see https://github.com/chakra-ui/chakra-ui/issues/601
    */
-  if (!label) {
+  if (!(label || ariaLabel)) {
     return <React.Fragment>{children}</React.Fragment>
   }
 
