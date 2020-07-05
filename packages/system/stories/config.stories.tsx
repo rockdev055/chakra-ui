@@ -1,38 +1,31 @@
-import { ComponentTheme, mode } from "@chakra-ui/theme-tools"
+import * as React from "react"
+import useStyleConfig from "../src/use-style-config"
+import styled from "../src/styled"
 
-/**
- * Since the `maxWidth` prop references theme.sizes internally,
- * we can leverage that to size our modals.
- */
+export default {
+  title: "config",
+}
+
 const getSize = (value: string) => ({
   Content: { maxWidth: value },
 })
 
-export interface Props {
-  scrollBehavior?: "inside" | "outside"
-  isCentered?: boolean
-}
-
-const Modal: ComponentTheme<Props> = {
+const Modal = {
   defaultProps: {
     size: "md",
   },
   baseStyle: (props) => ({
     Overlay: {
       bg: "blackAlpha.600",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: props.isCentered ? "center" : "flex-start",
-      overflow: props.scrollBehavior === "inside" ? "hidden" : "auto",
     },
     Content: {
       borderRadius: "md",
-      bg: mode("white", "gray.700")(props),
+      bg: "red",
       color: "inherit",
       marginY: "3.75rem",
       maxHeight:
         props.scrollBehavior === "inside" ? "calc(100vh - 7.5rem)" : undefined,
-      boxShadow: mode("lg", "dark-lg")(props),
+      boxShadow: "lg",
     },
     Header: {
       paddingX: 6,
@@ -43,8 +36,6 @@ const Modal: ComponentTheme<Props> = {
     Body: {
       paddingX: 6,
       paddingY: 2,
-      flex: 1,
-      overflow: props.scrollBehavior === "inside" ? "auto" : undefined,
     },
     Footer: {
       paddingX: 6,
@@ -66,18 +57,17 @@ const Modal: ComponentTheme<Props> = {
   },
 }
 
-export const ModalSizes = {
-  xs: "xs",
-  sm: "sm",
-  md: "md",
-  lg: "lg",
-  xl: "xl",
-  "2xl": "2xl",
-  "3xl": "3xl",
-  "4xl": "4xl",
-  "5xl": "5xl",
-  "6xl": "6xl",
-  full: "full",
-}
+const Button = styled("button", { label: "Button" })
 
-export default Modal
+export const Example = () => {
+  const result = useStyleConfig("Button", {
+    scrollBehavior: "inside",
+    styleConfig: Modal,
+  })
+  console.log(result)
+  return (
+    <Button mt="40px" color="red.400" isTruncated _hover={{ color: "red.500" }}>
+      Welcome
+    </Button>
+  )
+}

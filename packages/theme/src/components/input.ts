@@ -1,19 +1,18 @@
 import {
   ComponentTheme,
-  mode,
-  Props,
   getColor,
-  StyleObject,
+  mode,
+  ExtendProps,
 } from "@chakra-ui/theme-tools"
 
-export interface InputProps {
+export interface InputOptions {
   focusBorderColor?: string
   errorBorderColor?: string
 }
 
-type VariantProps = Props & Required<InputProps>
+type InputProps = ExtendProps<InputOptions>
 
-function getDefaults(props: VariantProps) {
+function getDefaults(props: InputProps) {
   const { focusBorderColor: fc, errorBorderColor: ec } = props
   return {
     focusBorderColor: fc || mode("blue.500", "blue.300")(props),
@@ -21,134 +20,173 @@ function getDefaults(props: VariantProps) {
   }
 }
 
-function outline(props: VariantProps): StyleObject {
+function outline(props: InputProps) {
   const { theme } = props
   const { focusBorderColor: fc, errorBorderColor: ec } = getDefaults(props)
 
   return {
-    border: "1px solid",
-    borderColor: mode("inherit", "whiteAlpha.50")(props),
-    bg: mode("white", "whiteAlpha.100")(props),
-    _hover: {
-      borderColor: mode("gray.300", "whiteAlpha.200")(props),
+    Input: {
+      border: "1px solid",
+      borderColor: mode("inherit", "whiteAlpha.50")(props),
+      bg: mode("white", "whiteAlpha.100")(props),
+      _hover: {
+        borderColor: mode("gray.300", "whiteAlpha.200")(props),
+      },
+      _readOnly: {
+        boxShadow: "none !important",
+        userSelect: "all",
+      },
+      _disabled: {
+        opacity: 0.4,
+        cursor: "not-allowed",
+      },
+      _focus: {
+        zIndex: 1,
+        borderColor: getColor(theme, fc),
+        boxShadow: `0 0 0 1px ${getColor(theme, fc)}`,
+      },
+      _invalid: {
+        borderColor: getColor(theme, ec),
+        boxShadow: `0 0 0 1px ${getColor(theme, ec)}`,
+      },
     },
-    _readOnly: {
-      boxShadow: "none !important",
-      userSelect: "all",
-    },
-    _disabled: {
-      opacity: 0.4,
-      cursor: "not-allowed",
-    },
-    _focus: {
-      zIndex: 1,
-      borderColor: getColor(theme, fc),
-      boxShadow: `0 0 0 1px ${getColor(theme, fc)}`,
-    },
-    _invalid: {
-      borderColor: getColor(theme, ec),
-      boxShadow: `0 0 0 1px ${getColor(theme, ec)}`,
+    Addon: {
+      border: "1px solid",
+      borderColor: mode("inherit", "whiteAlpha.50")(props),
+      bg: mode("gray.100", "whiteAlpha.300")(props),
     },
   }
 }
 
-function filled(props: VariantProps): StyleObject {
+function filled(props: InputProps) {
   const { theme } = props
   const { focusBorderColor: fc, errorBorderColor: ec } = getDefaults(props)
 
   return {
-    border: "2px solid",
-    borderColor: "transparent",
-    bg: mode("gray.100", "whiteAlpha.50")(props),
-    _hover: {
-      bg: mode("gray.200", "whiteAlpha.100")(props),
+    Input: {
+      border: "2px solid",
+      borderColor: "transparent",
+      bg: mode("gray.100", "whiteAlpha.50")(props),
+      _hover: {
+        bg: mode("gray.200", "whiteAlpha.100")(props),
+      },
+      _readOnly: {
+        boxShadow: "none !important",
+        userSelect: "all",
+      },
+      _disabled: {
+        opacity: 0.4,
+        cursor: "not-allowed",
+      },
+      _focus: {
+        zIndex: 1,
+        bg: "transparent",
+        borderColor: getColor(theme, fc),
+      },
+      _invalid: {
+        borderColor: getColor(theme, ec),
+      },
     },
-    _readOnly: {
-      boxShadow: "none !important",
-      userSelect: "all",
+    Addon: {
+      border: "2px solid",
+      borderColor: "transparent",
+      bg: mode("gray.100", "whiteAlpha.50")(props),
     },
-    _disabled: {
-      opacity: 0.4,
-      cursor: "not-allowed",
-    },
-    _focus: {
-      zIndex: 1,
+  }
+}
+
+function flushed(props: InputProps) {
+  const { theme } = props
+  const { focusBorderColor: fc, errorBorderColor: ec } = getDefaults(props)
+
+  return {
+    Input: {
+      borderBottom: "2px solid",
+      borderColor: "inherit",
+      borderRadius: 0,
+      paddingX: 0,
       bg: "transparent",
-      borderColor: getColor(theme, fc),
+      _readOnly: {
+        boxShadow: "none !important",
+        userSelect: "all",
+      },
+      _focus: {
+        zIndex: 1,
+        borderColor: getColor(theme, fc),
+      },
+      _invalid: {
+        borderColor: getColor(theme, ec),
+      },
     },
-    _invalid: {
-      borderColor: getColor(theme, ec),
-    },
-  }
-}
-
-function flushed(props: VariantProps): StyleObject {
-  const { theme } = props
-  const { focusBorderColor: fc, errorBorderColor: ec } = getDefaults(props)
-
-  return {
-    borderBottom: "2px solid",
-    borderColor: "inherit",
-    borderRadius: 0,
-    paddingX: 0,
-    bg: "transparent",
-    _readOnly: {
-      boxShadow: "none !important",
-      userSelect: "all",
-    },
-    _focus: {
-      zIndex: 1,
-      borderColor: getColor(theme, fc),
-    },
-    _invalid: {
-      borderColor: getColor(theme, ec),
+    Addon: {
+      borderBottom: "2px solid",
+      borderColor: "inherit",
+      borderRadius: 0,
+      paddingX: 0,
+      bg: "transparent",
     },
   }
 }
 
 const unstyled = {
-  bg: "transparent",
-  paddingX: 0,
-  height: "auto",
+  Input: {
+    bg: "transparent",
+    paddingX: 0,
+    height: "auto",
+  },
+  Addon: {
+    bg: "transparent",
+    paddingX: 0,
+    height: "auto",
+  },
 }
 
-const sizes: InputTheme["sizes"] = {
+const sizes = {
   lg: {
-    fontSize: "lg",
-    paddingLeft: 4,
-    paddingRight: 4,
-    height: 12,
-    borderRadius: "md",
+    Input: {
+      fontSize: "lg",
+      paddingLeft: 4,
+      paddingRight: 4,
+      height: 12,
+      borderRadius: "md",
+    },
   },
   md: {
-    fontSize: "md",
-    paddingLeft: 4,
-    paddingRight: 4,
-    height: 10,
-    borderRadius: "md",
+    Input: {
+      fontSize: "md",
+      paddingLeft: 4,
+      paddingRight: 4,
+      height: 10,
+      borderRadius: "md",
+    },
   },
   sm: {
-    fontSize: "sm",
-    paddingLeft: 3,
-    paddingRight: 3,
-    height: 8,
-    borderRadius: "sm",
+    Input: {
+      fontSize: "sm",
+      paddingLeft: 3,
+      paddingRight: 3,
+      height: 8,
+      borderRadius: "sm",
+    },
   },
 }
 
 export type InputTheme = ComponentTheme<InputProps>
 
-const Input: InputTheme = {
+const Input = {
   defaultProps: {
     size: "md",
     variant: "outline",
   },
   baseStyle: {
-    width: "100%",
-    outline: 0,
-    position: "relative",
-    appearance: "none",
-    transition: "all 0.2s",
+    Input: {
+      width: "100%",
+      outline: 0,
+      position: "relative",
+      appearance: "none",
+      transition: "all 0.2s",
+    },
+    Addon: {},
   },
   sizes,
   variants: {
