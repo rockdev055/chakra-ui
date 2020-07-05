@@ -14,7 +14,6 @@ const base: SystemProps = {
 
 const Editable: ComponentTheme = {
   baseStyle: {
-    Container: {},
     Preview: {
       ...base,
       cursor: "text",

@@ -2,7 +2,6 @@ import { ComponentTheme } from "@chakra-ui/theme-tools"
 
 const Accordion: ComponentTheme = {
   baseStyle: {
-    Container: {},
     Item: {
       borderTopWidth: "1px",
       borderColor: "inherit",

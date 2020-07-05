@@ -6,34 +6,24 @@ const Spinner: ComponentTheme = {
   },
   sizes: {
     xs: {
-      Container: {
-        width: "0.75rem",
-        height: "0.75rem",
-      },
+      width: "0.75rem",
+      height: "0.75rem",
     },
     sm: {
-      Container: {
-        width: "1rem",
-        height: "1rem",
-      },
+      width: "1rem",
+      height: "1rem",
     },
     md: {
-      Container: {
-        width: "1.5rem",
-        height: "1.5rem",
-      },
+      width: "1.5rem",
+      height: "1.5rem",
     },
     lg: {
-      Container: {
-        width: "2rem",
-        height: "2rem",
-      },
+      width: "2rem",
+      height: "2rem",
     },
     xl: {
-      Container: {
-        width: "3rem",
-        height: "3rem",
-      },
+      width: "3rem",
+      height: "3rem",
     },
   },
 }

@@ -26,35 +26,28 @@ function outline(props: VariantProps): StyleObject {
   const { focusBorderColor: fc, errorBorderColor: ec } = getDefaults(props)
 
   return {
-    Container: {
-      border: "1px solid",
-      borderColor: mode("inherit", "whiteAlpha.50")(props),
-      bg: mode("white", "whiteAlpha.100")(props),
-      _hover: {
-        borderColor: mode("gray.300", "whiteAlpha.200")(props),
-      },
-      _readOnly: {
-        boxShadow: "none !important",
-        userSelect: "all",
-      },
-      _disabled: {
-        opacity: 0.4,
-        cursor: "not-allowed",
-      },
-      _focus: {
-        zIndex: 1,
-        borderColor: getColor(theme, fc),
-        boxShadow: `0 0 0 1px ${getColor(theme, fc)}`,
-      },
-      _invalid: {
-        borderColor: getColor(theme, ec),
-        boxShadow: `0 0 0 1px ${getColor(theme, ec)}`,
-      },
+    border: "1px solid",
+    borderColor: mode("inherit", "whiteAlpha.50")(props),
+    bg: mode("white", "whiteAlpha.100")(props),
+    _hover: {
+      borderColor: mode("gray.300", "whiteAlpha.200")(props),
     },
-    Addon: {
-      border: "1px solid",
-      borderColor: mode("inherit", "whiteAlpha.50")(props),
-      bg: mode("gray.100", "whiteAlpha.300")(props),
+    _readOnly: {
+      boxShadow: "none !important",
+      userSelect: "all",
+    },
+    _disabled: {
+      opacity: 0.4,
+      cursor: "not-allowed",
+    },
+    _focus: {
+      zIndex: 1,
+      borderColor: getColor(theme, fc),
+      boxShadow: `0 0 0 1px ${getColor(theme, fc)}`,
+    },
+    _invalid: {
+      borderColor: getColor(theme, ec),
+      boxShadow: `0 0 0 1px ${getColor(theme, ec)}`,
     },
   }
 }
@@ -64,34 +57,27 @@ function filled(props: VariantProps): StyleObject {
   const { focusBorderColor: fc, errorBorderColor: ec } = getDefaults(props)
 
   return {
-    Container: {
-      border: "2px solid",
-      borderColor: "transparent",
-      bg: mode("gray.100", "whiteAlpha.50")(props),
-      _hover: {
-        bg: mode("gray.200", "whiteAlpha.100")(props),
-      },
-      _readOnly: {
-        boxShadow: "none !important",
-        userSelect: "all",
-      },
-      _disabled: {
-        opacity: 0.4,
-        cursor: "not-allowed",
-      },
-      _focus: {
-        zIndex: 1,
-        bg: "transparent",
-        borderColor: getColor(theme, fc),
-      },
-      _invalid: {
-        borderColor: getColor(theme, ec),
-      },
+    border: "2px solid",
+    borderColor: "transparent",
+    bg: mode("gray.100", "whiteAlpha.50")(props),
+    _hover: {
+      bg: mode("gray.200", "whiteAlpha.100")(props),
     },
-    Addon: {
-      border: "2px solid",
-      borderColor: "transparent",
-      bg: mode("gray.100", "whiteAlpha.50")(props),
+    _readOnly: {
+      boxShadow: "none !important",
+      userSelect: "all",
+    },
+    _disabled: {
+      opacity: 0.4,
+      cursor: "not-allowed",
+    },
+    _focus: {
+      zIndex: 1,
+      bg: "transparent",
+      borderColor: getColor(theme, fc),
+    },
+    _invalid: {
+      borderColor: getColor(theme, ec),
     },
   }
 }
@@ -101,74 +87,52 @@ function flushed(props: VariantProps): StyleObject {
   const { focusBorderColor: fc, errorBorderColor: ec } = getDefaults(props)
 
   return {
-    Container: {
-      borderBottom: "2px solid",
-      borderColor: "inherit",
-      borderRadius: 0,
-      paddingX: 0,
-      bg: "transparent",
-      _readOnly: {
-        boxShadow: "none !important",
-        userSelect: "all",
-      },
-      _focus: {
-        zIndex: 1,
-        borderColor: getColor(theme, fc),
-      },
-      _invalid: {
-        borderColor: getColor(theme, ec),
-      },
+    borderBottom: "2px solid",
+    borderColor: "inherit",
+    borderRadius: 0,
+    paddingX: 0,
+    bg: "transparent",
+    _readOnly: {
+      boxShadow: "none !important",
+      userSelect: "all",
     },
-    Addon: {
-      borderBottom: "2px solid",
-      borderColor: "inherit",
-      borderRadius: 0,
-      paddingX: 0,
-      bg: "transparent",
+    _focus: {
+      zIndex: 1,
+      borderColor: getColor(theme, fc),
+    },
+    _invalid: {
+      borderColor: getColor(theme, ec),
     },
   }
 }
 
 const unstyled = {
-  Container: {
-    bg: "transparent",
-    paddingX: 0,
-    height: "auto",
-  },
-  Addon: {
-    bg: "transparent",
-    paddingX: 0,
-    height: "auto",
-  },
+  bg: "transparent",
+  paddingX: 0,
+  height: "auto",
 }
 
 const sizes: InputTheme["sizes"] = {
   lg: {
-    Container: {
-      fontSize: "lg",
-      paddingLeft: 4,
-      paddingRight: 4,
-      height: 12,
-      borderRadius: "md",
-    },
+    fontSize: "lg",
+    paddingLeft: 4,
+    paddingRight: 4,
+    height: 12,
+    borderRadius: "md",
   },
   md: {
-    Container: {
-      fontSize: "md",
-      paddingLeft: 4,
-      paddingRight: 4,
-      height: 10,
-      borderRadius: "md",
-    },
+    fontSize: "md",
+    paddingLeft: 4,
+    paddingRight: 4,
+    height: 10,
+    borderRadius: "md",
   },
   sm: {
-    Container: {
-      fontSize: "sm",
-      paddingLeft: 3,
-      paddingRight: 3,
-      height: 8,
-      borderRadius: "sm",
-    },
+    fontSize: "sm",
+    paddingLeft: 3,
+    paddingRight: 3,
+    height: 8,
+    borderRadius: "sm",
   },
 }
 
@@ -180,14 +144,11 @@ const Input: InputTheme = {
     variant: "outline",
   },
   baseStyle: {
-    Container: {
-      width: "100%",
-      outline: 0,
-      position: "relative",
-      appearance: "none",
-      transition: "all 0.2s",
-    },
-    Addon: {},
+    width: "100%",
+    outline: 0,
+    position: "relative",
+    appearance: "none",
+    transition: "all 0.2s",
   },
   sizes,
   variants: {

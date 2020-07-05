@@ -22,12 +22,12 @@ function getSize(size: string) {
   }
 
   return {
-    Container: styles,
+    Root: styles,
     ExcessLabel: styles,
   }
 }
 
-function getContainerStyle(props: Props & { name?: string }) {
+function getRootStyle(props: Props & { name?: string }) {
   const { name, theme: t } = props
 
   const bg = name ? randomColor({ string: name }) : "gray.400"
@@ -50,9 +50,9 @@ const Avatar: ComponentTheme<AvatarProps> = {
     size: "md",
   },
   baseStyle: (props) => ({
-    Container: {
+    Root: {
       verticalAlign: "top",
-      ...getContainerStyle(props),
+      ...getRootStyle(props),
     },
     Badge: {
       transform: "translate(25%, 25%)",

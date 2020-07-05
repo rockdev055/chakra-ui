@@ -21,9 +21,7 @@ import {
   transformWithConfig as tx,
 } from "./css.utils"
 
-export const css = (styleObject: StyleObjectOrFn = {}) => (
-  props: PropsOrTheme,
-) => {
+export const css = (styleObject: StyleObjectOrFn) => (props: PropsOrTheme) => {
   const theme = determineTheme(props)
 
   let computedStyles: CSSObject = {}
@@ -59,7 +57,7 @@ export const css = (styleObject: StyleObjectOrFn = {}) => (
      */
     const valueOrFn = styles[key]
     let value = runIfFn(valueOrFn, theme)
-    if (value && isResponsiveObjectLike(value)) {
+    if (isResponsiveObjectLike(value)) {
       value = objectToArrayNotation(value)
     }
 

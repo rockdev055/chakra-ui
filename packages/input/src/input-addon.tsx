@@ -1,4 +1,4 @@
-import { chakra, PropsOf, useStyles } from "@chakra-ui/system"
+import { chakra, PropsOf } from "@chakra-ui/system"
 import { cx, __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
 
@@ -17,7 +17,14 @@ const placements = {
   },
 }
 
+/**
+ * StyledAddon
+ *
+ * Wrapper element around the InputAddon component
+ */
+
 const StyledAddon = chakra("div", {
+  themeKey: "InputAddon",
   baseStyle: {
     flex: "0 0 auto",
     width: "auto",
@@ -43,19 +50,7 @@ export const InputAddon = React.forwardRef(function InputAddonProps(
 ) {
   const { placement = "left", ...rest } = props
   const placementStyles = placements[placement] ?? {}
-  const styles = useStyles()
-
-  return (
-    <StyledAddon
-      ref={ref}
-      __css={{
-        ...placementStyles,
-        ...styles.Addon,
-      }}
-      {...placementStyles}
-      {...rest}
-    />
-  )
+  return <StyledAddon ref={ref} {...placementStyles} {...rest} />
 })
 
 if (__DEV__) {

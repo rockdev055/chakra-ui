@@ -15,7 +15,7 @@ function subtle(props: Props) {
   const bg = mode(light, dark)(props)
 
   return {
-    Container: { bg },
+    Root: { bg },
     Icon: {
       color: mode(`${c}.500`, `${c}.200`)(props),
     },
@@ -26,11 +26,11 @@ function leftAccent(props: Props) {
   const { colorScheme: c } = props
   const subtleStyle = subtle(props)
   return {
-    Container: {
+    Root: {
       paddingLeft: 3,
       borderLeft: "4px solid",
       borderColor: mode(`${c}.500`, `${c}.200`)(props),
-      ...subtleStyle.Container,
+      ...subtleStyle.Root,
     },
     Icon: {
       color: mode(`${c}.500`, `${c}.200`)(props),
@@ -42,11 +42,11 @@ function topAccent(props: Props) {
   const { colorScheme: c } = props
   const subtleStyle = subtle(props)
   return {
-    Container: {
+    Root: {
       paddingTop: 2,
       borderTop: "4px solid",
       borderColor: mode(`${c}.500`, `${c}.200`)(props),
-      ...subtleStyle.Container,
+      ...subtleStyle.Root,
     },
     Icon: {
       color: mode(`${c}.500`, `${c}.200`)(props),
@@ -57,7 +57,7 @@ function topAccent(props: Props) {
 function solid(props: Props) {
   const { colorScheme: c } = props
   return {
-    Container: {
+    Root: {
       bg: mode(`${c}.500`, `${c}.200`)(props),
       color: mode(`white`, `gray.900`)(props),
     },
@@ -69,13 +69,9 @@ const Alert: ComponentTheme = {
     variant: "subtle",
   },
   baseStyle: {
-    Container: {
+    Root: {
       paddingX: 4,
       paddingY: 3,
-    },
-    Title: {
-      fontWeight: "bold",
-      lineHeight: "normal",
     },
     Icon: {
       marginRight: 3,

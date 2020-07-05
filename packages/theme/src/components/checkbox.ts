@@ -23,7 +23,6 @@ const baseStyle = (props: Props) => {
 
   return {
     Control: {
-      width: "100%",
       transition: "box-shadow 250ms",
       border: "2px solid",
       borderRadius: "sm",
@@ -47,14 +46,7 @@ const baseStyle = (props: Props) => {
       },
     },
     Label: {
-      userSelect: "none",
       _disabled: { opacity: 0.4 },
-    },
-    Icon: {
-      width: "0.625rem",
-      height: "0.625rem",
-      color: "currentColor",
-      transition: "transform 240ms, opacity 240ms",
     },
   }
 }
