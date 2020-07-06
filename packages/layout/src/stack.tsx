@@ -77,7 +77,7 @@ export const Stack = React.forwardRef(function Stack(
 ) {
   const {
     direction = "column",
-    align = "flex-start",
+    align,
     justify,
     spacing = "0.5rem",
     wrap,
@@ -143,7 +143,7 @@ export const Stack = React.forwardRef(function Stack(
     return _child
   })
 
-  const __css = (theme: Dict) => {
+  const sx = (theme: Dict) => {
     if (hasDivider) return undefined
     return css({ [selector]: styles[selector] })(theme)
   }
@@ -159,7 +159,7 @@ export const Stack = React.forwardRef(function Stack(
       flexDirection={styles.flexDirection}
       flexWrap={wrap}
       className={_className}
-      __css={__css as any}
+      sx={sx as any}
       {...rest}
     >
       {clones}
@@ -174,9 +174,12 @@ if (__DEV__) {
 /**
  * A view that arranges its children in a horizontal line.
  */
-export const HStack = (props: StackProps) => (
-  <Stack align="center" {...props} direction="row" />
-)
+export const HStack = React.forwardRef(function HStack(
+  props: StackProps,
+  ref: React.Ref<any>,
+) {
+  return <Stack align="center" {...props} direction="row" ref={ref} />
+})
 
 if (__DEV__) {
   HStack.displayName = "HStack"
@@ -185,9 +188,12 @@ if (__DEV__) {
 /**
  * A view that arranges its children in a vertical line.
  */
-export const VStack = (props: StackProps) => (
-  <Stack align="center" {...props} direction="column" />
-)
+export const VStack = React.forwardRef(function VStack(
+  props: StackProps,
+  ref: React.Ref<any>,
+) {
+  return <Stack align="center" {...props} direction="column" ref={ref} />
+})
 
 if (__DEV__) {
   VStack.displayName = "VStack"
