@@ -21,7 +21,9 @@ import {
   transformWithConfig as tx,
 } from "./css.utils"
 
-export const css = (styleObject: StyleObjectOrFn) => (props: PropsOrTheme) => {
+export const css = (styleObject: StyleObjectOrFn = {}) => (
+  props: PropsOrTheme,
+) => {
   const theme = determineTheme(props)
 
   let computedStyles: CSSObject = {}
@@ -57,7 +59,7 @@ export const css = (styleObject: StyleObjectOrFn) => (props: PropsOrTheme) => {
      */
     const valueOrFn = styles[key]
     let value = runIfFn(valueOrFn, theme)
-    if (isResponsiveObjectLike(value)) {
+    if (value && isResponsiveObjectLike(value)) {
       value = objectToArrayNotation(value)
     }
 
@@ -65,7 +67,7 @@ export const css = (styleObject: StyleObjectOrFn) => (props: PropsOrTheme) => {
 
     if (key === "apply") {
       const style = css(get(theme, value))(theme)
-      computedStyles = merge(computedStyles, style)
+      computedStyles = merge({}, computedStyles, style)
       continue
     }
 
@@ -79,20 +81,20 @@ export const css = (styleObject: StyleObjectOrFn) => (props: PropsOrTheme) => {
       if (config?.properties) {
         config.properties.forEach((prop: any) => {
           const style = responsive(prop, value, config)
-          computedStyles = merge(computedStyles, style)
+          computedStyles = merge({}, computedStyles, style)
         })
         continue
       }
 
       if (config?.property) {
         const style = responsive(config.property, value, config)
-        computedStyles = merge(computedStyles, style)
+        computedStyles = merge({}, computedStyles, style)
         continue
       }
 
       if (config === true) {
         const style = responsive(key, value, config)
-        computedStyles = merge(computedStyles, style)
+        computedStyles = merge({}, computedStyles, style)
         continue
       }
 
@@ -103,7 +105,7 @@ export const css = (styleObject: StyleObjectOrFn) => (props: PropsOrTheme) => {
       if (isArray(value)) {
         const val = value.map((v: any) => css(v)(theme))
         const style = responsive(key, val, config)
-        computedStyles = merge(computedStyles, style)
+        computedStyles = merge({}, computedStyles, style)
         continue
       }
     }

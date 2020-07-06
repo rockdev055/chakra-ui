@@ -1,12 +1,13 @@
 import { BaseStyle } from "@chakra-ui/theme-tools"
 
 const register = {
-  parts: ["link"],
+  parts: ["container", "link", "separator"],
 } as const
 
 const baseStyle: BaseStyle<typeof register> = {
+  separator: {},
   link: {
-    transition: `all 0.15s ease-out`,
+    transition: "all 0.15s ease-out",
     cursor: "pointer",
     textDecoration: "none",
     outline: "none",
@@ -17,17 +18,12 @@ const baseStyle: BaseStyle<typeof register> = {
     _focus: {
       boxShadow: "outline",
     },
-    _disabled: {
-      opacity: 0.4,
-      cursor: "not-allowed",
-      textDecoration: "none",
-    },
   },
 }
 
-const link = {
+const Breadcrumb = {
   register,
   baseStyle,
 }
 
-export default link
+export default Breadcrumb
