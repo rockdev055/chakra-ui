@@ -163,8 +163,6 @@ const [AccordionContextProvider, useAccordionContext] = createContext<
   AccordionContext
 >({
   name: "AccordionContext",
-  errorMessage:
-    "useAccordionContext: `context` is undefined. Seems you forgot to wrap the accordion components in `<Accordion />`",
 })
 
 export { AccordionContextProvider }

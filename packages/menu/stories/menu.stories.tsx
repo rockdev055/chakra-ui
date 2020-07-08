@@ -20,7 +20,6 @@ import {
   MenuOptionGroup,
   MenuTransition,
 } from "../src"
-import { Button } from "@chakra-ui/button"
 
 export default {
   title: "Menu",
@@ -45,13 +44,7 @@ const words = [
 export const Basic = () => (
   <div style={{ minHeight: 4000 }}>
     <Menu>
-      <MenuButton
-        as={Button}
-        variant="solid"
-        colorScheme="teal"
-        size="sm"
-        rightIcon={<FaUnlink />}
-      >
+      <MenuButton variant="solid" colorScheme="teal" size="sm">
         Open Wakanda menu
       </MenuButton>
       <MenuList>
@@ -66,7 +59,7 @@ export const Basic = () => (
 export const WithDisabledItem = () => (
   <>
     <Menu>
-      <MenuButton as={Button} variant="solid" colorScheme="green" size="sm">
+      <MenuButton variant="solid" colorScheme="green" size="sm">
         Open menu
       </MenuButton>
       <MenuList>
@@ -82,7 +75,7 @@ export const WithDisabledItem = () => (
     </Menu>
 
     <Menu>
-      <MenuButton as={Button} variant="solid" colorScheme="red" size="sm">
+      <MenuButton variant="solid" colorScheme="green" size="sm">
         Open menu
       </MenuButton>
       <MenuList>
@@ -101,7 +94,7 @@ export const WithDisabledItem = () => (
 
 export const WithDisabledButFocusableItem = () => (
   <Menu>
-    <MenuButton as={Button} variant="solid" colorScheme="green" size="sm">
+    <MenuButton variant="solid" colorScheme="green" size="sm">
       Open menu
     </MenuButton>
     <MenuList>
@@ -117,7 +110,7 @@ export const WithDisabledButFocusableItem = () => (
 
 export const WithPortal = () => (
   <Menu>
-    <MenuButton as={Button} variant="solid" colorScheme="green" size="sm">
+    <MenuButton variant="solid" colorScheme="green" size="sm">
       Open menu
     </MenuButton>
     <Portal>
@@ -162,7 +155,7 @@ const Submenu = React.forwardRef<HTMLButtonElement, {}>((props, ref) => (
 
 export const WithNestedMenu = () => (
   <Menu>
-    <MenuButton as={Button} size="sm" colorScheme="teal">
+    <MenuButton size="sm" colorScheme="teal">
       Open menu
     </MenuButton>
     <Portal>
@@ -179,7 +172,7 @@ export const WithNestedMenu = () => (
 
 export const WithTransition = () => (
   <Menu>
-    <MenuButton as={Button} variant="solid" colorScheme="green" size="sm">
+    <MenuButton variant="solid" colorScheme="green" size="sm">
       Open menu
     </MenuButton>
     <MenuTransition>
@@ -197,7 +190,7 @@ export const WithTransition = () => (
 
 export const withGroupedItems = () => (
   <Menu>
-    <MenuButton as={Button} variant="solid" colorScheme="green" size="sm">
+    <MenuButton variant="solid" colorScheme="green" size="sm">
       Open menu
     </MenuButton>
     <MenuList minWidth="240px">
@@ -215,7 +208,7 @@ export const withGroupedItems = () => (
 
 export const withMenuRadio = () => (
   <Menu closeOnSelect={false}>
-    <MenuButton as={Button} variant="solid" colorScheme="green" size="sm">
+    <MenuButton variant="solid" colorScheme="green" size="sm">
       Open menu
     </MenuButton>
 
@@ -244,7 +237,7 @@ export const WithInternalState = () => (
   <Menu>
     {({ isOpen }) => (
       <React.Fragment>
-        <MenuButton as={Button}>{isOpen ? "Close" : "Open"}</MenuButton>
+        <MenuButton>{isOpen ? "Close" : "Open"}</MenuButton>
         <MenuList>
           <MenuItem>Download</MenuItem>
           <MenuItem onClick={() => alert("Kagebunshin")}>
@@ -282,7 +275,7 @@ export const WithLetterNavigation = () => (
 
 export const JustAnotherExample = () => (
   <Menu>
-    <MenuButton as={Button}>Your Cats</MenuButton>
+    <MenuButton>Your Cats</MenuButton>
     <MenuList>
       <MenuItem minH="48px">
         <Image
@@ -310,7 +303,7 @@ export const JustAnotherExample = () => (
 
 export const WithLink = () => (
   <Menu>
-    <MenuButton as={Button}>Actions</MenuButton>
+    <MenuButton>Actions</MenuButton>
     <MenuList>
       <MenuItem>Download</MenuItem>
       <MenuItem>Create a Copy</MenuItem>
@@ -323,6 +316,14 @@ export const WithLink = () => (
   </Menu>
 )
 
+const Button = chakra("button", {
+  themeKey: "Button",
+  baseStyle: {
+    outline: 0,
+    transition: "all 0.3s",
+  },
+})
+
 export const SplitButton = () => (
   <chakra.div display="flex">
     <Button variant="outline" size="sm" borderRightRadius="0" mr="-1px">
@@ -330,7 +331,6 @@ export const SplitButton = () => (
     </Button>
     <Menu placement="bottom-end" gutter={4}>
       <MenuButton
-        as={Button}
         variant="outline"
         size="sm"
         fontSize="xs"
