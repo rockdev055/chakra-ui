@@ -11,8 +11,22 @@ import {
 } from "../src"
 import { chakra } from "@chakra-ui/system"
 
+export default {
+  title: "Popover",
+  decorators: [
+    (story: Function) => (
+      <chakra.div mx="auto" maxW="400px" mt="200px">
+        {story()}
+      </chakra.div>
+    ),
+  ],
+}
+
 export function PopoverExample() {
-  const { getTriggerProps, getPopoverProps, onClose } = usePopover()
+  const { getTriggerProps, getPopoverProps, onClose } = usePopover({
+    returnFocus: false,
+    autoFocus: false,
+  })
 
   return (
     <>
@@ -33,10 +47,24 @@ export function PopoverExample() {
   )
 }
 
+const Button = chakra("button", {
+  themeKey: "Button",
+  baseStyle: {
+    outline: 0,
+  },
+})
+
+const Input = chakra("input", {
+  themeKey: "Input",
+  baseStyle: {
+    outline: 0,
+  },
+})
+
 export const simple = () => (
   <Popover>
     <PopoverTrigger>
-      <chakra.button mt="180px">Trigger</chakra.button>
+      <Button mt="180px">Trigger</Button>
     </PopoverTrigger>
     <PopoverContent>
       <PopoverArrow />
@@ -51,7 +79,7 @@ export const basic = () => (
   <>
     <Popover placement="top">
       <PopoverTrigger>
-        <chakra.button>Welcome home</chakra.button>
+        <Button>Welcome home</Button>
       </PopoverTrigger>
       <PopoverContent>
         <PopoverArrow />
@@ -65,7 +93,7 @@ export const basic = () => (
 
     <Popover placement="bottom">
       <PopoverTrigger>
-        <chakra.button>Welcome home</chakra.button>
+        <Button>Welcome home</Button>
       </PopoverTrigger>
       <PopoverContent>
         <PopoverArrow />
@@ -78,6 +106,6 @@ export const basic = () => (
       </PopoverContent>
     </Popover>
 
-    <chakra.input />
+    <Input />
   </>
 )

@@ -2,63 +2,15 @@
 
 exports[`should render correctly 1`] = `
 <DocumentFragment>
-  .emotion-4 {
-  padding-left: 1rem;
-  padding-right: 1rem;
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
-  background: #ceedff;
-  width: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.emotion-1 {
-  margin-right: 0.75rem;
-  width: 1.25rem;
-  height: 1.25rem;
-  color: #3182ce;
-  display: inherit;
-}
-
-.emotion-0 {
-  color: currentColor;
-  display: inline-block;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-  height: 100%;
-  line-height: 1em;
-  vertical-align: middle;
-  width: 100%;
-}
-
-.emotion-2 {
-  font-weight: 700;
-  line-height: normal;
-}
-
-.emotion-3 {
-  display: inline-block;
-}
-
-<div
-    class="chakra-alert emotion-4"
+  <div
+    class="chakra-alert css-x07ocs"
     role="alert"
   >
     <span
-      class="chakra-alert__icon emotion-1"
+      class="chakra-alert__icon css-7fcm4b"
     >
       <svg
-        class="chakra-icon emotion-0"
+        class="chakra-icon css-14thacp"
         focusable="false"
         role="presentation"
         viewBox="0 0 24 24"
@@ -70,12 +22,12 @@ exports[`should render correctly 1`] = `
       </svg>
     </span>
     <div
-      class="chakra-alert__title emotion-2"
+      class="chakra-alert__title css-1q1sx94"
     >
       Alert title
     </div>
     <div
-      class="chakra-alert__description emotion-3"
+      class="chakra-alert__description css-i5e2tp"
     >
       Alert description
     </div>

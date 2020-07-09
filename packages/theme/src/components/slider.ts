@@ -1,19 +1,51 @@
-import {
-  BaseStyle,
-  DefaultProps,
-  mode,
-  orient,
-  Sizes,
-} from "@chakra-ui/theme-tools"
+import { ComponentTheme, mode, orient } from "@chakra-ui/theme-tools"
 
-const register = {
-  parts: ["container", "thumb", "track", "filledTrack"],
-  sizes: ["sm", "md", "lg"],
-} as const
-
-const baseStyle: BaseStyle<typeof register> = (props) => {
-  return {
-    container: {
+const Slider: ComponentTheme = {
+  defaultProps: {
+    size: "md",
+    colorScheme: "blue",
+  },
+  sizes: {
+    lg: (props) => ({
+      Thumb: {
+        width: "16px",
+        height: "16px",
+      },
+      Track: orient({
+        orientation: props.orientation,
+        horizontal: {
+          height: "4px",
+        },
+        vertical: {
+          width: "4px",
+        },
+      }),
+    }),
+    md: (props) => ({
+      Thumb: {
+        width: "14px",
+        height: "14px",
+      },
+      Track: orient({
+        orientation: props.orientation,
+        horizontal: { height: "4px" },
+        vertical: { width: "4px" },
+      }),
+    }),
+    sm: (props) => ({
+      Thumb: {
+        width: "10px",
+        height: "10px",
+      },
+      Track: orient({
+        orientation: props.orientation,
+        horizontal: { height: "2px" },
+        vertical: { width: "2px" },
+      }),
+    }),
+  },
+  baseStyle: (props) => ({
+    Root: {
       _disabled: {
         opacity: 0.6,
         cursor: "default",
@@ -21,18 +53,22 @@ const baseStyle: BaseStyle<typeof register> = (props) => {
       },
       ...orient({
         orientation: props.orientation,
-        vertical: { height: "100%" },
-        horizontal: { width: "100%" },
+        vertical: {
+          height: "100%",
+        },
+        horizontal: {
+          width: "100%",
+        },
       }),
     },
-    track: {
+    Track: {
       borderRadius: "sm",
       bg: mode("gray.200", "whiteAlpha.200")(props),
       _disabled: {
         bg: mode("gray.300", "whiteAlpha.300")(props),
       },
     },
-    thumb: {
+    Thumb: {
       zIndex: 1,
       borderRadius: "full",
       bg: "white",
@@ -64,57 +100,16 @@ const baseStyle: BaseStyle<typeof register> = (props) => {
         },
       }),
     },
-    filledTrack: {
+    FilledTrack: {
       bg: mode(`${props.colorScheme}.500`, `${props.colorScheme}.200`)(props),
     },
-  }
+  }),
 }
 
-const sizes: Sizes<typeof register> = {
-  lg: function (props) {
-    return {
-      thumb: { width: "16px", height: "16px" },
-      track: orient({
-        orientation: props.orientation,
-        horizontal: { height: "4px" },
-        vertical: { width: "4px" },
-      }),
-    }
-  },
-
-  md: function (props) {
-    return {
-      thumb: { width: "14px", height: "14px" },
-      track: orient({
-        orientation: props.orientation,
-        horizontal: { height: "4px" },
-        vertical: { width: "4px" },
-      }),
-    }
-  },
-
-  sm: function (props) {
-    return {
-      thumb: { width: "10px", height: "10px" },
-      track: orient({
-        orientation: props.orientation,
-        horizontal: { height: "2px" },
-        vertical: { width: "2px" },
-      }),
-    }
-  },
+export const SliderSizes = {
+  lg: "lg",
+  sm: "sm",
+  md: "md",
 }
 
-const defaultProps: DefaultProps<typeof register> = {
-  size: "md",
-  colorScheme: "blue",
-}
-
-const slider = {
-  register,
-  defaultProps,
-  sizes,
-  baseStyle,
-}
-
-export default slider
+export default Slider

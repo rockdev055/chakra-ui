@@ -1,30 +1,28 @@
 import {
   chakra,
   PropsOf,
-  SystemProps,
-  SystemStyleObject,
   ThemingProps,
+  SystemProps,
+  CSSObject,
 } from "@chakra-ui/system"
-import { createContext, cx, __DEV__ } from "@chakra-ui/utils"
+import { createContext, __DEV__, cx } from "@chakra-ui/utils"
 import * as React from "react"
 
-export type ButtonGroupProps = PropsOf<typeof chakra.div> &
-  ThemingProps & {
-    /**
-     * If `true`, the borderRadius of button that are direct children will be altered
-     * to look flushed together
-     */
-    isAttached?: boolean
-    isDisabled?: boolean
-    /**
-     * The spacing between the buttons
-     * @default '0.5rem'
-     */
-    spacing?: SystemProps["marginRight"]
-  }
+export type ButtonGroupProps = PropsOf<typeof chakra.div> & {
+  /**
+   * If `true`, the borderRadius of button that are direct children will be altered
+   * to look flushed together
+   */
+  isAttached?: boolean
+  /**
+   * The spacing between the buttons
+   * @default '0.5rem'
+   */
+  spacing?: SystemProps["marginRight"]
+}
 
 const [ButtonGroupContextProvider, useButtonGroup] = createContext<
-  ThemingProps & { isDisabled?: boolean }
+  ThemingProps
 >({
   strict: false,
   name: "ButtonGroupContext",
@@ -43,11 +41,10 @@ export const ButtonGroup = React.forwardRef(function ButtonGroup(
     className,
     spacing = "0.5rem",
     isAttached,
-    isDisabled,
     ...rest
   } = props
 
-  const css: SystemStyleObject = isAttached
+  const css = isAttached
     ? {
         "> *:first-of-type:not(:last-of-type)": { borderRightRadius: 0 },
         "> *:not(:first-of-type):not(:last-of-type)": { borderRadius: 0 },
@@ -59,10 +56,11 @@ export const ButtonGroup = React.forwardRef(function ButtonGroup(
 
   const _className = cx("chakra-button__group", className)
 
-  const context = React.useMemo(
-    () => ({ size, colorScheme, variant, isDisabled }),
-    [size, colorScheme, variant, isDisabled],
-  )
+  const context = React.useMemo(() => ({ size, colorScheme, variant }), [
+    size,
+    colorScheme,
+    variant,
+  ])
 
   return (
     <ButtonGroupContextProvider value={context}>
@@ -70,7 +68,7 @@ export const ButtonGroup = React.forwardRef(function ButtonGroup(
         ref={ref}
         role="group"
         display="inline-flex"
-        __css={css}
+        sx={css as CSSObject}
         className={_className}
         {...rest}
       />
