@@ -1,18 +1,18 @@
 import { Spinner } from "@chakra-ui/spinner"
 import {
   chakra,
-  forwardRef,
-  omitThemingProps,
   PropsOf,
   SystemProps,
-  ThemingProps,
-  useStyleConfig,
+  forwardRef,
+  useComponentStyle,
+  pseudoSelectors,
 } from "@chakra-ui/system"
-import { cx, dataAttr, merge, __DEV__ } from "@chakra-ui/utils"
+import { dataAttr, __DEV__, merge, Dict, cx } from "@chakra-ui/utils"
 import * as React from "react"
 import { useButtonGroup } from "./button-group"
 
 const StyledButton = chakra("button", {
+  themeKey: "Button",
   baseStyle: {
     display: "inline-flex",
     appearance: "none",
@@ -71,16 +71,13 @@ export interface ButtonOptions {
   spinner?: React.ReactElement
 }
 
-export type ButtonProps = PropsOf<typeof StyledButton> &
-  ButtonOptions &
-  ThemingProps
+export type ButtonProps = PropsOf<typeof StyledButton> & ButtonOptions
 
 export const Button = forwardRef<ButtonProps>(function Button(props, ref) {
   const group = useButtonGroup()
-  const styles = useStyleConfig("Button", { ...group, ...props })
 
   const {
-    isDisabled = group?.isDisabled,
+    isDisabled,
     isLoading,
     isActive,
     isFullWidth,
@@ -91,10 +88,20 @@ export const Button = forwardRef<ButtonProps>(function Button(props, ref) {
     iconSpacing = "0.5rem",
     type = "button",
     spinner,
+    variant = group?.variant,
+    colorScheme = group?.colorScheme,
+    size = group?.size,
     className,
     as,
     ...rest
-  } = omitThemingProps(props)
+  } = props
+
+  const styles = useComponentStyle({
+    themeKey: "Button",
+    variant,
+    size,
+    colorScheme,
+  }) as Dict
 
   /**
    * When button is used within ButtonGroup (i.e flushed with sibling buttons),
@@ -102,8 +109,8 @@ export const Button = forwardRef<ButtonProps>(function Button(props, ref) {
    *
    * So let's read the component styles and then add `zIndex` to it.
    */
-  const buttonStyles = styles.container
-  const _focus = merge({}, buttonStyles?.["_focus"] ?? {}, { zIndex: 1 })
+  const focusSelector = pseudoSelectors["_focus"]
+  const _focus = merge(styles?.[focusSelector] ?? {}, { zIndex: 1 })
 
   const _className = cx("chakra-button", className)
 
@@ -116,17 +123,18 @@ export const Button = forwardRef<ButtonProps>(function Button(props, ref) {
       width={isFullWidth ? "100%" : undefined}
       data-active={dataAttr(isActive)}
       data-loading={dataAttr(isLoading)}
-      __css={buttonStyles}
+      variant={variant}
+      colorScheme={colorScheme}
+      size={size}
       className={_className}
       {...(!!group && { _focus })}
       {...rest}
     >
       {leftIcon && !isLoading && (
-        <ButtonIcon __css={styles.icon} mr={iconSpacing} children={leftIcon} />
+        <ButtonIcon mr={iconSpacing} children={leftIcon} />
       )}
       {isLoading && (
         <ButtonSpinner
-          __css={styles.spinner}
           spacing={iconSpacing}
           label={loadingText}
           children={spinner}
@@ -136,7 +144,7 @@ export const Button = forwardRef<ButtonProps>(function Button(props, ref) {
         ? loadingText || <chakra.span opacity={0} children={children} />
         : children}
       {rightIcon && !isLoading && (
-        <ButtonIcon __css={styles.icon} ml={iconSpacing} children={rightIcon} />
+        <ButtonIcon ml={iconSpacing} children={rightIcon} />
       )}
     </StyledButton>
   )
@@ -147,19 +155,22 @@ if (__DEV__) {
 }
 
 function ButtonIcon(props: PropsOf<typeof chakra.span>) {
-  const { children, className, ...rest } = props
   const a11yProps = {
     "aria-hidden": true,
     focusable: false,
   }
 
-  const _children = React.isValidElement(children)
-    ? React.cloneElement(children, a11yProps)
-    : children
+  const children = React.isValidElement(props.children)
+    ? React.cloneElement(props.children, a11yProps)
+    : props.children
 
-  const _className = cx("chakra-button__icon", className)
-
-  return <chakra.span {...rest} className={_className} children={_children} />
+  return (
+    <chakra.span
+      className="chakra-button__icon"
+      {...props}
+      children={children}
+    />
+  )
 }
 
 if (__DEV__) {
@@ -184,6 +195,8 @@ function ButtonSpinner(props: ButtonSpinnerProps) {
 
   return (
     <chakra.div
+      fontSize="1em"
+      lineHeight="normal"
       position={label ? "relative" : "absolute"}
       mr={label ? spacing : 0}
       className={_className}
