@@ -12,8 +12,8 @@ Writing component styles that are easy to maintain over the life of a growing
 and changing project is a challenging task. To solve this, we need to have a
 simple and consistent system.
 
-Chakra provides a unified component-driven CSS API that it builds its own components
-with and makes it easy to build your own customizable, theme-aware components.
+Chakra provides a unified component-driven CSS API that makes it easy to build
+customizable, theme-aware components.
 
 <br />
 
@@ -35,96 +35,92 @@ The most common style modifiers are:
   schemes (e.g. an outline button with a red color scheme)
 - **Color mode:** A component can change its visual styles based on color mode
   (e.g. light or dark).
-  
-## Theming local and global
 
-- **Local.** Custom components can be themed locally using a `styled`-like API
-- **Global.** Both Chakra and Custom components can be themed via the central chakra theme using `themeKey`
-
-### Local Theming
+## Theming API
 
 In styled components, you usually do this:
 
 ```js live=false
-const MyComponent = styled("div")({
+const Button = styled("button")({
   // any style you can imagine goes here
 })
 ```
 
 With chakra's theming API, we've defined a set of constraints to keep your
-styles consistent and extensible.
+styles consistent and extensible. Here's what you'll do:
 
 ```js live=false
-const MyComponent = chakra("div", {
+const Button = chakra("button", {
   // base or default styles
   baseStyle: {...},
   // styles for the different sizes
-  sizes: {...},
+  sizes: {...}
   // styles for the different visual styles
-  variants: {...},
+  variants: {...}
+  // reference component styles in the theme
+  themeKey: ""
   // attach props
   attrs: {...}
 })
 ```
 
-### Global Theming
+## Quick Example
 
-The above is convenient for quickly creating custom themed components, but...
+Let's say you need to create a simple badge component with the following spec.
 
-**What if you want to maintain your theme centrally?**
+<BadgeSpec />
 
-**What if you want to theme one of the out-of-the-box Chakra components?**
-
-Let's answer both of these questions...
-
-### Theme custom components from central theme
+First thing we notice is that the badge has **base or common styles** across all
+its variants. Here's how we'll model that:
 
 ```jsx live=false
-// 1. Use the `themeKey` option instead
-const MyComponent = chakra("div", {
-  themeKey: "MyComponent",
+const Badge = chakra("span", {
+  baseStyle: {
+    fontSize: "12px",
+    fontWeight: "bold",
+    textTransform: "uppercase",
+    color: "white",
+  },
+})
+```
+
+Next, the badge has 4 variants: `in-progress`, `removed`, `new`, `default`.
+Here's how we'll model that:
+
+```jsx live=false
+const Badge = chakra("span", {
+  variants: {
+    "in-progress": { bg: "blue.600" },
+    new: { bg: "purple.600" },
+    removed: { bg: "red.600" },
+    default: { bg: "gray.600" },
+  },
+})
+```
+
+Bringing it all together:
+
+```jsx live=false
+const Badge = chakra("span", {
+  baseStyle: {
+    fontSize: "12px",
+    fontWeight: "bold",
+    textTransform: "uppercase",
+    color: "white",
+  },
+  variants: {
+    inProgress: { bg: "blue.600" },
+    new: { bg: "purple.600" },
+    removed: { bg: "red.600" },
+    default: { bg: "gray.600" },
+  },
 })
 
-// 2. Move your styles to the theme under the `components.MyComponent` key
-const theme = {
-  components: {
-    MyComponent: {
-      defaultProps: {
-        size: "small",
-        variant: "solid",
-      },
-      baseStyle: { ... },
-      sizes: {
-        small: { ... },
-        large: { ... },
-      },
-      variants: {
-        solid: { ... },
-        outline: { ... },
-      },
-    },
-  },
+// Pro tip: Set the default variant with `defaultProps`
+Badge.defaultProps = {
+  variant: "default",
 }
 ```
 
-### Theme out-of-the-box Chakra components from central theme
-
-Every out-of-the-box Chakra component has its own `themeKey` available for modification in the default theme.
-There you will find `defaultProps`, `baseStyle`, `sizes`, `variants`, etc that can be tweaked as needed.
-
-For example, to customize `Button` globally, find the `components.Button` object and modify it.
-
-```jsx live=false
-const theme = {
-  components: {
-    Button: {
-      defaultProps: { ... },
-      baseStyle: { ... },
-      sizes: { ... },
-      variants: { ... },
-    },
-  },
-}
-```
-
-Continue on to the next section to see some real world examples in action!
+That's it! Now you have a solid structure your team can use to create new
+variants or improve the base styles.

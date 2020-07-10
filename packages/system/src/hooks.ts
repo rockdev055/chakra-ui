@@ -1,7 +1,8 @@
 import { useColorMode } from "@chakra-ui/color-mode"
-import { css, StyleObjectOrFn } from "@chakra-ui/styled-system"
+import { css, StyleObjectOrFn } from "@chakra-ui/css"
 import { Dict, get, StringOrNumber } from "@chakra-ui/utils"
-import { useTheme } from "./providers"
+import { getComponentDefaults, getComponentStyles } from "./component"
+import { useTheme } from "./theme-provider"
 
 export function useChakra<T extends Dict = Dict>() {
   const { colorMode, toggleColorMode } = useColorMode()
@@ -9,9 +10,25 @@ export function useChakra<T extends Dict = Dict>() {
   return { colorMode, toggleColorMode, theme }
 }
 
+interface UseComponentStyleProps {
+  size?: string
+  variant?: string
+  colorScheme?: string
+  themeKey: string
+}
+
+export function useComponentStyle(props: UseComponentStyleProps) {
+  const { size, variant, colorScheme, themeKey } = props
+  const { theme, colorMode } = useChakra()
+  return getComponentStyles(
+    { variant, size, theme, colorScheme, colorMode },
+    { themeKey },
+  )
+}
+
 export function useThemeDefaultProps(themeKey: string) {
   const theme = useTheme()
-  return get(theme, `components.${themeKey}.defaultProps`)
+  return getComponentDefaults(theme, themeKey)
 }
 
 export function useCss(styles: StyleObjectOrFn) {

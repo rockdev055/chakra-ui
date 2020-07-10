@@ -38,9 +38,9 @@ export const Sizes = () => {
   const sizes = ["sm", "md", "lg"]
 
   return (
-    <Stack direction="row">
+    <Stack>
       {sizes.map((size) => (
-        <Checkbox size={size} />
+        <Checkbox size={size} marginLeft="1rem" />
       ))}
     </Stack>
   )
