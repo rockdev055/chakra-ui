@@ -22,7 +22,7 @@ const HookTooltip = ({ children }: any) => {
     getTooltipProps,
     getArrowProps,
     isOpen,
-  } = useTooltip({ showDelay: 100 })
+  } = useTooltip({ showDelay: 400 })
 
   const trigger = getTriggerProps()
   const tooltip = getTooltipProps()

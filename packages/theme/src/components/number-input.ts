@@ -1,26 +1,34 @@
-import {
-  BaseStyle,
-  mode,
-  runIfFn,
-  Sizes,
-  Variants,
-  VariantType,
-} from "@chakra-ui/theme-tools"
-import input from "./input"
+import { ComponentTheme, mode } from "@chakra-ui/theme-tools"
 
-const register = {
-  parts: ["field", "stepper", "stepperGroup"],
-  sizes: input.register.sizes,
-  variants: input.register.variants,
-} as const
-
-const baseStyle: BaseStyle<typeof register> = (props) => {
+function getSizeStyle(size: "sm" | "md" | "lg") {
   return {
-    field: input.baseStyle.field,
-    stepperGroup: {
-      width: "24px",
+    Stepper: {
+      fontSize: size === "lg" ? "14px" : "10px",
+      _first: {
+        borderTopRightRadius: size === "lg" ? 3 : 1,
+      },
+      _last: {
+        borderBottomRightRadius: size === "lg" ? 3 : 1,
+        marginTop: "-1px",
+        borderTopWidth: 1,
+      },
     },
-    stepper: {
+  }
+}
+
+const NumberInput: ComponentTheme = {
+  defaultProps: {
+    size: "md",
+  },
+  baseStyle: (props) => ({
+    StepperGroup: {
+      width: "24px",
+      margin: "1px",
+      position: "absolute",
+      right: "0px",
+      height: "calc(100% - 2px)",
+    },
+    Stepper: {
       borderLeft: "1px solid",
       borderColor: mode("inherit", "whiteAlpha.300")(props),
       color: mode("inherit", "whiteAlpha.800")(props),
@@ -32,62 +40,18 @@ const baseStyle: BaseStyle<typeof register> = (props) => {
         cursor: "not-allowed",
       },
     },
-  }
+  }),
+  sizes: {
+    sm: getSizeStyle("sm"),
+    md: getSizeStyle("md"),
+    lg: getSizeStyle("lg"),
+  },
 }
 
-const sizes: Sizes<typeof register> = {
-  sm: getSizeStyle("sm"),
-  md: getSizeStyle("md"),
-  lg: getSizeStyle("lg"),
+export const NumberInputSizes = {
+  sm: "sm",
+  md: "md",
+  lg: "lg",
 }
 
-function getSizeStyle(size: "sm" | "md" | "lg") {
-  const inputPartsStyle = input.sizes[size]
-  const inputStyle =
-    typeof inputPartsStyle !== "function" ? inputPartsStyle?.field : {}
-
-  const radius = {
-    lg: "md",
-    md: "md",
-    sm: "sm",
-  }
-
-  return {
-    field: inputStyle,
-    stepper: {
-      fontSize: size === "lg" ? "14px" : "10px",
-      _first: {
-        borderTopRightRadius: radius[size],
-      },
-      _last: {
-        borderBottomRightRadius: radius[size],
-        marginTop: "-1px",
-        borderTopWidth: 1,
-      },
-    },
-  }
-}
-
-const variants: Variants<typeof register> = {
-  outline: (props) => ({ field: getVariantStyle("outline", props) }),
-  filled: (props) => ({ field: getVariantStyle("filled", props) }),
-  flushed: (props) => ({ field: getVariantStyle("flushed", props) }),
-  unstyled: (props) => ({ field: getVariantStyle("unstyled", props) }),
-}
-
-function getVariantStyle(variant: VariantType<typeof register>, props: any) {
-  const partsStyle = runIfFn(input.variants[variant], props)
-  return partsStyle?.field ?? {}
-}
-
-const defaultProps = input.defaultProps
-
-const numberInput = {
-  register,
-  defaultProps,
-  baseStyle,
-  sizes,
-  variants,
-}
-
-export default numberInput
+export default NumberInput
