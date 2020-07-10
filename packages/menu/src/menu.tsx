@@ -9,13 +9,7 @@ import {
   useStyleConfig,
   useStyles,
 } from "@chakra-ui/system"
-import {
-  cx,
-  mergeRefs,
-  ReactNodeOrRenderProp,
-  __DEV__,
-  runIfFn,
-} from "@chakra-ui/utils"
+import { cx, mergeRefs, ReactNodeOrRenderProp, __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
 import {
   MenuContextProvider,
@@ -46,15 +40,13 @@ export type MenuProps = UseMenuProps &
 export function Menu(props: MenuProps) {
   const styles = useStyleConfig("Menu", props)
   const realProps = omitThemingProps(props)
-  const menuCtx = useMenu(realProps)
-  const context = React.useMemo(() => menuCtx, [menuCtx])
+  const context = useMenu(realProps)
   return (
     <MenuContextProvider value={context}>
       <StylesProvider value={styles}>
-        {runIfFn(props.children, {
-          isOpen: context.isOpen,
-          onClose: context.onClose,
-        })}
+        {typeof props.children === "function"
+          ? props.children({ isOpen: context.isOpen, onClose: context.onClose })
+          : props.children}
       </StylesProvider>
     </MenuContextProvider>
   )
@@ -125,14 +117,8 @@ export const MenuButton = forwardRef<MenuButtonProps>(function MenuButton(
 
     return (
       <React.Fragment>
-        <chakra.span pointerEvents="none" flex="1">
-          {props.children}
-        </chakra.span>
-        <MenuIcon
-          pointerEvents="none"
-          mr="-0.5rem"
-          children={submenuIcon || <SubmenuSvg />}
-        />
+        <chakra.span flex="1">{props.children}</chakra.span>
+        <MenuIcon mr="-0.5rem" children={submenuIcon || <SubmenuSvg />} />
       </React.Fragment>
     )
   }
@@ -226,9 +212,7 @@ export const MenuItem = forwardRef<MenuItemProps>(function MenuItem(
 
   const shouldWrap = icon || command
   const _children = shouldWrap ? (
-    <chakra.span pointerEvents="none" flex="1">
-      {children}
-    </chakra.span>
+    <chakra.span flex="1">{children}</chakra.span>
   ) : (
     children
   )
