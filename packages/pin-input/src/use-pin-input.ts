@@ -7,24 +7,27 @@ import {
   ariaAttr,
 } from "@chakra-ui/utils"
 import * as React from "react"
+import { ThemingProps } from "@chakra-ui/system"
 
-export type PinInputContext = UsePinInputReturn & {
-  /**
-   * Sets the pin input component to the disabled state
-   */
-  isDisabled?: boolean
-  /**
-   * Sets the pin input component to the invalid state
-   */
-  isInvalid?: boolean
-}
+export type PinInputContext = UsePinInputReturn &
+  ThemingProps & {
+    /**
+     * Sets the pin input component to the disabled state
+     */
+    isDisabled?: boolean
+    /**
+     * Sets the pin input component to the invalid state
+     */
+    isInvalid?: boolean
+  }
 
 const [PinInputContextProvider, usePinInputContext] = createContext<
   PinInputContext
 >({
+  strict: true,
   name: "PinInputContext",
   errorMessage:
-    "usePinInputContext: `context` is undefined. Seems you forgot to all pin input fields within `<PinInput />`",
+    "Chakra UI: PinInputField can only be used within PinInput component",
 })
 
 export { PinInputContextProvider, usePinInputContext }
@@ -68,14 +71,6 @@ export interface UsePinInputProps {
    * if id="foo", the first input will have `foo-0`
    */
   id?: string
-  /**
-   * If `true`, the pin input component is put in the disabled state
-   */
-  isDisabled?: boolean
-  /**
-   * If `true`, the pin input component is put in the invalid state
-   */
-  isInvalid?: boolean
 }
 
 function toArray(value?: string) {
@@ -95,8 +90,6 @@ export function usePinInput(props: UsePinInputProps = {}) {
     placeholder = "○",
     manageFocus = true,
     id: idProp,
-    isDisabled,
-    isInvalid,
   } = props
 
   const uuid = useId()
@@ -164,8 +157,6 @@ export function usePinInput(props: UsePinInputProps = {}) {
     onComplete,
     placeholder,
     manageFocus,
-    isDisabled,
-    isInvalid,
   }
 }
 
