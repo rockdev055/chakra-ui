@@ -37,7 +37,7 @@ const baseStyle: BaseStyle<typeof register> = (props) => {
         boxShadow: "outline",
       },
     },
-    tablist: { justifyContent: alignments[align] },
+    tablist: alignments[align],
     tabpanel: {
       padding: 4,
     },

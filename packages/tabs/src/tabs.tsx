@@ -52,7 +52,9 @@ export const Tabs = React.forwardRef(function Tabs(
   ref: React.Ref<any>,
 ) {
   const styles = useStyleConfig("Tabs", props)
-  const { children, className, ...rest } = omitThemingProps(props)
+  const { children, className, align = "start", ...rest } = omitThemingProps(
+    props,
+  )
 
   const { htmlProps, ...tabsContext } = useTabs(rest)
   const ctx = React.useMemo(() => tabsContext, [tabsContext])
