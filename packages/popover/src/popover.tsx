@@ -11,13 +11,12 @@ import {
 } from "@chakra-ui/system"
 import {
   createContext,
+  isFunction,
   ReactNodeOrRenderProp,
-  runIfFn,
   __DEV__,
 } from "@chakra-ui/utils"
 import * as React from "react"
 import { usePopover, UsePopoverProps, UsePopoverReturn } from "./use-popover"
-import CSSTransition from "react-transition-group/CSSTransition"
 
 const [PopoverContextProvider, usePopoverContext] = createContext<
   UsePopoverReturn
@@ -54,10 +53,9 @@ export function Popover(props: PopoverProps) {
   return (
     <PopoverContextProvider value={context}>
       <StylesProvider value={styles}>
-        {runIfFn(children, {
-          isOpen: context.isOpen,
-          onClose: context.onClose,
-        })}
+        {isFunction(children)
+          ? children({ isOpen: context.isOpen, onClose: context.onClose })
+          : children}
       </StylesProvider>
     </PopoverContextProvider>
   )
@@ -97,13 +95,12 @@ export const PopoverContent = React.forwardRef(function PopoverContent(
   ref: React.Ref<any>,
 ) {
   const { getPopoverProps } = usePopoverContext()
-  const popoverProps = getPopoverProps({ ...props, ref })
   const styles = useStyles()
 
   return (
     <chakra.section
       className="chakra-popover__content"
-      {...popoverProps}
+      {...getPopoverProps({ ...props, ref })}
       __css={{
         position: "relative",
         display: "flex",
