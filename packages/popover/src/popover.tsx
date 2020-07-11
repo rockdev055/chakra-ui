@@ -1,43 +1,28 @@
 import { CloseButton, CloseButtonProps } from "@chakra-ui/close-button"
 import { useSafeLayoutEffect } from "@chakra-ui/hooks"
-import {
-  chakra,
-  omitThemingProps,
-  PropsOf,
-  StylesProvider,
-  ThemingProps,
-  useStyleConfig,
-  useStyles,
-} from "@chakra-ui/system"
+import { chakra, PropsOf } from "@chakra-ui/system"
 import {
   createContext,
+  isFunction,
   ReactNodeOrRenderProp,
-  runIfFn,
   __DEV__,
 } from "@chakra-ui/utils"
 import * as React from "react"
 import { usePopover, UsePopoverProps, UsePopoverReturn } from "./use-popover"
-import CSSTransition from "react-transition-group/CSSTransition"
 
 const [PopoverContextProvider, usePopoverContext] = createContext<
   UsePopoverReturn
 >({
   name: "PopoverContext",
-  errorMessage:
-    "usePopoverContext: `context` is undefined. Seems you forgot to wrap all popover components within `<Popover />`",
 })
 
-export type PopoverProps = UsePopoverProps &
-  ThemingProps & {
-    /**
-     * The content of the popover. It's usually the `PopoverTrigger`,
-     * and `PopoverContent`
-     */
-    children?: ReactNodeOrRenderProp<{
-      isOpen: boolean
-      onClose(): void
-    }>
-  }
+export type PopoverProps = UsePopoverProps & {
+  /**
+   * The content of the popover. It's usually the `PopoverTrigger`,
+   * and `PopoverContent`
+   */
+  children?: ReactNodeOrRenderProp<{ isOpen: boolean; onClose(): void }>
+}
 
 /**
  * Popover
@@ -47,18 +32,14 @@ export type PopoverProps = UsePopoverProps &
  * action or to guide users through a new experience.
  */
 export function Popover(props: PopoverProps) {
-  const styles = useStyleConfig("Popover", props)
-  const { children, ...rest } = omitThemingProps(props)
-  const context = usePopover(rest)
+  const { children, ...hookProps } = props
+  const context = usePopover(hookProps)
 
   return (
     <PopoverContextProvider value={context}>
-      <StylesProvider value={styles}>
-        {runIfFn(children, {
-          isOpen: context.isOpen,
-          onClose: context.onClose,
-        })}
-      </StylesProvider>
+      {isFunction(children)
+        ? children({ isOpen: context.isOpen, onClose: context.onClose })
+        : children}
     </PopoverContextProvider>
   )
 }
@@ -77,6 +58,7 @@ export const PopoverTrigger: React.FC = (props) => {
   // enforce a single child
   const child = React.Children.only(props.children) as React.ReactElement<any>
   const { getTriggerProps } = usePopoverContext()
+
   return React.cloneElement(child, getTriggerProps(child.props))
 }
 
@@ -84,7 +66,22 @@ if (__DEV__) {
   PopoverTrigger.displayName = "PopoverTrigger"
 }
 
-export type PopoverContentProps = PropsOf<typeof chakra.section>
+/**
+ * Theming
+ *
+ * To change the global styles of Popover Content,
+ * go to `theme.components.Popover` under the `Content` key
+ */
+const StyledContent = chakra("section", {
+  themeKey: "Popover.Content",
+  baseStyle: {
+    position: "relative",
+    display: "flex",
+    flexDirection: "column",
+  },
+})
+
+export type PopoverContentProps = PropsOf<typeof StyledContent>
 
 /**
  * PopoverContent
@@ -97,19 +94,11 @@ export const PopoverContent = React.forwardRef(function PopoverContent(
   ref: React.Ref<any>,
 ) {
   const { getPopoverProps } = usePopoverContext()
-  const popoverProps = getPopoverProps({ ...props, ref })
-  const styles = useStyles()
 
   return (
-    <chakra.section
+    <StyledContent
       className="chakra-popover__content"
-      {...popoverProps}
-      __css={{
-        position: "relative",
-        display: "flex",
-        flexDirection: "column",
-        ...styles.content,
-      }}
+      {...getPopoverProps({ ...props, ref })}
     />
   )
 })
@@ -118,13 +107,24 @@ if (__DEV__) {
   PopoverContent.displayName = "PopoverContent"
 }
 
-export type PopoverHeaderProps = PropsOf<typeof chakra.header>
+/**
+ * Theming
+ *
+ * To change the global styles of Popover Header,
+ * go to `theme.components.Popover` under the `Header` key
+ */
+const StyledHeader = chakra("header", {
+  themeKey: "Popover.Header",
+})
+
+export type PopoverHeaderProps = PropsOf<typeof StyledHeader>
 
 /**
  * Popover Header
  *
  * This servers as the accessible header or label
- * for the popover's content and it's first announced by screenreaders.
+ * for the popover's content and it's first announced by
+ * screenreaders.
  */
 export const PopoverHeader = React.forwardRef(function PopoverHeader(
   props: PopoverHeaderProps,
@@ -137,15 +137,12 @@ export const PopoverHeader = React.forwardRef(function PopoverHeader(
     return () => setHasHeader.off()
   }, [])
 
-  const styles = useStyles()
-
   return (
-    <chakra.header
+    <StyledHeader
       className="chakra-popover__header"
       {...props}
       id={headerId}
       ref={ref}
-      __css={styles.header}
     />
   )
 })
@@ -154,7 +151,17 @@ if (__DEV__) {
   PopoverHeader.displayName = "PopoverHeader"
 }
 
-export type PopoverBodyProps = PropsOf<typeof chakra.div>
+export type PopoverBodyProps = PropsOf<typeof StyledBody>
+
+/**
+ * Theming
+ *
+ * To change the global styles of Popover Body,
+ * go to `theme.components.Popover` under the `Body` key
+ */
+const StyledBody = chakra("div", {
+  themeKey: "Popover.Body",
+})
 
 /**
  * PopoverBody
@@ -173,15 +180,12 @@ export const PopoverBody = React.forwardRef(function PopoverBody(
     return () => setHasBody.off()
   }, [])
 
-  const styles = useStyles()
-
   return (
-    <chakra.div
+    <StyledBody
       className="chakra-popover__body"
       {...props}
       id={bodyId}
       ref={ref}
-      __css={styles.body}
     />
   )
 })
@@ -190,16 +194,12 @@ if (__DEV__) {
   PopoverBody.displayName = "PopoverBody"
 }
 
-export function PopoverFooter(props: PropsOf<typeof chakra.footer>) {
-  const styles = useStyles()
-  return (
-    <chakra.footer
-      className="chakra-popover__footer"
-      {...props}
-      __css={styles.footer}
-    />
-  )
-}
+export const PopoverFooter = chakra("footer", {
+  themeKey: "Popover.Footer",
+  attrs: {
+    className: "chakra-popover__footer",
+  },
+})
 
 if (__DEV__) {
   PopoverFooter.displayName = "PopoverFooter"
@@ -220,9 +220,9 @@ export function PopoverCloseButton(props: CloseButtonProps) {
       onClick={onClose}
       position="absolute"
       borderRadius="md"
-      top="0.25rem"
-      right="0.5rem"
-      padding="0.5rem"
+      top={1}
+      right={2}
+      padding={2}
       {...props}
     />
   )
@@ -232,19 +232,19 @@ if (__DEV__) {
   PopoverCloseButton.displayName = "PopoverCloseButton"
 }
 
-export type PopoverArrowProps = PropsOf<typeof chakra.div>
+const StyledArrow = chakra("div", {
+  themeKey: "Popover.Arrow",
+})
+
+export type PopoverArrowProps = PropsOf<typeof StyledArrow>
 
 export function PopoverArrow(props: PopoverArrowProps) {
   const { getArrowProps } = usePopoverContext()
-  const styles = useStyles()
   return (
-    <chakra.div
+    <StyledArrow
       className="chakra-popover__arrow"
+      bg="inherit"
       {...getArrowProps(props)}
-      __css={{
-        bg: "inherit",
-        ...styles.arrow,
-      }}
     />
   )
 }

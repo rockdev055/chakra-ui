@@ -1,10 +1,4 @@
-import {
-  chakra,
-  PropsOf,
-  keyframes,
-  useStyleConfig,
-  ThemingProps,
-} from "@chakra-ui/system"
+import { chakra, PropsOf, keyframes } from "@chakra-ui/system"
 import { cx, __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
 
@@ -36,9 +30,11 @@ export interface SkeletonOptions {
   fadeDuration?: number
 }
 
-const StyledSkeleton = chakra("div", {
+const StyledSkeleton = chakra<"div", SkeletonOptions>("div", {
+  themeKey: "Skeleton",
   baseStyle: {
     boxShadow: "none",
+    //@ts-ignore - Fix this later
     backgroundClip: "padding-box",
     cursor: "default",
     color: "transparent",
@@ -52,9 +48,7 @@ const StyledSkeleton = chakra("div", {
 
 export type ISkeleton = SkeletonOptions
 
-export type SkeletonProps = PropsOf<typeof StyledSkeleton> &
-  SkeletonOptions &
-  ThemingProps
+export type SkeletonProps = PropsOf<typeof StyledSkeleton>
 
 const fadeIn = keyframes`
   from { opacity: 0; }
@@ -65,23 +59,15 @@ export const Skeleton = React.forwardRef(function Skeleton(
   props: SkeletonProps,
   ref: React.Ref<any>,
 ) {
-  const defaultProps = {
-    fadeDuration: 0.4,
-    speed: 0.8,
-  }
-
-  const mergedProps = { ...defaultProps, ...props }
-  const styles = useStyleConfig("Skeleton", mergedProps)
-
   const {
     startColor,
     endColor,
     isLoaded,
-    fadeDuration,
-    speed,
+    fadeDuration = 0.4,
+    speed = 0.8,
     className,
     ...rest
-  } = mergedProps
+  } = props
 
   const _className = cx("chakra-skeleton", className)
 
@@ -90,7 +76,7 @@ export const Skeleton = React.forwardRef(function Skeleton(
       <chakra.div
         ref={ref}
         className={_className}
-        __css={{ animation: `${fadeIn} ${fadeDuration}s` }}
+        css={{ animation: `${fadeIn} ${fadeDuration}s` }}
         {...rest}
       />
     )
@@ -99,9 +85,11 @@ export const Skeleton = React.forwardRef(function Skeleton(
   return (
     <StyledSkeleton
       ref={ref}
+      startColor={startColor}
+      endColor={endColor}
+      speed={speed}
       className={_className}
       {...rest}
-      __css={styles.skeleton}
     />
   )
 })
@@ -110,11 +98,10 @@ if (__DEV__) {
   Skeleton.displayName = "Skeleton"
 }
 
-function range(count: number) {
-  return Array(count)
+const range = (count: number) =>
+  Array(count)
     .fill(1)
-    .map((_, index) => index + 1)
-}
+    .map((_, idx) => idx + 1)
 
 export type SkeletonTextProps = SkeletonProps & {
   noOfLines?: number
