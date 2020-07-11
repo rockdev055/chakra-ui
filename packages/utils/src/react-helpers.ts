@@ -27,7 +27,7 @@ type CreateContextReturn<T> = [React.Provider<T>, () => T, React.Context<T>]
 export function createContext<ContextType>(options: CreateContextOptions = {}) {
   const {
     strict = true,
-    errorMessage = "useContext: `context` is undefined. Seems you forgot to wrap component within the Provider",
+    errorMessage = "useContext must be inside a Provider with a value",
     name,
   } = options
 
@@ -37,11 +37,7 @@ export function createContext<ContextType>(options: CreateContextOptions = {}) {
 
   function useContext() {
     const context = React.useContext(Context)
-
-    if (!context && strict) {
-      throw new Error(errorMessage)
-    }
-
+    if (!context && strict) throw new Error(errorMessage)
     return context
   }
 
