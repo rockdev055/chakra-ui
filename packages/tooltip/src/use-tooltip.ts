@@ -5,15 +5,15 @@ import * as React from "react"
 
 export interface UseTooltipProps {
   /**
-   * Delay (in ms) before hiding the tooltip
-   * @default 200ms
-   */
-  hideDelay?: number
-  /**
    * Delay (in ms) before showing the tooltip
-   * @default 200ms
+   * @default 0ms
    */
-  showDelay?: number
+  openDelay?: number
+  /**
+   * Delay (in ms) before hiding the tooltip
+   * @default 0ms
+   */
+  closeDelay?: number
   /**
    * If `true`, the tooltip will hide on click
    */
@@ -26,11 +26,11 @@ export interface UseTooltipProps {
   /**
    * Callback to run when the tooltip shows
    */
-  onShow?(): void
+  onOpen?(): void
   /**
    * Callback to run when the tooltip hides
    */
-  onHide?(): void
+  onClose?(): void
   /**
    * The Popper.js placement of the tooltip
    */
@@ -56,29 +56,34 @@ export interface UseTooltipProps {
    * The Popper.js modifiers to use
    */
   modifiers?: UsePopperProps["modifiers"]
+  /**
+   * If `true`, the tooltip will not be shown on any trigger
+   */
+  isDisabled?: boolean
 }
 
 export function useTooltip(props: UseTooltipProps = {}) {
   const {
-    showDelay = 0,
-    hideDelay = 0,
+    openDelay = 0,
+    closeDelay = 0,
     closeOnClick = true,
     closeOnMouseDown,
-    onShow,
-    onHide,
+    onOpen,
+    onClose,
     placement,
     id,
     isOpen: isOpenProp,
     defaultIsOpen,
     arrowSize = 10,
     modifiers,
+    isDisabled,
   } = props
 
-  const { isOpen, onOpen, onClose } = useDisclosure({
+  const { isOpen, onOpen: onOpenProp, onClose: onCloseProp } = useDisclosure({
     isOpen: isOpenProp,
     defaultIsOpen,
-    onOpen: onShow,
-    onClose: onHide,
+    onOpen,
+    onClose,
   })
 
   const popper = usePopper({
@@ -97,31 +102,33 @@ export function useTooltip(props: UseTooltipProps = {}) {
   const exitTimeoutRef = React.useRef<NodeJS.Timeout>()
 
   const openWithDelay = () => {
-    enterTimeoutRef.current = setTimeout(onOpen, showDelay)
+    if (!isDisabled) {
+      enterTimeoutRef.current = setTimeout(onOpenProp, openDelay)
+    }
   }
 
   const closeWithDelay = () => {
     if (enterTimeoutRef.current) {
       clearTimeout(enterTimeoutRef.current)
     }
-    exitTimeoutRef.current = setTimeout(onClose, hideDelay)
+    exitTimeoutRef.current = setTimeout(onCloseProp, closeDelay)
   }
 
   const onClick = () => {
     if (closeOnClick) {
-      onClose()
+      closeWithDelay()
     }
   }
 
   const onMouseDown = () => {
     if (closeOnMouseDown) {
-      onClose()
+      closeWithDelay()
     }
   }
 
   const onKeyDown = (event: KeyboardEvent) => {
     if (isOpen && event.key === "Escape") {
-      onClose()
+      closeWithDelay()
     }
   }
 
