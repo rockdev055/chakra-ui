@@ -36,7 +36,7 @@ git clone https://github.com/<your_github_username>/chakra-ui.git
 cd chakra-ui
 ```
 
-3. Setup all dependencies and build. Chakra UI uses `yarn`, so simply run
+3. Setup all dependencies and build. Chakra UI uses `yarn` and `lerna`, so run
    `yarn bootstrap`. This command will install dependencies, bootstrap the repo
    using `lerna` and build all packages.
 
@@ -57,12 +57,9 @@ use consumed independently.
   testing
 - [Testing Library](https://testing-library.com/) for testing components and
   hooks
-- [Gatsby](https://www.gatsbyjs.org/) for a blazing fast documentation website.
+- [Next](https://nextjs.org/) for a blazing fast documentation website.
 
 ### Commands
-
-**`yarn boot`**: bootstraps the entire project, symlinks all dependencies for
-cross-component development and builds all components.
 
 **`yarn bootstrap`**: bootstraps the entire project and symlinks all
 dependencies for cross-component development
@@ -112,17 +109,17 @@ yarn button test --watch
 yarn button lint
 ```
 
-This is alias is particularly useful when you're working on a specific component
+This alias is particularly useful when you're working on a specific component
 and want to avoid running the command for all components.
 
 ### Documentation
 
-The documentation site is built with Gatsby. If you'd like to contribute to the
-docs, simply run `yarn docs:start`.
+The documentation site is built with Next.js. If you'd like to contribute to the
+docs, simply run `yarn docs`
 
 ### Storybook
 
-Build components in isolation with Storybook using `yarn storybook`.
+When you run `yarn storybook`,
 
 ## Think you found a bug?
 
