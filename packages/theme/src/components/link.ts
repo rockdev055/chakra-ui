@@ -1,11 +1,7 @@
-import { BaseStyle } from "@chakra-ui/theme-tools"
+import { ComponentTheme } from "@chakra-ui/theme-tools"
 
-const register = {
-  parts: ["link"],
-} as const
-
-const baseStyle: BaseStyle<typeof register> = {
-  link: {
+const Link: ComponentTheme = {
+  baseStyle: {
     transition: `all 0.15s ease-out`,
     cursor: "pointer",
     textDecoration: "none",
@@ -25,9 +21,4 @@ const baseStyle: BaseStyle<typeof register> = {
   },
 }
 
-const link = {
-  register,
-  baseStyle,
-}
-
-export default link
+export default Link
