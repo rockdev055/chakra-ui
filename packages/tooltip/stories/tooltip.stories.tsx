@@ -22,7 +22,7 @@ const HookTooltip = ({ children }: any) => {
     getTooltipProps,
     getArrowProps,
     isOpen,
-  } = useTooltip({ openDelay: 100 })
+  } = useTooltip({ showDelay: 400 })
 
   const trigger = getTriggerProps()
   const tooltip = getTooltipProps()
@@ -65,7 +65,7 @@ const TransitionTooltip = ({ children }: any) => {
     getTooltipProps,
     getArrowProps,
     isOpen,
-  } = useTooltip({ openDelay: 50 })
+  } = useTooltip({ showDelay: 50 })
 
   const trigger = getTriggerProps()
   const tooltip = getTooltipProps()
@@ -125,7 +125,7 @@ export const WithTransition = () => (
 )
 
 export const withButton = () => (
-  <Tooltip label="This is a chakra tooltip" placement="bottom" hasArrow>
+  <Tooltip label="This is a chakra tooltip" placement="top">
     <button>Hover me</button>
   </Tooltip>
 )

@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Layout from "../components/Layout"
 import {
   Accordion,
   AccordionItem,
@@ -6,7 +7,6 @@ import {
   AccordionPanel,
   Button,
 } from "@chakra-ui/core"
-import Layout from "../components/Layout"
 
 const IndexPage = () => (
   <Layout title="Home | Next.js + TypeScript Example">
