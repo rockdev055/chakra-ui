@@ -1,4 +1,4 @@
-import { chakra, PropsOf, useStyles } from "@chakra-ui/system"
+import { chakra, PropsOf, useComponentStyle } from "@chakra-ui/system"
 import { cx, __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
 
@@ -21,30 +21,31 @@ const InputElement = React.forwardRef(function InputElement(
   props: InputElementProps,
   ref: React.Ref<any>,
 ) {
-  const { placement = "left", ...rest } = props
+  const { placement = "left", variant, size, ...rest } = props
 
-  const styles = useStyles()
-  const input = styles.field as any
+  const input = useComponentStyle({
+    themeKey: "Input",
+    variant,
+    size,
+  }) as InputElementProps
 
-  const placementStyles = { [placement]: "0" }
+  const placementProp = { [placement]: "0" }
 
   return (
     <StyledElement
+      width={input?.height}
+      height={input?.height}
+      fontSize={input?.fontSize}
+      paddingX={input?.paddingLeft}
       ref={ref}
-      __css={{
-        ...placementStyles,
-        width: input?.height,
-        height: input?.height,
-        fontSize: input?.fontSize,
-        paddingX: input?.paddingLeft,
-      }}
+      {...placementProp}
       {...rest}
     />
   )
 })
 
 //@ts-ignore
-InputElement.groupId = "InputElement"
+InputElement.__hidden = "InputElement"
 
 if (__DEV__) {
   InputElement.displayName = "InputElement"
@@ -63,7 +64,7 @@ export const InputLeftElement = React.forwardRef(function InputLeftElement(
 })
 
 //@ts-ignore
-InputLeftElement.groupId = "InputLeftElement"
+InputLeftElement.__hidden = "InputLeftElement"
 
 if (__DEV__) {
   InputLeftElement.displayName = "InputLeftElement"
@@ -87,7 +88,7 @@ export const InputRightElement = React.forwardRef(function InputRightElement(
 })
 
 //@ts-ignore
-InputRightElement.groupId = "InputRightElement"
+InputRightElement.__hidden = "InputRightElement"
 
 if (__DEV__) {
   InputRightElement.displayName = "InputRightElement"

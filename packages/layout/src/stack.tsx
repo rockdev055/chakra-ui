@@ -13,24 +13,11 @@ import {
   __DEV__,
 } from "@chakra-ui/utils"
 import * as React from "react"
+import { FlexOptions } from "./flex"
 
-export type StackDirection = ResponsiveValue<
-  "row" | "column" | "row-reverse" | "column-reverse"
->
+export type StackDirection = ResponsiveValue<"row" | "column">
 
-interface StackOptions {
-  /**
-   * Shorthand for `alignItems` style prop
-   */
-  align?: SystemProps["alignItems"]
-  /**
-   * Shorthand for `justifyContent` style prop
-   */
-  justify?: SystemProps["justifyContent"]
-  /**
-   * Shorthand for `flexWrap` style prop
-   */
-  wrap?: SystemProps["flexWrap"]
+interface StackOptions extends Pick<FlexOptions, "align" | "justify" | "wrap"> {
   /**
    * The space between each stack item
    */
@@ -52,26 +39,23 @@ interface StackOptions {
 
 export type StackProps = PropsOf<typeof chakra.div> & StackOptions
 
-export type StackDividerProps = PropsOf<typeof chakra.div>
+export type StackDividerProps = PropsOf<typeof StackDivider>
 
-export const StackDivider = (props: PropsOf<typeof chakra.div>) => (
-  <chakra.div
-    className="chakra-stack__item"
-    __css={{
-      borderWidth: 0,
-      alignSelf: "stretch",
-      borderColor: "inherit",
-      width: "auto",
-      height: "auto",
-    }}
-    {...props}
-  />
-)
+export const StackDivider = chakra("hr", {
+  baseStyle: {
+    borderWidth: 0,
+    alignSelf: "stretch",
+    borderColor: "inherit",
+    width: "auto",
+    height: "auto",
+  },
+})
 
 export const StackItem = (props: PropsOf<typeof chakra.div>) => (
   <chakra.div
+    display="inline-block"
     className="chakra-stack__item"
-    __css={{ display: "inline-block", flex: 0 }}
+    flex="0"
     {...props}
   />
 )
@@ -109,34 +93,19 @@ export const Stack = React.forwardRef(function Stack(
    * @see https://medium.com/@emmenko/patching-lobotomized-owl-selector-for-emotion-ssr-5a582a3c424c
    */
   const selector = "& > *:not(style) ~ *:not(style)"
-  const directionStyles = {
-    column: {
-      marginTop: spacing,
-      marginLeft: 0,
-    },
-    row: {
-      marginLeft: spacing,
-      marginTop: 0,
-    },
-    "column-reverse": {
-      marginBottom: spacing,
-      marginRight: 0,
-    },
-    "row-reverse": {
-      marginRight: spacing,
-      marginBottom: 0,
-    },
-  }
 
   const styles = {
     flexDirection: direction,
-    [selector]: mapResponsive(direction, (value) => directionStyles[value]),
+    [selector]: mapResponsive(direction, (value) => ({
+      [value === "column" ? "marginTop" : "marginLeft"]: spacing,
+      [value === "column" ? "marginLeft" : "marginTop"]: 0,
+    })),
   }
 
   const validChildren = getValidChildren(children)
 
   const dividerStyles = mapResponsive(direction, (value) => {
-    if (value.includes("row")) {
+    if (value === "row") {
       return {
         marginX: spacing,
         marginY: 0,
@@ -158,22 +127,20 @@ export const Stack = React.forwardRef(function Stack(
     const isLast = index + 1 === validChildren.length
     const _child = shouldWrapChildren ? <StackItem>{child}</StackItem> : child
 
-    if (!hasDivider) {
-      return <React.Fragment key={index}>{_child}</React.Fragment>
+    if (!hasDivider) return _child
+
+    if (!isLast) {
+      return (
+        <React.Fragment key={index}>
+          {_child}
+          {React.cloneElement(divider as any, {
+            css: css({ "&": dividerStyles }),
+          })}
+        </React.Fragment>
+      )
     }
 
-    const cloneDivider = isLast
-      ? null
-      : React.cloneElement(divider as any, {
-          css: css({ "&": dividerStyles }),
-        })
-
-    return (
-      <React.Fragment key={index}>
-        {_child}
-        {cloneDivider}
-      </React.Fragment>
-    )
+    return _child
   })
 
   const sx = (theme: Dict) => {
@@ -192,7 +159,7 @@ export const Stack = React.forwardRef(function Stack(
       flexDirection={styles.flexDirection}
       flexWrap={wrap}
       className={_className}
-      css={sx as any}
+      sx={sx as any}
       {...rest}
     >
       {clones}

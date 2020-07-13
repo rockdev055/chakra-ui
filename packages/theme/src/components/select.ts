@@ -1,37 +1,18 @@
-import { BaseStyle } from "@chakra-ui/theme-tools"
-import input from "./input"
+import Input, { InputVariants, InputSizes, InputProps } from "./input"
+import { ComponentTheme } from "@chakra-ui/theme-tools"
 
-const register = {
-  parts: ["field", "icon"],
-  sizes: input.register.sizes,
-  variants: input.register.variants,
-} as const
-
-const baseStyle: BaseStyle<typeof register> = {
-  field: {
-    ...input.baseStyle.field,
+const Select: ComponentTheme<InputProps> = {
+  ...Input,
+  baseStyle: {
+    ...Input.baseStyle,
     appearance: "none",
     paddingRight: "2rem",
     paddingBottom: "1px",
     lineHeight: "normal",
   },
-  icon: {
-    color: "currentColor",
-    fontSize: "1.25rem",
-    _disabled: { opacity: 0.5 },
-  },
 }
 
-const sizes = input.sizes
-const variants = input.variants
-const defaultProps = input.defaultProps
+export const SelectSizes = InputSizes
+export const SelectVariants = InputVariants
 
-const select = {
-  register,
-  defaultProps,
-  baseStyle,
-  sizes,
-  variants,
-}
-
-export default select
+export default Select

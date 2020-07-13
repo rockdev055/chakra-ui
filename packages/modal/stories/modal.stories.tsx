@@ -25,6 +25,7 @@ export default {
 }
 
 const Button = chakra("button", {
+  themeKey: "Button",
   baseStyle: {
     outline: 0,
     transition: "all 0.2s",
@@ -75,8 +76,10 @@ export function BasicUsage() {
             </ModalBody>
 
             <ModalFooter>
-              <Button onClick={onClose}>Cancel</Button>
-              <Button>Save</Button>
+              <Button onClick={onClose} colorScheme="gray" mr="12px">
+                Cancel
+              </Button>
+              <Button colorScheme="blue">Save</Button>
             </ModalFooter>
           </ModalContent>
         </ModalOverlay>
@@ -116,8 +119,10 @@ export function ReturnFocus() {
             </ModalBody>
 
             <ModalFooter>
-              <Button onClick={onClose}>Close</Button>
-              <Button>Secondary Action</Button>
+              <Button colorScheme="blue" mr={3} onClick={onClose}>
+                Close
+              </Button>
+              <Button variant="ghost">Secondary Action</Button>
             </ModalFooter>
           </ModalContent>
         </ModalOverlay>
@@ -131,18 +136,18 @@ export function SlideAnimation() {
   return (
     <>
       <button onClick={modal.onOpen}>Open</button>
-      <Fade timeout={5000} in={modal.isOpen}>
+      <Fade timeout={300} in={modal.isOpen}>
         {(styles) => (
           <Modal isOpen={true} onClose={modal.onClose}>
             <ModalOverlay style={styles}>
-              <SlideFade timeout={3000} in={modal.isOpen} unmountOnExit={false}>
+              <SlideFade timeout={150} in={modal.isOpen} unmountOnExit={false}>
                 {(styles) => (
                   <ModalContent padding={4} mx="auto" mt="40px" style={styles}>
                     Sit nulla est ex deserunt exercitation anim occaecat.
                     Nostrud ullamco deserunt aute id consequat veniam incididunt
                     duis in sint irure nisi. Mollit officia cillum Lorem ullamco
                     minim nostrud elit officia tempor esse quis.
-                    <Button>Save</Button>
+                    <Button colorScheme="blue">Save</Button>
                   </ModalContent>
                 )}
               </SlideFade>
@@ -170,7 +175,7 @@ export function ScaleAnimation() {
                     Nostrud ullamco deserunt aute id consequat veniam incididunt
                     duis in sint irure nisi. Mollit officia cillum Lorem ullamco
                     minim nostrud elit officia tempor esse quis.
-                    <Button>Save</Button>
+                    <Button colorScheme="blue">Save</Button>
                   </ModalContent>
                 )}
               </ScaleFade>
@@ -201,8 +206,10 @@ export function NestedModal() {
             </ModalBody>
             <ModalFooter>
               <chakra.div flex="1" />
-              <Button>Button 2</Button>
-              <Button onClick={second.onOpen}>Open Nested</Button>
+              <Button colorScheme="gray">Button 2</Button>
+              <Button colorScheme="pink" onClick={second.onOpen}>
+                Open Nested
+              </Button>
             </ModalFooter>
             <Modal isOpen={second.isOpen} onClose={second.onClose}>
               <ModalOverlay>
@@ -210,7 +217,9 @@ export function NestedModal() {
                   <ModalHeader>Modal 2 Title</ModalHeader>
                   <ModalFooter>
                     <chakra.div flex="1" />
-                    <Button onClick={third.onOpen}>Open Nested 2</Button>
+                    <Button colorScheme="blue" onClick={third.onOpen}>
+                      Open Nested 2
+                    </Button>
                   </ModalFooter>
                   <Modal isOpen={third.isOpen} onClose={third.onClose}>
                     <ModalOverlay>

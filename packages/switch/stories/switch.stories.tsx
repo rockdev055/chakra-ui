@@ -1,7 +1,6 @@
 import { chakra } from "@chakra-ui/system"
 import * as React from "react"
 import { Switch } from "../src"
-import { HStack } from "@chakra-ui/layout"
 
 export default {
   title: "Switch",
@@ -66,12 +65,14 @@ export const Usage = () => (
  */
 
 export const Sizes = () => {
+  const sizes = ["sm", "md", "lg"]
+
   return (
-    <HStack>
-      <Switch size="sm" colorScheme="green" />
-      <Switch size="md" colorScheme="green" />
-      <Switch size="lg" colorScheme="green" />
-    </HStack>
+    <>
+      {sizes.map((size) => (
+        <Switch size={size} marginLeft="1rem" colorScheme="green" />
+      ))}
+    </>
   )
 }
 

@@ -32,12 +32,10 @@ function Shape(props: ShapeProps) {
   const { size, isIndeterminate, ...rest } = props
   return (
     <chakra.svg
+      width={size}
+      height={size}
       viewBox="0 0 100 100"
-      __css={{
-        width: size,
-        height: size,
-        animation: isIndeterminate ? `${rotate} 2s linear infinite` : undefined,
-      }}
+      animation={isIndeterminate ? `${rotate} 2s linear infinite` : undefined}
       {...rest}
     />
   )
@@ -94,7 +92,15 @@ interface CircularProgressOptions {
   getValueText?(value?: number, percent?: number): string
 }
 
-export type CircularProgressProps = PropsOf<typeof chakra.div> &
+const StyledProgress = chakra("div", {
+  baseStyle: {
+    display: "inline-block",
+    position: "relative",
+    verticalAlign: "middle",
+  },
+})
+
+export type CircularProgressProps = PropsOf<typeof StyledProgress> &
   CircularProgressOptions
 
 /**
@@ -131,11 +137,11 @@ export function CircularProgress(props: CircularProgressProps) {
     getValueText,
   })
 
-  const isIndeterminate = progress.isIndeterminate
+  const isIndeterminate = isUndefined(progress.percent)
 
-  const determinant = progress.isIndeterminate
+  const determinant = isUndefined(progress.percent)
     ? undefined
-    : (progress.percent ?? 0) * 2.64
+    : progress.percent * 2.64
 
   const strokeDasharray = isUndefined(determinant)
     ? undefined
@@ -152,16 +158,11 @@ export function CircularProgress(props: CircularProgressProps) {
       }
 
   return (
-    <chakra.div
+    <StyledProgress
       className="chakra-progress"
+      fontSize={size}
       {...progress.bind}
       {...rest}
-      __css={{
-        display: "inline-block",
-        position: "relative",
-        verticalAlign: "middle",
-        fontSize: size,
-      }}
     >
       <Shape size={size} isIndeterminate={isIndeterminate}>
         <Circle
@@ -178,7 +179,7 @@ export function CircularProgress(props: CircularProgressProps) {
         />
       </Shape>
       {children}
-    </chakra.div>
+    </StyledProgress>
   )
 }
 

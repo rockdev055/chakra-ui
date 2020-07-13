@@ -1,24 +1,19 @@
 import { useDisclosure, useEventListener, useId } from "@chakra-ui/hooks"
-import {
-  Placement,
-  usePopper,
-  UsePopperProps,
-  toTransformOrigin,
-} from "@chakra-ui/popper"
+import { Placement, usePopper, UsePopperProps } from "@chakra-ui/popper"
 import { callAllHandlers, mergeRefs, Dict } from "@chakra-ui/utils"
 import * as React from "react"
 
 export interface UseTooltipProps {
   /**
-   * Delay (in ms) before showing the tooltip
-   * @default 0ms
-   */
-  openDelay?: number
-  /**
    * Delay (in ms) before hiding the tooltip
-   * @default 0ms
+   * @default 200ms
    */
-  closeDelay?: number
+  hideDelay?: number
+  /**
+   * Delay (in ms) before showing the tooltip
+   * @default 200ms
+   */
+  showDelay?: number
   /**
    * If `true`, the tooltip will hide on click
    */
@@ -31,11 +26,11 @@ export interface UseTooltipProps {
   /**
    * Callback to run when the tooltip shows
    */
-  onOpen?(): void
+  onShow?(): void
   /**
    * Callback to run when the tooltip hides
    */
-  onClose?(): void
+  onHide?(): void
   /**
    * The Popper.js placement of the tooltip
    */
@@ -61,34 +56,29 @@ export interface UseTooltipProps {
    * The Popper.js modifiers to use
    */
   modifiers?: UsePopperProps["modifiers"]
-  /**
-   * If `true`, the tooltip will not be shown on any trigger
-   */
-  isDisabled?: boolean
 }
 
 export function useTooltip(props: UseTooltipProps = {}) {
   const {
-    openDelay = 0,
-    closeDelay = 0,
+    showDelay = 0,
+    hideDelay = 0,
     closeOnClick = true,
     closeOnMouseDown,
-    onOpen,
-    onClose,
+    onShow,
+    onHide,
     placement,
     id,
     isOpen: isOpenProp,
     defaultIsOpen,
     arrowSize = 10,
     modifiers,
-    isDisabled,
   } = props
 
-  const { isOpen, onOpen: onOpenProp, onClose: onCloseProp } = useDisclosure({
+  const { isOpen, onOpen, onClose } = useDisclosure({
     isOpen: isOpenProp,
     defaultIsOpen,
-    onOpen,
-    onClose,
+    onOpen: onShow,
+    onClose: onHide,
   })
 
   const popper = usePopper({
@@ -107,33 +97,31 @@ export function useTooltip(props: UseTooltipProps = {}) {
   const exitTimeoutRef = React.useRef<NodeJS.Timeout>()
 
   const openWithDelay = () => {
-    if (!isDisabled) {
-      enterTimeoutRef.current = setTimeout(onOpenProp, openDelay)
-    }
+    enterTimeoutRef.current = setTimeout(onOpen, showDelay)
   }
 
   const closeWithDelay = () => {
     if (enterTimeoutRef.current) {
       clearTimeout(enterTimeoutRef.current)
     }
-    exitTimeoutRef.current = setTimeout(onCloseProp, closeDelay)
+    exitTimeoutRef.current = setTimeout(onClose, hideDelay)
   }
 
   const onClick = () => {
     if (closeOnClick) {
-      closeWithDelay()
+      onClose()
     }
   }
 
   const onMouseDown = () => {
     if (closeOnMouseDown) {
-      closeWithDelay()
+      onClose()
     }
   }
 
   const onKeyDown = (event: KeyboardEvent) => {
     if (isOpen && event.key === "Escape") {
-      closeWithDelay()
+      onClose()
     }
   }
 
@@ -160,11 +148,7 @@ export function useTooltip(props: UseTooltipProps = {}) {
       id: tooltipId,
       role: "tooltip",
       ref: mergeRefs(props.ref, popper.popper.ref),
-      style: {
-        transformOrigin: toTransformOrigin(popper.placement),
-        ...props.style,
-        ...popper.popper.style,
-      },
+      style: { ...props.style, ...popper.popper.style },
     }),
     getArrowProps: (props: Dict = {}) => ({
       ...props,

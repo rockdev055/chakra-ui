@@ -1,19 +1,13 @@
 import { Portal } from "@chakra-ui/portal"
-import {
-  chakra,
-  PropsOf,
-  ThemingProps,
-  useStyleConfig,
-  omitThemingProps,
-} from "@chakra-ui/system"
-import { isString, omit, pick, __DEV__, mergeRefs } from "@chakra-ui/utils"
+import { chakra, PropsOf } from "@chakra-ui/system"
+import { isString, omit, pick, __DEV__ } from "@chakra-ui/utils"
 import { VisuallyHidden } from "@chakra-ui/visually-hidden"
 import * as React from "react"
 import { useTooltip, UseTooltipProps } from "./use-tooltip"
-import { HiddenCSSTransition, useMotionConfig } from "@chakra-ui/transition"
 
-export type TooltipProps = PropsOf<typeof chakra.div> &
-  ThemingProps &
+const StyledTooltip = chakra("div", { themeKey: "Tooltip" })
+
+export type TooltipProps = PropsOf<typeof StyledTooltip> &
   UseTooltipProps & {
     /**
      * The react component to use as the
@@ -53,10 +47,6 @@ export const Tooltip = React.forwardRef(function Tooltip(
   props: TooltipProps,
   ref: React.Ref<any>,
 ) {
-  const styles = useStyleConfig("Tooltip", props)
-  const motionStyles = useMotionConfig("Tooltip", props, "chakra-tooltip")
-
-  const realProps = omitThemingProps(props)
   const {
     children,
     label,
@@ -64,14 +54,14 @@ export const Tooltip = React.forwardRef(function Tooltip(
     "aria-label": ariaLabel,
     hasArrow,
     ...rest
-  } = realProps
+  } = props
 
   const {
     isOpen,
     getTriggerProps,
     getTooltipProps,
     getArrowProps,
-  } = useTooltip(realProps)
+  } = useTooltip(props)
 
   const shouldWrap = isString(children) || shouldWrapChildren
 
@@ -101,36 +91,22 @@ export const Tooltip = React.forwardRef(function Tooltip(
 
   const hiddenProps = pick(_tooltipProps, ["role", "id"])
 
-  const localRef = React.useRef<any>()
-  tooltipProps.ref = mergeRefs(tooltipProps.ref, localRef)
-
   /**
-   * If the `label` is empty, there's no
+   * If the `label` or `aria-label` is empty, there's no
    * point showing the tooltip. Let's simply return back the children
+   *
+   * @see https://github.com/chakra-ui/chakra-ui/issues/601
    */
-  if (!label) {
-    return <>{children}</>
+  if (!(label || ariaLabel)) {
+    return <React.Fragment>{children}</React.Fragment>
   }
 
   return (
-    <>
+    <React.Fragment>
       {trigger}
-      <HiddenCSSTransition
-        classNames="chakra-tooltip"
-        appear
-        unmountOnExit
-        in={isOpen}
-        nodeRef={localRef}
-      >
+      {isOpen && (
         <Portal>
-          <chakra.div
-            className="chakra-tooltip"
-            {...tooltipProps}
-            __css={{
-              ...styles.container,
-              ...motionStyles.container,
-            }}
-          >
+          <StyledTooltip className="chakra-tooltip" {...tooltipProps}>
             {label}
             {hasAriaLabel && (
               <VisuallyHidden {...hiddenProps}>{ariaLabel}</VisuallyHidden>
@@ -138,17 +114,14 @@ export const Tooltip = React.forwardRef(function Tooltip(
             {hasArrow && (
               <chakra.div
                 className="chakra-tooltip__arrow"
+                bg="inherit"
                 {...getArrowProps()}
-                __css={{
-                  bg: "inherit",
-                  ...styles.arrow,
-                }}
               />
             )}
-          </chakra.div>
+          </StyledTooltip>
         </Portal>
-      </HiddenCSSTransition>
-    </>
+      )}
+    </React.Fragment>
   )
 })
 
