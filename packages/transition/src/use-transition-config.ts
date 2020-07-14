@@ -1,6 +1,6 @@
 import { SystemStyleObject, useTheme } from "@chakra-ui/system"
 import { Dict, get, runIfFn, createContext } from "@chakra-ui/utils"
-import * as React from "react"
+import React from "react"
 import { TransitionConfig, transitionConfigToCSS } from "./transition-config"
 
 type MaybeTransitionConfig =
@@ -8,18 +8,15 @@ type MaybeTransitionConfig =
   | ((props: Dict) => { [part: string]: TransitionConfig })
   | undefined
 
-type Timeout = TransitionConfig["timeout"]
-
 type PartTransition = Dict<{
   styles: SystemStyleObject
-  timeout: NonNullable<Timeout>
-  className: string
+  timeout: TransitionConfig["timeout"]
 }>
 
 export function useTransitionConfig(
   themeKey: string,
   props: Dict,
-  classNames?: Dict<string>,
+  className?: string,
 ) {
   const theme = useTheme()
   const path = `components.${themeKey}.transition`
@@ -36,10 +33,14 @@ export function useTransitionConfig(
       const partsTransition: PartTransition = {}
 
       for (const part in config) {
-        const { timeout = 0 } = config[part]
-        const className = classNames?.[part] ?? themeKey.toLowerCase()
-        const styles = transitionConfigToCSS(config[part], className)
-        partsTransition[part] = { styles, timeout, className }
+        const styles = transitionConfigToCSS(
+          config[part],
+          className ?? themeKey.toLowerCase(),
+        )
+        partsTransition[part] = {
+          styles,
+          timeout: config[part]["timeout"],
+        }
       }
 
       const prevTransitionString = JSON.stringify(partsTransitionRef.current)
@@ -51,7 +52,7 @@ export function useTransitionConfig(
     }
 
     return partsTransitionRef.current
-  }, [classNames, config, themeKey])
+  }, [className, config, themeKey])
 }
 
 export type UseTransitionConfigReturn = ReturnType<typeof useTransitionConfig>

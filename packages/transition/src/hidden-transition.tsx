@@ -13,6 +13,7 @@ type Picked =
   | "classNames"
   | "onExiting"
   | "in"
+  | "appear"
   | "unmountOnExit"
   | "mountOnEnter"
 
@@ -22,7 +23,6 @@ export type HiddenTransitionProps = Pick<
 > & {
   nodeRef: React.RefObject<HTMLElement>
   children: React.ReactNode
-  appear?: boolean
 }
 
 export function HiddenTransition(props: HiddenTransitionProps) {
