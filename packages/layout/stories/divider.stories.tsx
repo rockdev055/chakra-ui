@@ -19,6 +19,4 @@ export default {
  */
 export const Basic = () => <Divider />
 
-export const Vertical = () => <Divider orientation="vertical" />
-
-export const Horizontal = () => <Divider orientation="horizontal" />
+export const Vertical = () => <Divider variant="vertical" />

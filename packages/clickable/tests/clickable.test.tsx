@@ -1,7 +1,7 @@
 import * as React from "react"
 import { render, userEvent, fireEvent } from "@chakra-ui/test-utils"
 import { chakra } from "@chakra-ui/system"
-import { ClickableProps } from "../stories/use-clickable.stories"
+import { ClickableProps } from "../src/use-clickable.stories"
 import { useClickable } from "../src"
 
 const Clickable = React.forwardRef(
@@ -14,15 +14,8 @@ const Clickable = React.forwardRef(
 test("should render correctly", () => {
   const tools = render(<Clickable>clickable</Clickable>)
   expect(tools.getByText("clickable")).toMatchInlineSnapshot(`
-    .emotion-0 {
-      display: -webkit-inline-box;
-      display: -webkit-inline-flex;
-      display: -ms-inline-flexbox;
-      display: inline-flex;
-    }
-
     <button
-      class="emotion-0"
+      class="css-vxcmzt"
       type="button"
     >
       clickable
@@ -37,16 +30,9 @@ test("should render when disabled and focusable", () => {
     </Clickable>,
   )
   expect(tools.getByText("clickable")).toMatchInlineSnapshot(`
-    .emotion-0 {
-      display: -webkit-inline-box;
-      display: -webkit-inline-flex;
-      display: -ms-inline-flexbox;
-      display: inline-flex;
-    }
-
     <button
       aria-disabled="true"
-      class="emotion-0"
+      class="css-vxcmzt"
       type="button"
     >
       clickable
