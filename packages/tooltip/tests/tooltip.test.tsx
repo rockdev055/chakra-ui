@@ -56,6 +56,8 @@ test("shows on mouseover and closes on mouseout", async () => {
     jest.advanceTimersByTime(200)
   })
 
+  // await waitForDomChange()
+
   expect(tools.asFragment()).toMatchSnapshot()
   expect(screen.getByText(buttonLabel)).toBeInTheDocument()
   expect(screen.getByRole("tooltip")).toBeInTheDocument()
@@ -72,7 +74,7 @@ test("should not show on mouseover if isDisabled is true", async () => {
   const buttonLabel = "Hover me"
   const tooltipLabel = "tooltip label"
 
-  render(
+  const tools = render(
     <Tooltip label="tooltip label" isDisabled={true}>
       <button>Hover me</button>
     </Tooltip>,
@@ -88,6 +90,7 @@ test("should not show on mouseover if isDisabled is true", async () => {
 
 test("should show on mouseover if isDisabled has a falsy value", async () => {
   const buttonLabel = "Hover me"
+  const tooltipLabel = "tooltip label"
 
   const disabledState = false
   const tools = render(
@@ -101,6 +104,7 @@ test("should show on mouseover if isDisabled has a falsy value", async () => {
     jest.advanceTimersByTime(200)
   })
 
+  // await waitForDomChange()
   expect(tools.asFragment()).toMatchSnapshot()
   expect(screen.getByText(buttonLabel)).toBeInTheDocument()
   expect(screen.getByRole("tooltip")).toBeInTheDocument()

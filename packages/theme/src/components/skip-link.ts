@@ -1,4 +1,4 @@
-import { mode, BaseStyle } from "@chakra-ui/theme-tools"
+import { ComponentTheme, mode, BaseStyle } from "@chakra-ui/theme-tools"
 
 const register = {
   parts: ["link"],

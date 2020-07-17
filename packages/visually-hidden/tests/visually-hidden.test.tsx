@@ -5,21 +5,8 @@ import { VisuallyHidden } from "../src"
 test("should render correctly", async () => {
   const { getByText } = render(<VisuallyHidden>Click me</VisuallyHidden>)
   expect(getByText(/Click me/i)).toMatchInlineSnapshot(`
-    .emotion-0 {
-      border: 0px;
-      -webkit-clip: rect(0px,0px,0px,0px);
-      clip: rect(0px,0px,0px,0px);
-      height: 1px;
-      width: 1px;
-      margin: -1px;
-      padding: 0px;
-      overflow: hidden;
-      white-space: nowrap;
-      position: absolute;
-    }
-
     <span
-      class="emotion-0"
+      style="border: 0px; clip: rect(0px, 0px, 0px, 0px); height: 1px; width: 1px; margin: -1px; padding: 0px; overflow: hidden; white-space: nowrap; position: absolute;"
     >
       Click me
     </span>

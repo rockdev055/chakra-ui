@@ -16,7 +16,6 @@ const Component = () => {
 
 test("Popover renders correctly", async () => {
   const { asFragment } = render(<Component />)
-
   await wait()
 
   expect(asFragment()).toMatchSnapshot()
@@ -66,13 +65,12 @@ test("can close the popover by pressing escape", async () => {
 
   // open the popover
   fireEvent.click(utils.getByText(/open/i))
-
-  const dialog = await utils.findByRole("dialog")
+  await wait()
 
   // close the popover with escape
-  fireEvent.keyDown(dialog, { key: "Escape" })
+  fireEvent.keyDown(utils.getByRole("dialog"), { key: "Escape" })
   await wait()
 
   // verify popover is hidden
-  // utils.getByRole("dialog", { hidden: true })
+  utils.getByRole("dialog", { hidden: true })
 })

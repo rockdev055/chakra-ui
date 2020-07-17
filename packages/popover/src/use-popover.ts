@@ -1,10 +1,5 @@
 import { useBoolean, useDisclosure, useIds } from "@chakra-ui/hooks"
-import {
-  Placement,
-  usePopper,
-  UsePopperProps,
-  toTransformOrigin,
-} from "@chakra-ui/popper"
+import { Placement, usePopper, UsePopperProps } from "@chakra-ui/popper"
 import { useColorModeValue, useToken } from "@chakra-ui/system"
 import { callAllHandlers, Dict, mergeRefs } from "@chakra-ui/utils"
 import * as React from "react"
@@ -103,7 +98,7 @@ export function usePopover(props: UsePopoverProps = {}) {
     closeOnBlur = true,
     closeOnEsc = true,
     initialFocusRef,
-    placement: placementProp,
+    placement,
     gutter,
     id,
     arrowSize,
@@ -138,8 +133,8 @@ export function usePopover(props: UsePopoverProps = {}) {
   const shadowColor = arrowShadowColor ?? fallbackShadowColor
   const arrowColor = useToken("colors", shadowColor, arrowShadowColor)
 
-  const { popper, reference, arrow, placement } = usePopper({
-    placement: placementProp,
+  const { popper, reference, arrow } = usePopper({
+    placement,
     gutter,
     forceUpdate: isOpen,
     arrowSize,
@@ -183,14 +178,10 @@ export function usePopover(props: UsePopoverProps = {}) {
           },
         ),
         ref: mergeRefs(popoverRef, popper.ref, props.ref),
-        style: {
-          transformOrigin: toTransformOrigin(placement),
-          ...props.style,
-          ...popper.style,
-        },
+        style: { ...props.style, ...popper.style },
+        "aria-hidden": isOpen ? undefined : true,
         "aria-labelledby": hasHeader ? headerId : undefined,
         "aria-describedby": hasBody ? bodyId : undefined,
-        "aria-hidden": !isOpen ? !isOpen : undefined,
       }
 
       if (trigger === TRIGGER_TYPE.click) {
@@ -211,20 +202,19 @@ export function usePopover(props: UsePopoverProps = {}) {
       return popoverProps
     },
     [
-      popoverId,
-      isOpen,
-      popper.ref,
-      placement,
-      popper.style,
+      closeDelay,
+      bodyId,
+      closeOnEsc,
+      hasBody,
       hasHeader,
       headerId,
-      hasBody,
-      bodyId,
-      trigger,
-      closeOnEsc,
-      onClose,
+      isOpen,
       onBlur,
-      closeDelay,
+      onClose,
+      popoverId,
+      popper.ref,
+      popper.style,
+      trigger,
     ],
   )
 
