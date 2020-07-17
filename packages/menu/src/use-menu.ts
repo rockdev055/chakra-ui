@@ -70,22 +70,6 @@ export interface UseMenuProps extends UsePopperProps {
    * until the menu is open.
    */
   isLazy?: boolean
-  /**
-   * If `true`, the top-level menu will be opened in controlled mode
-   */
-  isOpen?: boolean
-  /**
-   * If `true`, the top-level menu will be opened in un-controlled mode
-   */
-  defaultIsOpen?: boolean
-  /**
-   * Function to be called when menu is open
-   */
-  onOpen?: () => void
-  /**
-   * Function to be called when menu is closed
-   */
-  onClose?: () => void
 }
 
 function useBlurOutside(
@@ -133,10 +117,6 @@ export function useMenu(props: UseMenuProps) {
     preventOverflow,
     modifiers,
     isLazy,
-    defaultIsOpen,
-    isOpen: isOpenProp,
-    onOpen: onOpenProp,
-    onClose: onCloseProp,
   } = props
 
   /**
@@ -151,20 +131,9 @@ export function useMenu(props: UseMenuProps) {
   const hasParentMenu = Boolean(parentMenu)
 
   /**
-   * Regular open and close stuff.
-   *
-   * For controlled props, you can only control the top-level menu button.
-   * Sub-menus are managed internally.
+   * Regular open and close stuff
    */
-  const controlProps = !hasParentMenu
-    ? {
-        isOpen: isOpenProp,
-        onOpen: onOpenProp,
-        defaultIsOpen,
-        onClose: onCloseProp,
-      }
-    : undefined
-  const { isOpen, onOpen, onClose, onToggle } = useDisclosure(controlProps)
+  const { isOpen, onOpen, onClose, onToggle } = useDisclosure()
 
   /**
    * Prepare the reference to the menu and disclosure
@@ -307,17 +276,17 @@ export function useMenuList(props: UseMenuListProps) {
   const onDocumentClick = React.useCallback(
     (event: MouseEvent) => {
       const target = event.target as HTMLElement
-      const withinButton = buttonRef.current?.contains(target)
-
       /**
        * if the menu is not open, don't do anything
        */
-      if (!isOpen && !withinButton) return
+      if (!isOpen) return
 
       /**
        * if the click is within the menu container, don't do anything
        */
-      if (menuRef.current?.contains(target)) return
+      if (menuRef.current?.contains(target)) {
+        return
+      }
 
       /**
        * Nested menu: Don't trigger close if we're clicking on a menu item that doubles
@@ -326,19 +295,20 @@ export function useMenuList(props: UseMenuListProps) {
       const parentIsButton = target?.parentElement?.hasAttribute(
         "aria-controls",
       )
+      const isButton = target?.hasAttribute("aria-controls")
 
-      const isMenuButton = target?.hasAttribute("aria-controls")
-
-      if (parentIsButton || isMenuButton) return
+      if (parentIsButton || isButton) {
+        return
+      }
 
       /**
        * Otherwise, close the menu provided `closeOnBlur` is set to `true`
        */
-      if (closeOnBlur && !withinButton) {
+      if (closeOnBlur) {
         onClose()
       }
     },
-    [onClose, closeOnBlur, menuRef, isOpen, buttonRef],
+    [onClose, closeOnBlur, menuRef, isOpen],
   )
 
   useEventListener("click", onDocumentClick)
