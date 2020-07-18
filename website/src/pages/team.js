@@ -40,7 +40,7 @@ function Member({ member }) {
             {name}
           </Text>
 
-          <Stack direction="row" spacing={2}>
+          <Stack direction="row" spacing={2} justify="center">
             <SocialLink href={url} icon={IoLogoGithub} />
             {twitterUsername && (
               <SocialLink
