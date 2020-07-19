@@ -32,6 +32,7 @@ export const SelectField = React.forwardRef(function SelectField(
       {...select}
       {...(rest as any)}
       ref={ref}
+      paddingRight="2rem"
       className={cx("chakra-select", className)}
       disabled={isDisabled}
     >
@@ -108,6 +109,7 @@ export const Select = React.forwardRef(function Select(
       className="chakra-select__wrapper"
       __css={{
         width: "100%",
+        height: "fit-content",
         position: "relative",
         color,
       }}
@@ -156,7 +158,6 @@ const IconWrapper = chakra("div", {
     justifyContent: "center",
     right: "0.5rem",
     pointerEvents: "none",
-    zIndex: 2,
     top: "50%",
     transform: "translateY(-50%)",
   },
