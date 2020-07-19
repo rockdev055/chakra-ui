@@ -75,7 +75,6 @@ function Guides() {
       allMdx(filter: { fields: { source: { eq: "guides" } } }) {
         nodes {
           fields {
-            createdAt
             slug
             contributors {
               name
@@ -91,6 +90,7 @@ function Guides() {
           parent {
             ... on File {
               birthTime
+              createdAt: birthTime(formatString: "MMMM DD, YYYY")
             }
           }
         }
@@ -118,9 +118,9 @@ function Guides() {
           <Stack spacing="4rem">
             {allMdx.nodes.map(
               ({
-                fields: { createdAt, contributors, slug },
+                fields: { contributors, slug },
                 frontmatter: { title, tags },
-                parent: { birthTime },
+                parent: { createdAt, birthTime },
                 excerpt,
               }) => (
                 <GuidePreview
