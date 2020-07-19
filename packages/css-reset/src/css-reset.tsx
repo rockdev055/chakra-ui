@@ -5,13 +5,8 @@ export const CSSReset = () => (
   <Global
     styles={`
       html {
-        line-height: 1.5;
+        line-height: 1.15;
         -webkit-text-size-adjust: 100%;
-        box-sizing: border-box;
-        font-family: system-ui, sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -webkit-text-size-adjust: 100%;
-        text-rendering: optimizelegibility;
       }
 
       *,
@@ -22,29 +17,27 @@ export const CSSReset = () => (
         box-sizing: inherit;
       }
 
+      body {
+        margin: 0;
+      }
+
       main {
         display: block;
       }
 
       hr {
-        border-top-width: 1px;
         box-sizing: content-box;
         height: 0;
         overflow: visible;
       }
 
-      pre,
-      code,
-      kbd,
-      samp {
-        font-family: SFMono-Regular,  Menlo, Monaco, Consolas, monospace;
+      pre {
+        font-family: monospace, monospace;
         font-size: 1em;
       }
 
       a {
         background-color: transparent;
-        color: inherit;
-        text-decoration: inherit;
       }
 
       abbr[title] {
@@ -57,6 +50,13 @@ export const CSSReset = () => (
       b,
       strong {
         font-weight: bolder;
+      }
+
+      code,
+      kbd,
+      samp {
+        font-family: monospace, monospace;
+        font-size: 1em;
       }
 
       small {
@@ -178,7 +178,17 @@ export const CSSReset = () => (
         display: none !important;
       }
 
-      body,
+      html {
+        box-sizing: border-box;
+        font-family: sans-serif;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
       blockquote,
       dl,
       dd,
@@ -211,6 +221,18 @@ export const CSSReset = () => (
         padding: 0;
       }
 
+      html {
+        font-family: system-ui;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+        -webkit-text-size-adjust: 100%;
+        text-rendering: optimizelegibility;
+      }
+
+      hr {
+        border-top-width: 1px;
+      }
+
       textarea {
         resize: vertical;
       }
@@ -238,6 +260,11 @@ export const CSSReset = () => (
         font-weight: inherit;
       }
 
+      a {
+        color: inherit;
+        text-decoration: inherit;
+      }
+
       button,
       input,
       optgroup,
@@ -246,6 +273,13 @@ export const CSSReset = () => (
         padding: 0;
         line-height: inherit;
         color: inherit;
+      }
+
+      pre,
+      code,
+      kbd,
+      samp {
+        font-family: monospace;
       }
 
       img,

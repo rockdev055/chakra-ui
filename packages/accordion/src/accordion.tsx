@@ -57,7 +57,12 @@ export const Accordion = React.forwardRef(function Accordion(
   return (
     <AccordionContextProvider value={accordionCtx}>
       <StylesProvider value={styles}>
-        <chakra.div {...htmlProps} ref={ref} className={_className}>
+        <chakra.div
+          {...htmlProps}
+          ref={ref}
+          __css={styles.container}
+          className={_className}
+        >
           {children}
         </chakra.div>
       </StylesProvider>
@@ -108,7 +113,7 @@ export const AccordionItem = React.forwardRef(function AccordionItem(
       <chakra.div
         {...getRootProps({ ref })}
         className={_className}
-        __css={styles.container}
+        __css={styles.item}
       >
         {isFunction(children)
           ? children({

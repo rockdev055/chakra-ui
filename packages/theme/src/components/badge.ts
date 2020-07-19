@@ -1,67 +1,77 @@
 import {
+  BaseStyle,
+  DefaultProps,
   getColor,
+  ink,
   mode,
-  styleConfig,
+  Props,
   transparentize,
+  Variants,
 } from "@chakra-ui/theme-tools"
 
-const badge = styleConfig({
-  parts: {
-    container: "the badge container",
+const register = {
+  parts: ["container"],
+  variants: ["solid", "subtle", "outline"],
+} as const
+
+const baseStyle: BaseStyle<typeof register> = {
+  container: {
+    paddingX: 1,
+    textTransform: "uppercase",
+    fontSize: "xs",
+    borderRadius: "sm",
+    fontWeight: "bold",
+  },
+}
+
+const variants: Variants<typeof register> = {
+  solid(props) {
+    const { colorScheme: c, theme } = props
+    const dark = transparentize(`${c}.500`, 0.6)(theme)
+    return {
+      container: {
+        bg: mode(`${c}.500`, dark)(props),
+        color: mode(`white`, `whiteAlpha.800`)(props),
+      },
+    }
   },
 
-  baseStyle: {
-    container: {
-      paddingX: 1,
-      textTransform: "uppercase",
-      fontSize: "xs",
-      borderRadius: "sm",
-      fontWeight: "bold",
-    },
+  subtle(props) {
+    const { colorScheme: c, theme } = props
+    const darkBg = ink(`${c}.200`, "lowest")(theme)
+    return {
+      container: {
+        bg: mode(`${c}.100`, darkBg)(props),
+        color: mode(`${c}.800`, `${c}.200`)(props),
+      },
+    }
   },
 
-  variants: {
-    solid: function (props) {
-      const { colorScheme: c, theme } = props
-      const dark = transparentize(`${c}.500`, 0.6)(theme)
-      return {
-        container: {
-          bg: mode(`${c}.500`, dark)(props),
-          color: mode(`white`, `whiteAlpha.800`)(props),
-        },
-      }
-    },
+  outline(props: Props) {
+    const { colorScheme: c, theme } = props
+    const darkColor = transparentize(`${c}.200`, 0.8)(theme)
+    const lightColor = getColor(theme, `${c}.500`)
+    const color = mode(lightColor, darkColor)(props)
 
-    subtle: function (props) {
-      const { colorScheme: c, theme } = props
-      const darkBg = transparentize(`${c}.200`, 0.16)(theme)
-      return {
-        container: {
-          bg: mode(`${c}.100`, darkBg)(props),
-          color: mode(`${c}.800`, `${c}.200`)(props),
-        },
-      }
-    },
-
-    outline: function (props) {
-      const { colorScheme: c, theme } = props
-      const darkColor = transparentize(`${c}.200`, 0.8)(theme)
-      const lightColor = getColor(theme, `${c}.500`)
-      const color = mode(lightColor, darkColor)(props)
-
-      return {
-        container: {
-          color,
-          boxShadow: `inset 0 0 0px 1px ${color}`,
-        },
-      }
-    },
+    return {
+      container: {
+        color,
+        boxShadow: `inset 0 0 0px 1px ${color}`,
+      },
+    }
   },
+}
 
-  defaultProps: {
-    variant: "subtle",
-    colorScheme: "gray",
-  },
-})
+const defaultProps: DefaultProps<typeof register> = {
+  variant: "subtle",
+  colorScheme: "gray",
+}
 
-export default badge
+const Badge = {
+  register,
+  defaultProps,
+  baseStyle,
+  variants,
+}
+
+export default Badge

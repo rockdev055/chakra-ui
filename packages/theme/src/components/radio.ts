@@ -1,55 +1,48 @@
-import { styleConfig } from "@chakra-ui/theme-tools"
+import { BaseStyle, runIfFn, Sizes } from "@chakra-ui/theme-tools"
 import checkbox from "./checkbox"
 
-const radio = styleConfig({
-  parts: {
-    control: "the radio input container",
-    label: "the radio label",
-  },
+const register = {
+  parts: ["control", "label"],
+  sizes: checkbox.register.sizes,
+} as const
 
-  baseStyle: function (props) {
-    const { label, control } = checkbox.baseStyle?.(props) ?? {}
-    return {
-      label,
-      control: {
-        ...control,
-        borderRadius: "full",
-
-        _checked: {
-          ...control?.["_checked"],
-          _before: {
-            content: `""`,
-            display: "inline-block",
-            position: "relative",
-            width: "50%",
-            height: "50%",
-            borderRadius: "50%",
-            bg: "currentColor",
-          },
+const baseStyle: BaseStyle<typeof register> = (props) => {
+  const { label, control } = runIfFn(checkbox.baseStyle, props)
+  return {
+    label,
+    control: {
+      ...control,
+      borderRadius: "full",
+      _checked: {
+        ...control?.["_checked"],
+        _before: {
+          content: `""`,
+          display: "inline-block",
+          position: "relative",
+          width: "50%",
+          height: "50%",
+          borderRadius: "50%",
+          bg: "currentColor",
         },
       },
-    }
-  },
+    },
+  }
+}
 
-  sizes: {
-    md: {
-      control: { w: 4, h: 4 },
-      label: { fontSize: "md" },
-    },
-    lg: {
-      control: { w: 5, h: 5 },
-      label: { fontSize: "lg" },
-    },
-    sm: {
-      control: { width: 3, height: 3 },
-      label: { fontSize: "sm" },
-    },
+const sizes: Sizes<typeof register> = {
+  ...checkbox.sizes,
+  sm: {
+    control: { width: 3, height: 3 },
   },
+}
 
-  defaultProps: {
-    size: "md",
-    colorScheme: "blue",
-  },
-})
+const defaultProps = checkbox.defaultProps
+
+const radio = {
+  register,
+  defaultProps,
+  baseStyle,
+  sizes,
+}
 
 export default radio

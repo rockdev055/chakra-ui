@@ -11,7 +11,6 @@ import Drawer from "./drawer"
 import Heading from "./heading"
 import Input from "./input"
 import Link from "./link"
-import FormLabel from "./form-label"
 import Menu from "./menu"
 import NumberInput from "./number-input"
 import Radio from "./radio"
@@ -44,7 +43,6 @@ export default {
   Avatar,
   Link,
   Code,
-  FormLabel,
   Spinner,
   Drawer,
   Menu,

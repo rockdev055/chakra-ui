@@ -1,28 +1,37 @@
-import { styleConfig } from "@chakra-ui/theme-tools"
+import { BaseStyle } from "@chakra-ui/theme-tools"
 import input from "./input"
 
-const select = styleConfig({
-  parts: {
-    field: "the select field itself",
-    icon: "the select field icon",
-  },
-  baseStyle: {
-    field: {
-      ...input.baseStyle?.field,
-      appearance: "none",
-      paddingBottom: "1px",
-      lineHeight: "normal",
-    },
-    icon: {
-      color: "currentColor",
-      fontSize: "1.25rem",
-      _disabled: { opacity: 0.5 },
-    },
-  },
+const register = {
+  parts: ["field", "icon"],
+  sizes: input.register.sizes,
+  variants: input.register.variants,
+} as const
 
-  sizes: input.sizes,
-  variants: input.variants,
-  defaultProps: input.defaultProps,
-})
+const baseStyle: BaseStyle<typeof register> = {
+  field: {
+    ...input.baseStyle.field,
+    appearance: "none",
+    paddingRight: "2rem",
+    paddingBottom: "1px",
+    lineHeight: "normal",
+  },
+  icon: {
+    color: "currentColor",
+    fontSize: "1.25rem",
+    _disabled: { opacity: 0.5 },
+  },
+}
+
+const sizes = input.sizes
+const variants = input.variants
+const defaultProps = input.defaultProps
+
+const select = {
+  register,
+  defaultProps,
+  baseStyle,
+  sizes,
+  variants,
+}
 
 export default select
