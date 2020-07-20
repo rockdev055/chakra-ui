@@ -1,10 +1,12 @@
-import { styleConfig } from "@chakra-ui/theme-tools"
+import { BaseStyle } from "@chakra-ui/theme-tools"
 
-const label = styleConfig({
-  baseStyle: {
+const register = { parts: ["label"] } as const
+
+const baseStyle: BaseStyle<typeof register> = {
+  label: {
     fontSize: "md",
-    mr: 3,
-    mb: 2,
+    marginRight: 3,
+    marginBottom: 2,
     fontWeight: "medium",
     transition: "all 0.2s",
     opacity: 1,
@@ -12,6 +14,11 @@ const label = styleConfig({
       opacity: 0.4,
     },
   },
-})
+}
+
+const label = {
+  register,
+  baseStyle,
+}
 
 export default label

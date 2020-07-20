@@ -170,7 +170,14 @@ if (__DEV__) {
   FormControl.displayName = "FormControl"
 }
 
-export type FormLabelProps = PropsOf<typeof chakra.label> & ThemingProps
+const StyledLabel = chakra("label", {
+  baseStyle: {
+    display: "block",
+    textAlign: "left",
+  },
+})
+
+export type FormLabelProps = PropsOf<typeof StyledLabel> & ThemingProps
 
 /**
  * Used to enhance the usability of form controls.
@@ -190,14 +197,10 @@ export const FormLabel = forwardRef<FormLabelProps>(function FormLabel(
   const ownProps = useFormControlLabel(rest)
 
   return (
-    <chakra.label
+    <StyledLabel
       ref={ref}
       className={cx("chakra-form__label", props.className)}
-      __css={{
-        display: "block",
-        textAlign: "left",
-        ...styles.label,
-      }}
+      __css={styles.label}
       {...ownProps}
     />
   )

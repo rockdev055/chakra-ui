@@ -57,16 +57,17 @@ To recap, we mentioned that most components have the following attributes:
 - Might have size variations **(sizes)**
 - Might have style variations **(variants)**
 
-### The Parts
+### The register
 
-This is used as a way to document the anatomy of a composite component. It's
-also useful to show what parts can be styled.
+This is used as a way to document the parts of a composite component, it's
+possible sizes and variants.
 
 ```jsx live=false
 // To style a button
-const parts = {
-  container: "the button container",
-  icon: "the button's left or right icon",
+const register = {
+  parts: ["container", "icon"],
+  sizes: ["sm", "lg"],
+  variants: ["solid", "outline"],
 }
 ```
 
@@ -134,9 +135,10 @@ The final style configuration for a button component might look like this:
 
 ```js live=false
 const buttonConfig = {
-  parts : {
-    container: "the button container",
-    icon: "the button's left or right icon",
+  register: {
+    parts: ["container", "icon"],
+    sizes: ["sm", "lg"],
+    variants: ["solid", "outline"],
   },
   baseStyle: {
     container: {...},

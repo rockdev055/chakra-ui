@@ -1,4 +1,4 @@
-import { useEffect, Ref } from "react"
+import * as React from "react"
 
 /**
  * Proper state management for nested modals.
@@ -26,8 +26,8 @@ class ModalManager {
 
 export const manager = new ModalManager()
 
-export function useModalManager(ref: Ref<any>, isOpen?: boolean) {
-  useEffect(() => {
+export function useModalManager(ref: React.Ref<any>, isOpen?: boolean) {
+  React.useEffect(() => {
     isOpen && manager.add(ref)
     return () => {
       manager.remove(ref)
