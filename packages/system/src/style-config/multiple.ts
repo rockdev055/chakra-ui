@@ -1,11 +1,20 @@
 import * as React from "react"
 import { Dict, get, runIfFn, merge, filterUndefined } from "@chakra-ui/utils"
-import { useChakra } from "./hooks"
+import { useChakra } from "../hooks"
 import { SystemStyleObject } from "@chakra-ui/styled-system"
+import isEqual from "react-fast-compare"
 
-type StyleConfig = Dict | undefined
+interface MultiStyleConfig {
+  parts: Dict<string>
+  defaultProps?: Dict
+  baseStyle?: Dict
+  variants?: Dict
+  sizes?: Dict
+}
 
-export function useStyleConfig(themeKey: string, props: Dict) {
+type StyleConfig = MultiStyleConfig | undefined
+
+export function useMultiStyleConfig(themeKey: string, props: Dict) {
   const { styleConfig: styleConfigProp, ...rest } = props
 
   const { theme, colorMode } = useChakra()
@@ -29,8 +38,8 @@ export function useStyleConfig(themeKey: string, props: Dict) {
 
   return React.useMemo(() => {
     if (styleConfig) {
-      const baseStyles = runIfFn(styleConfig.baseStyle, allProps)
-      const parts = styleConfig.register?.parts || Object.keys(baseStyles)
+      const baseStyles = runIfFn(styleConfig.baseStyle ?? {}, allProps)
+      const parts = Object.keys(styleConfig.parts) || Object.keys(baseStyles)
 
       const variants = runIfFn(
         styleConfig.variants?.[allProps.variant] ?? {},
@@ -50,10 +59,9 @@ export function useStyleConfig(themeKey: string, props: Dict) {
         )
       }
 
-      const prevStyleString = JSON.stringify(partsStyleRef.current)
-      const nextStyleString = JSON.stringify(partsStyle)
+      const isStyleEqual = isEqual(partsStyleRef.current, partsStyle)
 
-      if (nextStyleString !== prevStyleString) {
+      if (!isStyleEqual) {
         partsStyleRef.current = partsStyle
       }
     }
@@ -62,4 +70,4 @@ export function useStyleConfig(themeKey: string, props: Dict) {
   }, [allProps, styleConfig])
 }
 
-export default useStyleConfig
+export default useMultiStyleConfig
