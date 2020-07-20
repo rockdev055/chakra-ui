@@ -2,24 +2,25 @@ import { useCheckbox, UseCheckboxProps } from "@chakra-ui/checkbox"
 import {
   chakra,
   PropsOf,
-  useMultiStyleConfig,
+  useStyleConfig,
   omitThemingProps,
   ThemingProps,
 } from "@chakra-ui/system"
 import { cx, dataAttr, __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
 
-type Omitted = "onChange" | "defaultChecked" | "checked"
-
 export type SwitchProps = Omit<UseCheckboxProps, "isIndeterminate"> &
-  Omit<PropsOf<typeof chakra.label>, Omitted> &
+  Omit<
+    PropsOf<typeof chakra.label>,
+    "onChange" | "defaultChecked" | "checked"
+  > &
   ThemingProps
 
 export const Switch = React.forwardRef(function Switch(
   props: SwitchProps,
   ref: React.Ref<any>,
 ) {
-  const styles = useMultiStyleConfig("Switch", props)
+  const styles = useStyleConfig("Switch", props)
   const { className, ...rest } = omitThemingProps(props)
   const { state, getInputProps, getCheckboxProps, htmlProps } = useCheckbox(
     rest,

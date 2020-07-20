@@ -1,7 +1,11 @@
-import { styleConfig } from "@chakra-ui/theme-tools"
+import { BaseStyle } from "@chakra-ui/theme-tools"
 
-const link = styleConfig({
-  baseStyle: {
+const register = {
+  parts: ["link"],
+} as const
+
+const baseStyle: BaseStyle<typeof register> = {
+  link: {
     transition: `all 0.15s ease-out`,
     cursor: "pointer",
     textDecoration: "none",
@@ -19,6 +23,11 @@ const link = styleConfig({
       textDecoration: "none",
     },
   },
-})
+}
+
+const link = {
+  register,
+  baseStyle,
+}
 
 export default link

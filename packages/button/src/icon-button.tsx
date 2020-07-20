@@ -1,5 +1,5 @@
 import { __DEV__ } from "@chakra-ui/utils"
-import React, { ReactElement, isValidElement, cloneElement } from "react"
+import * as React from "react"
 import { Button, ButtonProps } from "./button"
 import { forwardRef } from "@chakra-ui/system"
 
@@ -8,7 +8,7 @@ type Omitted = "leftIcon" | "isFullWidth" | "rightIcon" | "loadingText"
 type BaseButtonProps = Omit<ButtonProps, Omitted>
 
 export type IconButtonProps = BaseButtonProps & {
-  icon?: ReactElement
+  icon?: React.ReactElement
   isRound?: boolean
   "aria-label": string
 }
@@ -22,13 +22,12 @@ export const IconButton = forwardRef<IconButtonProps>(function IconButton(
   /**
    * Passing the icon as prop or children should work
    */
-  const element = icon || children
-  const _children = isValidElement(element)
-    ? cloneElement(element as any, {
-        "aria-hidden": true,
-        focusable: false,
-      })
-    : null
+  const isValidElement = icon || children
+
+  const a11yProps = {
+    "aria-hidden": true,
+    focusable: false,
+  }
 
   return (
     <Button
@@ -38,7 +37,9 @@ export const IconButton = forwardRef<IconButtonProps>(function IconButton(
       aria-label={ariaLabel}
       {...rest}
     >
-      {_children}
+      {React.isValidElement(isValidElement)
+        ? React.cloneElement(isValidElement, a11yProps)
+        : null}
     </Button>
   )
 })
