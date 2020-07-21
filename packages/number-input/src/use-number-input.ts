@@ -17,7 +17,7 @@ import { useSpinner } from "./use-spinner"
 import {
   isFloatingPointNumericCharacter,
   isValidNumericKeyboardEvent,
-} from "./utils"
+} from "./number-input.utils"
 
 export interface UseNumberInputProps extends UseCounterProps {
   /**

@@ -24,17 +24,23 @@ const InputElement = React.forwardRef(function InputElement(
   const { placement = "left", ...rest } = props
 
   const styles = useStyles()
-  const input: any = styles.field
+  const input = styles.field as any
 
-  const elementStyles = {
-    [placement]: "0",
-    width: input.height,
-    height: input.height,
-    fontSize: input.fontSize,
-    paddingX: input.paddingLeft,
-  }
+  const placementStyles = { [placement]: "0" }
 
-  return <StyledElement ref={ref} __css={elementStyles} {...rest} />
+  return (
+    <StyledElement
+      ref={ref}
+      __css={{
+        ...placementStyles,
+        width: input?.height,
+        height: input?.height,
+        fontSize: input?.fontSize,
+        paddingX: input?.paddingLeft,
+      }}
+      {...rest}
+    />
+  )
 })
 
 //@ts-ignore

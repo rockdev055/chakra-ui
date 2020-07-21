@@ -1,19 +1,19 @@
 import {
   chakra,
-  forwardRef,
-  omitThemingProps,
   PropsOf,
-  StylesProvider,
-  SystemStyleObject,
+  forwardRef,
+  useStyleConfig,
+  omitThemingProps,
   ThemingProps,
-  useMultiStyleConfig,
+  StylesProvider,
   useStyles,
+  SystemStyleObject,
 } from "@chakra-ui/system"
 import {
   createContext,
   cx,
+  isFunction,
   ReactNodeOrRenderProp,
-  runIfFn,
   __DEV__,
 } from "@chakra-ui/utils"
 import * as React from "react"
@@ -57,8 +57,7 @@ export const Editable = forwardRef<EditableProps>(function Editable(
   props,
   ref,
 ) {
-  const styles = useMultiStyleConfig("Editable", props)
-
+  const styles = useStyleConfig("Editable", props)
   const realProps = omitThemingProps(props)
   const { htmlProps, ...context } = useEditable(realProps)
 
@@ -66,12 +65,9 @@ export const Editable = forwardRef<EditableProps>(function Editable(
 
   const _className = cx("chakra-editable", props.className)
 
-  const children = runIfFn(props.children, {
-    isEditing,
-    onSubmit,
-    onCancel,
-    onEdit,
-  })
+  const children = isFunction(props.children)
+    ? props.children({ isEditing, onSubmit, onCancel, onEdit })
+    : props.children
 
   return (
     <EditableProvider value={context}>
@@ -112,7 +108,7 @@ export const EditablePreview = forwardRef<EditablePreviewProps>(
     const { getPreviewProps } = useEditableContext()
     const styles = useStyles()
 
-    const previewProps = getPreviewProps(props, ref)
+    const previewProps = getPreviewProps({ ...props, ref })
     const _className = cx("chakra-editable__preview", props.className)
 
     return (
@@ -146,7 +142,7 @@ export const EditableInput = forwardRef<EditableInputProps>(
     const { getInputProps } = useEditableContext()
     const styles = useStyles()
 
-    const inputProps = getInputProps(props, ref)
+    const inputProps = getInputProps({ ...props, ref })
     const _className = cx("chakra-editable__input", props.className)
 
     return (

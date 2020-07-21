@@ -3,32 +3,33 @@ import {
   PropsOf,
   useStyleConfig,
   omitThemingProps,
-  SystemStyleObject,
 } from "@chakra-ui/system"
-import { __DEV__, merge } from "@chakra-ui/utils"
+import { __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
 
 export type SkipNavLinkProps = PropsOf<typeof chakra.a>
 
 const fallbackId = "chakra-skip-nav"
 
-const baseStyle: SystemStyleObject = {
-  userSelect: "none",
-  border: "0",
-  height: "1px",
-  width: "1px",
-  margin: "-1px",
-  padding: "0",
-  outline: "0",
-  overflow: "hidden",
-  position: "absolute",
-  clip: "rect(0 0 0 0)",
-  _focus: {
-    clip: "auto",
-    width: "auto",
-    height: "auto",
+const StyledLink = chakra("a", {
+  baseStyle: {
+    userSelect: "none",
+    border: "0",
+    height: "1px",
+    width: "1px",
+    margin: "-1px",
+    padding: "0",
+    outline: "0",
+    overflow: "hidden",
+    position: "absolute",
+    clip: "rect(0 0 0 0)",
+    _focus: {
+      clip: "auto",
+      width: "auto",
+      height: "auto",
+    },
   },
-}
+})
 
 /**
  * Renders a link that remains hidden until focused to skip to the main content.
@@ -39,10 +40,15 @@ export const SkipNavLink = React.forwardRef(function SkipNavLink(
 ) {
   const styles = useStyleConfig("SkipLink", props)
   const { id = fallbackId, ...rest } = omitThemingProps(props)
-
-  const linkStyles = merge({}, baseStyle, styles)
-
-  return <chakra.a {...rest} ref={ref} href={`#${id}`} __css={linkStyles} />
+  return (
+    <StyledLink
+      {...rest}
+      ref={ref}
+      className="chakra-skip-nav__link"
+      href={`#${id}`}
+      __css={styles.Container}
+    />
+  )
 })
 
 if (__DEV__) {
@@ -60,7 +66,14 @@ export const SkipNavContent = React.forwardRef(function SkipNavContent(
 ) {
   const { id = fallbackId, ...rest } = props
   return (
-    <div ref={ref} id={id} tabIndex={-1} style={{ outline: 0 }} {...rest} />
+    <div
+      className="chakra-skip-nav__content"
+      ref={ref}
+      id={id}
+      tabIndex={-1}
+      style={{ outline: 0 }}
+      {...rest}
+    />
   )
 })
 

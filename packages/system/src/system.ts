@@ -24,8 +24,7 @@ const cssProp = (props: any) => props.css
 const __css = cast((props: Dict) => {
   const result = {} as Dict
   for (const key in props.__css) {
-    const exists = key in props
-    if (!exists || props[key] == null) {
+    if (!(key in props)) {
       result[key] = props.__css[key]
     }
   }

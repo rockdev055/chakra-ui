@@ -40,20 +40,22 @@ based on color mode.
 ```jsx manual=true
 const styleConfig = {
   baseStyle: ({ colorMode }) => ({
-    bg: colorMode === "dark" ? "green.300" : "green.500",
-    color: colorMode === "dark" ? "gray.800" : "white",
-    textTransform: "uppercase",
-    fontWeight: "semibold",
-    letterSpacing: "0.02em",
-    padding: "4px",
-    borderRadius: "2px",
-    fontSize: "12px",
+    container: {
+      bg: colorMode === "dark" ? "green.300" : "green.500",
+      color: colorMode === "dark" ? "gray.800" : "white",
+      textTransform: "uppercase",
+      fontWeight: "semibold",
+      letterSpacing: "0.02em",
+      padding: "4px",
+      borderRadius: "2px",
+      fontSize: "12px",
+    },
   }),
 }
 
 function Badge(props) {
   const styles = useStyleConfig("Badge", { styleConfig })
-  return <Box as="span" sx={styles} {...props} />
+  return <Box as="span" sx={styles.container} {...props} />
 }
 
 render(<Badge>Badge</Badge>)

@@ -6,7 +6,7 @@ import {
   ThemingProps,
 } from "@chakra-ui/system"
 import { createContext, cx, __DEV__ } from "@chakra-ui/utils"
-import React, { useMemo } from "react"
+import * as React from "react"
 
 export type ButtonGroupProps = PropsOf<typeof chakra.div> &
   ThemingProps & {
@@ -15,9 +15,6 @@ export type ButtonGroupProps = PropsOf<typeof chakra.div> &
      * to look flushed together
      */
     isAttached?: boolean
-    /**
-     * If `true`, all wrapped button will be disabled
-     */
     isDisabled?: boolean
     /**
      * The spacing between the buttons
@@ -26,14 +23,12 @@ export type ButtonGroupProps = PropsOf<typeof chakra.div> &
     spacing?: SystemProps["marginRight"]
   }
 
-type ButtonGroupContext = ThemingProps & { isDisabled?: boolean }
-
-const [ButtonGroupProvider, useButtonGroup] = createContext<ButtonGroupContext>(
-  {
-    strict: false,
-    name: "ButtonGroupContext",
-  },
-)
+const [ButtonGroupContextProvider, useButtonGroup] = createContext<
+  ThemingProps & { isDisabled?: boolean }
+>({
+  strict: false,
+  name: "ButtonGroupContext",
+})
 
 export { useButtonGroup }
 
@@ -52,43 +47,34 @@ export const ButtonGroup = React.forwardRef(function ButtonGroup(
     ...rest
   } = props
 
+  const css: SystemStyleObject = isAttached
+    ? {
+        "> *:first-of-type:not(:last-of-type)": { borderRightRadius: 0 },
+        "> *:not(:first-of-type):not(:last-of-type)": { borderRadius: 0 },
+        "> *:not(:first-of-type):last-of-type": { borderLeftRadius: 0 },
+      }
+    : {
+        "& > *:not(style) ~ *:not(style)": { marginLeft: spacing },
+      }
+
   const _className = cx("chakra-button__group", className)
 
-  const context = useMemo(() => ({ size, colorScheme, variant, isDisabled }), [
-    size,
-    colorScheme,
-    variant,
-    isDisabled,
-  ])
-
-  let groupStyles: SystemStyleObject = {
-    display: "inline-flex",
-  }
-
-  if (isAttached) {
-    groupStyles = {
-      ...groupStyles,
-      "> *:first-of-type:not(:last-of-type)": { borderRightRadius: 0 },
-      "> *:not(:first-of-type):not(:last-of-type)": { borderRadius: 0 },
-      "> *:not(:first-of-type):last-of-type": { borderLeftRadius: 0 },
-    }
-  } else {
-    groupStyles = {
-      ...groupStyles,
-      "& > *:not(style) ~ *:not(style)": { marginLeft: spacing },
-    }
-  }
+  const context = React.useMemo(
+    () => ({ size, colorScheme, variant, isDisabled }),
+    [size, colorScheme, variant, isDisabled],
+  )
 
   return (
-    <ButtonGroupProvider value={context}>
+    <ButtonGroupContextProvider value={context}>
       <chakra.div
         ref={ref}
         role="group"
-        __css={groupStyles}
+        display="inline-flex"
+        __css={css}
         className={_className}
         {...rest}
       />
-    </ButtonGroupProvider>
+    </ButtonGroupContextProvider>
   )
 })
 

@@ -5,7 +5,7 @@ import {
   PropsOf,
   SystemProps,
   ThemingProps,
-  useMultiStyleConfig,
+  useStyleConfig,
 } from "@chakra-ui/system"
 import { cx, Omit, __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
@@ -31,9 +31,6 @@ const StyledContainer = chakra("label", {
     alignItems: "center",
     verticalAlign: "top",
     position: "relative",
-    _disabled: {
-      cursor: "not-allowed",
-    },
   },
 })
 
@@ -65,12 +62,10 @@ export const Checkbox = forwardRef<CheckboxProps>(function Checkbox(
   ref,
 ) {
   const group = useCheckboxGroupContext()
+  const styles = useStyleConfig("Checkbox", { ...group, ...props })
+  const realProps = omitThemingProps({ ...group, ...props })
 
-  const merged = { ...group, ...props }
-  const styles = useMultiStyleConfig("Checkbox", merged)
-  const realProps = omitThemingProps(merged)
-
-  const { spacing = "0.5rem", className, children, ...otherProps } = realProps
+  const { spacing = "0.5rem", className, children, ...rest } = realProps
 
   let isChecked = realProps.isChecked
   if (group?.value && realProps.value) {
@@ -89,29 +84,24 @@ export const Checkbox = forwardRef<CheckboxProps>(function Checkbox(
     getLabelProps,
     htmlProps,
   } = useCheckbox({
-    ...otherProps,
+    ...rest,
     isChecked,
     onChange,
   })
 
   const _className = cx("chakra-checkbox", className)
 
-  const inputProps = getInputProps({}, ref)
-  const labelProps = getLabelProps()
-  const checkboxProps = getCheckboxProps()
-
   return (
     <StyledContainer
       __css={styles.container}
-      data-disabled={state.isDisabled}
       className={_className}
       {...htmlProps}
     >
-      <input className="chakra-checkbox__input" {...inputProps} />
+      <input className="chakra-checkbox__input" {...getInputProps({ ref })} />
       <StyledControl
         __css={styles.control}
         className="chakra-checkbox__control"
-        {...checkboxProps}
+        {...getCheckboxProps()}
       >
         <CheckboxIcon
           __css={styles.icon}
@@ -122,13 +112,11 @@ export const Checkbox = forwardRef<CheckboxProps>(function Checkbox(
       </StyledControl>
       {children && (
         <chakra.div
+          __css={styles.label}
           className="chakra-checkbox__label"
-          {...labelProps}
+          ml={spacing}
+          {...getLabelProps()}
           children={children}
-          __css={{
-            ml: spacing,
-            ...styles.label,
-          }}
         />
       )}
     </StyledContainer>

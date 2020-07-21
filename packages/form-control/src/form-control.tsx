@@ -6,7 +6,7 @@ import {
   PropsOf,
   useStyles,
   StylesProvider,
-  useMultiStyleConfig,
+  useStyleConfig,
   ThemingProps,
   omitThemingProps,
 } from "@chakra-ui/system"
@@ -130,7 +130,9 @@ function useProvider(props: FormControlContext) {
 export type FormControlProps = FormControlContext & PropsOf<typeof chakra.div>
 
 /**
- * FormControl provides context such as
+ * FormControl
+ *
+ * React component that provides context such as
  * `isInvalid`, `isDisabled`, and `isRequired` to form elements.
  *
  * This is commonly used in form elements such as `input`,
@@ -140,7 +142,7 @@ export const FormControl = forwardRef<FormControlProps>(function FormControl(
   props,
   ref,
 ) {
-  const styles = useMultiStyleConfig("Form", props)
+  const styles = useStyleConfig("Form", props)
   const rest = omitThemingProps(props)
   const { htmlProps, ...context } = useProvider(rest)
 
@@ -168,7 +170,14 @@ if (__DEV__) {
   FormControl.displayName = "FormControl"
 }
 
-export type FormLabelProps = PropsOf<typeof chakra.label> & ThemingProps
+const StyledLabel = chakra("label", {
+  baseStyle: {
+    display: "block",
+    textAlign: "left",
+  },
+})
+
+export type FormLabelProps = PropsOf<typeof StyledLabel> & ThemingProps
 
 /**
  * Used to enhance the usability of form controls.
@@ -182,20 +191,16 @@ export const FormLabel = forwardRef<FormLabelProps>(function FormLabel(
   props,
   ref,
 ) {
-  const styles = useMultiStyleConfig("FormLabel", props)
+  const styles = useStyleConfig("FormLabel", props)
 
   const { className, ...rest } = omitThemingProps(props)
   const ownProps = useFormControlLabel(rest)
 
   return (
-    <chakra.label
+    <StyledLabel
       ref={ref}
       className={cx("chakra-form__label", props.className)}
-      __css={{
-        display: "block",
-        textAlign: "left",
-        ...styles.label,
-      }}
+      __css={styles.label}
       {...ownProps}
     />
   )

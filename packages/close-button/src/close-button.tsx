@@ -9,6 +9,22 @@ import {
 import { __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
 
+const StyledButton = chakra("button", {
+  baseStyle: {
+    outline: 0,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexShrink: 0,
+  },
+})
+
+/**
+ * CloseIcon
+ *
+ * The icon for the close button.
+ */
+
 const CloseIcon = (props: IconProps) => (
   <Icon focusable="false" aria-hidden {...props}>
     <path
@@ -18,7 +34,7 @@ const CloseIcon = (props: IconProps) => (
   </Icon>
 )
 
-export type CloseButtonProps = PropsOf<typeof chakra.button> &
+export type CloseButtonProps = PropsOf<typeof StyledButton> &
   ThemingProps & {
     /**
      * If `true`, the close button will be disabled.
@@ -27,6 +43,8 @@ export type CloseButtonProps = PropsOf<typeof chakra.button> &
   }
 
 /**
+ * CloseButton
+ *
  * A button with a close icon.
  *
  * It is used to handle the close functionality in feedback and overlay components
@@ -39,28 +57,17 @@ export const CloseButton = React.forwardRef(function CloseButton(
   const styles = useStyleConfig("CloseButton", props)
   const { children, isDisabled, ...rest } = omitThemingProps(props)
 
-  const baseStyle = {
-    outline: 0,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    flexShrink: 0,
-  }
-
   return (
-    <chakra.button
+    <StyledButton
       type="button"
       aria-label="Close"
       ref={ref}
       disabled={isDisabled}
-      __css={{
-        ...baseStyle,
-        ...styles,
-      }}
+      __css={styles.container}
       {...rest}
     >
-      {children || <CloseIcon width="1em" height="1em" />}
-    </chakra.button>
+      {children || <CloseIcon __css={styles.icon} width="1em" height="1em" />}
+    </StyledButton>
   )
 })
 
