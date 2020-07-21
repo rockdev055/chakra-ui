@@ -25,7 +25,9 @@ that make it super easy to create websites and apps.
 
 ## Looking for the documentation? 📝
 
-Head over here => https://chakra-ui.com
+For older versions, head over here => https://chakra-ui.com
+
+Latest version (pre-release) => https://next.chakra-ui.com
 
 ## Features 🚀
 
@@ -138,11 +140,6 @@ function Example() {
 
 - JavaScript Starter: https://codesandbox.io/s/chakra-ui-javascript-lzzg9
 - TypeScript Starter: https://codesandbox.io/s/chakra-ui-typescript-pomi8
-
-## `create-react-app` Templates
-
-[Check out our guide](https://next.chakra-ui.com/guides/cra-templates) for
-information on how to use our official `create-react-app` templates.
 
 ## Contributing
 

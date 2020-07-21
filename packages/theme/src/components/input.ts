@@ -78,6 +78,7 @@ const variants: Variants<typeof register> = {
         _readOnly: { boxShadow: "none !important", userSelect: "all" },
         _disabled: { opacity: 0.4, cursor: "not-allowed" },
         _focus: {
+          zIndex: 1,
           borderColor: getColor(theme, fc),
           boxShadow: `0 0 0 1px ${getColor(theme, fc)}`,
         },
@@ -107,6 +108,7 @@ const variants: Variants<typeof register> = {
         _readOnly: { boxShadow: "none !important", userSelect: "all" },
         _disabled: { opacity: 0.4, cursor: "not-allowed" },
         _focus: {
+          zIndex: 1,
           bg: "transparent",
           borderColor: getColor(theme, fc),
         },
@@ -136,6 +138,7 @@ const variants: Variants<typeof register> = {
           userSelect: "all",
         },
         _focus: {
+          zIndex: 1,
           borderColor: getColor(theme, fc),
         },
         _invalid: {
