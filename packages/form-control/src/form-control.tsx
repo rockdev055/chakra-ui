@@ -7,6 +7,7 @@ import {
   useStyles,
   StylesProvider,
   useStyleConfig,
+  ThemingProps,
   omitThemingProps,
 } from "@chakra-ui/system"
 import { createContext, cx, __DEV__ } from "@chakra-ui/utils"
@@ -176,7 +177,7 @@ const StyledLabel = chakra("label", {
   },
 })
 
-export type FormLabelProps = PropsOf<typeof StyledLabel>
+export type FormLabelProps = PropsOf<typeof StyledLabel> & ThemingProps
 
 /**
  * Used to enhance the usability of form controls.
@@ -190,8 +191,9 @@ export const FormLabel = forwardRef<FormLabelProps>(function FormLabel(
   props,
   ref,
 ) {
-  const { className, ...rest } = props
-  const styles = useStyles()
+  const styles = useStyleConfig("FormLabel", props)
+
+  const { className, ...rest } = omitThemingProps(props)
   const ownProps = useFormControlLabel(rest)
 
   return (
@@ -283,14 +285,7 @@ if (__DEV__) {
   FormHelperText.displayName = "FormHelperText"
 }
 
-const StyledErrorText = chakra("div", {
-  baseStyle: {
-    display: "flex",
-    alignItems: "center",
-  },
-})
-
-export type FormErrorMessageProps = PropsOf<typeof StyledErrorText>
+export type FormErrorMessageProps = PropsOf<typeof chakra.div>
 
 /**
  * Used to provide feedback about an invalid input,
@@ -306,11 +301,15 @@ export const FormErrorMessage = forwardRef<FormErrorMessageProps>(
     const _className = cx("chakra-form__error-message", props.className)
 
     return (
-      <StyledErrorText
+      <chakra.div
         aria-live="polite"
         ref={ref}
         {...props}
-        __css={styles.errorText}
+        __css={{
+          display: "flex",
+          alignItems: "center",
+          ...styles.errorText,
+        }}
         className={_className}
         id={props.id ?? field?.feedbackId}
       />
