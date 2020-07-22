@@ -40,7 +40,7 @@ function GuidePreview(props) {
         {createdAt}
       </Text>
 
-      <Stack align="center" direction="row">
+      <Stack mt="5" align="center" direction="row">
         {/* <Avatar size="sm" name={creator.name} src={creator.image} /> */}
         <Text fontSize="sm" fontWeight="semibold">
           <chakra.a
@@ -60,7 +60,7 @@ function GuidePreview(props) {
           Tags:
         </Text>
         {tags.map((tag) => (
-          <Badge px="2" key={tag}>
+          <Badge colorScheme="teal" key={tag}>
             {tag}
           </Badge>
         ))}
@@ -75,7 +75,6 @@ function Guides() {
       allMdx(filter: { fields: { source: { eq: "guides" } } }) {
         nodes {
           fields {
-            createdAt
             slug
             contributors {
               name
@@ -91,6 +90,7 @@ function Guides() {
           parent {
             ... on File {
               birthTime
+              createdAt: birthTime(formatString: "MMMM DD, YYYY")
             }
           }
         }
@@ -118,9 +118,9 @@ function Guides() {
           <Stack spacing="4rem">
             {allMdx.nodes.map(
               ({
-                fields: { createdAt, contributors, slug },
+                fields: { contributors, slug },
                 frontmatter: { title, tags },
-                parent: { birthTime },
+                parent: { createdAt, birthTime },
                 excerpt,
               }) => (
                 <GuidePreview

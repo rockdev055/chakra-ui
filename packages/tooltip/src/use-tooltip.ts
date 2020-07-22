@@ -6,7 +6,7 @@ import {
   toTransformOrigin,
 } from "@chakra-ui/popper"
 import { callAllHandlers, mergeRefs, Dict } from "@chakra-ui/utils"
-import { useCallback, useRef, Ref } from "react"
+import * as React from "react"
 
 export interface UseTooltipProps {
   /**
@@ -100,32 +100,32 @@ export function useTooltip(props: UseTooltipProps = {}) {
 
   const tooltipId = useId(id, "tooltip")
 
-  const ref = useRef<any>(null)
+  const ref = React.useRef<any>(null)
   const triggerRef = mergeRefs(ref, popper.reference.ref)
 
-  const enterTimeout = useRef<NodeJS.Timeout>()
-  const exitTimeout = useRef<NodeJS.Timeout>()
+  const enterTimeoutRef = React.useRef<NodeJS.Timeout>()
+  const exitTimeoutRef = React.useRef<NodeJS.Timeout>()
 
-  const openWithDelay = useCallback(() => {
+  const openWithDelay = React.useCallback(() => {
     if (!isDisabled) {
-      enterTimeout.current = setTimeout(onOpenProp, openDelay)
+      enterTimeoutRef.current = setTimeout(onOpenProp, openDelay)
     }
   }, [isDisabled, onOpenProp, openDelay])
 
-  const closeWithDelay = useCallback(() => {
-    if (enterTimeout.current) {
-      clearTimeout(enterTimeout.current)
+  const closeWithDelay = React.useCallback(() => {
+    if (enterTimeoutRef.current) {
+      clearTimeout(enterTimeoutRef.current)
     }
-    exitTimeout.current = setTimeout(onCloseProp, closeDelay)
+    exitTimeoutRef.current = setTimeout(onCloseProp, closeDelay)
   }, [closeDelay, onCloseProp])
 
-  const onClick = useCallback(() => {
+  const onClick = React.useCallback(() => {
     if (closeOnClick) {
       closeWithDelay()
     }
   }, [closeOnClick, closeWithDelay])
 
-  const onMouseDown = useCallback(() => {
+  const onMouseDown = React.useCallback(() => {
     if (closeOnMouseDown) {
       closeWithDelay()
     }
@@ -139,10 +139,10 @@ export function useTooltip(props: UseTooltipProps = {}) {
 
   useEventListener("keydown", onKeyDown)
 
-  const getTriggerProps = useCallback(
-    (props: Dict = {}, ref: Ref<any> = null) => ({
+  const getTriggerProps = React.useCallback(
+    (props: Dict = {}) => ({
       ...props,
-      ref: mergeRefs(ref, triggerRef),
+      ref: mergeRefs(props.ref, triggerRef),
       onMouseLeave: callAllHandlers(props.onMouseLeave, closeWithDelay),
       onMouseEnter: callAllHandlers(props.onMouseEnter, openWithDelay),
       onClick: callAllHandlers(props.onClick, onClick),
@@ -162,12 +162,12 @@ export function useTooltip(props: UseTooltipProps = {}) {
     ],
   )
 
-  const getTooltipProps = useCallback(
-    (props: Dict = {}, ref: Ref<any> = null) => ({
+  const getTooltipProps = React.useCallback(
+    (props: Dict = {}) => ({
       ...props,
       id: tooltipId,
       role: "tooltip",
-      ref: mergeRefs(ref, popper.popper.ref),
+      ref: mergeRefs(props.ref, popper.popper.ref),
       style: {
         transformOrigin: toTransformOrigin(popper.placement),
         ...props.style,
@@ -177,10 +177,10 @@ export function useTooltip(props: UseTooltipProps = {}) {
     [popper.placement, popper.popper.ref, popper.popper.style, tooltipId],
   )
 
-  const getArrowProps = useCallback(
-    (props: Dict = {}, ref: Ref<any> = null) => ({
+  const getArrowProps = React.useCallback(
+    (props: Dict = {}) => ({
       ...props,
-      ref: mergeRefs(ref, popper.arrow.ref),
+      ref: mergeRefs(props.ref, popper.arrow.ref),
       style: { ...props.style, ...popper.arrow.style },
     }),
     [popper.arrow.ref, popper.arrow.style],

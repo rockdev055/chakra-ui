@@ -76,8 +76,6 @@ export const Collapse = React.forwardRef(function Collapse(
       animateOpacity={animateOpacity}
       height={isOpen ? endingHeight : startingHeight}
       applyInlineTransitions={false}
-      onAnimationStart={onAnimationStart}
-      onAnimationEnd={onAnimationEnd}
       sx={{
         transition:
           "height .2s ease,opacity .2s ease-in-out,transform .2s ease-in-out",
@@ -86,6 +84,7 @@ export const Collapse = React.forwardRef(function Collapse(
           transform: "translateY(-0.625rem)",
         },
       }}
+      {...{ onAnimationStart, onAnimationEnd }}
     >
       <chakra.div ref={ref} {...rest} />
     </AnimateHeight>

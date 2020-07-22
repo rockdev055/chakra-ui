@@ -1,45 +1,55 @@
-import { mode, multiStyleConfig } from "@chakra-ui/theme-tools"
+import {
+  BaseStyle,
+  mode,
+  TransitionStyle,
+  scaleFade,
+} from "@chakra-ui/theme-tools"
 
-const popover = multiStyleConfig({
-  parts: {
-    content: "the popover's content wrapper",
-    header: "the popover heading",
-    body: "the popover main content",
-    footer: "the action footers for popover",
-  },
+const register = {
+  parts: ["content", "header", "body", "footer"],
+} as const
 
-  baseStyle: function (props) {
-    return {
-      content: {
-        bg: mode("white", "gray.700")(props),
-        border: "1px solid",
-        borderColor: "inherit",
-        borderRadius: "md",
-        boxShadow: "sm",
-        w: "100%",
-        maxW: "xs",
-        zIndex: "1",
-        _focus: {
-          outline: 0,
-          boxShadow: "outline",
-        },
+const baseStyle: BaseStyle<typeof register> = (props) => {
+  return {
+    content: {
+      bg: mode("white", "gray.700")(props),
+      border: "1px solid",
+      borderColor: "inherit",
+      borderRadius: "md",
+      boxShadow: "sm",
+      width: "100%",
+      maxWidth: "xs",
+      zIndex: "1",
+      _focus: {
+        outline: 0,
+        boxShadow: "outline",
       },
-      header: {
-        px: 3,
-        py: 2,
-        borderBottomWidth: "1px",
-      },
-      body: {
-        px: 3,
-        py: 2,
-      },
-      footer: {
-        px: 3,
-        py: 2,
-        borderTopWidth: "1px",
-      },
-    }
-  },
-})
+    },
+    header: {
+      paddingX: 3,
+      paddingY: 2,
+      borderBottomWidth: "1px",
+    },
+    body: {
+      paddingX: 3,
+      paddingY: 2,
+    },
+    footer: {
+      paddingX: 3,
+      paddingY: 2,
+      borderTopWidth: "1px",
+    },
+  }
+}
+
+const transition: TransitionStyle<typeof register> = {
+  content: scaleFade,
+}
+
+const popover = {
+  register,
+  baseStyle,
+  transition,
+}
 
 export default popover

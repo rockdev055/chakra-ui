@@ -95,16 +95,15 @@ export function useRadioGroup(props: UseRadioGroupProps = {}) {
   )
 
   return {
-    getRootProps: (props: Dict = {}, _ref: React.Ref<any> = null) => ({
+    getRootProps: (props: Dict = {}) => ({
       ...props,
-      ref: mergeRefs(_ref, ref),
+      ref: mergeRefs(props.ref, ref),
       role: "radiogroup",
     }),
-    getRadioProps: (props: Dict = {}, ref: React.Ref<any> = null) => {
+    getRadioProps: (props: Dict = {}) => {
       const checkedKey = isNative ? "checked" : "isChecked"
       return {
         ...props,
-        ref,
         name,
         [checkedKey]: props.value === value,
         onChange,

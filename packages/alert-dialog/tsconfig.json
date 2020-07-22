@@ -1,4 +1,5 @@
 {
   "extends": "../../tsconfig.json",
-  "include": ["src"]
+  "include": ["src", "../../theme-ui.d.ts"],
+  "exclude": ["node_modules"]
 }

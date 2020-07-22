@@ -2,7 +2,7 @@ import {
   chakra,
   PropsOf,
   ThemingProps,
-  useMultiStyleConfig,
+  useStyleConfig,
   omitThemingProps,
   StylesProvider,
 } from "@chakra-ui/system"
@@ -15,7 +15,7 @@ export const InputGroup = React.forwardRef(function InputGroup(
   props: InputGroupProps,
   ref: React.Ref<any>,
 ) {
-  const styles = useMultiStyleConfig("Input", props)
+  const styles = useStyleConfig("Input", props)
   const { children, className, ...rest } = omitThemingProps(props)
 
   const _className = cx("chakra-input__group", className)
@@ -23,17 +23,15 @@ export const InputGroup = React.forwardRef(function InputGroup(
 
   const validChildren = getValidChildren(children)
 
-  const input: any = styles.field
-
   validChildren.forEach((child: any) => {
     if (!styles) return
 
     if (child.type.groupId === "InputLeftElement") {
-      stylesRef.current.paddingLeft = input.height ?? input.h
+      stylesRef.current.paddingLeft = styles.field["height"]
     }
 
     if (child.type.groupId === "InputRightElement") {
-      stylesRef.current.paddingRight = input.height ?? input.h
+      stylesRef.current.paddingRight = styles.field["height"]
     }
 
     if (child.type.groupId === "InputRightAddon") {
@@ -53,8 +51,8 @@ export const InputGroup = React.forwardRef(function InputGroup(
       ? React.cloneElement(child, theming)
       : React.cloneElement(child, {
           ...theming,
-          paddingLeft: pl ?? paddingLeft ?? stylesRef.current?.paddingLeft,
-          paddingRight: pr ?? paddingRight ?? stylesRef.current?.paddingRight,
+          paddingLeft: pl || paddingLeft || stylesRef.current?.paddingLeft,
+          paddingRight: pr || paddingRight || stylesRef.current?.paddingRight,
           borderLeftRadius: stylesRef.current?.borderLeftRadius,
           borderRightRadius: stylesRef.current?.borderRightRadius,
         })
