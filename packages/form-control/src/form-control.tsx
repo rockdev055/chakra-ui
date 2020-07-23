@@ -184,7 +184,7 @@ export type FormLabelProps = PropsOf<typeof StyledLabel>
  * It is used to inform users as to what information
  * is requested for a form field.
  *
- * ♿️ Accessibility: Every form field should have a form label.
+ * ♿️ Accessibilty: Every form field should have a form label.
  */
 export const FormLabel = forwardRef<FormLabelProps>(function FormLabel(
   props,

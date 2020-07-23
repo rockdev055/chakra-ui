@@ -7,7 +7,6 @@ import Checkbox from "./checkbox"
 import CloseButton from "./close-button"
 import Code from "./code"
 import Modal from "./modal"
-import Drawer from "./drawer"
 import Heading from "./heading"
 import Input from "./input"
 import Link from "./link"
@@ -44,7 +43,6 @@ export default {
   Link,
   Code,
   Spinner,
-  Drawer,
   Menu,
   Tabs,
   Checkbox,

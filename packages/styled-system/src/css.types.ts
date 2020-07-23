@@ -16,7 +16,7 @@ type CSS = PropertiesFallback<number | string>
 type CSSProperties = StandardProperties<number | string> &
   SvgProperties<number | string>
 
-export type CSSPseudoStyles = {
+type CSSPseudoStyles = {
   [K in CSSPseudos]?: SystemStyleObject
 }
 
@@ -37,10 +37,9 @@ interface CSSOthersObjectForCSSObject {
   [propertiesName: string]: CSSInterpolation
 }
 
-export interface CSSSelectorStyles {
+interface CSSSelectorStyles {
   [cssSelector: string]: SystemStyleObject
 }
-
 interface AliasesCSSProperties {
   bg?: CSS["background"]
   bgColor?: CSS["backgroundColor"]
@@ -100,7 +99,7 @@ interface AllSystemCSSProperties
     AliasesCSSProperties,
     OverwriteCSSProperties {}
 
-export type SystemCSSProperties = {
+type SystemCSSProperties = {
   [K in keyof AllSystemCSSProperties]:
     | string
     | ResponsiveValue<AllSystemCSSProperties[K]>
@@ -108,11 +107,8 @@ export type SystemCSSProperties = {
     | SystemStyleObject
 }
 
-export interface ApplyPropStyles {
-  /**
-   * Apply theme-aware style objects in `theme`
-   */
-  apply?: string
+interface ApplyPropStyles {
+  apply: string
 }
 
 type PseudoStyles = {

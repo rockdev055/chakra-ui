@@ -178,7 +178,6 @@ function SelectIcon(props: SelectIconProps) {
 
   const clone = React.cloneElement(children as any, {
     role: "presentation",
-    className: "chakra-select__icon",
     focusable: false,
     "aria-hidden": true,
     // force icon to adhere to `IconWrapper` styles
@@ -192,7 +191,7 @@ function SelectIcon(props: SelectIconProps) {
   return (
     <IconWrapper
       {...rest}
-      className="chakra-select__icon-wrapper"
+      className={"chakra-select__icon-wrapper"}
       children={clone}
     />
   )

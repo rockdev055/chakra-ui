@@ -34,11 +34,6 @@ export interface FocusLockProps {
    * will ne auto-focused once `FocusLock` mounts
    */
   autoFocus?: boolean
-  /**
-   * If `true`, disables text selections inside, and outside focus lock.
-   * @default `false`
-   */
-  persistentFocus?: boolean
 }
 
 /**
@@ -55,8 +50,7 @@ export function FocusLock(props: FocusLockProps) {
     restoreFocus,
     children,
     isDisabled,
-    autoFocus,
-    persistentFocus,
+    autoFocus = true,
   } = props
 
   const onActivation = React.useCallback(() => {
@@ -80,7 +74,6 @@ export function FocusLock(props: FocusLockProps) {
 
   return (
     <ReactFocusLock
-      persistentFocus={persistentFocus}
       autoFocus={autoFocus}
       disabled={isDisabled}
       onActivation={onActivation}
