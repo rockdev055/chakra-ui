@@ -6,10 +6,11 @@ import {
   useStyleConfig,
   omitThemingProps,
 } from "@chakra-ui/system"
-import { isString, omit, pick, __DEV__ } from "@chakra-ui/utils"
+import { isString, omit, pick, __DEV__, mergeRefs } from "@chakra-ui/utils"
 import { VisuallyHidden } from "@chakra-ui/visually-hidden"
 import * as React from "react"
 import { useTooltip, UseTooltipProps } from "./use-tooltip"
+import { HiddenTransition, useTransitionConfig } from "@chakra-ui/transition"
 
 export type TooltipProps = PropsOf<typeof chakra.div> &
   ThemingProps &
@@ -53,6 +54,10 @@ export const Tooltip = React.forwardRef(function Tooltip(
   ref: React.Ref<any>,
 ) {
   const styles = useStyleConfig("Tooltip", props)
+  const transitions = useTransitionConfig("Tooltip", props, {
+    container: "chakra-tooltip",
+  })
+
   const realProps = omitThemingProps(props)
   const {
     children,
@@ -98,25 +103,36 @@ export const Tooltip = React.forwardRef(function Tooltip(
 
   const hiddenProps = pick(_tooltipProps, ["role", "id"])
 
+  const cssRef = React.useRef<any>()
+  tooltipProps.ref = mergeRefs(tooltipProps.ref, cssRef)
+
   /**
    * If the `label` is empty, there's no
    * point showing the tooltip. Let's simply return back the children
-   *
-   * @see https://github.com/chakra-ui/chakra-ui/issues/601
    */
   if (!label) {
-    return <React.Fragment>{children}</React.Fragment>
+    return <>{children}</>
   }
 
   return (
-    <React.Fragment>
+    <>
       {trigger}
-      {isOpen && (
+      <HiddenTransition
+        classNames={transitions.container.className}
+        timeout={transitions.container.timeout}
+        appear
+        unmountOnExit
+        in={isOpen}
+        nodeRef={cssRef}
+      >
         <Portal>
           <chakra.div
-            className="chakra-tooltip"
+            className={transitions.container.className}
             {...tooltipProps}
-            __css={styles.container}
+            __css={{
+              ...styles.container,
+              ...transitions.container.styles,
+            }}
           >
             {label}
             {hasAriaLabel && (
@@ -134,8 +150,8 @@ export const Tooltip = React.forwardRef(function Tooltip(
             )}
           </chakra.div>
         </Portal>
-      )}
-    </React.Fragment>
+      </HiddenTransition>
+    </>
   )
 })
 

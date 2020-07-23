@@ -1,4 +1,9 @@
-import { BaseStyle, mode } from "@chakra-ui/theme-tools"
+import {
+  BaseStyle,
+  mode,
+  TransitionStyle,
+  scaleFade,
+} from "@chakra-ui/theme-tools"
 
 const register = {
   parts: ["content", "header", "body", "footer"],
@@ -37,9 +42,14 @@ const baseStyle: BaseStyle<typeof register> = (props) => {
   }
 }
 
+const transition: TransitionStyle<typeof register> = {
+  content: scaleFade,
+}
+
 const popover = {
   register,
   baseStyle,
+  transition,
 }
 
 export default popover
