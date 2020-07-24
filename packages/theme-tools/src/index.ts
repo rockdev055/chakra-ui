@@ -1,3 +1,3 @@
 export * from "./color"
 export * from "./component"
-export * from "./style-config"
+export * from "@chakra-ui/transition"

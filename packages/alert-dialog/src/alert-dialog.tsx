@@ -22,16 +22,10 @@ export const AlertDialogContent = React.forwardRef(function AlertDialogContent(
   return <ModalContent ref={ref} role="alertdialog" {...(props as any)} />
 })
 
-import {
-  ModalBody,
-  ModalHeader,
-  ModalFooter,
-  ModalCloseButton,
-  ModalOverlay,
+export {
+  ModalBody as AlertDialogBody,
+  ModalCloseButton as AlertDialogCloseButton,
+  ModalFooter as AlertDialogFooter,
+  ModalHeader as AlertDialogHeader,
+  ModalOverlay as AlertDialogOverlay,
 } from "@chakra-ui/modal"
-
-export const AlertDialogBody = ModalBody
-export const AlertDialogHeader = ModalHeader
-export const AlertDialogFooter = ModalFooter
-export const AlertDialogCloseButton = ModalCloseButton
-export const AlertDialogOverlay = ModalOverlay

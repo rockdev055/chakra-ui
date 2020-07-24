@@ -1,4 +1,4 @@
-import { TriangleDownIcon, TriangleUpIcon } from "./icons"
+import { TriangleDownIcon, TriangleUpIcon } from "./number-input.icons"
 import {
   chakra,
   PropsOf,
@@ -6,7 +6,7 @@ import {
   StylesProvider,
   useStyles,
   omitThemingProps,
-  useMultiStyleConfig,
+  useStyleConfig,
   ThemingProps,
 } from "@chakra-ui/system"
 import { createContext, __DEV__ } from "@chakra-ui/utils"
@@ -22,7 +22,7 @@ interface NumberInputContext extends Omit<UseNumberInputReturn, "htmlProps"> {}
 /**
  * React context used to communicate between components
  */
-const [NumberInputProvider, useNumberInputContext] = createContext<
+const [NumberInputContextProvider, useNumberInputContext] = createContext<
   NumberInputContext
 >({
   name: "NumberInputContext",
@@ -68,18 +68,18 @@ export const NumberInput = React.forwardRef(function NumberInput(
   props: NumberInputProps,
   ref: React.Ref<any>,
 ) {
-  const styles = useMultiStyleConfig("NumberInput", props)
+  const styles = useStyleConfig("NumberInput", props)
   const inputProps = omitThemingProps(props)
 
   const { htmlProps, ...context } = useNumberInput(inputProps)
   const _context = React.useMemo(() => context, [context])
 
   return (
-    <NumberInputProvider value={_context}>
+    <NumberInputContextProvider value={_context}>
       <StylesProvider value={styles}>
         <chakra.div ref={ref} {...htmlProps} __css={{ position: "relative" }} />
       </StylesProvider>
-    </NumberInputProvider>
+    </NumberInputContextProvider>
   )
 })
 

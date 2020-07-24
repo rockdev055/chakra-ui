@@ -4,11 +4,13 @@ import {
   ThemingProps,
   useStyleConfig,
   omitThemingProps,
+  useStyles,
+  StylesProvider,
 } from "@chakra-ui/system"
-import { cx, __DEV__, getValidChildren } from "@chakra-ui/utils"
+import { cx, __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
 import {
-  PinInputProvider,
+  PinInputContextProvider,
   usePinInput,
   usePinInputField,
   UsePinInputProps,
@@ -40,15 +42,14 @@ export type PinInputProps = UsePinInputProps &
 
 export function PinInput(props: PinInputProps) {
   const styles = useStyleConfig("PinInput", props)
+  const { children } = omitThemingProps(props)
+  const context = usePinInput(props)
 
-  const { children, ...otherProps } = omitThemingProps(props)
-  const context = usePinInput(otherProps)
-
-  const clones = getValidChildren(children).map((child) => {
-    return React.cloneElement(child, { __css: styles })
-  })
-
-  return <PinInputProvider value={context}>{clones}</PinInputProvider>
+  return (
+    <PinInputContextProvider value={context}>
+      <StylesProvider value={styles}>{children}</StylesProvider>
+    </PinInputContextProvider>
+  )
 }
 
 if (__DEV__) {
@@ -61,11 +62,20 @@ export const PinInputField = React.forwardRef(function PinInputField(
   props: PinInputFieldProps,
   ref: React.Ref<any>,
 ) {
-  const inputProps = usePinInputField({ ref, ...props })
+  const { className, ...rest } = props
+
+  const input = usePinInputField({ ref, ...rest })
+  const _className = cx("chakra-pin-input", className)
+  const styles = useStyles()
+
   return (
     <chakra.input
-      {...inputProps}
-      className={cx("chakra-pin-input", props.className)}
+      className={_className}
+      {...input}
+      __css={{
+        textAlign: "center",
+        ...styles.field,
+      }}
     />
   )
 })

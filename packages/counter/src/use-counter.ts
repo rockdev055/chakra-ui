@@ -7,7 +7,7 @@ import {
   toPrecision,
   StringOrNumber,
 } from "@chakra-ui/utils"
-import { useCallback, useState } from "react"
+import * as React from "react"
 
 export interface UseCounterProps {
   /**
@@ -66,7 +66,7 @@ export function useCounter(props: UseCounterProps = {}) {
     keepWithinRange = true,
   } = props
 
-  const [valueState, setValue] = useState<StringOrNumber>(() => {
+  const [valueState, setValue] = React.useState<StringOrNumber>(() => {
     if (defaultValue == null) return ""
     return cast(defaultValue, stepProp, precisionProp)
   })
@@ -81,7 +81,7 @@ export function useCounter(props: UseCounterProps = {}) {
 
   const precision = precisionProp ?? decimalPlaces
 
-  const update = useCallback(
+  const update = React.useCallback(
     (next: StringOrNumber) => {
       if (!isControlled) {
         setValue(next.toString())
@@ -92,7 +92,7 @@ export function useCounter(props: UseCounterProps = {}) {
   )
 
   // Function to clamp the value and round it to the precision
-  const clamp = useCallback(
+  const clamp = React.useCallback(
     (value: number) => {
       let nextValue = value
 
@@ -105,7 +105,7 @@ export function useCounter(props: UseCounterProps = {}) {
     [precision, keepWithinRange, max, min],
   )
 
-  const increment = useCallback(
+  const increment = React.useCallback(
     (step = stepProp) => {
       let next: StringOrNumber
 
@@ -126,10 +126,10 @@ export function useCounter(props: UseCounterProps = {}) {
       next = clamp(next as number)
       update(next)
     },
-    [clamp, props.min, stepProp, update, value],
+    [clamp, props.min?.toString, stepProp, update, value],
   )
 
-  const decrement = useCallback(
+  const decrement = React.useCallback(
     (step = stepProp) => {
       let next: StringOrNumber
 
@@ -143,10 +143,10 @@ export function useCounter(props: UseCounterProps = {}) {
       next = clamp(next as number)
       update(next)
     },
-    [clamp, props.min, stepProp, update, value],
+    [clamp, props.min?.toString, stepProp, update, value],
   )
 
-  const reset = useCallback(() => {
+  const reset = React.useCallback(() => {
     let next: StringOrNumber
     if (defaultValue == null) {
       next = ""
@@ -156,7 +156,7 @@ export function useCounter(props: UseCounterProps = {}) {
     update(next)
   }, [defaultValue, precisionProp, stepProp, update])
 
-  const castValue = useCallback(
+  const castValue = React.useCallback(
     (value: StringOrNumber) => {
       update(cast(value, stepProp, precision))
     },
