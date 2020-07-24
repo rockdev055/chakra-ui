@@ -1,16 +1,7 @@
 import { useIds } from "@chakra-ui/hooks"
 import { callAllHandlers, Dict, mergeRefs } from "@chakra-ui/utils"
 import { Undo, hideOthers } from "aria-hidden"
-import {
-  KeyboardEvent,
-  useCallback,
-  Ref,
-  RefObject,
-  MouseEvent,
-  useRef,
-  useEffect,
-  useState,
-} from "react"
+import * as React from "react"
 import { manager, useModalManager } from "./modal-manager"
 
 export interface UseModalProps {
@@ -75,11 +66,11 @@ export interface UseModalProps {
   /**
    * The `ref` of element to receive focus when the modal opens.
    */
-  initialFocusRef?: RefObject<HTMLElement>
+  initialFocusRef?: React.RefObject<HTMLElement>
   /**
    * The `ref` of element to receive focus when the modal closes.
    */
-  finalFocusRef?: RefObject<HTMLElement>
+  finalFocusRef?: React.RefObject<HTMLElement>
   /**
    * If `true`, the modal will return focus to the element that triggered it when it closes.
    * @default true
@@ -122,8 +113,8 @@ export function useModal(props: UseModalProps) {
     allowPinchZoom,
   } = props
 
-  const dialogRef = useRef<HTMLElement>(null)
-  const overlayRef = useRef<HTMLElement>(null)
+  const dialogRef = React.useRef<any>(null)
+  const overlayRef = React.useRef<any>(null)
 
   const [dialogId, headerId, bodyId] = useIds(
     id,
@@ -144,14 +135,14 @@ export function useModal(props: UseModalProps) {
    */
   useModalManager(dialogRef, isOpen)
 
-  const mouseDownTarget = useRef<EventTarget | null>(null)
+  const mouseDownTarget = React.useRef<EventTarget | null>(null)
 
-  const onMouseDown = useCallback((event: MouseEvent) => {
+  const onMouseDown = React.useCallback((event: React.MouseEvent) => {
     mouseDownTarget.current = event.target
   }, [])
 
-  const onKeyDown = useCallback(
-    (event: KeyboardEvent) => {
+  const onKeyDown = React.useCallback(
+    (event: React.KeyboardEvent) => {
       if (event.key === "Escape") {
         event.stopPropagation()
 
@@ -165,8 +156,8 @@ export function useModal(props: UseModalProps) {
     [closeOnEsc, onClose, onEsc],
   )
 
-  const onOverlayClick = useCallback(
-    (event: MouseEvent) => {
+  const onOverlayClick = React.useCallback(
+    (event: React.MouseEvent) => {
       event.stopPropagation()
       /**
        * Make sure the event starts and ends on the same DOM element.
@@ -191,30 +182,30 @@ export function useModal(props: UseModalProps) {
     [onClose, closeOnOverlayClick, onOverlayClickProp],
   )
 
-  const [headerMounted, setHeaderMounted] = useState(false)
-  const [bodyMounted, setBodyMounted] = useState(false)
+  const [headerMounted, setHeaderMounted] = React.useState(false)
+  const [bodyMounted, setBodyMounted] = React.useState(false)
 
-  const getContentProps = useCallback(
-    (props: Dict = {}, ref: Ref<any>) => ({
+  const getContentProps = React.useCallback(
+    (props: Dict = {}) => ({
       ...props,
-      ref: mergeRefs(ref, dialogRef),
+      ref: mergeRefs(props.ref, dialogRef),
       id: dialogId,
       role: props.role || "dialog",
       tabIndex: -1,
       "aria-modal": true,
       "aria-labelledby": headerMounted ? headerId : undefined,
       "aria-describedby": bodyMounted ? bodyId : undefined,
-      onClick: callAllHandlers(props.onClick, (event: MouseEvent) =>
+      onClick: callAllHandlers(props.onClick, (event: React.MouseEvent) =>
         event.stopPropagation(),
       ),
     }),
     [bodyId, bodyMounted, dialogId, headerId, headerMounted],
   )
 
-  const getOverlayProps = useCallback(
-    (props: Dict = {}, ref: Ref<any>) => ({
+  const getOverlayProps = React.useCallback(
+    (props: Dict = {}) => ({
       ...props,
-      ref: mergeRefs(ref, overlayRef),
+      ref: mergeRefs(props.ref, overlayRef),
       onClick: callAllHandlers(props.onClick, onOverlayClick),
       onKeyDown: callAllHandlers(props.onKeyDown, onKeyDown),
       onMouseDown: callAllHandlers(props.onMouseDown, onMouseDown),
@@ -255,10 +246,10 @@ export type UseModalReturn = ReturnType<typeof useModal>
  * @param shouldHide whether `aria-hidden` should be applied
  */
 export function useAriaHidden(
-  ref: RefObject<HTMLElement>,
+  ref: React.RefObject<HTMLElement>,
   shouldHide: boolean,
 ) {
-  useEffect(() => {
+  React.useEffect(() => {
     if (!ref.current) return
 
     let undo: Undo | null = null

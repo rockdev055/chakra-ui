@@ -65,3 +65,14 @@ export function SteppedHorizontalSlider() {
     </Slider>
   )
 }
+
+export const Bug = () => {
+  return (
+    <Slider defaultValue={30} min={0} step={5}>
+      <SliderTrack>
+        <SliderFilledTrack />
+      </SliderTrack>
+      <SliderThumb />
+    </Slider>
+  )
+}

@@ -39,10 +39,9 @@ const Body = (props) => {
 
 const Docs = ({ data, pageContext }) => {
   const location = useLocation()
-  const { previous, next, slug, relativePath } = pageContext
-  const { body, frontmatter, fields, tableOfContents } = data.mdx
-  const { title, description } = frontmatter
-  const { updatedAt } = fields
+  const { previous, next, slug, relativePath, updatedAt } = pageContext
+  const { body, frontmatter, tableOfContents } = data.mdx
+  const { title, description = "" } = frontmatter
 
   return (
     <>
@@ -66,9 +65,6 @@ export const query = graphql`
   query docBySlug($slug: String!) {
     mdx(fields: { slug: { eq: $slug } }) {
       body
-      fields {
-        updatedAt
-      }
       frontmatter {
         title
         description

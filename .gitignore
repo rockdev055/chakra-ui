@@ -15,8 +15,6 @@ yarn.lock
 yarn-error.log
 packages/*/.rpt2_cache
 packages/*/.rts2_cache*
-packages/*/tsconfig.tsbuildinfo
-tsconfig.tsbuildinfo
 .next
 .idea
 # Local Netlify folder

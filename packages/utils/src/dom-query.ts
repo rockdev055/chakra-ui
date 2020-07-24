@@ -15,10 +15,6 @@ const selectors = [
 
 const selector = selectors.join()
 
-export const isRightClick = <E extends MouseEvent | React.MouseEvent>(
-  event: E,
-) => event.button != 0
-
 export function getAllFocusable<T extends Element>(container: T) {
   const allFocusable = Array.from(container.querySelectorAll<T>(selector))
   allFocusable.unshift(container)

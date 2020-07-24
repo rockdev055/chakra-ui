@@ -3,6 +3,15 @@
 exports[`Button renders correctly 1`] = `
 <DocumentFragment>
   .emotion-0 {
+  line-height: 1.2;
+  border-radius: 0.25rem;
+  font-weight: 600;
+  height: 2.5rem;
+  min-width: 2.5rem;
+  font-size: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  background: #EDF2F7;
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -28,16 +37,6 @@ exports[`Button renders correctly 1`] = `
   white-space: nowrap;
   vertical-align: middle;
   outline: none;
-  width: auto;
-  line-height: 1.2;
-  border-radius: 0.25rem;
-  font-weight: 600;
-  height: 2.5rem;
-  min-width: 2.5rem;
-  font-size: 1rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  background: #EDF2F7;
 }
 
 .emotion-0:focus,
@@ -90,6 +89,15 @@ exports[`Button renders with icons 1`] = `
 }
 
 .emotion-2 {
+  line-height: 1.2;
+  border-radius: 0.25rem;
+  font-weight: 600;
+  height: 2.5rem;
+  min-width: 2.5rem;
+  font-size: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  background: #EDF2F7;
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -115,22 +123,11 @@ exports[`Button renders with icons 1`] = `
   white-space: nowrap;
   vertical-align: middle;
   outline: none;
-  width: auto;
-  line-height: 1.2;
-  border-radius: 0.25rem;
-  font-weight: 600;
-  height: 2.5rem;
-  min-width: 2.5rem;
-  font-size: 1rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  background: #EDF2F7;
 }
 
 .emotion-2:focus,
 .emotion-2[data-focus] {
   box-shadow: 0 0 0 3px rgba(66,153,225,0.6);
-  z-index: 1;
 }
 
 .emotion-2[disabled],
@@ -155,6 +152,12 @@ exports[`Button renders with icons 1`] = `
 .emotion-2:active,
 .emotion-2[data-active] {
   background: #CBD5E0;
+}
+
+.emotion-2:focus,
+.emotion-2[data-focus] {
+  box-shadow: 0 0 0 3px rgba(66,153,225,0.6);
+  z-index: 1;
 }
 
 .emotion-1 {
@@ -252,6 +255,15 @@ exports[`shows spinner and loading text if isLoading and loadingText 1`] = `
 }
 
 .emotion-3 {
+  line-height: 1.2;
+  border-radius: 0.25rem;
+  font-weight: 600;
+  height: 2.5rem;
+  min-width: 2.5rem;
+  font-size: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  background: #EDF2F7;
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -277,16 +289,6 @@ exports[`shows spinner and loading text if isLoading and loadingText 1`] = `
   white-space: nowrap;
   vertical-align: middle;
   outline: none;
-  width: auto;
-  line-height: 1.2;
-  border-radius: 0.25rem;
-  font-weight: 600;
-  height: 2.5rem;
-  min-width: 2.5rem;
-  font-size: 1rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  background: #EDF2F7;
 }
 
 .emotion-3:focus,
@@ -329,6 +331,8 @@ exports[`shows spinner and loading text if isLoading and loadingText 1`] = `
   color: currentColor;
   -webkit-animation: animation-0 0.45s linear infinite;
   animation: animation-0 0.45s linear infinite;
+  width: 1.5rem;
+  height: 1.5rem;
   width: 1em;
   height: 1em;
 }
@@ -394,6 +398,15 @@ exports[`shows spinner if isLoading 1`] = `
 }
 
 .emotion-4 {
+  line-height: 1.2;
+  border-radius: 0.25rem;
+  font-weight: 600;
+  height: 2.5rem;
+  min-width: 2.5rem;
+  font-size: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  background: #EDF2F7;
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -419,16 +432,6 @@ exports[`shows spinner if isLoading 1`] = `
   white-space: nowrap;
   vertical-align: middle;
   outline: none;
-  width: auto;
-  line-height: 1.2;
-  border-radius: 0.25rem;
-  font-weight: 600;
-  height: 2.5rem;
-  min-width: 2.5rem;
-  font-size: 1rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  background: #EDF2F7;
 }
 
 .emotion-4:focus,
@@ -478,6 +481,8 @@ exports[`shows spinner if isLoading 1`] = `
   color: currentColor;
   -webkit-animation: animation-0 0.45s linear infinite;
   animation: animation-0 0.45s linear infinite;
+  width: 1.5rem;
+  height: 1.5rem;
   width: 1em;
   height: 1em;
 }

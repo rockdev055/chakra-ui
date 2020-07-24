@@ -7,13 +7,7 @@ import {
 } from "@chakra-ui/popper"
 import { useColorModeValue, useToken } from "@chakra-ui/system"
 import { callAllHandlers, Dict, mergeRefs } from "@chakra-ui/utils"
-import React, {
-  useRef,
-  RefObject,
-  useCallback,
-  Ref,
-  KeyboardEvent,
-} from "react"
+import * as React from "react"
 import { useBlurOutside, useFocusOnHide, useFocusOnShow } from "./popover.utils"
 
 const TRIGGER_TYPE = {
@@ -41,7 +35,7 @@ export interface UsePopoverProps {
   /**
    * The `ref` of the element that should receive focus when the popover opens.
    */
-  initialFocusRef?: RefObject<any>
+  initialFocusRef?: React.RefObject<any>
   /**
    * If `true`, focus will be returned to the element that triggers the popover
    * when it closes
@@ -102,12 +96,6 @@ export interface UsePopoverProps {
   trigger?: keyof typeof TRIGGER_TYPE
   openDelay?: number
   closeDelay?: number
-  /**
-   * Performance 🚀:
-   * If `true`, the PopoverContent rendering will be deferred
-   * until the popover is open.
-   */
-  isLazy?: boolean
 }
 
 export function usePopover(props: UsePopoverProps = {}) {
@@ -126,15 +114,14 @@ export function usePopover(props: UsePopoverProps = {}) {
     trigger = TRIGGER_TYPE.click,
     openDelay = 200,
     closeDelay = 200,
-    isLazy,
   } = props
 
   const { isOpen, onClose, onOpen, onToggle } = useDisclosure(props)
 
-  const triggerRef = useRef<HTMLElement>(null)
-  const popoverRef = useRef<HTMLElement>(null)
+  const triggerRef = React.useRef<HTMLElement>(null)
+  const popoverRef = React.useRef<HTMLElement>(null)
 
-  const isHoveringRef = useRef(false)
+  const isHoveringRef = React.useRef(false)
 
   const [hasHeader, setHasHeader] = useBoolean()
   const [hasBody, setHasBody] = useBoolean()
@@ -179,21 +166,23 @@ export function usePopover(props: UsePopoverProps = {}) {
     action: onClose,
   })
 
-  const getPopoverProps = useCallback(
-    (props: Dict = {}, ref: Ref<any> = null) => {
+  const getPopoverProps = React.useCallback(
+    (props: Dict = {}) => {
       const popoverProps: Dict = {
         ...props,
-        children: isLazy ? (isOpen ? props.children : null) : props.children,
         id: popoverId,
         tabIndex: -1,
         hidden: !isOpen,
         role: "dialog",
-        onKeyDown: callAllHandlers(props.onKeyDown, (event: KeyboardEvent) => {
-          if (closeOnEsc && event.key === "Escape") {
-            onClose()
-          }
-        }),
-        ref: mergeRefs(popoverRef, popper.ref, ref),
+        onKeyDown: callAllHandlers(
+          props.onKeyDown,
+          (event: React.KeyboardEvent) => {
+            if (closeOnEsc && event.key === "Escape") {
+              onClose()
+            }
+          },
+        ),
+        ref: mergeRefs(popoverRef, popper.ref, props.ref),
         style: {
           transformOrigin: toTransformOrigin(placement),
           ...props.style,
@@ -201,6 +190,7 @@ export function usePopover(props: UsePopoverProps = {}) {
         },
         "aria-labelledby": hasHeader ? headerId : undefined,
         "aria-describedby": hasBody ? bodyId : undefined,
+        "aria-hidden": !isOpen ? !isOpen : undefined,
       }
 
       if (trigger === TRIGGER_TYPE.click) {
@@ -223,7 +213,6 @@ export function usePopover(props: UsePopoverProps = {}) {
     [
       popoverId,
       isOpen,
-      isLazy,
       popper.ref,
       placement,
       popper.style,
@@ -240,23 +229,23 @@ export function usePopover(props: UsePopoverProps = {}) {
   )
 
   const getArrowProps = React.useCallback(
-    (props: Dict = {}, ref: Ref<any> = null) => ({
+    (props: Dict = {}) => ({
       ...props,
-      ref: mergeRefs(arrow.ref, ref),
+      ref: mergeRefs(arrow.ref, props.ref),
       style: { ...props.style, ...arrow.style },
     }),
     [arrow.ref, arrow.style],
   )
 
-  const openTimeout = useRef<NodeJS.Timeout>()
-  const closeTimeout = useRef<NodeJS.Timeout>()
+  const openTimeout = React.useRef<NodeJS.Timeout>()
+  const closeTimeout = React.useRef<NodeJS.Timeout>()
 
   const getTriggerProps = React.useCallback(
-    (props: Dict = {}, ref: Ref<any> = null) => {
+    (props: Dict = {}) => {
       const triggerProps: Dict = {
         ...props,
         id: triggerId,
-        ref: mergeRefs(triggerRef, reference.ref, ref),
+        ref: mergeRefs(triggerRef, reference.ref, props.ref),
         "aria-haspopup": "dialog",
         "aria-expanded": isOpen,
         "aria-controls": popoverId,
