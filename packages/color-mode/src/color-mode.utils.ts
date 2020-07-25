@@ -10,16 +10,11 @@ const classNames = {
 
 export type ColorMode = "light" | "dark"
 
-export interface StorageManager {
-  get(init?: ColorMode): ColorMode | undefined
-  set(value: ColorMode): void
-}
-
 /**
- * Simple object to handle read-write to localStorage
+ * Simple object for handle read-write for localStorage
  */
-export const localStorageManager: StorageManager = {
-  get(init?) {
+export const storage = {
+  get(init?: ColorMode) {
     const exist =
       isStorageSupported && !!window.localStorage.getItem(storageKey)
 
@@ -27,28 +22,10 @@ export const localStorageManager: StorageManager = {
 
     return value as ColorMode | undefined
   },
-  set(value) {
+  set(value: ColorMode) {
     if (isStorageSupported) {
       window.localStorage.setItem(storageKey, value)
     }
-  },
-}
-
-/**
- * Simple object to handle read-write to cookies
- */
-export const cookieStorageManager: StorageManager = {
-  get(init?) {
-    const match = document.cookie.match(
-      new RegExp(`(^| )${storageKey}=([^;]+)`),
-    )
-
-    const value = match ? match[2] : init
-
-    return value as ColorMode | undefined
-  },
-  set(value) {
-    document.cookie = `${storageKey}=${value}; max-age=31536000;`
   },
 }
 
