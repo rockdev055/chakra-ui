@@ -1,7 +1,7 @@
 import * as React from "react"
 import { Instance, createPopper, Modifier } from "@popperjs/core"
 import type { Placement } from "@popperjs/core"
-import { getArrowStyles, toTransformOrigin } from "./popper.utils"
+import { getArrowStyles } from "./popper.utils"
 
 const isBrowser = typeof window !== "undefined"
 
@@ -154,10 +154,7 @@ export function usePopper(props: UsePopperProps) {
     },
     popper: {
       ref: popoverRef,
-      style: {
-        ...popoverStyles,
-        transformOrigin: toTransformOrigin(placement),
-      },
+      style: popoverStyles,
     },
     arrow: {
       ref: arrowRef,

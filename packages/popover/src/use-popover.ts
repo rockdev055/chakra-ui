@@ -1,17 +1,20 @@
 import { useBoolean, useDisclosure, useIds } from "@chakra-ui/hooks"
-import { Placement, usePopper, UsePopperProps } from "@chakra-ui/popper"
+import {
+  Placement,
+  usePopper,
+  UsePopperProps,
+  toTransformOrigin,
+} from "@chakra-ui/popper"
 import { useColorModeValue, useToken } from "@chakra-ui/system"
 import { callAllHandlers, Dict, mergeRefs } from "@chakra-ui/utils"
-import {
+import React, {
   useRef,
   RefObject,
   useCallback,
-  useEffect,
   Ref,
   KeyboardEvent,
 } from "react"
-import { useFocusOnHide, useFocusOnShow } from "./popover.utils"
-import { useInteractOutside } from "@react-aria/interactions"
+import { useBlurOutside, useFocusOnHide, useFocusOnShow } from "./popover.utils"
 
 const TRIGGER_TYPE = {
   click: "click",
@@ -148,7 +151,7 @@ export function usePopover(props: UsePopoverProps = {}) {
   const shadowColor = arrowShadowColor ?? fallbackShadowColor
   const arrowColor = useToken("colors", shadowColor, arrowShadowColor)
 
-  const { popper, reference, arrow } = usePopper({
+  const { popper, reference, arrow, placement } = usePopper({
     placement: placementProp,
     gutter,
     forceUpdate: isOpen,
@@ -171,17 +174,9 @@ export function usePopover(props: UsePopoverProps = {}) {
     trigger,
   })
 
-  useInteractOutside({
-    ref: popoverRef,
-    onInteractOutside: (event) => {
-      if (
-        trigger === TRIGGER_TYPE.click &&
-        closeOnBlur &&
-        !triggerRef.current?.contains(event.target as HTMLElement)
-      ) {
-        onClose()
-      }
-    },
+  const onBlur = useBlurOutside(triggerRef, popoverRef, {
+    visible: !!(closeOnBlur && isOpen),
+    action: onClose,
   })
 
   const getPopoverProps = useCallback(
@@ -199,9 +194,17 @@ export function usePopover(props: UsePopoverProps = {}) {
           }
         }),
         ref: mergeRefs(popoverRef, popper.ref, ref),
-        style: { ...props.style, ...popper.style },
+        style: {
+          transformOrigin: toTransformOrigin(placement),
+          ...props.style,
+          ...popper.style,
+        },
         "aria-labelledby": hasHeader ? headerId : undefined,
         "aria-describedby": hasBody ? bodyId : undefined,
+      }
+
+      if (trigger === TRIGGER_TYPE.click) {
+        popoverProps.onBlur = callAllHandlers(props.onBlur, onBlur)
       }
 
       if (trigger === TRIGGER_TYPE.hover) {
@@ -222,6 +225,7 @@ export function usePopover(props: UsePopoverProps = {}) {
       isOpen,
       isLazy,
       popper.ref,
+      placement,
       popper.style,
       hasHeader,
       headerId,
@@ -230,18 +234,16 @@ export function usePopover(props: UsePopoverProps = {}) {
       trigger,
       closeOnEsc,
       onClose,
+      onBlur,
       closeDelay,
     ],
   )
 
-  const getArrowProps = useCallback(
+  const getArrowProps = React.useCallback(
     (props: Dict = {}, ref: Ref<any> = null) => ({
       ...props,
       ref: mergeRefs(arrow.ref, ref),
-      style: {
-        ...props.style,
-        ...arrow.style,
-      },
+      style: { ...props.style, ...arrow.style },
     }),
     [arrow.ref, arrow.style],
   )
@@ -249,7 +251,7 @@ export function usePopover(props: UsePopoverProps = {}) {
   const openTimeout = useRef<NodeJS.Timeout>()
   const closeTimeout = useRef<NodeJS.Timeout>()
 
-  const getTriggerProps = useCallback(
+  const getTriggerProps = React.useCallback(
     (props: Dict = {}, ref: Ref<any> = null) => {
       const triggerProps: Dict = {
         ...props,
@@ -280,7 +282,7 @@ export function usePopover(props: UsePopoverProps = {}) {
          */
         triggerProps.onKeyDown = callAllHandlers(
           props.onKeyDown,
-          (event: KeyboardEvent) => {
+          (event: React.KeyboardEvent) => {
             if (event.key === "Escape") {
               onClose()
             }
@@ -294,12 +296,10 @@ export function usePopover(props: UsePopoverProps = {}) {
 
         triggerProps.onMouseLeave = callAllHandlers(props.onMouseLeave, () => {
           isHoveringRef.current = false
-
           if (openTimeout.current) {
             clearTimeout(openTimeout.current)
             openTimeout.current = undefined
           }
-
           closeTimeout.current = setTimeout(() => {
             if (isHoveringRef.current === false) {
               onClose()
@@ -324,12 +324,11 @@ export function usePopover(props: UsePopoverProps = {}) {
     ],
   )
 
-  useEffect(() => {
+  React.useEffect(() => {
     return () => {
       if (openTimeout.current) {
         clearTimeout(openTimeout.current)
       }
-
       if (closeTimeout.current) {
         clearTimeout(closeTimeout.current)
       }

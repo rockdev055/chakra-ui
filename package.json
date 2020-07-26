@@ -14,10 +14,6 @@
       "**/@types/theme-ui__components"
     ]
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/chakra-ui/chakra-ui.git"
-  },
   "author": "Segun Adebayo <sage@adebayosegun.com>",
   "license": "MIT",
   "scripts": {
@@ -38,11 +34,10 @@
     "build:storybook": "build-storybook",
     "patch": "node -r esm scripts/patch-workspace.js",
     "create-pkg": "node scripts/create-package.js",
-    "changes": "dotenv lerna-changelog",
     "release": "lerna publish",
     "release:ci": "lerna publish -y --loglevel verbose",
-    "version:next": "lerna version --exact --force-publish=* --preid rc",
-    "release:next": "lerna publish from-package --dist-tag next",
+    "release:next": "lerna publish --force-publish=* --preid next --dist-tag next",
+    "publish:next": "lerna publish from-package --dist-tag next",
     "docs": "yarn workspace @chakra-ui/docs",
     "docs:start": "yarn docs start",
     "core": "yarn workspace @chakra-ui/core",
@@ -113,19 +108,7 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "changelog": {
-    "repo": "https://github.com/chakra-ui/chakra-ui",
-    "labels": {
-      "Type: Breaking Change": "🔨 Breaking Changes",
-      "Type: Bug": "🐛 Bugfixes",
-      "Type: Documentation": "📝 Documentation",
-      "Type: Feature": "🚀 Features",
-      "Type: Enhancement": "✨ Enhancements",
-      "Type: Housekeeping": "🏡 Housekeeping"
-    }
-  },
   "devDependencies": {
-    "dotenv-cli": "^3.1.0",
     "@babel/cli": "7.10.5",
     "@babel/core": "7.10.5",
     "@babel/plugin-proposal-class-properties": "7.10.4",
@@ -138,7 +121,6 @@
     "@commitlint/config-conventional": "9.0.1",
     "@emotion/core": "10.0.28",
     "@emotion/styled": "10.0.27",
-    "lerna-changelog": "1.0.1",
     "@storybook/addon-actions": "6.0.0-rc.13",
     "@storybook/addon-knobs": "6.0.0-rc.13",
     "storybook-addon-performance": "0.11.0",
@@ -194,7 +176,7 @@
     "react-test-renderer": "16.13.1",
     "rimraf": "3.0.2",
     "shelljs": "0.8.4",
-    "ts-jest": "26.1.3",
+    "ts-jest": "26.1.2",
     "typescript": "3.9.7"
   }
 }
