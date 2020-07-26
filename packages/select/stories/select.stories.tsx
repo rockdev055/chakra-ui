@@ -104,7 +104,15 @@ const UpDownIcon = (props: any) => (
 )
 
 export const SelectIcon = () => {
-  return <Select icon={<UpDownIcon />} placeholder="Placeholder" size="md" />
+  return (
+    <Select
+      // isDisabled
+      icon={<UpDownIcon />}
+      iconSize="6"
+      placeholder="Placeholder"
+      size="md"
+    />
+  )
 }
 
 export const FocusAndErrorColors = () => (
