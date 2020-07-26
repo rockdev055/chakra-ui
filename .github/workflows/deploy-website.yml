@@ -34,9 +34,6 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile && yarn bootstrap
 
-      - name: Build Chakra packages
-        run: yarn build
-
       - name: Build website
         run: yarn docs build
 
