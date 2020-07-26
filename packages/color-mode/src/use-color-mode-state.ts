@@ -4,9 +4,9 @@ import {
   addListener,
   ColorMode,
   getColorScheme,
+  storage,
   syncBodyClassName,
 } from "./color-mode.utils"
-import { StorageManager, localStorageManager } from "./storage-manager"
 
 /**
  * Syncs the classname of the `<body />` based on the
@@ -47,27 +47,20 @@ export interface ColorModeOptions {
   useSystemColorMode?: boolean
 }
 
-interface useColorModeStateOptions extends ColorModeOptions {
-  storageManager?: StorageManager
-}
-
 /**
  * React hook that sets up the localStorage, body className,
  * and reads from system preference
  */
-export function useColorModeState<T extends useColorModeStateOptions>(
-  options?: T,
-) {
+export function useColorModeState<T extends ColorModeOptions>(options?: T) {
   const [mode, setMode] = React.useState<ColorMode>(
     options?.initialColorMode || "light",
   )
-  const storageManager = options?.storageManager || localStorageManager
 
   useSyncBodyClass(mode)
   useSyncSystemColorMode(setMode, !!options?.useSystemColorMode)
 
   React.useEffect(() => {
-    const stored = storageManager.get()
+    const stored = storage.get()
 
     if (!stored && options?.useSystemColorMode) {
       setMode(getColorScheme)
@@ -81,7 +74,7 @@ export function useColorModeState<T extends useColorModeStateOptions>(
 
   React.useEffect(() => {
     if (mode) {
-      storageManager.set(mode)
+      storage.set(mode)
     }
   }, [mode])
 

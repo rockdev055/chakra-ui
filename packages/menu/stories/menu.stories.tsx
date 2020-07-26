@@ -282,7 +282,7 @@ export const SplitButton = () => (
       >
         <FaChevronDown />
       </MenuButton>
-      <MenuTransition transformOrigin="top right">
+      <MenuTransition>
         {(styles) => (
           <MenuList minW="160px" css={styles as any}>
             <MenuItem fontSize="14px">Menu 1</MenuItem>
@@ -293,22 +293,4 @@ export const SplitButton = () => (
       </MenuTransition>
     </Menu>
   </chakra.div>
-)
-
-export const Bug = () => (
-  <Menu placement="right-start">
-    <MenuButton _focus={{ outline: "2px solid red" }}>
-      <Avatar name="My Name" />
-    </MenuButton>
-    <MenuList>
-      <MenuItem>Profile</MenuItem>
-      <MenuItem
-        onClick={() => {
-          console.log("logout")
-        }}
-      >
-        Logout
-      </MenuItem>
-    </MenuList>
-  </Menu>
 )
