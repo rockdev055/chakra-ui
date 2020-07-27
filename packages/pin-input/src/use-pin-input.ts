@@ -19,13 +19,15 @@ export type PinInputContext = UsePinInputReturn & {
   isInvalid?: boolean
 }
 
-const [PinInputProvider, usePinInputContext] = createContext<PinInputContext>({
+const [PinInputContextProvider, usePinInputContext] = createContext<
+  PinInputContext
+>({
   name: "PinInputContext",
   errorMessage:
     "usePinInputContext: `context` is undefined. Seems you forgot to all pin input fields within `<PinInput />`",
 })
 
-export { PinInputProvider, usePinInputContext }
+export { PinInputContextProvider, usePinInputContext }
 
 export interface UsePinInputProps {
   /**

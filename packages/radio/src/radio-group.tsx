@@ -11,7 +11,7 @@ export interface RadioGroupContext
   extends Pick<UseRadioGroupReturn, "onChange" | "value" | "name">,
     Omit<ThemingProps, "orientation"> {}
 
-const [RadioGroupProvider, useRadioGroupContext] = createContext<
+const [RadioGroupContextProvider, useRadioGroupContext] = createContext<
   RadioGroupContext
 >({
   name: "RadioGroupContext",
@@ -43,11 +43,11 @@ export const RadioGroup = forwardRef(function RadioGroup(
     variant,
     children,
     className,
-    ...otherProps
+    ...hookProps
   } = props
 
   const { value, onChange, getRootProps, name, htmlProps } = useRadioGroup(
-    otherProps,
+    hookProps,
   )
 
   const group = React.useMemo(
@@ -62,15 +62,15 @@ export const RadioGroup = forwardRef(function RadioGroup(
     [size, name, onChange, colorScheme, value, variant],
   )
 
-  const groupProps = getRootProps(htmlProps, ref)
+  const groupProps = getRootProps({ ref, ...htmlProps })
   const _className = cx("chakra-radio-group", className)
 
   return (
-    <RadioGroupProvider value={group}>
+    <RadioGroupContextProvider value={group}>
       <chakra.div {...groupProps} className={_className}>
         {children}
       </chakra.div>
-    </RadioGroupProvider>
+    </RadioGroupContextProvider>
   )
 })
 

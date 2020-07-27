@@ -1,9 +1,4 @@
-import {
-  chakra,
-  PropsOf,
-  useStyleConfig,
-  useMultiStyleConfig,
-} from "@chakra-ui/system"
+import { chakra, PropsOf } from "@chakra-ui/system"
 import * as React from "react"
 import {
   FormControlOptions,
@@ -28,7 +23,7 @@ export default {
 
 type OmittedTypes = "disabled" | "required" | "readOnly" | "size"
 
-type InputProps = Omit<PropsOf<"input">, OmittedTypes> &
+type InputProps = Omit<PropsOf<typeof StyledInput>, OmittedTypes> &
   FormControlOptions & {
     // Input component as `size` by default so it resolves to `never`
     // Omitted it from types in Line 16 and added back here.
@@ -38,11 +33,14 @@ type InputProps = Omit<PropsOf<"input">, OmittedTypes> &
 // Create an input that consumes useFormControl
 type Props = { focusBorderColor?: string; errorBorderColor?: string }
 
+const StyledInput = chakra<"input", Props>("input", {
+  themeKey: "Input",
+})
+
 const Input = React.forwardRef(
   (props: InputProps, ref: React.Ref<HTMLInputElement>) => {
-    const styles = useMultiStyleConfig("Input", props)
     const inputProps = useFormControl<HTMLInputElement>(props)
-    return <chakra.input ref={ref} __css={styles.field} {...inputProps} />
+    return <StyledInput ref={ref} {...inputProps} />
   },
 )
 
@@ -58,11 +56,20 @@ export const InputExample = () => (
 type TextAreaProps = Omit<PropsOf<"textarea">, OmittedTypes> &
   FormControlOptions
 
+// Create a textarea that consumes useFormControl
+const StyledTextarea = chakra<"textarea", Props>("textarea", {
+  baseStyle: {
+    paddingY: "8px",
+    minHeight: "80px",
+    lineHeight: "short",
+  },
+  themeKey: "Textarea",
+})
+
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
   (props, ref) => {
-    const styles = useStyleConfig("Textarea", props)
     const inputProps = useFormControl<HTMLTextAreaElement>(props)
-    return <chakra.textarea ref={ref} __css={styles} {...inputProps} />
+    return <StyledTextarea ref={ref} {...inputProps} />
   },
 )
 
@@ -80,11 +87,14 @@ export const TextAreaExample = () => (
 
 type SelectProps = Omit<PropsOf<"select">, OmittedTypes> & FormControlOptions
 
+const StyledSelect = chakra<"select", Props>("select", {
+  themeKey: "Textarea",
+})
+
 const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
   (props, ref) => {
-    const styles = useMultiStyleConfig("Select", props)
     const inputProps = useFormControl<HTMLSelectElement>(props)
-    return <chakra.select ref={ref} __css={styles.field} {...inputProps} />
+    return <StyledSelect ref={ref} {...inputProps} />
   },
 )
 
@@ -110,7 +120,7 @@ export const SelectExample = () => (
  */
 export const StylingFocus = () => (
   <FormControl id="first-name">
-    <FormLabel _focus={{ color: "blue.600" }}>First name</FormLabel>
+    <FormLabel _focus={{ color: "blue.300" }}>First name</FormLabel>
     <Input placeholder="First Name" width="100%" />
     <FormErrorMessage>Your First name is invalid</FormErrorMessage>
   </FormControl>

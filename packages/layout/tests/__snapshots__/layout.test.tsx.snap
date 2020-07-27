@@ -2,22 +2,8 @@
 
 exports[`Badge override the theming props 1`] = `
 <DocumentFragment>
-  .emotion-0 {
-  display: inline-block;
-  white-space: nowrap;
-  vertical-align: middle;
-  padding-left: 0.25rem;
-  padding-right: 0.25rem;
-  text-transform: uppercase;
-  font-size: 0.75rem;
-  border-radius: 0.125rem;
-  font-weight: 700;
-  color: #D53F8C;
-  box-shadow: inset 0 0 0px 1px #D53F8C;
-}
-
-<span
-    class="chakra-badge emotion-0"
+  <span
+    class="chakra-badge css-x5nvee"
   >
     Badge
   </span>
@@ -26,22 +12,8 @@ exports[`Badge override the theming props 1`] = `
 
 exports[`Badge should render with default theming 1`] = `
 <DocumentFragment>
-  .emotion-0 {
-  display: inline-block;
-  white-space: nowrap;
-  vertical-align: middle;
-  padding-left: 0.25rem;
-  padding-right: 0.25rem;
-  text-transform: uppercase;
-  font-size: 0.75rem;
-  border-radius: 0.125rem;
-  font-weight: 700;
-  background: #EDF2F7;
-  color: #1A202C;
-}
-
-<span
-    class="chakra-badge emotion-0"
+  <span
+    class="chakra-badge css-2q4iwi"
   >
     Badge
   </span>
@@ -51,7 +23,6 @@ exports[`Badge should render with default theming 1`] = `
 exports[`Box as - prop works correctly 1`] = `
 <DocumentFragment>
   <a
-    class="css-0"
     href="www.google.com"
   >
     This is box
@@ -61,9 +32,7 @@ exports[`Box as - prop works correctly 1`] = `
 
 exports[`Box should render box correctly 1`] = `
 <DocumentFragment>
-  <div
-    class="css-0"
-  >
+  <div>
     This is box
   </div>
 </DocumentFragment>

@@ -3,64 +3,6 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [1.0.0-rc.0](https://github.com/chakra-ui/chakra-ui/compare/@chakra-ui/system@1.0.0-next.7...@chakra-ui/system@1.0.0-rc.0) (2020-07-26)
-
-**Note:** Version bump only for package @chakra-ui/system
-
-# Change Log
-
-All notable changes to this project will be documented in this file. See
-[Conventional Commits](https://conventionalcommits.org) for commit guidelines.
-
-# [1.0.0-next.7](https://github.com/chakra-ui/chakra-ui/compare/@chakra-ui/system@1.0.0-next.6...@chakra-ui/system@1.0.0-next.7) (2020-07-26)
-
-### Bug Fixes
-
-- give priority to props overrides
-  ([f2fe955](https://github.com/chakra-ui/chakra-ui/commit/f2fe9553373da4734712a90fec284eea7a951dfb))
-- null exception for style config
-  ([c28ba5a](https://github.com/chakra-ui/chakra-ui/commit/c28ba5ac075cc5c8f30806e269ed36632c01d6ea))
-
-### Features
-
-- add support for single and multipart config
-  ([a13d0f8](https://github.com/chakra-ui/chakra-ui/commit/a13d0f8a3d97405bde6acba1c4fc126677154a8b))
-
-### Reverts
-
-- breakpoint handling
-  ([f3ee5f1](https://github.com/chakra-ui/chakra-ui/commit/f3ee5f15c48da242c4d4d43de0dc67ff7664c81e))
-
-# Change Log
-
-All notable changes to this project will be documented in this file. See
-[Conventional Commits](https://conventionalcommits.org) for commit guidelines.
-
-# [1.0.0-next.6](https://github.com/chakra-ui/chakra-ui/compare/@chakra-ui/system@1.0.0-next.5...@chakra-ui/system@1.0.0-next.6) (2020-07-15)
-
-**Note:** Version bump only for package @chakra-ui/system
-
-# Change Log
-
-All notable changes to this project will be documented in this file. See
-[Conventional Commits](https://conventionalcommits.org) for commit guidelines.
-
-# [1.0.0-next.5](https://github.com/chakra-ui/chakra-ui/compare/@chakra-ui/system@1.0.0-next.4...@chakra-ui/system@1.0.0-next.5) (2020-07-15)
-
-### Performance Improvements
-
-- improve system pkg
-  ([eebec47](https://github.com/chakra-ui/chakra-ui/commit/eebec479c6c40324833cc1beed0b540c4687d805))
-- some more improvements
-  ([daf94a5](https://github.com/chakra-ui/chakra-ui/commit/daf94a50f6abc9773c9552ec08b5ebf5f1cb05b9))
-- some more improvements
-  ([3382bab](https://github.com/chakra-ui/chakra-ui/commit/3382bab224f29f082d2a9ba2b4b2721257fbdfac))
-
-# Change Log
-
-All notable changes to this project will be documented in this file. See
-[Conventional Commits](https://conventionalcommits.org) for commit guidelines.
-
 # 1.0.0-next.4 (2020-07-01)
 
 ### Bug Fixes

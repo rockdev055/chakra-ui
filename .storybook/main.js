@@ -1,10 +1,3 @@
 module.exports = {
-  stories: ["../packages/popover/stories/*.stories.tsx"],
-  addons: [
-    "storybook-addon-performance/register",
-    "@storybook/addon-a11y/register",
-  ],
-  typescript: {
-    reactDocgen: false,
-  },
+  stories: ["../packages/switch/**/*.stories.tsx"],
 }

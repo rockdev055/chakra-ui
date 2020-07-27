@@ -9,8 +9,23 @@ import {
   useStyleConfig,
 } from "@chakra-ui/system"
 import { cx, dataAttr, merge, __DEV__ } from "@chakra-ui/utils"
-import React, { ReactElement, isValidElement, cloneElement } from "react"
+import * as React from "react"
 import { useButtonGroup } from "./button-group"
+
+const StyledButton = chakra("button", {
+  baseStyle: {
+    display: "inline-flex",
+    appearance: "none",
+    alignItems: "center",
+    justifyContent: "center",
+    transition: "all 250ms",
+    userSelect: "none",
+    position: "relative",
+    whiteSpace: "nowrap",
+    verticalAlign: "middle",
+    outline: "none",
+  },
+})
 
 export interface ButtonOptions {
   /**
@@ -41,11 +56,11 @@ export interface ButtonOptions {
   /**
    * If added, the button will show an icon before the button's label.
    */
-  leftIcon?: ReactElement
+  leftIcon?: React.ReactElement
   /**
    * If added, the button will show an icon after the button's label.
    */
-  rightIcon?: ReactElement
+  rightIcon?: React.ReactElement
   /**
    * The space between the button icon and label.
    */
@@ -53,10 +68,10 @@ export interface ButtonOptions {
   /**
    * Replace the spinner component when `isLoading` is set to `true`
    */
-  spinner?: ReactElement
+  spinner?: React.ReactElement
 }
 
-export type ButtonProps = PropsOf<typeof chakra.button> &
+export type ButtonProps = PropsOf<typeof StyledButton> &
   ButtonOptions &
   ThemingProps
 
@@ -87,42 +102,31 @@ export const Button = forwardRef<ButtonProps>(function Button(props, ref) {
    *
    * So let's read the component styles and then add `zIndex` to it.
    */
-  const _focus = merge({}, styles?.["_focus"] ?? {}, { zIndex: 1 })
+  const buttonStyles = styles.container
+  const _focus = merge({}, buttonStyles?.["_focus"] ?? {}, { zIndex: 1 })
 
-  const buttonStyles = {
-    display: "inline-flex",
-    appearance: "none",
-    alignItems: "center",
-    justifyContent: "center",
-    transition: "all 250ms",
-    userSelect: "none",
-    position: "relative",
-    whiteSpace: "nowrap",
-    verticalAlign: "middle",
-    outline: "none",
-    width: isFullWidth ? "100%" : "auto",
-    ...styles,
-    ...(!!group && { _focus }),
-  }
+  const _className = cx("chakra-button", className)
 
   return (
-    <chakra.button
+    <StyledButton
       disabled={isDisabled || isLoading}
       ref={ref}
       as={as}
       type={as ? undefined : type}
+      width={isFullWidth ? "100%" : undefined}
       data-active={dataAttr(isActive)}
       data-loading={dataAttr(isLoading)}
       __css={buttonStyles}
-      className={cx("chakra-button", className)}
+      className={_className}
+      {...(!!group && { _focus })}
       {...rest}
     >
       {leftIcon && !isLoading && (
-        <ButtonIcon mr={iconSpacing} children={leftIcon} />
+        <ButtonIcon __css={styles.icon} mr={iconSpacing} children={leftIcon} />
       )}
       {isLoading && (
         <ButtonSpinner
-          __css={{ fontSize: "1em", lineHeight: "normal" }}
+          __css={styles.spinner}
           spacing={iconSpacing}
           label={loadingText}
           children={spinner}
@@ -132,9 +136,9 @@ export const Button = forwardRef<ButtonProps>(function Button(props, ref) {
         ? loadingText || <chakra.span opacity={0} children={children} />
         : children}
       {rightIcon && !isLoading && (
-        <ButtonIcon ml={iconSpacing} children={rightIcon} />
+        <ButtonIcon __css={styles.icon} ml={iconSpacing} children={rightIcon} />
       )}
-    </chakra.button>
+    </StyledButton>
   )
 })
 
@@ -144,12 +148,13 @@ if (__DEV__) {
 
 function ButtonIcon(props: PropsOf<typeof chakra.span>) {
   const { children, className, ...rest } = props
+  const a11yProps = {
+    "aria-hidden": true,
+    focusable: false,
+  }
 
-  const _children = isValidElement(children)
-    ? cloneElement(children, {
-        "aria-hidden": true,
-        focusable: false,
-      })
+  const _children = React.isValidElement(children)
+    ? React.cloneElement(children, a11yProps)
     : children
 
   const _className = cx("chakra-button__icon", className)
@@ -176,16 +181,13 @@ function ButtonSpinner(props: ButtonSpinnerProps) {
   } = props
 
   const _className = cx("chakra-button__spinner", className)
-  const spinnerStyles = {
-    position: label ? "relative" : "absolute",
-    mr: label ? spacing : 0,
-  }
 
   return (
     <chakra.div
+      position={label ? "relative" : "absolute"}
+      mr={label ? spacing : 0}
       className={_className}
       {...rest}
-      __css={spinnerStyles}
       children={children}
     />
   )

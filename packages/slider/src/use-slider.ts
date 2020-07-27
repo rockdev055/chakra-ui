@@ -21,17 +21,8 @@ import {
   percentToValue,
   roundValueToStep,
   valueToPercent,
-  isRightClick,
 } from "@chakra-ui/utils"
-import {
-  Ref,
-  useState,
-  useRef,
-  useCallback,
-  useMemo,
-  useEffect,
-  CSSProperties,
-} from "react"
+import * as React from "react"
 
 export interface UseSliderProps {
   /**
@@ -153,7 +144,7 @@ export function useSlider(props: UseSliderProps) {
 
   const [isDragging, setDragging] = useBoolean()
   const [isFocused, setFocused] = useBoolean()
-  const [eventSource, setEventSource] = useState<EventSource>()
+  const [eventSource, setEventSource] = React.useState<EventSource>()
 
   const isInteractive = !(isDisabled || isReadOnly)
 
@@ -177,14 +168,14 @@ export function useSlider(props: UseSliderProps) {
    * Ideally, we'll love to use pointer-events API but it's
    * not fully supported in all browsers.
    */
-  const cleanUpRef = useRef<Dict<Function>>({})
+  const cleanUpRef = React.useRef<Dict<Function>>({})
 
   /**
    * Constrain the value because it can't be less than min
    * or greater than max
    */
   const value = clampValue(computedValue, min, max)
-  const prev = useRef<number>()
+  const prev = React.useRef<number>()
 
   const reversedValue = max - value + min
   const trackValue = isReversed ? reversedValue : value
@@ -195,9 +186,9 @@ export function useSlider(props: UseSliderProps) {
   /**
    * Let's keep a reference to the slider track and thumb
    */
-  const trackRef = useRef<any>(null)
-  const thumbRef = useRef<any>(null)
-  const rootRef = useRef<any>(null)
+  const trackRef = React.useRef<any>(null)
+  const thumbRef = React.useRef<any>(null)
+  const rootRef = React.useRef<any>(null)
 
   /**
    * Generate unique ids for component parts
@@ -208,7 +199,7 @@ export function useSlider(props: UseSliderProps) {
    * Get relative value of slider from the event by tracking
    * how far you clicked within the track to determine the value
    */
-  const getValueFromPointer = useCallback(
+  const getValueFromPointer = React.useCallback(
     (event) => {
       if (!trackRef.current) return
 
@@ -229,7 +220,7 @@ export function useSlider(props: UseSliderProps) {
       let nextValue = percentToValue(percent, min, max)
 
       if (step) {
-        nextValue = parseFloat(roundValueToStep(nextValue, min, step))
+        nextValue = parseFloat(roundValueToStep(nextValue, step))
       }
 
       nextValue = clampValue(nextValue, min, max)
@@ -242,19 +233,19 @@ export function useSlider(props: UseSliderProps) {
   const tenSteps = (max - min) / 10
   const oneStep = step || (max - min) / 100
 
-  const constrain = useCallback(
+  const constrain = React.useCallback(
     (value: number) => {
       // bail out if slider isn't interactive
       if (!isInteractive) return
       prev.current = value
-      value = parseFloat(roundValueToStep(value, min, oneStep))
+      value = parseFloat(roundValueToStep(value, oneStep))
       value = clampValue(value, min, max)
       setValue(value)
     },
     [oneStep, max, min, setValue, isInteractive],
   )
 
-  const actions = useMemo(
+  const actions = React.useMemo(
     () => ({
       stepUp: (step = oneStep) => {
         const next = isReversed ? value - step : value + step
@@ -273,6 +264,8 @@ export function useSlider(props: UseSliderProps) {
   /**
    * Keyboard interaction to ensure users can operate
    * the slider using only their keyboard.
+   *
+   * @see https://www.w3.org/TR/wai-aria-practices-1.1/#slider_kbd_interaction
    */
   const onKeyDown = createOnKeyDown({
     stopPropagation: true,
@@ -312,7 +305,7 @@ export function useSlider(props: UseSliderProps) {
     position: "absolute",
     userSelect: "none",
     touchAction: "none",
-    ...orient({
+    ...getOrientationValue({
       orientation,
       vertical: {
         bottom: `calc(${trackPercent}% - ${thumbRect.height / 2}px)`,
@@ -329,7 +322,7 @@ export function useSlider(props: UseSliderProps) {
     WebkitTapHighlightColor: "rgba(0,0,0,0)",
     userSelect: "none",
     outline: 0,
-    ...orient({
+    ...getOrientationValue({
       orientation,
       vertical: {
         paddingLeft: thumbRect.width / 2,
@@ -344,7 +337,7 @@ export function useSlider(props: UseSliderProps) {
 
   const trackStyle: React.CSSProperties = {
     position: "absolute",
-    ...orient({
+    ...getOrientationValue({
       orientation,
       vertical: {
         left: "50%",
@@ -361,7 +354,7 @@ export function useSlider(props: UseSliderProps) {
 
   const innerTrackStyle: React.CSSProperties = {
     ...trackStyle,
-    ...orient({
+    ...getOrientationValue({
       orientation,
       vertical: isReversed
         ? { height: `${100 - trackPercent}%`, top: 0 }
@@ -395,7 +388,7 @@ export function useSlider(props: UseSliderProps) {
     /**
      * Prevent update if it's right-click
      */
-    if (isRightClick(event)) return
+    if (event.button != 0) return
 
     if (!isInteractive || !rootRef.current) return
 
@@ -483,7 +476,7 @@ export function useSlider(props: UseSliderProps) {
   /**
    * Ensure we clean up listeners when slider unmounts
    */
-  useEffect(() => {
+  React.useEffect(() => {
     return () => detach()
   }, [])
 
@@ -512,39 +505,29 @@ export function useSlider(props: UseSliderProps) {
       isDragging: isDragging,
     },
     actions,
-    getRootProps: (props: Dict = {}, ref: Ref<any> = null) => ({
+    getRootProps: (props: Dict = {}) => ({
       ...props,
       ...htmlProps,
-      ref: mergeRefs(ref, rootRef),
+      ref: mergeRefs(props.ref, rootRef),
       tabIndex: -1,
       "aria-disabled": ariaAttr(isDisabled),
       "data-focused": dataAttr(isFocused),
-      style: {
-        ...props.style,
-        ...rootStyle,
-      },
+      style: { ...props.style, ...rootStyle },
     }),
-    getTrackProps: (props: Dict = {}, ref: Ref<any> = null) => ({
+    getTrackProps: (props: Dict = {}) => ({
       ...props,
-      ref: mergeRefs(ref, trackRef),
+      ref: mergeRefs(props.ref, trackRef),
       id: trackId,
       "data-disabled": dataAttr(isDisabled),
-      style: {
-        ...props.style,
-        ...trackStyle,
-      },
+      style: { ...props.style, ...trackStyle },
     }),
-    getInnerTrackProps: (props: Dict = {}, ref: Ref<any> = null) => ({
+    getInnerTrackProps: (props: Dict = {}) => ({
       ...props,
-      ref,
-      style: {
-        ...props.style,
-        ...innerTrackStyle,
-      },
+      style: { ...props.style, ...innerTrackStyle },
     }),
-    getThumbProps: (props: Dict = {}, ref: Ref<any> = null) => ({
+    getThumbProps: (props: Dict = {}) => ({
       ...props,
-      ref: mergeRefs(ref, thumbRef),
+      ref: thumbRef,
       role: "slider",
       tabIndex: 0,
       id: thumbId,
@@ -558,15 +541,12 @@ export function useSlider(props: UseSliderProps) {
       "aria-readonly": ariaAttr(isReadOnly),
       "aria-label": ariaLabel,
       "aria-labelledby": ariaLabel ? undefined : ariaLabelledBy,
-      style: {
-        ...props.style,
-        ...thumbStyle,
-      },
+      style: { ...props.style, ...thumbStyle },
       onKeyDown: callAllHandlers(props.onKeyDown, onKeyDown),
       onFocus: callAllHandlers(props.onFocus, setFocused.on),
       onBlur: callAllHandlers(props.onBlur, setFocused.off),
     }),
-    getMarkerProps: (props: Dict = {}, ref: Ref<any> = null) => {
+    getMarkerProps: (props: Dict) => {
       const isInRange = !(props.value < min || props.value > max)
       const isHighlighted = value >= props.value
       const markerPercent = valueToPercent(props.value, min, max)
@@ -574,7 +554,7 @@ export function useSlider(props: UseSliderProps) {
       const markerStyle: React.CSSProperties = {
         position: "absolute",
         pointerEvents: "none",
-        ...orient({
+        ...getOrientationValue({
           orientation,
           vertical: {
             bottom: isReversed
@@ -589,21 +569,16 @@ export function useSlider(props: UseSliderProps) {
 
       return {
         ...props,
-        ref,
         role: "presentation",
         "aria-hidden": true,
         "data-disabled": dataAttr(isDisabled),
         "data-invalid": dataAttr(!isInRange),
         "data-highlighted": dataAttr(isHighlighted),
-        style: {
-          ...props.style,
-          ...markerStyle,
-        },
+        style: { ...props.style, ...markerStyle },
       }
     },
-    getInputProps: (props: Dict = {}, ref: Ref<any>) => ({
+    getInputProps: (props: Dict = {}) => ({
       ...props,
-      ref,
       type: "hidden",
       value,
       name,
@@ -613,10 +588,14 @@ export function useSlider(props: UseSliderProps) {
 
 export type UseSliderReturn = ReturnType<typeof useSlider>
 
-function orient(options: {
+/**
+ * Get the value based on orientation
+ * @param options
+ */
+function getOrientationValue(options: {
   orientation: UseSliderProps["orientation"]
-  vertical: CSSProperties
-  horizontal: CSSProperties
+  vertical: React.CSSProperties
+  horizontal: React.CSSProperties
 }) {
   const { orientation, vertical, horizontal } = options
   return orientation === "vertical" ? vertical : horizontal
@@ -626,6 +605,9 @@ function orient(options: {
  * The browser <input type="range" /> calculates
  * the default value of a slider by using mid-point
  * between the min and the max.
+ *
+ * @param min the minimum value
+ * @param max the maximum value
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/range
  */

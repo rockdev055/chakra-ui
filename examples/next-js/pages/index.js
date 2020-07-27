@@ -1,17 +1,18 @@
+import { Button } from "@chakra-ui/button"
+import { Image } from "@chakra-ui/image"
+import {
+  Input,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
+} from "@chakra-ui/input"
+import { Stack } from "@chakra-ui/layout"
 import {
   chakra,
   DarkMode,
   useColorMode,
   useColorModeValue,
-  Button,
-  Image,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  InputRightElement,
-  Stack,
-  Container,
-} from "@chakra-ui/core"
+} from "@chakra-ui/system"
 import Head from "next/head"
 
 function Switcher() {
@@ -29,14 +30,14 @@ const InputGrouper = () => {
         <Input placeholder="Enter amount" />
         {bool && <InputRightElement children={"C"} />}
       </InputGroup>
-      <button onClick={() => setBool((s) => !s)}>Toggle Right Element</button>
+      <button onClick={() => setBool((s) => !s)}>Add Right Element</button>
       <br />
     </>
   )
 }
 
 const Home = () => (
-  <Container>
+  <div className="container">
     <Head>
       <title>Create Next App</title>
       <link rel="icon" href="/favicon.ico" />
@@ -73,7 +74,7 @@ const Home = () => (
         <div>Welcome home</div>
       </Stack>
     </main>
-  </Container>
+  </div>
 )
 
 export default Home

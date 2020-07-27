@@ -17,6 +17,11 @@ import {
 } from "@chakra-ui/form-control"
 import { PhoneIcon, CheckIcon } from "@chakra-ui/icons"
 
+Stack.defaultProps = {
+  align: "start",
+  spacing: "24px",
+}
+
 export default {
   title: "Input",
   decorators: [
@@ -49,7 +54,7 @@ export const Controlled = () => {
 
 export const WithSizes = () => {
   return (
-    <Stack align="start">
+    <Stack>
       {["sm", "md", "lg"].map((size) => (
         <Input size={size} placeholder="This is an input component" />
       ))}
@@ -58,7 +63,7 @@ export const WithSizes = () => {
 }
 
 export const WithStates = () => (
-  <Stack align="start">
+  <Stack>
     <Input placeholder="Idle" />
     <Input isInvalid placeholder="isInvalid" />
     <Input isDisabled placeholder="isDisabled" />
@@ -67,7 +72,7 @@ export const WithStates = () => (
 )
 
 export const WithVariants = () => (
-  <Stack align="start">
+  <Stack>
     <Input variant="outline" placeholder="Outline" />
     <Input variant="filled" placeholder="Filled" />
     <Input variant="flushed" placeholder="Flushed" />
@@ -76,7 +81,7 @@ export const WithVariants = () => (
 )
 
 export const WithInputAddon = () => (
-  <Stack align="start">
+  <Stack>
     <InputGroup>
       <InputLeftAddon children="+234" />
       <Input placeholder="Phone number..." />
@@ -91,7 +96,7 @@ export const WithInputAddon = () => (
 )
 
 export const WithInputElement = () => (
-  <Stack align="start">
+  <Stack>
     <InputGroup>
       <InputLeftElement children={<PhoneIcon color="gray.300" />} />
       <Input pl="60px" type="phone" placeholder="Phone number" />
@@ -126,7 +131,7 @@ export function PasswordInput() {
 }
 
 export const WithFocusAndErrorColors = () => (
-  <Stack align="start" spacing="10">
+  <Stack spacing="10">
     <Input focusBorderColor="lime" placeholder="Here is a sample placeholder" />
 
     <Input
@@ -165,7 +170,7 @@ function FormError(props: any) {
 export const WithFormControl = () => {
   const [isError, setIsError] = React.useState(false)
   return (
-    <Stack align="start">
+    <Stack>
       <FormControl id="first-name" isInvalid={isError}>
         <chakra.div display="flex" mb="2">
           <FormLabel mb="0" lineHeight="1em">

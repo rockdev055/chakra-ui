@@ -1,20 +1,29 @@
-import { chakra, PropsOf, useTheme, SystemStyleObject } from "@chakra-ui/system"
-import {
-  cx,
-  Dict,
-  get,
-  mapResponsive,
-  __DEV__,
-  filterUndefined,
-} from "@chakra-ui/utils"
+import { chakra, PropsOf, useTheme } from "@chakra-ui/system"
+import { cx, Dict, get, mapResponsive, __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
 
-export type ContainerProps = PropsOf<typeof chakra.div> & {
-  /**
-   * If `true`, container will center it's children
-   * regardless of their width.
-   */
-  centerContent?: boolean
+export type ContainerProps = PropsOf<typeof chakra.div>
+
+const StyledContainer = chakra("div", {
+  baseStyle: {
+    width: "100%",
+    marginX: "auto",
+    maxWidth: "60ch",
+    paddingX: "1rem",
+  },
+})
+
+function transform(theme: Dict, props: Dict) {
+  const result = {} as Dict
+
+  for (const prop in props) {
+    const propValue = props[prop]
+    result[prop] = mapResponsive(propValue, (value) =>
+      get(theme, `sizes.container.${value}`, value),
+    )
+  }
+
+  return result
 }
 
 /**
@@ -29,17 +38,7 @@ export const Container = React.forwardRef(function Container(
   props: ContainerProps,
   ref: React.Ref<any>,
 ) {
-  const {
-    maxWidth,
-    width,
-    minWidth,
-    w,
-    minW,
-    maxW,
-    className,
-    centerContent,
-    ...rest
-  } = props
+  const { maxWidth, width, minWidth, w, minW, maxW, className, ...rest } = props
 
   const theme = useTheme()
 
@@ -52,42 +51,18 @@ export const Container = React.forwardRef(function Container(
     minW,
   })
 
-  const styles: SystemStyleObject = {
-    w: "100%",
-    mx: "auto",
-    maxW: "60ch",
-    px: "1rem",
-    ...(centerContent && {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-    }),
-    ...widthProps,
-  }
+  const _className = cx("chakra-container", className)
 
   return (
-    <chakra.div
+    <StyledContainer
+      className={_className}
       ref={ref}
-      className={cx("chakra-container", className)}
+      {...widthProps}
       {...rest}
-      __css={styles}
     />
   )
 })
 
 if (__DEV__) {
   Container.displayName = "Container"
-}
-
-function transform(theme: Dict, props: Dict) {
-  const result: SystemStyleObject = {}
-
-  for (const prop in props) {
-    const propValue = props[prop]
-    result[prop] = mapResponsive(propValue, (value) =>
-      get(theme, `sizes.container.${value}`, value),
-    )
-  }
-
-  return filterUndefined(result)
 }

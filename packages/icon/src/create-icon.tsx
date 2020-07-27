@@ -31,8 +31,9 @@ export function createIcon(options: CreateIconOptions) {
   } = options
 
   const Comp = React.forwardRef((props: IconProps, ref: React.Ref<any>) => {
+    const { boxSize = "1em", ...rest } = props
     return (
-      <Icon ref={ref} viewBox={viewBox} {...props}>
+      <Icon ref={ref} as="svg" boxSize={boxSize} viewBox={viewBox} {...rest}>
         {path ?? <path fill="currentColor" d={pathDefinition} />}
       </Icon>
     )

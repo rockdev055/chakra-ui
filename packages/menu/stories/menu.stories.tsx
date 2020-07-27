@@ -21,7 +21,6 @@ import {
   MenuTransition,
 } from "../src"
 import { Button } from "@chakra-ui/button"
-import { Avatar } from "@chakra-ui/avatar"
 
 const words = [
   "About Visual Studio Code",

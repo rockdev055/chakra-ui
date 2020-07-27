@@ -9,17 +9,19 @@ import { useMenuContext } from "./use-menu"
 import { SystemStyleObject } from "@chakra-ui/system"
 
 export interface MenuTransitionProps {
+  transformOrigin?: string
   children: (styles: SystemStyleObject) => React.ReactNode
   styles?: TransitionProps["styles"]
 }
 
 export function MenuTransition(props: MenuTransitionProps) {
-  const { children, styles } = props
+  const { transformOrigin = "top left", children, styles } = props
   const menu = useMenuContext()
 
   const defaultStyles: TransitionStyles = {
     init: {
       opacity: 0.01,
+      transformOrigin: transformOrigin,
       transform: "scale(0.8)",
       transitionTimingFunction: "cubic-bezier(0.175, 0.885, 0.320, 1.175)",
       transitionProperty: "opacity, transform",
@@ -45,9 +47,8 @@ export function MenuTransition(props: MenuTransitionProps) {
       onExited={(node) => {
         node.hidden = true
         node.style.pointerEvents = "auto"
-        const menuEl = menu.buttonRef.current
-        if (menuEl && document.activeElement !== menuEl) {
-          focus(menuEl)
+        if (menu.buttonRef.current) {
+          focus(menu.buttonRef.current)
         }
       }}
       onExit={(node) => {

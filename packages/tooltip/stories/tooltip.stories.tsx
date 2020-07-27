@@ -125,7 +125,7 @@ export const WithTransition = () => (
 )
 
 export const withButton = () => (
-  <Tooltip label="This is a chakra tooltip" placement="bottom" hasArrow>
+  <Tooltip label="This is a chakra tooltip" placement="top">
     <button>Hover me</button>
   </Tooltip>
 )
