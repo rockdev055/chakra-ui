@@ -3,6 +3,59 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-rc.0](https://github.com/chakra-ui/chakra-ui/compare/@chakra-ui/utils@1.0.0-next.7...@chakra-ui/utils@1.0.0-rc.0) (2020-07-26)
+
+**Note:** Version bump only for package @chakra-ui/utils
+
+# Change Log
+
+All notable changes to this project will be documented in this file. See
+[Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+# [1.0.0-next.7](https://github.com/chakra-ui/chakra-ui/compare/@chakra-ui/utils@1.0.0-next.6...@chakra-ui/utils@1.0.0-next.7) (2020-07-26)
+
+### Bug Fixes
+
+- prevent issue where right click triggers active css state
+  ([4ea9b88](https://github.com/chakra-ui/chakra-ui/commit/4ea9b8872599168f7a6ecb078b62f3473a25b4d8))
+
+### Features
+
+- add popover transition and merge props util
+  ([112ff7b](https://github.com/chakra-ui/chakra-ui/commit/112ff7b53d7618f9a1442efa2fb427491a5fc51c))
+
+# Change Log
+
+All notable changes to this project will be documented in this file. See
+[Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+# [1.0.0-next.6](https://github.com/chakra-ui/chakra-ui/compare/@chakra-ui/utils@1.0.0-next.5...@chakra-ui/utils@1.0.0-next.6) (2020-07-15)
+
+**Note:** Version bump only for package @chakra-ui/utils
+
+# Change Log
+
+All notable changes to this project will be documented in this file. See
+[Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+# [1.0.0-next.5](https://github.com/chakra-ui/chakra-ui/compare/@chakra-ui/utils@1.0.0-next.4...@chakra-ui/utils@1.0.0-next.5) (2020-07-15)
+
+### Bug Fixes
+
+- [#1180](https://github.com/chakra-ui/chakra-ui/issues/1180) slider moving
+  incorrectly when min is odd and step is even
+  ([4038ad4](https://github.com/chakra-ui/chakra-ui/commit/4038ad4b5ee52f275919b046cc916cdfe73800f8))
+
+### Features
+
+- **css:** allow object notation for responsive props in css
+  ([08c0029](https://github.com/chakra-ui/chakra-ui/commit/08c00290034ee096ee2cb56ae1402b632cc509ad))
+
+# Change Log
+
+All notable changes to this project will be documented in this file. See
+[Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
 # 1.0.0-next.4 (2020-07-01)
 
 ### Bug Fixes

@@ -2,8 +2,16 @@ import { useBoolean, useDisclosure, useIds } from "@chakra-ui/hooks"
 import { Placement, usePopper, UsePopperProps } from "@chakra-ui/popper"
 import { useColorModeValue, useToken } from "@chakra-ui/system"
 import { callAllHandlers, Dict, mergeRefs } from "@chakra-ui/utils"
-import * as React from "react"
-import { useBlurOutside, useFocusOnHide, useFocusOnShow } from "./popover.utils"
+import {
+  useRef,
+  RefObject,
+  useCallback,
+  useEffect,
+  Ref,
+  KeyboardEvent,
+} from "react"
+import { useFocusOnHide, useFocusOnShow } from "./popover.utils"
+import { useInteractOutside } from "@react-aria/interactions"
 
 const TRIGGER_TYPE = {
   click: "click",
@@ -30,7 +38,7 @@ export interface UsePopoverProps {
   /**
    * The `ref` of the element that should receive focus when the popover opens.
    */
-  initialFocusRef?: React.RefObject<any>
+  initialFocusRef?: RefObject<any>
   /**
    * If `true`, focus will be returned to the element that triggers the popover
    * when it closes
@@ -91,6 +99,12 @@ export interface UsePopoverProps {
   trigger?: keyof typeof TRIGGER_TYPE
   openDelay?: number
   closeDelay?: number
+  /**
+   * Performance 🚀:
+   * If `true`, the PopoverContent rendering will be deferred
+   * until the popover is open.
+   */
+  isLazy?: boolean
 }
 
 export function usePopover(props: UsePopoverProps = {}) {
@@ -98,7 +112,7 @@ export function usePopover(props: UsePopoverProps = {}) {
     closeOnBlur = true,
     closeOnEsc = true,
     initialFocusRef,
-    placement,
+    placement: placementProp,
     gutter,
     id,
     arrowSize,
@@ -109,14 +123,15 @@ export function usePopover(props: UsePopoverProps = {}) {
     trigger = TRIGGER_TYPE.click,
     openDelay = 200,
     closeDelay = 200,
+    isLazy,
   } = props
 
   const { isOpen, onClose, onOpen, onToggle } = useDisclosure(props)
 
-  const triggerRef = React.useRef<HTMLElement>(null)
-  const popoverRef = React.useRef<HTMLElement>(null)
+  const triggerRef = useRef<HTMLElement>(null)
+  const popoverRef = useRef<HTMLElement>(null)
 
-  const isHoveringRef = React.useRef(false)
+  const isHoveringRef = useRef(false)
 
   const [hasHeader, setHasHeader] = useBoolean()
   const [hasBody, setHasBody] = useBoolean()
@@ -134,7 +149,7 @@ export function usePopover(props: UsePopoverProps = {}) {
   const arrowColor = useToken("colors", shadowColor, arrowShadowColor)
 
   const { popper, reference, arrow } = usePopper({
-    placement,
+    placement: placementProp,
     gutter,
     forceUpdate: isOpen,
     arrowSize,
@@ -156,36 +171,37 @@ export function usePopover(props: UsePopoverProps = {}) {
     trigger,
   })
 
-  const onBlur = useBlurOutside(triggerRef, popoverRef, {
-    visible: !!(closeOnBlur && isOpen),
-    action: onClose,
+  useInteractOutside({
+    ref: popoverRef,
+    onInteractOutside: (event) => {
+      if (
+        trigger === TRIGGER_TYPE.click &&
+        closeOnBlur &&
+        !triggerRef.current?.contains(event.target as HTMLElement)
+      ) {
+        onClose()
+      }
+    },
   })
 
-  const getPopoverProps = React.useCallback(
-    (props: Dict = {}) => {
+  const getPopoverProps = useCallback(
+    (props: Dict = {}, ref: Ref<any> = null) => {
       const popoverProps: Dict = {
         ...props,
+        children: isLazy ? (isOpen ? props.children : null) : props.children,
         id: popoverId,
         tabIndex: -1,
         hidden: !isOpen,
         role: "dialog",
-        onKeyDown: callAllHandlers(
-          props.onKeyDown,
-          (event: React.KeyboardEvent) => {
-            if (closeOnEsc && event.key === "Escape") {
-              onClose()
-            }
-          },
-        ),
-        ref: mergeRefs(popoverRef, popper.ref, props.ref),
+        onKeyDown: callAllHandlers(props.onKeyDown, (event: KeyboardEvent) => {
+          if (closeOnEsc && event.key === "Escape") {
+            onClose()
+          }
+        }),
+        ref: mergeRefs(popoverRef, popper.ref, ref),
         style: { ...props.style, ...popper.style },
-        "aria-hidden": isOpen ? undefined : true,
         "aria-labelledby": hasHeader ? headerId : undefined,
         "aria-describedby": hasBody ? bodyId : undefined,
-      }
-
-      if (trigger === TRIGGER_TYPE.click) {
-        popoverProps.onBlur = callAllHandlers(props.onBlur, onBlur)
       }
 
       if (trigger === TRIGGER_TYPE.hover) {
@@ -202,40 +218,43 @@ export function usePopover(props: UsePopoverProps = {}) {
       return popoverProps
     },
     [
-      closeDelay,
-      bodyId,
-      closeOnEsc,
-      hasBody,
-      hasHeader,
-      headerId,
-      isOpen,
-      onBlur,
-      onClose,
       popoverId,
+      isOpen,
+      isLazy,
       popper.ref,
       popper.style,
+      hasHeader,
+      headerId,
+      hasBody,
+      bodyId,
       trigger,
+      closeOnEsc,
+      onClose,
+      closeDelay,
     ],
   )
 
-  const getArrowProps = React.useCallback(
-    (props: Dict = {}) => ({
+  const getArrowProps = useCallback(
+    (props: Dict = {}, ref: Ref<any> = null) => ({
       ...props,
-      ref: mergeRefs(arrow.ref, props.ref),
-      style: { ...props.style, ...arrow.style },
+      ref: mergeRefs(arrow.ref, ref),
+      style: {
+        ...props.style,
+        ...arrow.style,
+      },
     }),
     [arrow.ref, arrow.style],
   )
 
-  const openTimeout = React.useRef<NodeJS.Timeout>()
-  const closeTimeout = React.useRef<NodeJS.Timeout>()
+  const openTimeout = useRef<NodeJS.Timeout>()
+  const closeTimeout = useRef<NodeJS.Timeout>()
 
-  const getTriggerProps = React.useCallback(
-    (props: Dict = {}) => {
+  const getTriggerProps = useCallback(
+    (props: Dict = {}, ref: Ref<any> = null) => {
       const triggerProps: Dict = {
         ...props,
         id: triggerId,
-        ref: mergeRefs(triggerRef, reference.ref, props.ref),
+        ref: mergeRefs(triggerRef, reference.ref, ref),
         "aria-haspopup": "dialog",
         "aria-expanded": isOpen,
         "aria-controls": popoverId,
@@ -261,7 +280,7 @@ export function usePopover(props: UsePopoverProps = {}) {
          */
         triggerProps.onKeyDown = callAllHandlers(
           props.onKeyDown,
-          (event: React.KeyboardEvent) => {
+          (event: KeyboardEvent) => {
             if (event.key === "Escape") {
               onClose()
             }
@@ -275,10 +294,12 @@ export function usePopover(props: UsePopoverProps = {}) {
 
         triggerProps.onMouseLeave = callAllHandlers(props.onMouseLeave, () => {
           isHoveringRef.current = false
+
           if (openTimeout.current) {
             clearTimeout(openTimeout.current)
             openTimeout.current = undefined
           }
+
           closeTimeout.current = setTimeout(() => {
             if (isHoveringRef.current === false) {
               onClose()
@@ -303,11 +324,12 @@ export function usePopover(props: UsePopoverProps = {}) {
     ],
   )
 
-  React.useEffect(() => {
+  useEffect(() => {
     return () => {
       if (openTimeout.current) {
         clearTimeout(openTimeout.current)
       }
+
       if (closeTimeout.current) {
         clearTimeout(closeTimeout.current)
       }

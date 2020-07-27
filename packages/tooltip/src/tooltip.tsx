@@ -6,7 +6,7 @@ import {
   useStyleConfig,
   omitThemingProps,
 } from "@chakra-ui/system"
-import { isString, omit, pick, __DEV__ } from "@chakra-ui/utils"
+import { isString, omit, pick, __DEV__, mergeRefs } from "@chakra-ui/utils"
 import { VisuallyHidden } from "@chakra-ui/visually-hidden"
 import * as React from "react"
 import { useTooltip, UseTooltipProps } from "./use-tooltip"
@@ -54,13 +54,14 @@ export const Tooltip = React.forwardRef(function Tooltip(
 ) {
   const styles = useStyleConfig("Tooltip", props)
   const realProps = omitThemingProps(props)
+
   const {
     children,
     label,
     shouldWrapChildren,
     "aria-label": ariaLabel,
     hasArrow,
-    ...rest
+    ...otherProps
   } = realProps
 
   const {
@@ -90,7 +91,8 @@ export const Tooltip = React.forwardRef(function Tooltip(
 
   const hasAriaLabel = !!ariaLabel
 
-  const _tooltipProps = getTooltipProps({ ...rest, ref })
+  const _tooltipProps = getTooltipProps(otherProps, ref)
+  const arrowProps = getArrowProps()
 
   const tooltipProps = hasAriaLabel
     ? omit(_tooltipProps, ["role", "id"])
@@ -101,23 +103,17 @@ export const Tooltip = React.forwardRef(function Tooltip(
   /**
    * If the `label` is empty, there's no
    * point showing the tooltip. Let's simply return back the children
-   *
-   * @see https://github.com/chakra-ui/chakra-ui/issues/601
    */
   if (!label) {
-    return <React.Fragment>{children}</React.Fragment>
+    return <>{children}</>
   }
 
   return (
-    <React.Fragment>
+    <>
       {trigger}
       {isOpen && (
         <Portal>
-          <chakra.div
-            className="chakra-tooltip"
-            {...tooltipProps}
-            __css={styles.container}
-          >
+          <chakra.div {...tooltipProps} __css={styles}>
             {label}
             {hasAriaLabel && (
               <VisuallyHidden {...hiddenProps}>{ariaLabel}</VisuallyHidden>
@@ -125,17 +121,14 @@ export const Tooltip = React.forwardRef(function Tooltip(
             {hasArrow && (
               <chakra.div
                 className="chakra-tooltip__arrow"
-                {...getArrowProps()}
-                __css={{
-                  bg: "inherit",
-                  ...styles.arrow,
-                }}
+                {...arrowProps}
+                __css={{ bg: "inherit" }}
               />
             )}
           </chakra.div>
         </Portal>
       )}
-    </React.Fragment>
+    </>
   )
 })
 
