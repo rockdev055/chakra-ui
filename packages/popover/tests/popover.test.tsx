@@ -27,6 +27,10 @@ test("has proper aria attributes", async () => {
   const trigger = utils.getByText(/open/i)
 
   expect(trigger).toHaveAttribute("aria-expanded", "false")
+  expect(utils.getByRole("dialog", { hidden: true })).toHaveAttribute(
+    "aria-hidden",
+    "true",
+  )
 
   // open the popover
   fireEvent.click(trigger)

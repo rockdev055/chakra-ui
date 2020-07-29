@@ -1,16 +1,44 @@
 import { mode, multiStyleConfig } from "@chakra-ui/theme-tools"
-import { inputStyles } from "./input"
+import input from "./input"
 
-const {
-  defaultProps,
-  variantFilled,
-  variantFlushed,
-  variantOutline,
-  variantUnstyled,
-} = inputStyles
+const numberInput = multiStyleConfig({
+  parts: {
+    field: "the input field",
+    stepper: "desktop - the increment and decrement button",
+    stepperGroup: "desktop - the increment and decrement button group",
+  },
+
+  baseStyle: function (props) {
+    return {
+      field: input.baseStyle?.field,
+      stepperGroup: {
+        width: "24px",
+      },
+      stepper: {
+        borderLeft: "1px solid",
+        borderColor: mode("inherit", "whiteAlpha.300")(props),
+        color: mode("inherit", "whiteAlpha.800")(props),
+        _active: {
+          bg: mode("gray.200", "whiteAlpha.300")(props),
+        },
+        _disabled: {
+          opacity: 0.4,
+          cursor: "not-allowed",
+        },
+      },
+    }
+  },
+  sizes: {
+    sm: getSize("sm"),
+    md: getSize("md"),
+    lg: getSize("lg"),
+  },
+  variants: input.variants,
+  defaultProps: input.defaultProps,
+})
 
 function getSize(size: "sm" | "md" | "lg") {
-  const sizeStyle = inputStyles.sizes?.[size]
+  const sizeStyle = input.sizes?.[size]
 
   const radius = {
     lg: "md",
@@ -32,78 +60,6 @@ function getSize(size: "sm" | "md" | "lg") {
       },
     },
   }
-}
-
-const parts = {
-  field: "the input field",
-  stepper: "desktop - the increment and decrement button",
-  stepperGroup: "desktop - the increment and decrement button group",
-}
-
-const baseStyleField = inputStyles.baseStyle?.field
-
-const baseStyleStepperGroup = {
-  width: "24px",
-}
-
-// @ts-ignore
-const baseStyleStepper = function (props) {
-  return {
-    borderLeft: "1px solid",
-    borderColor: mode("inherit", "whiteAlpha.300")(props),
-    color: mode("inherit", "whiteAlpha.800")(props),
-    _active: {
-      bg: mode("gray.200", "whiteAlpha.300")(props),
-    },
-    _disabled: {
-      opacity: 0.4,
-      cursor: "not-allowed",
-    },
-  }
-}
-
-// @ts-ignore
-const baseStyle = function (props) {
-  return {
-    field: baseStyleField,
-    stepperGroup: baseStyleStepperGroup,
-    stepper: baseStyleStepper(props),
-  }
-}
-
-const sizes = {
-  sm: getSize("sm"),
-  md: getSize("md"),
-  lg: getSize("lg"),
-}
-
-const variants = {
-  outline: variantOutline,
-  filled: variantFilled,
-  flushed: variantFlushed,
-  unstyled: variantUnstyled,
-}
-
-const numberInput = multiStyleConfig({
-  parts,
-  baseStyle,
-  sizes,
-  variants,
-  // @ts-ignore
-  defaultProps,
-})
-
-export const numberInputStyles = {
-  parts,
-  sizes,
-  baseStyleField,
-  baseStyleStepper,
-  baseStyleStepperGroup,
-  variantFilled,
-  variantFlushed,
-  variantOutline,
-  variantUnstyled,
-  defaultProps,
 }
 
 export default numberInput
