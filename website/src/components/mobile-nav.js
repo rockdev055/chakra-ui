@@ -6,15 +6,19 @@ import {
   IconButton,
   useDisclosure,
 } from "@chakra-ui/core"
+import { globalHistory } from "@reach/router"
 import * as React from "react"
 import { MdDehaze } from "react-icons/md"
 import { SideNavContent } from "./side-nav"
-import useRouteChanged from "hooks/use-route-changed"
 
 const MobileNav = () => {
   const { isOpen, onToggle, onClose } = useDisclosure()
 
-  useRouteChanged(onClose)
+  globalHistory.listen(({ action }) => {
+    if (action === "PUSH") {
+      onClose()
+    }
+  })
 
   return (
     <>
