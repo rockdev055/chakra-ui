@@ -4,7 +4,6 @@ import {
   PropsOf,
   ResponsiveValue,
   SystemProps,
-  forwardRef,
 } from "@chakra-ui/system"
 import {
   cx,
@@ -88,7 +87,10 @@ export const StackItem = (props: PropsOf<typeof chakra.div>) => (
  * @see Docs https://chakra-ui.com/components/stack
  *
  */
-export const Stack = forwardRef<StackProps>(function Stack(props, ref) {
+export const Stack = React.forwardRef(function Stack(
+  props: StackProps,
+  ref: React.Ref<any>,
+) {
   const {
     direction = "column",
     align,
@@ -107,12 +109,23 @@ export const Stack = forwardRef<StackProps>(function Stack(props, ref) {
    * @see https://medium.com/@emmenko/patching-lobotomized-owl-selector-for-emotion-ssr-5a582a3c424c
    */
   const selector = "& > *:not(style) ~ *:not(style)"
-
   const directionStyles = {
-    column: { mt: spacing, ml: 0 },
-    row: { ml: spacing, mt: 0 },
-    "column-reverse": { mb: spacing, mr: 0 },
-    "row-reverse": { mr: spacing, mb: 0 },
+    column: {
+      marginTop: spacing,
+      marginLeft: 0,
+    },
+    row: {
+      marginLeft: spacing,
+      marginTop: 0,
+    },
+    "column-reverse": {
+      marginBottom: spacing,
+      marginRight: 0,
+    },
+    "row-reverse": {
+      marginRight: spacing,
+      marginBottom: 0,
+    },
   }
 
   const styles = {
@@ -120,53 +133,48 @@ export const Stack = forwardRef<StackProps>(function Stack(props, ref) {
     [selector]: mapResponsive(direction, (value) => directionStyles[value]),
   }
 
+  const validChildren = getValidChildren(children)
+
   const dividerStyles = mapResponsive(direction, (value) => {
     if (value.includes("row")) {
       return {
-        mx: spacing,
-        my: 0,
+        marginX: spacing,
+        marginY: 0,
         borderLeftWidth: "1px",
         borderBottomWidth: 0,
       }
     }
     return {
-      mx: 0,
-      my: spacing,
+      marginX: 0,
+      marginY: spacing,
       borderLeftWidth: 0,
       borderBottomWidth: "1px",
     }
   })
 
   const hasDivider = !!divider
-  const shouldUseChildren = !shouldWrapChildren && !hasDivider
 
-  const validChildren = getValidChildren(children)
+  const clones = validChildren.map((child, index) => {
+    const isLast = index + 1 === validChildren.length
+    const _child = shouldWrapChildren ? <StackItem>{child}</StackItem> : child
 
-  const clones = shouldUseChildren
-    ? validChildren
-    : validChildren.map((child, index) => {
-        const isLast = index + 1 === validChildren.length
-        const _child = shouldWrapChildren ? (
-          <StackItem children={child} />
-        ) : (
-          child
-        )
+    if (!hasDivider) {
+      return <React.Fragment key={index}>{_child}</React.Fragment>
+    }
 
-        if (!hasDivider) return _child
+    const cloneDivider = isLast
+      ? null
+      : React.cloneElement(divider as any, {
+          css: css({ "&": dividerStyles }),
+        })
 
-        const cloneDivider = isLast
-          ? null
-          : React.cloneElement(divider as any, {
-              css: css({ "&": dividerStyles }),
-            })
-
-        return (
-          <React.Fragment key={index}>
-            {_child}
-            {cloneDivider}
-          </React.Fragment>
-        )
-      })
+    return (
+      <React.Fragment key={index}>
+        {_child}
+        {cloneDivider}
+      </React.Fragment>
+    )
+  })
 
   const sx = (theme: Dict) => {
     if (hasDivider) return undefined

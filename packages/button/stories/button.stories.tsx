@@ -87,7 +87,7 @@ export const withReactIcons = () => (
 
 export const WithLoading = () => (
   <Stack direction="row" spacing={4} align="center">
-    <Button size="lg" isLoading colorScheme="teal">
+    <Button isLoading colorScheme="teal">
       Email
     </Button>
 

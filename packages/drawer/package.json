@@ -51,7 +51,6 @@
   },
   "dependencies": {
     "@chakra-ui/modal": "1.0.0-rc.0",
-    "@chakra-ui/utils": "1.0.0-rc.0",
     "@chakra-ui/transition": "1.0.0-rc.0"
   },
   "devDependencies": {
