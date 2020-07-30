@@ -15,37 +15,37 @@ import { DiGithubBadge } from "react-icons/di"
 import { FaMoon, FaSun } from "react-icons/fa"
 import Search from "./algolia-search"
 import Logo from "./logo"
-import NextLink from "next/link"
+import { Link as GatsbyLink } from "gatsby"
 import SponsorButton from "./sponsor-button"
 import MobileNav from "./mobile-nav"
-import { useRouter } from "next/router"
+import { useLocation } from "@reach/router"
 
 export const NavLink = (props) => {
   const { to, ...rest } = props
-  const { pathname } = useRouter()
+  const { pathname } = useLocation()
 
   const group = to.split("/")[1]
   const isActive = pathname.includes(group)
 
   return (
-    <NextLink href={to} passHref>
-      <chakra.a
-        aria-current={isActive ? "page" : undefined}
-        display="block"
-        py="1"
-        px="3"
-        borderRadius="4px"
-        transition="all 0.2s"
-        color={useColorModeValue("gray.600", "whiteAlpha.800")}
-        fontWeight="normal"
-        _hover={{ bg: useColorModeValue("gray.100", "whiteAlpha.100") }}
-        _activeLink={{
-          fontWeight: "semibold",
-          color: "teal.500",
-        }}
-        {...rest}
-      />
-    </NextLink>
+    <chakra.a
+      aria-current={isActive ? "page" : undefined}
+      as={GatsbyLink}
+      to={to}
+      display="block"
+      py="1"
+      px="3"
+      borderRadius="4px"
+      transition="all 0.2s"
+      color={useColorModeValue("gray.600", "whiteAlpha.800")}
+      fontWeight="normal"
+      _hover={{ bg: useColorModeValue("gray.100", "whiteAlpha.100") }}
+      _activeLink={{
+        fontWeight: "semibold",
+        color: "teal.500",
+      }}
+      {...rest}
+    />
   )
 }
 
@@ -57,11 +57,14 @@ const HeaderContent = () => {
   return (
     <Flex boxSize="100%" px="6" align="center" justify="space-between">
       <Flex align="center">
-        <NextLink href="/" passHref>
-          <chakra.a display="block" aria-label="Chakra UI, Back to homepage">
-            <Logo />
-          </chakra.a>
-        </NextLink>
+        <chakra.a
+          as={GatsbyLink}
+          to="/"
+          display="block"
+          aria-label="Chakra UI, Back to homepage"
+        >
+          <Logo />
+        </chakra.a>
         <Badge
           px="1"
           ml="3"
@@ -119,7 +122,7 @@ const Header = (props) => {
     <chakra.header
       pos="fixed"
       top="0"
-      zIndex="1"
+      zIndex="99"
       bg={bg}
       left="0"
       right="0"
