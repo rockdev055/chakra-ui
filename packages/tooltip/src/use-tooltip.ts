@@ -1,7 +1,12 @@
 import { useDisclosure, useEventListener, useId } from "@chakra-ui/hooks"
-import { Placement, usePopper, UsePopperProps } from "@chakra-ui/popper"
-import { callAllHandlers, Dict, mergeRefs } from "@chakra-ui/utils"
-import { Ref, useCallback, useEffect, useRef } from "react"
+import {
+  Placement,
+  usePopper,
+  UsePopperProps,
+  toTransformOrigin,
+} from "@chakra-ui/popper"
+import { callAllHandlers, mergeRefs, Dict } from "@chakra-ui/utils"
+import { useCallback, useRef, Ref } from "react"
 
 export interface UseTooltipProps {
   /**
@@ -98,12 +103,12 @@ export function useTooltip(props: UseTooltipProps = {}) {
   const ref = useRef<any>(null)
   const triggerRef = mergeRefs(ref, popper.reference.ref)
 
-  const enterTimeout = useRef<number>()
-  const exitTimeout = useRef<number>()
+  const enterTimeout = useRef<NodeJS.Timeout>()
+  const exitTimeout = useRef<NodeJS.Timeout>()
 
   const openWithDelay = useCallback(() => {
     if (!isDisabled) {
-      enterTimeout.current = window.setTimeout(onOpenProp, openDelay)
+      enterTimeout.current = setTimeout(onOpenProp, openDelay)
     }
   }, [isDisabled, onOpenProp, openDelay])
 
@@ -111,7 +116,7 @@ export function useTooltip(props: UseTooltipProps = {}) {
     if (enterTimeout.current) {
       clearTimeout(enterTimeout.current)
     }
-    exitTimeout.current = window.setTimeout(onCloseProp, closeDelay)
+    exitTimeout.current = setTimeout(onCloseProp, closeDelay)
   }, [closeDelay, onCloseProp])
 
   const onClick = useCallback(() => {
@@ -133,13 +138,6 @@ export function useTooltip(props: UseTooltipProps = {}) {
   }
 
   useEventListener("keydown", onKeyDown)
-
-  useEffect(() => {
-    return () => {
-      clearTimeout(enterTimeout.current)
-      clearTimeout(exitTimeout.current)
-    }
-  }, [])
 
   const getTriggerProps = useCallback(
     (props: Dict = {}, ref: Ref<any> = null) => ({
@@ -171,11 +169,12 @@ export function useTooltip(props: UseTooltipProps = {}) {
       role: "tooltip",
       ref: mergeRefs(ref, popper.popper.ref),
       style: {
+        transformOrigin: toTransformOrigin(popper.placement),
         ...props.style,
         ...popper.popper.style,
       },
     }),
-    [popper.popper.ref, popper.popper.style, tooltipId],
+    [popper.placement, popper.popper.ref, popper.popper.style, tooltipId],
   )
 
   const getArrowProps = useCallback(

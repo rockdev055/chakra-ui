@@ -192,6 +192,7 @@ exports[`Button renders with icons 1`] = `
           aria-hidden="true"
           class="chakra-icon emotion-0"
           focusable="false"
+          role="presentation"
           viewBox="0 0 24 24"
         >
           <g
@@ -220,6 +221,7 @@ exports[`Button renders with icons 1`] = `
           aria-hidden="true"
           class="chakra-icon emotion-0"
           focusable="false"
+          role="presentation"
           viewBox="0 0 24 24"
         >
           <path
@@ -327,8 +329,6 @@ exports[`shows spinner and loading text if isLoading and loadingText 1`] = `
   color: currentColor;
   -webkit-animation: animation-0 0.45s linear infinite;
   animation: animation-0 0.45s linear infinite;
-  width: 1.5rem;
-  height: 1.5rem;
   width: 1em;
   height: 1em;
 }
@@ -347,6 +347,8 @@ exports[`shows spinner and loading text if isLoading and loadingText 1`] = `
 }
 
 .emotion-2 {
+  font-size: 1em;
+  line-height: normal;
   position: relative;
   margin-right: 0.5rem;
 }
@@ -459,6 +461,8 @@ exports[`shows spinner if isLoading 1`] = `
 }
 
 .emotion-2 {
+  font-size: 1em;
+  line-height: normal;
   position: absolute;
   margin-right: 0;
 }
@@ -474,8 +478,6 @@ exports[`shows spinner if isLoading 1`] = `
   color: currentColor;
   -webkit-animation: animation-0 0.45s linear infinite;
   animation: animation-0 0.45s linear infinite;
-  width: 1.5rem;
-  height: 1.5rem;
   width: 1em;
   height: 1em;
 }

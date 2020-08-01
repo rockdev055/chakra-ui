@@ -23,7 +23,7 @@ const menu = multiStyleConfig({
 
       item: {
         py: "0.4rem",
-        px: "0.8rem",
+        paddingX: "0.8rem",
         transition: "background 50ms ease-in 0s",
         _focus: {
           bg: mode(`gray.100`, `whiteAlpha.100`)(props),
@@ -40,8 +40,8 @@ const menu = multiStyleConfig({
         },
       },
       groupTitle: {
-        mx: 4,
-        my: 2,
+        marginX: 4,
+        marginY: 2,
         fontWeight: "semibold",
         fontSize: "sm",
       },

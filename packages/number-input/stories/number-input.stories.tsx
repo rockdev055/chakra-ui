@@ -1,4 +1,4 @@
-import { chakra, PropsOf, useMultiStyleConfig } from "@chakra-ui/system"
+import { chakra, PropsOf, useStyleConfig } from "@chakra-ui/system"
 import * as React from "react"
 import {
   useNumberInput,
@@ -22,11 +22,11 @@ export default {
 }
 
 const Input = (props: PropsOf<"input">) => {
-  const styles = useMultiStyleConfig("Input", props)
+  const styles = useStyleConfig("Input", props)
   return <chakra.input __css={styles.field} {...props} />
 }
 const Button = (props: PropsOf<"button">) => {
-  const styles = useMultiStyleConfig("Button", props)
+  const styles = useStyleConfig("Button", props)
   return <chakra.button __css={styles.container} {...props} />
 }
 

@@ -5,13 +5,15 @@ import {
   useStyleConfig,
   omitThemingProps,
   ThemingProps,
-  forwardRef,
 } from "@chakra-ui/system"
 import { __DEV__, cx } from "@chakra-ui/utils"
 
 export type HeadingProps = PropsOf<typeof chakra.h2> & ThemingProps
 
-export const Heading = forwardRef<HeadingProps>(function Heading(props, ref) {
+export const Heading = React.forwardRef(function Heading(
+  props: HeadingProps,
+  ref: React.Ref<any>,
+) {
   const styles = useStyleConfig("Heading", props)
   const { className, ...rest } = omitThemingProps(props)
 
