@@ -107,7 +107,7 @@ export type AccordionItemProps = Omit<DivProps, "children"> &
  */
 export const AccordionItem = forwardRef<AccordionItemProps>(
   function AccordionItem(props, ref) {
-    const { children, className } = props
+    const { children } = props
     const { htmlProps, ...context } = useAccordionItem(props)
 
     const styles = useStyles()
@@ -118,7 +118,7 @@ export const AccordionItem = forwardRef<AccordionItemProps>(
         <chakra.div
           ref={ref}
           {...htmlProps}
-          className={cx("chakra-accordion__item", className)}
+          className={cx("chakra-accordion__item", props.className)}
           __css={styles.container}
         >
           {runIfFn(children, {

@@ -1,6 +1,5 @@
 import { useSafeLayoutEffect } from "@chakra-ui/hooks"
-import { isBrowser } from "@chakra-ui/utils"
-import { useState, useRef, useEffect, useCallback } from "react"
+import * as React from "react"
 
 export type UseImageProps = {
   /**
@@ -63,23 +62,17 @@ export function useImage(props: UseImageProps) {
     ignoreFallback,
   } = props
 
-  /**
-   * Ignore this fallback complete in an SSR environment
-   * so the `src` doesn't get missing in SSR.
-   */
-  const ignore = ignoreFallback || !isBrowser
-
-  const [status, setStatus] = useState<Status>(() => {
+  const [status, setStatus] = React.useState<Status>(() => {
     return src ? "loading" : "pending"
   })
 
-  useEffect(() => {
+  React.useEffect(() => {
     setStatus(src ? "loading" : "pending")
   }, [src])
 
-  const imageRef = useRef<HTMLImageElement | null>()
+  const imageRef = React.useRef<HTMLImageElement | null>()
 
-  const load = useCallback(() => {
+  const load = React.useCallback(() => {
     if (!src) return
 
     flush()
@@ -127,7 +120,7 @@ export function useImage(props: UseImageProps) {
      * If user opts out of the fallback/placeholder
      * logic, let's bail out.
      */
-    if (ignore) return
+    if (ignoreFallback) return
 
     if (status === "loading") {
       load()
@@ -135,13 +128,13 @@ export function useImage(props: UseImageProps) {
     return () => {
       flush()
     }
-  }, [status, load, ignore])
+  }, [status, load, ignoreFallback])
 
   /**
    * If user opts out of the fallback/placeholder
    * logic, let's just return 'loaded'
    */
-  return ignore ? "loaded" : status
+  return ignoreFallback ? "loaded" : status
 }
 
 export type UseImageReturn = ReturnType<typeof useImage>

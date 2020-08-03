@@ -50,13 +50,7 @@ export const Textarea = forwardRef<TextareaProps>(function Textarea(
 
   const textareaProps = useFormControl<HTMLTextAreaElement>(otherProps)
 
-  const omitted = [
-    "h",
-    "minH",
-    "height",
-    "minHeight",
-  ] as (keyof SystemStyleObject)[]
-
+  const omitted = ["height", "minHeight"] as (keyof SystemStyleObject)[]
   const textareaStyles = rows ? omit(styles, omitted) : styles
 
   return (

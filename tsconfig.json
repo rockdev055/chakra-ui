@@ -17,7 +17,8 @@
     "jsx": "react",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "preserveSymlinks": true
   },
   "include": ["packages"],
   "exclude": ["node_modules"]

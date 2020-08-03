@@ -13,6 +13,8 @@ const styles: Styles = {
       borderColor: mode("gray.200", "whiteAlpha.300")(props),
       wordWrap: "break-word",
     },
+    fontFeatureSettings: `"pnum"`,
+    fontVariantNumeric: "proportional-nums",
   }),
 }
 

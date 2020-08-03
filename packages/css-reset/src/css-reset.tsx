@@ -9,15 +9,8 @@ export const CSSReset = () => (
         -webkit-text-size-adjust: 100%;
         font-family: system-ui, sans-serif;
         -webkit-font-smoothing: antialiased;
-        text-rendering: optimizeLegibility;      
-        -moz-osx-font-smoothing: grayscale; 
-        touch-action: manipulation; 
-      }
-
-      body {
-        position: relative;
-        min-height: 100%;
-        font-feature-settings: 'kern';
+        -webkit-text-size-adjust: 100%;
+        text-rendering: optimizelegibility;        
       }
 
       *,
@@ -62,7 +55,7 @@ export const CSSReset = () => (
 
       b,
       strong {
-        font-weight: bold;
+        font-weight: bolder;
       }
 
       small {
