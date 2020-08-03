@@ -67,11 +67,7 @@ export const StatNumber = React.forwardRef(function StatNumber(
       ref={ref}
       {...props}
       className={cx("chakra-stat__number", props.className)}
-      __css={{
-        ...styles.number,
-        fontFeatureSettings: "pnum",
-        fontVariantNumeric: "proportional-nums",
-      }}
+      __css={styles.number}
     />
   )
 })
