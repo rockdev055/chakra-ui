@@ -63,7 +63,9 @@ if (__DEV__) {
   Menu.displayName = "Menu"
 }
 
-export type MenuButtonProps = PropsOf<typeof chakra.button>
+export type MenuButtonProps = PropsOf<typeof chakra.button> & {
+  submenuIcon?: ReactElement
+}
 
 const StyledMenuButton = React.forwardRef(function StyledMenuButton(
   props: PropsOf<typeof chakra.button>,
@@ -93,7 +95,7 @@ export const MenuButton = forwardRef<MenuButtonProps>(function MenuButton(
   props,
   ref,
 ) {
-  const { children, as: Comp, ...otherProps } = props
+  const { children, submenuIcon, as: Comp, ...otherProps } = props
 
   const ownProps = useMenuButton(otherProps)
   const ownRef = mergeRefs(ref, ownProps.ref)
