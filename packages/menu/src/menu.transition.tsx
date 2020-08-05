@@ -13,7 +13,7 @@ export interface MenuTransitionProps {
   styles?: TransitionProps["styles"]
 }
 
-export const MenuTransition: React.FC<MenuTransitionProps> = (props) => {
+export function MenuTransition(props: MenuTransitionProps) {
   const { children, styles } = props
   const menu = useMenuContext()
 

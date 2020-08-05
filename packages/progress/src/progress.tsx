@@ -21,7 +21,7 @@ import {
  * ProgressLabel is used to show the numeric value of the progress.
  * @see Docs https://chakra-ui.com/components/progress
  */
-export const ProgressLabel: React.FC<PropsOf<typeof chakra.div>> = (props) => {
+export const ProgressLabel = (props: PropsOf<typeof chakra.div>) => {
   const styles = useStyles()
   const labelStyles = {
     top: "50%",
@@ -52,7 +52,7 @@ export type ProgressFilledTrackProps = PropsOf<typeof chakra.div> &
  *
  * @see Docs https://chakra-ui.com/components/progress
  */
-const ProgressFilledTrack: React.FC<ProgressFilledTrackProps> = (props) => {
+function ProgressFilledTrack(props: ProgressFilledTrackProps) {
   const { min, max, value, ...rest } = props
   const progress = getProgressProps({ value, min, max })
 
@@ -116,7 +116,7 @@ export type ProgressProps = ProgressOptions &
  *
  * @see Docs https://chakra-ui.com/components/progress
  */
-export const Progress: React.FC<ProgressProps> = (props) => {
+export function Progress(props: ProgressProps) {
   const {
     value,
     min = 0,

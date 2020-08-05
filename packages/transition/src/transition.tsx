@@ -33,7 +33,7 @@ export type TransitionStyles = {
 
 export type { TransitionStatus }
 
-export const Transition: React.FC<TransitionProps> = (props) => {
+export function Transition(props: TransitionProps) {
   const {
     styles,
     in: inProp,

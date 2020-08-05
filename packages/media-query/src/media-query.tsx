@@ -15,7 +15,7 @@ interface VisibilityProps {
  * React component to control the visibility of it's
  * children based on the current breakpoint
  */
-const Visibility: React.FC<VisibilityProps> = (props) => {
+function Visibility(props: VisibilityProps) {
   const { breakpoint, hide, children } = props
   const [show] = useMediaQuery(breakpoint)
   const isVisible = hide ? !show : show
@@ -26,7 +26,7 @@ const Visibility: React.FC<VisibilityProps> = (props) => {
 
 export type HideProps = ShowProps
 
-export const Hide: React.FC<HideProps> = (props) => {
+export function Hide(props: HideProps) {
   const query = useQuery(props)
   return (
     <Visibility breakpoint={query} hide={true}>
@@ -46,7 +46,7 @@ export interface ShowProps {
   children?: React.ReactNode
 }
 
-export const Show: React.FC<ShowProps> = (props) => {
+export function Show(props: ShowProps) {
   const query = useQuery(props)
   return <Visibility breakpoint={query}>{props.children}</Visibility>
 }

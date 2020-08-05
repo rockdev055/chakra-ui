@@ -34,7 +34,7 @@ export { useCheckboxGroupContext }
  *
  * @see Docs https://chakra-ui.com/components/checkbox
  */
-export const CheckboxGroup: React.FC<CheckboxGroupProps> = (props) => {
+export function CheckboxGroup(props: CheckboxGroupProps) {
   const { colorScheme, size, variant, children } = props
   const { value, onChange } = useCheckboxGroup(props)
 

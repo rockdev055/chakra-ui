@@ -3,7 +3,6 @@ import {
   PropsOf,
   useStyleConfig,
   useMultiStyleConfig,
-  forwardRef,
 } from "@chakra-ui/system"
 import * as React from "react"
 import {
@@ -39,11 +38,13 @@ type InputProps = Omit<PropsOf<"input">, OmittedTypes> &
 // Create an input that consumes useFormControl
 type Props = { focusBorderColor?: string; errorBorderColor?: string }
 
-const Input: React.FC<InputProps> = forwardRef((props, ref) => {
-  const styles = useMultiStyleConfig("Input", props)
-  const inputProps = useFormControl<HTMLInputElement>(props)
-  return <chakra.input ref={ref} __css={styles.field} {...inputProps} />
-})
+const Input = React.forwardRef(
+  (props: InputProps, ref: React.Ref<HTMLInputElement>) => {
+    const styles = useMultiStyleConfig("Input", props)
+    const inputProps = useFormControl<HTMLInputElement>(props)
+    return <chakra.input ref={ref} __css={styles.field} {...inputProps} />
+  },
+)
 
 export const InputExample = () => (
   <FormControl id="first-name" isRequired isInvalid>
@@ -57,13 +58,15 @@ export const InputExample = () => (
 type TextAreaProps = Omit<PropsOf<"textarea">, OmittedTypes> &
   FormControlOptions
 
-const Textarea: React.FC<TextAreaProps> = forwardRef((props, ref) => {
-  const styles = useStyleConfig("Textarea", props)
-  const inputProps = useFormControl<HTMLTextAreaElement>(props)
-  return <chakra.textarea ref={ref} __css={styles} {...inputProps} />
-})
+const Textarea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
+  (props, ref) => {
+    const styles = useStyleConfig("Textarea", props)
+    const inputProps = useFormControl<HTMLTextAreaElement>(props)
+    return <chakra.textarea ref={ref} __css={styles} {...inputProps} />
+  },
+)
 
-export const TextAreaExample: React.FC = () => (
+export const TextAreaExample = () => (
   <FormControl id="first-name" isInvalid>
     <FormLabel>First name</FormLabel>
     <Textarea placeholder="First Name" />
@@ -77,13 +80,15 @@ export const TextAreaExample: React.FC = () => (
 
 type SelectProps = Omit<PropsOf<"select">, OmittedTypes> & FormControlOptions
 
-const Select: React.FC<SelectProps> = forwardRef((props, ref) => {
-  const styles = useMultiStyleConfig("Select", props)
-  const inputProps = useFormControl<HTMLSelectElement>(props)
-  return <chakra.select ref={ref} __css={styles.field} {...inputProps} />
-})
+const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
+  (props, ref) => {
+    const styles = useMultiStyleConfig("Select", props)
+    const inputProps = useFormControl<HTMLSelectElement>(props)
+    return <chakra.select ref={ref} __css={styles.field} {...inputProps} />
+  },
+)
 
-export const SelectExample: React.FC = () => (
+export const SelectExample = () => (
   <FormControl id="first-name" isInvalid>
     <FormLabel>First name</FormLabel>
     <Select>
@@ -103,7 +108,7 @@ export const SelectExample: React.FC = () => (
  * You can style the label when the input is focused,
  * simply pass the `_focus` pseudo prop
  */
-export const StylingFocus: React.FC = () => (
+export const StylingFocus = () => (
   <FormControl id="first-name">
     <FormLabel _focus={{ color: "blue.600" }}>First name</FormLabel>
     <Input placeholder="First Name" width="100%" />

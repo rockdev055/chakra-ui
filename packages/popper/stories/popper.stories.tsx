@@ -50,7 +50,7 @@ export default {
 export const Basic = () => {
   const disclosure = useDisclosure()
 
-  const { popper, reference } = usePopper({
+  const { popper, reference, placement } = usePopper({
     placement: "bottom-end",
     forceUpdate: disclosure.isOpen,
   })

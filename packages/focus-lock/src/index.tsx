@@ -47,7 +47,7 @@ export interface FocusLockProps {
  *
  * @see Docs https://chakra-ui.com/components/focuslock
  */
-export const FocusLock: React.FC<FocusLockProps> = (props) => {
+export function FocusLock(props: FocusLockProps) {
   const {
     initialFocusRef,
     finalFocusRef,

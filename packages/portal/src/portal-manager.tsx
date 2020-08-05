@@ -39,7 +39,7 @@ export interface PortalManagerProps {
  *
  * Inspired by BaseWeb's LayerManager component
  */
-export const PortalManager: React.FC<PortalManagerProps> = (props) => {
+export function PortalManager(props: PortalManagerProps) {
   const { children, zIndex } = props
 
   /**

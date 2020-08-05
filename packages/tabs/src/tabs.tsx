@@ -9,7 +9,7 @@ import {
   useStyles,
 } from "@chakra-ui/system"
 import { cx, __DEV__ } from "@chakra-ui/utils"
-import React, { ReactNode, useMemo } from "react"
+import React, { Ref, ReactNode, useMemo } from "react"
 import {
   TabsProvider,
   useTab,
@@ -47,7 +47,10 @@ export type TabsProps = UseTabsProps &
  * Provides context and logic for all tabs components. It doesn't render
  * any DOM node.
  */
-export const Tabs: React.FC<TabsProps> = forwardRef((props, ref) => {
+export const Tabs = React.forwardRef(function Tabs(
+  props: TabsProps,
+  ref: Ref<any>,
+) {
   const styles = useMultiStyleConfig("Tabs", props)
   const { children, className, ...otherProps } = omitThemingProps(props)
 
@@ -79,7 +82,7 @@ export type TabProps = UseTabProps & PropsOf<typeof chakra.button>
  * Tab button used to activate a specific tab panel. It renders a `button`,
  * and is responsible for automatic and manual selection modes.
  */
-export const Tab: React.FC<TabProps> = forwardRef((props, ref) => {
+export const Tab = forwardRef<TabProps>(function Tab(props, ref) {
   const styles = useStyles()
   const tabProps = useTab({ ...props, ref })
 
@@ -111,7 +114,10 @@ export type TabListProps = Omit<UseTabListProps, "context"> &
  * TabList is used to manage a list of tab buttons. It renders a `div` by default,
  * and is responsible the keyboard interaction between tabs.
  */
-export const TabList: React.FC<TabListProps> = forwardRef((props, ref) => {
+export const TabList = React.forwardRef(function TabList(
+  props: TabListProps,
+  ref: Ref<any>,
+) {
   const tablistProps = useTabList({ ...props, ref })
 
   const styles = useStyles()
@@ -139,7 +145,10 @@ export type TabPanelProps = PropsOf<typeof chakra.div>
  * TabPanel
  * Used to render the content for a specific tab.
  */
-export const TabPanel: React.FC<TabPanelProps> = forwardRef((props, ref) => {
+export const TabPanel = React.forwardRef(function TabPanel(
+  props: TabPanelProps,
+  ref: Ref<any>,
+) {
   const panelProps = useTabPanel({ ...props, ref })
   const styles = useStyles()
 
@@ -166,7 +175,10 @@ export type TabPanelsProps = PropsOf<typeof chakra.div>
  *
  * It renders a `div` by default.
  */
-export const TabPanels: React.FC<TabPanelsProps> = forwardRef((props, ref) => {
+export const TabPanels = React.forwardRef(function TabPanels(
+  props: TabPanelsProps,
+  ref: Ref<any>,
+) {
   const panelsProps = useTabPanels(props)
   return (
     <chakra.div
@@ -189,27 +201,28 @@ export type TabIndicatorProps = PropsOf<typeof chakra.div>
  * Used to render an active tab indicator that animates between
  * selected tabs.
  */
-export const TabIndicator: React.FC<TabIndicatorProps> = forwardRef(
-  (props, ref) => {
-    const indicatorStyle = useTabIndicator()
-    const style = {
-      ...props.style,
-      ...indicatorStyle,
-    }
+export const TabIndicator = React.forwardRef(function TabIndicator(
+  props: TabIndicatorProps,
+  ref: Ref<any>,
+) {
+  const indicatorStyle = useTabIndicator()
+  const style = {
+    ...props.style,
+    ...indicatorStyle,
+  }
 
-    const styles = useStyles()
+  const styles = useStyles()
 
-    return (
-      <chakra.div
-        ref={ref}
-        {...props}
-        className={cx("chakra-tabs__tab-indicator", props.className)}
-        style={style}
-        __css={styles.indicator}
-      />
-    )
-  },
-)
+  return (
+    <chakra.div
+      ref={ref}
+      {...props}
+      className={cx("chakra-tabs__tab-indicator", props.className)}
+      style={style}
+      __css={styles.indicator}
+    />
+  )
+})
 
 if (__DEV__) {
   TabIndicator.displayName = "TabIndicator"

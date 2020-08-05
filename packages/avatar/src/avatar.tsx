@@ -9,10 +9,15 @@ import {
   useMultiStyleConfig,
   useStyles,
   SystemStyleObject,
-  forwardRef,
 } from "@chakra-ui/system"
 import { cx, __DEV__ } from "@chakra-ui/utils"
-import React, { cloneElement, ReactElement, ReactNode } from "react"
+import React, {
+  cloneElement,
+  forwardRef,
+  ReactElement,
+  ReactNode,
+  Ref,
+} from "react"
 
 interface AvatarOptions {
   /**
@@ -69,29 +74,30 @@ export type AvatarBadgeProps = PropsOf<typeof chakra.div>
  * AvatarBadge used to show extra badge to the top-right
  * or bottom-right corner of an avatar.
  */
-export const AvatarBadge: React.FC<AvatarBadgeProps> = forwardRef(
-  (props, ref) => {
-    const styles = useStyles()
-    const badgeStyles = {
-      position: "absolute",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      right: "0",
-      bottom: "0",
-      ...styles.badge,
-    }
+export const AvatarBadge = forwardRef(function AvatarBadge(
+  props: AvatarBadgeProps,
+  ref: Ref<any>,
+) {
+  const styles = useStyles()
+  const badgeStyles = {
+    position: "absolute",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    right: "0",
+    bottom: "0",
+    ...styles.badge,
+  }
 
-    return (
-      <chakra.div
-        ref={ref}
-        {...props}
-        className={cx("chakra-avatar__badge", props.className)}
-        __css={badgeStyles}
-      />
-    )
-  },
-)
+  return (
+    <chakra.div
+      ref={ref}
+      {...props}
+      className={cx("chakra-avatar__badge", props.className)}
+      __css={badgeStyles}
+    />
+  )
+})
 
 if (__DEV__) {
   AvatarBadge.displayName = "AvatarBadge"
@@ -110,7 +116,7 @@ type InitialsProps = PropsOf<typeof chakra.div> &
 /**
  * The avatar name container
  */
-const Initials: React.FC<InitialsProps> = (props) => {
+function Initials(props: InitialsProps) {
   const { name, getInitials, ...rest } = props
   const styles = useStyles()
 
@@ -125,7 +131,7 @@ const Initials: React.FC<InitialsProps> = (props) => {
  * Fallback avatar react component.
  * This should be a generic svg used to represent an avatar
  */
-const DefaultIcon: React.FC<PropsOf<"svg">> = (props) => {
+function DefaultIcon(props: PropsOf<"svg">) {
   return (
     <svg
       viewBox="0 0 128 128"
@@ -164,7 +170,10 @@ export type AvatarProps = PropsOf<typeof chakra.span> &
  * Avatar component that renders an user avatar with
  * support for fallback avatar and name-only avatars
  */
-export const Avatar: React.FC<AvatarProps> = forwardRef((props, ref) => {
+export const Avatar = forwardRef(function Avatar(
+  props: AvatarProps,
+  ref: Ref<any>,
+) {
   const styles = useMultiStyleConfig("Avatar", props)
 
   const {

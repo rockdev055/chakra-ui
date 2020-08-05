@@ -40,7 +40,7 @@ export interface ColorModeProviderProps {
  * Provides context for the color mode based on config in `theme`
  * Returns the color mode and function to toggle the color mode
  */
-export const ColorModeProvider: React.FC<ColorModeProviderProps> = (props) => {
+export function ColorModeProvider(props: ColorModeProviderProps) {
   const {
     value,
     children,
@@ -80,12 +80,11 @@ if (__DEV__) {
 /**
  * Locks the color mode to `dark`, without any way to change it.
  */
-export const DarkMode: React.FC = ({ children }) => (
+export const DarkMode: React.FC = (props) => (
   <ColorModeContext.Provider
     value={{ colorMode: "dark", toggleColorMode: noop }}
-  >
-    {children}
-  </ColorModeContext.Provider>
+    {...props}
+  />
 )
 
 if (__DEV__) {
@@ -95,12 +94,11 @@ if (__DEV__) {
 /**
  * Locks the color mode to `light` without any way to change it.
  */
-export const LightMode: React.FC = ({ children }) => (
+export const LightMode: React.FC = (props) => (
   <ColorModeContext.Provider
     value={{ colorMode: "light", toggleColorMode: noop }}
-  >
-    {children}
-  </ColorModeContext.Provider>
+    {...props}
+  />
 )
 
 if (__DEV__) {

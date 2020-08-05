@@ -13,7 +13,7 @@ export interface PopoverTransitionProps {
   styles?: TransitionProps["styles"]
 }
 
-export const PopoverTransition: React.FC<PopoverTransitionProps> = (props) => {
+export function PopoverTransition(props: PopoverTransitionProps) {
   const { children, styles } = props
 
   const popover = usePopoverContext()

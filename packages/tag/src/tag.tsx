@@ -19,7 +19,7 @@ export type TagProps = PropsOf<typeof chakra.span> & ThemingProps
  * To style the tag globally, change the styles in `theme.components.Tag`
  * @see Docs https://chakra-ui.com/components/tag
  */
-export const Tag: React.FC<TagProps> = forwardRef((props, ref) => {
+export const Tag = forwardRef<TagProps>(function Tag(props, ref) {
   const styles = useMultiStyleConfig("Tag", props)
   const _props = omitThemingProps(props)
 
@@ -44,7 +44,7 @@ if (__DEV__) {
 
 export type TagLabelProps = PropsOf<typeof chakra.span>
 
-export const TagLabel: React.FC<TagLabelProps> = (props) => {
+export function TagLabel(props: TagLabelProps) {
   const styles = useStyles()
   return <chakra.span isTruncated {...props} __css={styles.label} />
 }
@@ -53,7 +53,7 @@ if (__DEV__) {
   TagLabel.displayName = "TagLabel"
 }
 
-export const TagLeftIcon: React.FC<IconProps> = (props) => (
+export const TagLeftIcon = (props: IconProps) => (
   <Icon verticalAlign="top" marginRight="0.5rem" {...props} />
 )
 
@@ -61,7 +61,7 @@ if (__DEV__) {
   TagLeftIcon.displayName = "TagLeftIcon"
 }
 
-export const TagRightIcon: React.FC<IconProps> = (props) => (
+export const TagRightIcon = (props: IconProps) => (
   <Icon verticalAlign="top" marginLeft="0.5rem" {...props} />
 )
 
@@ -69,7 +69,7 @@ if (__DEV__) {
   TagRightIcon.displayName = "TagRightIcon"
 }
 
-const TagCloseIcon: React.FC<IconProps> = (props) => (
+const TagCloseIcon = (props: IconProps) => (
   <Icon verticalAlign="inherit" viewBox="0 0 512 512" {...props}>
     <path
       fill="currentColor"
@@ -93,7 +93,7 @@ export type TagCloseButtonProps = Omit<
  * TagCloseButton is used to close "remove" the tag
  * @see Docs https://chakra-ui.com/components/tag
  */
-export const TagCloseButton: React.FC<TagCloseButtonProps> = (props) => {
+export const TagCloseButton = (props: TagCloseButtonProps) => {
   const { isDisabled, children = <TagCloseIcon />, ...rest } = props
 
   const styles = useStyles()

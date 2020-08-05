@@ -39,7 +39,7 @@ export interface PortalProps {
  *
  * @see Docs https://chakra-ui.com/components/portal
  */
-export const Portal: React.FC<PortalProps> = (props) => {
+export function Portal(props: PortalProps) {
   const { onMount, onUnmount, children, getContainer } = props
 
   /**

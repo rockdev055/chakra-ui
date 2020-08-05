@@ -48,7 +48,10 @@ export type AccordionProps = UseAccordionProps &
  * It wraps all accordion items in a `div` for better grouping.
  * @see Docs https://chakra-ui.com/components/accordion
  */
-export const Accordion: React.FC<AccordionProps> = forwardRef((props, ref) => {
+export const Accordion = forwardRef<AccordionProps>(function Accordion(
+  props,
+  ref,
+) {
   const styles = useMultiStyleConfig("Accordion", props)
   const _props = omitThemingProps(props)
 
@@ -102,8 +105,8 @@ export type AccordionItemProps = Omit<DivProps, "children"> &
  *
  * It also provides context for the accordion button and panel.
  */
-export const AccordionItem: React.FC<AccordionItemProps> = forwardRef(
-  (props, ref) => {
+export const AccordionItem = forwardRef<AccordionItemProps>(
+  function AccordionItem(props, ref) {
     const { children, className } = props
     const { htmlProps, ...context } = useAccordionItem(props)
 
@@ -149,8 +152,8 @@ export type AccordionButtonProps = PropsOf<typeof chakra.button>
  * Note 🚨: Each accordion button must be wrapped in an heading tag,
  * that is appropriate for the information architecture of the page.
  */
-export const AccordionButton: React.FC<AccordionButtonProps> = forwardRef(
-  (props, ref) => {
+export const AccordionButton = forwardRef<AccordionButtonProps>(
+  function AccordionButton(props, ref) {
     const { getButtonProps } = useAccordionItemContext()
     const buttonProps = getButtonProps(props, ref)
 
@@ -186,8 +189,8 @@ export type AccordionPanelProps = DivProps
  *
  * It uses the `Collapse` component to animate it's height.
  */
-export const AccordionPanel: React.FC<AccordionPanelProps> = forwardRef(
-  (props, ref) => {
+export const AccordionPanel = forwardRef<AccordionPanelProps>(
+  function AccordionPanel(props, ref) {
     const { reduceMotion } = useAccordionContext()
     const { getPanelProps, isOpen } = useAccordionItemContext()
 
@@ -226,7 +229,7 @@ if (__DEV__) {
  * AccordionIcon that gives a visual cue of the open/close state of the accordion item.
  * It rotates `180deg` based on the open/close state.
  */
-export const AccordionIcon: React.FC<IconProps> = (props) => {
+export function AccordionIcon(props: IconProps) {
   const { isOpen, isDisabled } = useAccordionItemContext()
   const { reduceMotion } = useAccordionContext()
 

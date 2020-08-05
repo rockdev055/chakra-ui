@@ -4,7 +4,6 @@ import {
   keyframes,
   useStyleConfig,
   ThemingProps,
-  forwardRef,
   omitThemingProps,
 } from "@chakra-ui/system"
 import { cx, __DEV__ } from "@chakra-ui/utils"
@@ -63,7 +62,10 @@ const fade = keyframes({
   to: { opacity: 1 },
 })
 
-export const Skeleton: React.FC<SkeletonProps> = forwardRef((props, ref) => {
+export const Skeleton = React.forwardRef(function Skeleton(
+  props: SkeletonProps,
+  ref: React.Ref<any>,
+) {
   const styles = useStyleConfig("Skeleton", props)
 
   const {
@@ -117,7 +119,7 @@ export type SkeletonTextProps = SkeletonProps & {
   endColor?: SkeletonProps["endColor"]
 }
 
-export const SkeletonText: React.FC<SkeletonTextProps> = (props) => {
+export function SkeletonText(props: SkeletonTextProps) {
   const {
     noOfLines = 3,
     spacing = "0.5rem",
@@ -159,10 +161,9 @@ if (__DEV__) {
   SkeletonText.displayName = "SkeletonText"
 }
 
-export const SkeletonCircle: React.FC<SkeletonProps> = ({
-  size = "2rem",
-  ...rest
-}) => <Skeleton borderRadius="full" boxSize={size} {...rest} />
+export const SkeletonCircle = ({ size = "2rem", ...rest }: SkeletonProps) => (
+  <Skeleton borderRadius="full" boxSize={size} {...rest} />
+)
 
 if (__DEV__) {
   SkeletonCircle.displayName = "SkeletonCircle"

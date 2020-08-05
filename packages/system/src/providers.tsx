@@ -5,8 +5,6 @@ import {
 } from "@chakra-ui/color-mode"
 import { css, SystemStyleObject } from "@chakra-ui/styled-system"
 import { createContext, Dict, get, merge, runIfFn } from "@chakra-ui/utils"
-import { PortalManager, PortalManagerProps } from "@chakra-ui/portal"
-import { CSSReset } from "@chakra-ui/css-reset"
 import { Global, Interpolation, ThemeContext } from "@emotion/core"
 import * as React from "react"
 
@@ -15,7 +13,7 @@ export interface ThemeProviderProps {
   theme: Dict
 }
 
-export const ThemeProvider: React.FC<ThemeProviderProps> = (props) => {
+export function ThemeProvider(props: ThemeProviderProps) {
   const { children, theme } = props
   const outerTheme = React.useContext(ThemeContext) as Dict
   const mergedTheme = merge({}, outerTheme, theme)
@@ -42,12 +40,10 @@ export function useTheme<T extends object = Dict>() {
 
 export type ChakraProviderProps = ThemeProviderProps & {
   storageManager?: StorageManager
-  portalConfig?: Omit<PortalManagerProps, "children">
-  resetCSS?: boolean
 }
 
-export const ChakraProvider: React.FC<ChakraProviderProps> = (props) => {
-  const { theme, children, storageManager, resetCSS, portalConfig } = props
+export function ChakraProvider(props: ChakraProviderProps) {
+  const { theme, children, storageManager } = props
 
   if (!theme) {
     throw Error("ChakraProvider: the `theme` prop is required")
@@ -61,14 +57,7 @@ export const ChakraProvider: React.FC<ChakraProviderProps> = (props) => {
         storageManager={storageManager}
       >
         <GlobalStyle />
-        {resetCSS && <CSSReset />}
-        {portalConfig ? (
-          <PortalManager zIndex={portalConfig?.zIndex}>
-            {children}
-          </PortalManager>
-        ) : (
-          children
-        )}
+        {children}
       </ColorModeProvider>
     </ThemeProvider>
   )
@@ -82,7 +71,7 @@ const [StylesProvider, useStyles] = createContext<Dict<SystemStyleObject>>({
 
 export { StylesProvider, useStyles }
 
-export const GlobalStyle = () => {
+export function GlobalStyle() {
   const { colorMode } = useColorMode()
   return (
     <Global

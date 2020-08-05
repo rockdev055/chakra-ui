@@ -55,7 +55,7 @@ export type StackProps = PropsOf<typeof chakra.div> & StackOptions
 
 export type StackDividerProps = PropsOf<typeof chakra.div>
 
-export const StackDivider: React.FC<PropsOf<typeof chakra.div>> = (props) => (
+export const StackDivider = (props: PropsOf<typeof chakra.div>) => (
   <chakra.div
     className="chakra-stack__item"
     __css={{
@@ -69,7 +69,7 @@ export const StackDivider: React.FC<PropsOf<typeof chakra.div>> = (props) => (
   />
 )
 
-export const StackItem: React.FC<PropsOf<typeof chakra.div>> = (props) => (
+export const StackItem = (props: PropsOf<typeof chakra.div>) => (
   <chakra.div
     className="chakra-stack__item"
     __css={{ display: "inline-block", flex: 0 }}
@@ -88,7 +88,7 @@ export const StackItem: React.FC<PropsOf<typeof chakra.div>> = (props) => (
  * @see Docs https://chakra-ui.com/components/stack
  *
  */
-export const Stack: React.FC<StackProps> = forwardRef((props, ref) => {
+export const Stack = forwardRef<StackProps>(function Stack(props, ref) {
   const {
     direction = "column",
     align,
@@ -199,7 +199,10 @@ if (__DEV__) {
 /**
  * A view that arranges its children in a horizontal line.
  */
-export const HStack: React.FC<StackProps> = forwardRef((props, ref) => {
+export const HStack = React.forwardRef(function HStack(
+  props: StackProps,
+  ref: React.Ref<any>,
+) {
   return <Stack align="center" {...props} direction="row" ref={ref} />
 })
 
@@ -210,7 +213,10 @@ if (__DEV__) {
 /**
  * A view that arranges its children in a vertical line.
  */
-export const VStack: React.FC<StackProps> = forwardRef((props, ref) => {
+export const VStack = React.forwardRef(function VStack(
+  props: StackProps,
+  ref: React.Ref<any>,
+) {
   return <Stack align="center" {...props} direction="column" ref={ref} />
 })
 

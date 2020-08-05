@@ -30,7 +30,7 @@ interface DrawerTransitionProps {
   placement: SlideProps["placement"]
 }
 
-const DrawerTransition: React.FC<DrawerTransitionProps> = (props) => {
+function DrawerTransition(props: DrawerTransitionProps) {
   const { in: inProp, children, placement } = props
   return (
     <Slide
@@ -72,7 +72,7 @@ export interface DrawerProps extends ModalProps {
   isFullHeight?: boolean
 }
 
-export const Drawer: React.FC<DrawerProps> = (props) => {
+export function Drawer(props: DrawerProps) {
   const { isOpen, onClose, placement = "right", children, ...rest } = props
 
   const theme = useTheme()
@@ -87,8 +87,8 @@ export const Drawer: React.FC<DrawerProps> = (props) => {
   )
 }
 
-export const DrawerContent: React.FC<ModalContentProps> = forwardRef(
-  (props, ref) => {
+export const DrawerContent = forwardRef<ModalContentProps>(
+  function DrawerContent(props, ref) {
     const { content: styles } = useTransitionContext()
     return (
       <ModalContent
@@ -104,16 +104,21 @@ export const DrawerContent: React.FC<ModalContentProps> = forwardRef(
   },
 )
 
-export const DrawerOverlay: React.FC<ModalOverlayProps> = forwardRef(
-  (props, ref) => {
+export const DrawerOverlay = forwardRef<ModalOverlayProps>(
+  function DrawerOverlay(props, ref) {
     const { overlay: styles } = useTransitionContext()
     return <ModalOverlay style={styles} ref={ref} {...props} />
   },
 )
 
-export {
-  ModalBody as DrawerBody,
-  ModalHeader as DrawerHeader,
-  ModalFooter as DrawerFooter,
-  ModalCloseButton as DrawerCloseButton,
+import {
+  ModalBody,
+  ModalHeader,
+  ModalFooter,
+  ModalCloseButton,
 } from "@chakra-ui/modal"
+
+export const DrawerBody = ModalBody
+export const DrawerHeader = ModalHeader
+export const DrawerFooter = ModalFooter
+export const DrawerCloseButton = ModalCloseButton

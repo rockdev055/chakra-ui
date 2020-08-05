@@ -1,5 +1,5 @@
 import * as React from "react"
-import { __DEV__ } from "@chakra-ui/utils"
+import {__DEV__} from "@chakra-ui/utils";
 import { Transition, TransitionProps } from "./transition"
 
 export interface SlideFadeProps
@@ -31,7 +31,7 @@ function getTransitionStyles(initialOffset: string) {
   }
 }
 
-export const SlideFade: React.FC<SlideFadeProps> = (props) => {
+export const SlideFade = (props: SlideFadeProps) => {
   const { initialOffset = "20px", timeout = 150, ...rest } = props
 
   const styles = getTransitionStyles(initialOffset)
@@ -46,6 +46,7 @@ export const SlideFade: React.FC<SlideFadeProps> = (props) => {
   )
 }
 
-if (__DEV__) {
+
+if(__DEV__) {
   SlideFade.displayName = "SlideFade"
 }

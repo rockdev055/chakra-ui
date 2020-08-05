@@ -5,7 +5,7 @@ import { isUndefined, __DEV__, StringOrNumber } from "@chakra-ui/utils"
 
 type CircleProps = PropsOf<typeof chakra.circle>
 
-const Circle: React.FC<CircleProps> = (props) => (
+const Circle = (props: CircleProps) => (
   <chakra.circle cx={50} cy={50} r={42} fill="transparent" {...props} />
 )
 
@@ -18,7 +18,7 @@ type ShapeProps = PropsOf<typeof chakra.svg> & {
   isIndeterminate?: boolean
 }
 
-const Shape: React.FC<ShapeProps> = (props) => {
+function Shape(props: ShapeProps) {
   const { size, isIndeterminate, ...rest } = props
   return (
     <chakra.svg
@@ -95,7 +95,7 @@ export type CircularProgressProps = PropsOf<typeof chakra.div> &
  * @see Docs https://chakra-ui.com/components/progress
  * @todo add theming support for circular progress
  */
-export const CircularProgress: React.FC<CircularProgressProps> = (props) => {
+export function CircularProgress(props: CircularProgressProps) {
   const {
     size = "48px",
     max = 100,

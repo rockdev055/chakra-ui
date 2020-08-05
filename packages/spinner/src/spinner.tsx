@@ -5,7 +5,6 @@ import {
   useStyleConfig,
   omitThemingProps,
   ThemingProps,
-  forwardRef,
 } from "@chakra-ui/system"
 import { __DEV__, cx } from "@chakra-ui/utils"
 import { VisuallyHidden } from "@chakra-ui/visually-hidden"
@@ -62,7 +61,10 @@ export type SpinnerProps = PropsOf<typeof chakra.div> &
  *
  * @see Docs https://chakra-ui.com/components/spinner
  */
-export const Spinner: React.FC<SpinnerProps> = forwardRef((props, ref) => {
+export const Spinner = React.forwardRef(function Spinner(
+  props: SpinnerProps,
+  ref: React.Ref<any>,
+) {
   const styles = useStyleConfig("Spinner", props)
 
   const {

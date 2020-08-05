@@ -53,7 +53,10 @@ export type EditableProps = UseEditableProps &
  * The wrapper that provides context and logic for all editable
  * components. It renders a `div`
  */
-export const Editable: React.FC<EditableProps> = forwardRef((props, ref) => {
+export const Editable = forwardRef<EditableProps>(function Editable(
+  props,
+  ref,
+) {
   const styles = useMultiStyleConfig("Editable", props)
 
   const realProps = omitThemingProps(props)
@@ -104,8 +107,8 @@ export type EditablePreviewProps = PropsOf<typeof chakra.div>
  *
  * The `span` used to display the final value, in the `preview` mode
  */
-export const EditablePreview: React.FC<EditablePreviewProps> = forwardRef(
-  (props, ref) => {
+export const EditablePreview = forwardRef<EditablePreviewProps>(
+  function EditablePreview(props, ref) {
     const { getPreviewProps } = useEditableContext()
     const styles = useStyles()
 
@@ -138,8 +141,8 @@ export type EditableInputProps = PropsOf<typeof chakra.input>
  *
  * The input used in the `edit` mode
  */
-export const EditableInput: React.FC<EditableInputProps> = forwardRef(
-  (props, ref) => {
+export const EditableInput = forwardRef<EditableInputProps>(
+  function EditableInput(props, ref) {
     const { getInputProps } = useEditableContext()
     const styles = useStyles()
 
@@ -188,13 +191,7 @@ export function useEditableState() {
 /**
  * React hook use to create controls for the editable component
  */
-export function useEditableControls(): Pick<
-  EditableContext,
-  | "isEditing"
-  | "getEditButtonProps"
-  | "getCancelButtonProps"
-  | "getSubmitButtonProps"
-> {
+export function useEditableControls() {
   const {
     isEditing,
     getEditButtonProps,

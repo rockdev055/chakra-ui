@@ -12,7 +12,7 @@ const styles: TransitionStyles = {
   exiting: { opacity: 0 },
 }
 
-export const Fade: React.FC<FadeProps> = (props) => {
+export function Fade(props: FadeProps) {
   const { timeout = 150, ...rest } = props
   return (
     <Transition
