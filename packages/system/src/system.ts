@@ -44,10 +44,10 @@ export function styled<T extends As, P = {}>(component: T, options?: Options) {
   })(
     __css,
     base(baseStyle),
-    cast(extraProps),
-    cast(truncateProp),
     cast(systemProps),
     cast(pseudoProps),
+    cast(extraProps),
+    cast(truncateProp),
     sxProp,
     cast(cssProp),
   ) as ChakraComponent<T, P>
