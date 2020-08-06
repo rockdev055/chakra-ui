@@ -1,22 +1,22 @@
+import * as React from "react"
 import {
   chakra,
-  forwardRef,
-  GetProps,
+  PropsOf,
+  useStyleConfig,
   omitThemingProps,
   ThemingProps,
-  useStyleConfig,
+  forwardRef,
 } from "@chakra-ui/system"
-import { cx, __DEV__ } from "@chakra-ui/utils"
-import * as React from "react"
+import { __DEV__, cx } from "@chakra-ui/utils"
 
-export interface CodeProps extends GetProps<typeof chakra.code>, ThemingProps {}
+export type CodeProps = PropsOf<typeof chakra.code> & ThemingProps
 
 /**
  * React component to render inline code snippets.
  *
  * @see Docs https://chakra-ui.com/components/code
  */
-export const Code = forwardRef<CodeProps, "code">(function Code(props, ref) {
+export const Code: React.FC<CodeProps> = forwardRef((props, ref) => {
   const styles = useStyleConfig("Code", props)
   const { className, ...rest } = omitThemingProps(props)
 

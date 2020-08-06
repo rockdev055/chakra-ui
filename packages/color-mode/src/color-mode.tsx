@@ -83,8 +83,9 @@ if (__DEV__) {
 export const DarkMode: React.FC = ({ children }) => (
   <ColorModeContext.Provider
     value={{ colorMode: "dark", toggleColorMode: noop }}
-    children={children}
-  />
+  >
+    {children}
+  </ColorModeContext.Provider>
 )
 
 if (__DEV__) {
@@ -97,8 +98,9 @@ if (__DEV__) {
 export const LightMode: React.FC = ({ children }) => (
   <ColorModeContext.Provider
     value={{ colorMode: "light", toggleColorMode: noop }}
-    children={children}
-  />
+  >
+    {children}
+  </ColorModeContext.Provider>
 )
 
 if (__DEV__) {

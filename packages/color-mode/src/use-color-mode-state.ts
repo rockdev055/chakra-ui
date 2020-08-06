@@ -1,5 +1,5 @@
 import { useLatestRef } from "@chakra-ui/hooks"
-import { useEffect, useState } from "react"
+import * as React from "react"
 import {
   addListener,
   ColorMode,
@@ -17,7 +17,7 @@ import { StorageManager, localStorageManager } from "./storage-manager"
  * If mode is 'dark', body will be `<body class="chakra-ui-light"/>`
  */
 function useSyncBodyClass(mode: string) {
-  useEffect(() => {
+  React.useEffect(() => {
     requestAnimationFrame(() => {
       syncBodyClassName(mode === "dark")
     })
@@ -33,7 +33,7 @@ function useSyncBodyClass(mode: string) {
  */
 function useSyncSystemColorMode(fn: Function, enabled: boolean) {
   const callback = useLatestRef(fn)
-  useEffect(() => {
+  React.useEffect(() => {
     if (!enabled) return
     const removeListener = addListener(callback.current)
     return () => {
@@ -60,7 +60,7 @@ export function useColorModeState<T extends useColorModeStateOptions>(
 ) {
   const storageManager = options?.storageManager || localStorageManager
 
-  const [mode, setMode] = useState<ColorMode>(() => {
+  const [mode, setMode] = React.useState<ColorMode>(() => {
     const stored = storageManager.get()
 
     if (stored) return stored
@@ -75,11 +75,11 @@ export function useColorModeState<T extends useColorModeStateOptions>(
   useSyncBodyClass(mode)
   useSyncSystemColorMode(setMode, !!options?.useSystemColorMode)
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (mode) {
       storageManager.set(mode)
     }
-  }, [storageManager, mode])
+  }, [mode])
 
   return [mode, setMode] as const
 }

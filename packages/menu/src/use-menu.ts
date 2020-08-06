@@ -206,8 +206,7 @@ export interface UseMenuReturn extends ReturnType<typeof useMenu> {}
  * is passed as `context` to this hook.
  */
 
-export interface UseMenuListProps
-  extends Omit<HTMLAttributes<Element>, "color"> {}
+export interface UseMenuListProps extends HTMLAttributes<Element> {}
 
 export function useMenuList(props: UseMenuListProps) {
   const menu = useMenuContext()
@@ -288,8 +287,7 @@ export function useMenuList(props: UseMenuListProps) {
  * is passed as `context` to this hook.
  */
 
-export interface UseMenuButtonProps
-  extends Omit<HTMLAttributes<Element>, "color"> {}
+export interface UseMenuButtonProps extends HTMLAttributes<Element> {}
 
 export function useMenuButton(props: UseMenuButtonProps) {
   const menu = useMenuContext()
@@ -353,8 +351,7 @@ export function useMenuButton(props: UseMenuButtonProps) {
   }
 }
 
-export interface UseMenuItemProps
-  extends Omit<HTMLAttributes<Element>, "color"> {
+export interface UseMenuItemProps extends HTMLAttributes<Element> {
   isDisabled?: boolean
   isFocusable?: boolean
 }

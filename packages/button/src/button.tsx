@@ -2,7 +2,6 @@ import { Spinner } from "@chakra-ui/spinner"
 import {
   chakra,
   forwardRef,
-  GetProps,
   omitThemingProps,
   PropsOf,
   SystemProps,
@@ -57,15 +56,11 @@ export interface ButtonOptions {
   spinner?: ReactElement
 }
 
-export interface ButtonProps
-  extends GetProps<typeof chakra.button>,
-    ButtonOptions,
-    ThemingProps {}
+export type ButtonProps = PropsOf<typeof chakra.button> &
+  ButtonOptions &
+  ThemingProps
 
-export const Button = forwardRef<ButtonProps, "button">(function Button(
-  props,
-  ref,
-) {
+export const Button: React.FC<ButtonProps> = forwardRef((props, ref) => {
   const group = useButtonGroup()
   const styles = useStyleConfig("Button", { ...group, ...props })
 

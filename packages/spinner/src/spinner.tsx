@@ -1,13 +1,13 @@
 import {
   chakra,
-  forwardRef,
-  GetProps,
   keyframes,
+  PropsOf,
+  useStyleConfig,
   omitThemingProps,
   ThemingProps,
-  useStyleConfig,
+  forwardRef,
 } from "@chakra-ui/system"
-import { cx, __DEV__ } from "@chakra-ui/utils"
+import { __DEV__, cx } from "@chakra-ui/utils"
 import { VisuallyHidden } from "@chakra-ui/visually-hidden"
 import * as React from "react"
 
@@ -52,10 +52,9 @@ interface SpinnerOptions {
   label?: string
 }
 
-export interface SpinnerProps
-  extends GetProps<typeof chakra.div, "children" | "color" | "as">,
-    SpinnerOptions,
-    ThemingProps {}
+export type SpinnerProps = PropsOf<typeof chakra.div> &
+  SpinnerOptions &
+  ThemingProps
 
 /**
  * Spinner is used to indicate the loading state of a page or a component,
@@ -63,10 +62,7 @@ export interface SpinnerProps
  *
  * @see Docs https://chakra-ui.com/components/spinner
  */
-export const Spinner = forwardRef<SpinnerProps, "div">(function Spinner(
-  props,
-  ref,
-) {
+export const Spinner: React.FC<SpinnerProps> = forwardRef((props, ref) => {
   const styles = useStyleConfig("Spinner", props)
 
   const {

@@ -7,14 +7,14 @@ type Omitted = "leftIcon" | "isFullWidth" | "rightIcon" | "loadingText"
 
 type BaseButtonProps = Omit<ButtonProps, Omitted>
 
-export interface IconButtonProps extends BaseButtonProps {
+export type IconButtonProps = BaseButtonProps & {
   icon?: ReactElement
   isRound?: boolean
   "aria-label": string
 }
 
-export const IconButton = forwardRef<IconButtonProps, "button">(
-  function IconButton(props, ref) {
+export const IconButton: React.FC<IconButtonProps> = forwardRef(
+  (props, ref) => {
     const { icon, children, isRound, "aria-label": ariaLabel, ...rest } = props
 
     /**

@@ -1,11 +1,11 @@
 import { Icon, IconProps } from "@chakra-ui/icon"
 import {
   chakra,
+  PropsOf,
   omitThemingProps,
   useStyleConfig,
   ThemingProps,
   forwardRef,
-  GetProps,
 } from "@chakra-ui/system"
 import { __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
@@ -19,14 +19,13 @@ const CloseIcon: React.FC<IconProps> = (props) => (
   </Icon>
 )
 
-export interface CloseButtonProps
-  extends GetProps<typeof chakra.button>,
-    ThemingProps {
-  /**
-   * If `true`, the close button will be disabled.
-   */
-  isDisabled?: boolean
-}
+export type CloseButtonProps = PropsOf<typeof chakra.button> &
+  ThemingProps & {
+    /**
+     * If `true`, the close button will be disabled.
+     */
+    isDisabled?: boolean
+  }
 
 /**
  * A button with a close icon.
@@ -34,8 +33,8 @@ export interface CloseButtonProps
  * It is used to handle the close functionality in feedback and overlay components
  * like Alerts, Toasts, Drawers and Modals.
  */
-export const CloseButton = forwardRef<CloseButtonProps, "button">(
-  function CloseButton(props, ref) {
+export const CloseButton: React.FC<CloseButtonProps> = forwardRef(
+  (props, ref) => {
     const styles = useStyleConfig("CloseButton", props)
     const { children, isDisabled, ...rest } = omitThemingProps(props)
 

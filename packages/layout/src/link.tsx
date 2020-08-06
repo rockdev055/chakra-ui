@@ -16,10 +16,7 @@ interface LinkOptions {
   isExternal?: boolean
 }
 
-export interface LinkProps
-  extends PropsOf<typeof chakra.a>,
-    LinkOptions,
-    ThemingProps {}
+export type LinkProps = PropsOf<typeof chakra.a> & LinkOptions & ThemingProps
 
 /**
  * Link
@@ -37,7 +34,8 @@ export interface LinkProps
  *
  * @see Docs https://chakra-ui.com/components/link
  */
-export const Link = forwardRef<LinkProps, "a">((props, ref) => {
+
+export const Link: React.FC<LinkProps> = forwardRef((props, ref) => {
   const styles = useStyleConfig("Link", props)
   const { className, isExternal, ...rest } = omitThemingProps(props)
 

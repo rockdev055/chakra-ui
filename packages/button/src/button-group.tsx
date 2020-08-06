@@ -1,36 +1,33 @@
 import {
   chakra,
+  PropsOf,
   SystemProps,
   SystemStyleObject,
   ThemingProps,
   forwardRef,
-  GetProps,
 } from "@chakra-ui/system"
 import { createContext, cx, __DEV__ } from "@chakra-ui/utils"
 import React, { useMemo } from "react"
 
-export interface ButtonGroupProps
-  extends GetProps<typeof chakra.div>,
-    ThemingProps {
-  /**
-   * If `true`, the borderRadius of button that are direct children will be altered
-   * to look flushed together
-   */
-  isAttached?: boolean
-  /**
-   * If `true`, all wrapped button will be disabled
-   */
-  isDisabled?: boolean
-  /**
-   * The spacing between the buttons
-   * @default '0.5rem'
-   */
-  spacing?: SystemProps["marginRight"]
-}
+export type ButtonGroupProps = PropsOf<typeof chakra.div> &
+  ThemingProps & {
+    /**
+     * If `true`, the borderRadius of button that are direct children will be altered
+     * to look flushed together
+     */
+    isAttached?: boolean
+    /**
+     * If `true`, all wrapped button will be disabled
+     */
+    isDisabled?: boolean
+    /**
+     * The spacing between the buttons
+     * @default '0.5rem'
+     */
+    spacing?: SystemProps["marginRight"]
+  }
 
-interface ButtonGroupContext extends ThemingProps {
-  isDisabled?: boolean
-}
+type ButtonGroupContext = ThemingProps & { isDisabled?: boolean }
 
 const [ButtonGroupProvider, useButtonGroup] = createContext<ButtonGroupContext>(
   {
@@ -41,8 +38,8 @@ const [ButtonGroupProvider, useButtonGroup] = createContext<ButtonGroupContext>(
 
 export { useButtonGroup }
 
-export const ButtonGroup = forwardRef<ButtonGroupProps, "div">(
-  function ButtonGroup(props, ref) {
+export const ButtonGroup: React.FC<ButtonGroupProps> = forwardRef(
+  (props, ref) => {
     const {
       size,
       colorScheme,

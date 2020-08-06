@@ -1,11 +1,6 @@
 import { cx, __DEV__, mapResponsive } from "@chakra-ui/utils"
-import React, { Children } from "react"
-import {
-  chakra,
-  GetProps,
-  ResponsiveValue,
-  forwardRef,
-} from "@chakra-ui/system"
+import * as React from "react"
+import { chakra, PropsOf, ResponsiveValue, forwardRef } from "@chakra-ui/system"
 
 interface AspectRatioOptions {
   /**
@@ -16,9 +11,7 @@ interface AspectRatioOptions {
   ratio?: ResponsiveValue<number>
 }
 
-export interface AspectRatioProps
-  extends GetProps<typeof chakra.div>,
-    AspectRatioOptions {}
+export type AspectRatioProps = PropsOf<typeof chakra.div> & AspectRatioOptions
 
 /**
  * React component used to cropping media (videos, images and maps)
@@ -26,12 +19,12 @@ export interface AspectRatioProps
  *
  * @see Docs https://chakra-ui.com/components/aspect-ratio
  */
-export const AspectRatio = forwardRef<AspectRatioProps, "div">(
-  function AspectRatio(props, ref) {
+export const AspectRatio: React.FC<AspectRatioProps> = forwardRef(
+  (props, ref) => {
     const { ratio = 4 / 3, children, className, ...rest } = props
 
     // enforce single child
-    const child = Children.only(children)
+    const child = React.Children.only(children)
 
     const _className = cx("chakra-aspect-ratio", className)
 
