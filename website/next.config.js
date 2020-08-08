@@ -48,8 +48,6 @@ async function getLastEdited(filePath) {
       "log",
       "-1",
       "--format=%ct, %an",
-      "--follow",
-      "--",
       filePath,
     ])
     return getTimestampAndAuthor(stdout)
