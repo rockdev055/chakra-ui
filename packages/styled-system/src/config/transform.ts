@@ -11,11 +11,11 @@ export interface TransformProps {
   /**
    * The CSS `transform` property
    */
-  transform?: ResponsiveValue<CSS.Property.Transform>
+  transform?: ResponsiveValue<CSS.TransformProperty>
   /**
    * The CSS `transform-origin` property
    */
-  transformOrigin?: ResponsiveValue<CSS.Property.TransformOrigin<Length>>
+  transformOrigin?: ResponsiveValue<CSS.TransformOriginProperty<Length>>
 }
 
 export const transform = system(config)

@@ -18,15 +18,15 @@ export interface OutlineProps {
   /**
    * The CSS `outline` property
    */
-  outline?: ResponsiveValue<CSS.Property.Outline<Length>>
+  outline?: ResponsiveValue<CSS.OutlineProperty<Length>>
   /**
    * The CSS `outline-offset` property
    */
-  outlineOffset?: ResponsiveValue<CSS.Property.OutlineOffset<Length>>
+  outlineOffset?: ResponsiveValue<CSS.OutlineOffsetProperty<Length>>
   /**
    * The CSS `outline-color` property
    */
-  outlineColor?: ResponsiveValue<CSS.Property.OutlineColor>
+  outlineColor?: ResponsiveValue<CSS.OutlineColorProperty>
 }
 
 export const outline = system(config)

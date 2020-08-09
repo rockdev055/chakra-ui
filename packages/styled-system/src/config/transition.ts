@@ -22,16 +22,16 @@ export interface TransitionProps {
   /**
    * The CSS `transition` property
    */
-  transition?: ResponsiveValue<CSS.Property.Transition>
+  transition?: ResponsiveValue<CSS.TransitionProperty>
   /**
    * The CSS `transition-property` property
    */
-  transitionProperty?: ResponsiveValue<CSS.Property.TransitionProperty>
+  transitionProperty?: ResponsiveValue<CSS.TransitionPropertyProperty>
   /**
    * The CSS `transition-timing-function` property
    */
   transitionTimingFunction?: ResponsiveValue<
-    CSS.Property.TransitionTimingFunction
+    CSS.TransitionTimingFunctionProperty
   >
   /**
    * The CSS `transition-duration` property

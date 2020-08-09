@@ -31,59 +31,59 @@ export interface FlexboxProps {
   /**
    * The CSS `align-items` property
    */
-  alignItems?: ResponsiveValue<CSS.Property.AlignItems>
+  alignItems?: ResponsiveValue<CSS.AlignItemsProperty>
   /**
    * The CSS `align-content` property
    */
-  alignContent?: ResponsiveValue<CSS.Property.AlignContent>
+  alignContent?: ResponsiveValue<CSS.AlignContentProperty>
   /**
    * The CSS `justify-items` property
    */
-  justifyItems?: ResponsiveValue<CSS.Property.JustifyItems>
+  justifyItems?: ResponsiveValue<CSS.JustifyItemsProperty>
   /**
    * The CSS `justify-content` property
    */
-  justifyContent?: ResponsiveValue<CSS.Property.JustifyContent>
+  justifyContent?: ResponsiveValue<CSS.JustifyContentProperty>
   /**
    * The CSS `flex-wrap` property
    */
-  flexWrap?: ResponsiveValue<CSS.Property.FlexWrap>
+  flexWrap?: ResponsiveValue<CSS.FlexWrapProperty>
   /**
    * The CSS `flex-basis` property
    */
-  flexBasis?: ResponsiveValue<CSS.Property.FlexBasis<Length>>
+  flexBasis?: ResponsiveValue<CSS.FlexBasisProperty<Length>>
   /**
    * The CSS `flex-direction` property
    */
-  flexDirection?: ResponsiveValue<CSS.Property.FlexDirection>
+  flexDirection?: ResponsiveValue<CSS.FlexDirectionProperty>
   /**
    * The CSS `flex-direction` property
    */
-  flexDir?: ResponsiveValue<CSS.Property.FlexDirection>
+  flexDir?: ResponsiveValue<CSS.FlexDirectionProperty>
   /**
    * The CSS `flex` property
    */
-  flex?: ResponsiveValue<CSS.Property.Flex<Length>>
+  flex?: ResponsiveValue<CSS.FlexProperty<Length>>
   /**
    * The CSS `justify-self` property
    */
-  justifySelf?: ResponsiveValue<CSS.Property.JustifySelf>
+  justifySelf?: ResponsiveValue<CSS.JustifySelfProperty>
   /**
    * The CSS `align-self` property
    */
-  alignSelf?: ResponsiveValue<CSS.Property.AlignSelf>
+  alignSelf?: ResponsiveValue<CSS.AlignSelfProperty>
   /**
    * The CSS `order` property
    */
-  order?: ResponsiveValue<CSS.Property.Order>
+  order?: ResponsiveValue<CSS.GlobalsNumber>
   /**
    * The CSS `flex-grow` property
    */
-  flexGrow?: ResponsiveValue<CSS.Property.FlexGrow>
+  flexGrow?: ResponsiveValue<CSS.GlobalsNumber>
   /**
    * The CSS `flex-shrink` property
    */
-  flexShrink?: ResponsiveValue<CSS.Property.FlexShrink>
+  flexShrink?: ResponsiveValue<CSS.GlobalsNumber>
 }
 
 export const flexbox = system(config)

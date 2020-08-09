@@ -55,43 +55,43 @@ export interface PositionProps {
   /**
    * The CSS `z-index` property
    */
-  zIndex?: ResponsiveValue<string | CSS.Property.ZIndex>
+  zIndex?: ResponsiveValue<string | CSS.ZIndexProperty>
   /**
    * The CSS `top` property
    */
-  top?: ResponsiveValue<CSS.Property.Top<Length>>
+  top?: ResponsiveValue<CSS.TopProperty<Length>>
   /**
    * The CSS `right` property
    */
-  right?: ResponsiveValue<CSS.Property.Right<Length>>
+  right?: ResponsiveValue<CSS.RightProperty<Length>>
   /**
    * The CSS `bottom` property
    */
-  bottom?: ResponsiveValue<CSS.Property.Bottom<Length>>
+  bottom?: ResponsiveValue<CSS.BottomProperty<Length>>
   /**
    * The CSS `left` property
    */
-  left?: ResponsiveValue<CSS.Property.Left<Length>>
+  left?: ResponsiveValue<CSS.LeftProperty<Length>>
   /**
    * The CSS `left`, `right`, `top`, `bottom` property
    */
-  inset?: ResponsiveValue<CSS.Property.Left<Length>>
+  inset?: ResponsiveValue<CSS.LeftProperty<Length>>
   /**
    * The CSS `left`, and `right` property
    */
-  insetX?: ResponsiveValue<CSS.Property.Left<Length>>
+  insetX?: ResponsiveValue<CSS.LeftProperty<Length>>
   /**
    * The CSS `top`, and `bottom` property
    */
-  insetY?: ResponsiveValue<CSS.Property.Left<Length>>
+  insetY?: ResponsiveValue<CSS.LeftProperty<Length>>
   /**
    * The CSS `position` property
    */
-  pos?: ResponsiveValue<CSS.Property.Position>
+  pos?: ResponsiveValue<CSS.PositionProperty>
   /**
    * The CSS `position` property
    */
-  position?: ResponsiveValue<CSS.Property.Position>
+  position?: ResponsiveValue<CSS.PositionProperty>
 }
 
 export const position = system(config)

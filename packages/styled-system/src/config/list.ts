@@ -15,23 +15,23 @@ const config: Config = {
 }
 
 export interface ListProps {
-  listStyleType?: ResponsiveValue<CSS.Property.ListStyleType>
+  listStyleType?: ResponsiveValue<CSS.ListStyleTypeProperty>
   /**
    * The CSS `list-style-position` property
    */
-  listStylePosition?: ResponsiveValue<CSS.Property.ListStylePosition>
+  listStylePosition?: ResponsiveValue<CSS.ListStylePositionProperty>
   /**
    * The CSS `list-style-position` property
    */
-  listStylePos?: ResponsiveValue<CSS.Property.ListStylePosition>
+  listStylePos?: ResponsiveValue<CSS.ListStylePositionProperty>
   /**
    * The CSS `list-style-image` property
    */
-  listStyleImage?: ResponsiveValue<CSS.Property.ListStyleImage>
+  listStyleImage?: ResponsiveValue<CSS.ListStyleImageProperty>
   /**
    * The CSS `list-style-image` property
    */
-  listStyleImg?: ResponsiveValue<CSS.Property.ListStyleImage>
+  listStyleImg?: ResponsiveValue<CSS.ListStyleImageProperty>
 }
 
 export const list = system(config)

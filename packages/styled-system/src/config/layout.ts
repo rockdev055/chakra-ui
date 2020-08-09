@@ -81,83 +81,83 @@ export interface LayoutProps {
   /**
    * The CSS `display` property
    */
-  display?: ResponsiveValue<CSS.Property.Display>
+  display?: ResponsiveValue<CSS.DisplayProperty>
   /**
    * The CSS `display` property
    */
-  d?: ResponsiveValue<CSS.Property.Display>
+  d?: ResponsiveValue<CSS.DisplayProperty>
   /**
    * The CSS `width` property
    */
-  width?: ResponsiveValue<CSS.Property.Width<Length>>
+  width?: ResponsiveValue<CSS.WidthProperty<Length>>
   /**
    * The CSS `width` property
    */
-  w?: ResponsiveValue<CSS.Property.Width<Length>>
+  w?: ResponsiveValue<CSS.WidthProperty<Length>>
   /**
    * The CSS `width` and `height` property
    */
-  boxSize?: ResponsiveValue<CSS.Property.Width<Length>>
+  boxSize?: ResponsiveValue<CSS.WidthProperty<Length>>
   /**
    * The CSS `max-width` property
    */
-  maxWidth?: ResponsiveValue<CSS.Property.MaxWidth<Length>>
+  maxWidth?: ResponsiveValue<CSS.MaxWidthProperty<Length>>
   /**
    * The CSS `max-width` property
    */
-  maxW?: ResponsiveValue<CSS.Property.MaxWidth<Length>>
+  maxW?: ResponsiveValue<CSS.MaxWidthProperty<Length>>
   /**
    * The CSS `min-width` property
    */
-  minWidth?: ResponsiveValue<CSS.Property.MinWidth<Length>>
+  minWidth?: ResponsiveValue<CSS.MinWidthProperty<Length>>
   /**
    * The CSS `min-width` property
    */
-  minW?: ResponsiveValue<CSS.Property.MinWidth<Length>>
+  minW?: ResponsiveValue<CSS.MinWidthProperty<Length>>
   /**
    * The CSS `height` property
    */
-  height?: ResponsiveValue<CSS.Property.Height<Length>>
+  height?: ResponsiveValue<CSS.HeightProperty<Length>>
   /**
    * The CSS `height` property
    */
-  h?: ResponsiveValue<CSS.Property.Height<Length>>
+  h?: ResponsiveValue<CSS.HeightProperty<Length>>
   /**
    * The CSS `max-height` property
    */
-  maxHeight?: ResponsiveValue<CSS.Property.MaxHeight<Length>>
+  maxHeight?: ResponsiveValue<CSS.MaxHeightProperty<Length>>
   /**
    * The CSS `max-height` property
    */
-  maxH?: ResponsiveValue<CSS.Property.MaxHeight<Length>>
+  maxH?: ResponsiveValue<CSS.MaxHeightProperty<Length>>
   /**
    * The CSS `min-height` property
    */
-  minHeight?: ResponsiveValue<CSS.Property.MinHeight<Length>>
+  minHeight?: ResponsiveValue<CSS.MinHeightProperty<Length>>
   /**
    * The CSS `min-height` property
    */
-  minH?: ResponsiveValue<CSS.Property.MinHeight<Length>>
+  minH?: ResponsiveValue<CSS.MinHeightProperty<Length>>
   /**
    * The CSS `vertical-align` property
    */
-  verticalAlign?: ResponsiveValue<CSS.Property.VerticalAlign<Length>>
+  verticalAlign?: ResponsiveValue<CSS.VerticalAlignProperty<Length>>
   /**
    * The CSS `overflow` property
    */
-  overflow?: ResponsiveValue<CSS.Property.Overflow>
+  overflow?: ResponsiveValue<CSS.OverflowProperty>
   /**
    * The CSS `overflow-x` property
    */
-  overflowX?: ResponsiveValue<CSS.Property.OverflowX>
+  overflowX?: ResponsiveValue<CSS.OverflowXProperty>
   /**
    * The CSS `overflow-y` property
    */
-  overflowY?: ResponsiveValue<CSS.Property.OverflowY>
+  overflowY?: ResponsiveValue<CSS.OverflowYProperty>
   /**
    * The CSS `box-sizing` property
    */
-  boxSizing?: CSS.Property.BoxSizing
+  boxSizing?: CSS.BoxSizingProperty
 }
 
 export const layout = system(config)

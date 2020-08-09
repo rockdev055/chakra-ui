@@ -34,57 +34,55 @@ export interface GridProps {
   /**
    * The CSS `grid-gap` property
    */
-  gridGap?: ResponsiveValue<CSS.Property.GridGap<Length>>
+  gridGap?: ResponsiveValue<CSS.GridGapProperty<Length>>
   /**
    * The CSS `grid-column-gap` property
    */
-  gridColumnGap?: ResponsiveValue<CSS.Property.GridColumnGap<Length>>
+  gridColumnGap?: ResponsiveValue<CSS.GridColumnGapProperty<Length>>
   /**
    * The CSS `grid-row-gap` property
    */
-  gridRowGap?: ResponsiveValue<CSS.Property.GridRowGap<Length>>
+  gridRowGap?: ResponsiveValue<CSS.GridRowGapProperty<Length>>
   /**
    * The CSS `grid-column` property
    */
-  gridColumn?: ResponsiveValue<CSS.Property.GridColumn>
+  gridColumn?: ResponsiveValue<CSS.GridColumnProperty>
   /**
    * The CSS `grid-row` property
    */
-  gridRow?: ResponsiveValue<CSS.Property.GridRow>
+  gridRow?: ResponsiveValue<CSS.GridRowProperty>
   /**
    * The CSS `grid-auto-flow` property
    */
-  gridAutoFlow?: ResponsiveValue<CSS.Property.GridAutoFlow>
+  gridAutoFlow?: ResponsiveValue<CSS.GridAutoFlowProperty>
   /**
    * The CSS `grid-auto-columns` property
    */
-  gridAutoColumns?: ResponsiveValue<CSS.Property.GridAutoColumns<Length>>
+  gridAutoColumns?: ResponsiveValue<CSS.GridAutoColumnsProperty<Length>>
   /**
    * The CSS `grid-auto-rows` property
    */
-  gridAutoRows?: ResponsiveValue<CSS.Property.GridAutoRows<Length>>
+  gridAutoRows?: ResponsiveValue<CSS.GridAutoRowsProperty<Length>>
   /**
    * The CSS `grid-template-columns` property
    */
-  gridTemplateColumns?: ResponsiveValue<
-    CSS.Property.GridTemplateColumns<Length>
-  >
+  gridTemplateColumns?: ResponsiveValue<CSS.GridTemplateColumnsProperty<Length>>
   /**
    * The CSS `grid-template-rows` property
    */
-  gridTemplateRows?: ResponsiveValue<CSS.Property.GridTemplateRows<Length>>
+  gridTemplateRows?: ResponsiveValue<CSS.GridTemplateRowsProperty<Length>>
   /**
    * The CSS `grid-template-areas` property
    */
-  gridTemplateAreas?: ResponsiveValue<CSS.Property.GridTemplateAreas>
+  gridTemplateAreas?: ResponsiveValue<CSS.GridTemplateAreasProperty>
   /**
    * The CSS `grid-areas` property
    */
-  gridArea?: ResponsiveValue<CSS.Property.GridArea>
+  gridArea?: ResponsiveValue<CSS.GridAreaProperty>
   /**
    * The CSS `place-items` property
    */
-  placeItems?: ResponsiveValue<CSS.Property.PlaceItems>
+  placeItems?: ResponsiveValue<CSS.PlaceItemsProperty>
 }
 
 export const grid = system(config)

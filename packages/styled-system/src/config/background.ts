@@ -55,75 +55,75 @@ export interface BackgroundProps {
   /**
    * The CSS `background` property
    */
-  bg?: ResponsiveValue<CSS.Property.Background<Length>>
+  bg?: ResponsiveValue<CSS.BackgroundProperty<Length>>
   /**
    * The CSS `background` property
    */
-  background?: ResponsiveValue<CSS.Property.Background<Length>>
+  background?: ResponsiveValue<CSS.BackgroundProperty<Length>>
   /**
    * The CSS `background-color` property
    */
-  bgColor?: ResponsiveValue<CSS.Property.BackgroundColor>
+  bgColor?: ResponsiveValue<CSS.BackgroundColorProperty>
   /**
    * The CSS `background-color` property
    */
-  backgroundColor?: ResponsiveValue<CSS.Property.BackgroundColor>
+  backgroundColor?: ResponsiveValue<CSS.BackgroundColorProperty>
   /**
    * The CSS `background-image` property
    */
-  backgroundImage?: ResponsiveValue<CSS.Property.BackgroundImage>
+  backgroundImage?: ResponsiveValue<CSS.BackgroundImageProperty>
   /**
    * The CSS `background-blend-mode` property
    */
-  backgroundBlendMode?: ResponsiveValue<CSS.Property.BackgroundBlendMode>
+  backgroundBlendMode?: ResponsiveValue<CSS.BackgroundBlendModeProperty>
   /**
    * The CSS `background-blend-mode` property
    */
-  bgBlendMode?: ResponsiveValue<CSS.Property.BackgroundBlendMode>
+  bgBlendMode?: ResponsiveValue<CSS.BackgroundBlendModeProperty>
   /**
    * The CSS `background-size` property
    */
-  backgroundSize?: ResponsiveValue<CSS.Property.BackgroundSize<Length>>
+  backgroundSize?: ResponsiveValue<CSS.BackgroundSizeProperty<Length>>
   /**
    * The CSS `background-position` property
    */
-  bgPos?: ResponsiveValue<CSS.Property.BackgroundPosition<Length>>
+  bgPos?: ResponsiveValue<CSS.BackgroundPositionProperty<Length>>
   /**
    * The CSS `background-position` property
    */
-  backgroundPosition?: ResponsiveValue<CSS.Property.BackgroundPosition<Length>>
+  backgroundPosition?: ResponsiveValue<CSS.BackgroundPositionProperty<Length>>
   /**
    * The CSS `background-image` property
    */
-  bgImage?: ResponsiveValue<CSS.Property.BackgroundImage>
+  bgImage?: ResponsiveValue<CSS.BackgroundImageProperty>
   /**
    * The CSS `background-image` property
    */
-  bgImg?: ResponsiveValue<CSS.Property.BackgroundImage>
+  bgImg?: ResponsiveValue<CSS.BackgroundImageProperty>
   /**
    * The CSS `background-repeat` property
    */
-  bgRepeat?: ResponsiveValue<CSS.Property.BackgroundRepeat>
+  bgRepeat?: ResponsiveValue<CSS.BackgroundRepeatProperty>
   /**
    * The CSS `background-repeat` property
    */
-  backgroundRepeat?: ResponsiveValue<CSS.Property.BackgroundRepeat>
+  backgroundRepeat?: ResponsiveValue<CSS.BackgroundRepeatProperty>
   /**
    * The CSS `background-size` property
    */
-  bgSize?: ResponsiveValue<CSS.Property.BackgroundSize<Length>>
+  bgSize?: ResponsiveValue<CSS.BackgroundSizeProperty<Length>>
   /**
    * The CSS `background-attachment` property
    */
-  bgAttachment?: ResponsiveValue<CSS.Property.BackgroundAttachment>
+  bgAttachment?: ResponsiveValue<CSS.BackgroundAttachmentProperty>
   /**
    * The CSS `background-attachment` property
    */
-  backgroundAttachment?: ResponsiveValue<CSS.Property.BackgroundAttachment>
+  backgroundAttachment?: ResponsiveValue<CSS.BackgroundAttachmentProperty>
   /**
    * The CSS `background-position` property
    */
-  bgPosition?: ResponsiveValue<CSS.Property.BackgroundPosition<Length>>
+  bgPosition?: ResponsiveValue<CSS.BackgroundPositionProperty<Length>>
 }
 
 export const background = system(config)
