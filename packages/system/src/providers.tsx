@@ -11,9 +11,7 @@ import { Global, Interpolation, ThemeContext } from "@emotion/core"
 import * as React from "react"
 
 export interface ThemeProviderProps {
-  /**
-   * The theme to use for your application
-   */
+  children?: React.ReactNode
   theme: Dict
 }
 
@@ -42,21 +40,9 @@ export function useTheme<T extends object = Dict>() {
   return theme
 }
 
-export interface ChakraProviderProps extends ThemeProviderProps {
-  /**
-   * The storage mechanism for the color mode value.
-   * - CSR: We recommend using `localStorage`
-   * - SSR: We recommend using `cookieStorage`
-   */
+export type ChakraProviderProps = ThemeProviderProps & {
   storageManager?: StorageManager
-  /**
-   * Configuration for the `PortalManager`
-   */
   portalConfig?: Omit<PortalManagerProps, "children">
-  /**
-   * If `true`, `CSSReset` component will be mounted to help
-   * you reset browser styles
-   */
   resetCSS?: boolean
 }
 
@@ -96,10 +82,6 @@ const [StylesProvider, useStyles] = createContext<Dict<SystemStyleObject>>({
 
 export { StylesProvider, useStyles }
 
-/**
- * Applies styles defined in `theme.styles.global` globally
- * using emotion's `Global` component
- */
 export const GlobalStyle = () => {
   const { colorMode } = useColorMode()
   return (
