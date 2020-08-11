@@ -1,25 +1,27 @@
-import { multiStyleConfig } from "@chakra-ui/theme-tools"
+const parts = {
+  link: "the breadcrumb",
+  separator: "the separator between each link",
+}
 
-const breadcrumb = multiStyleConfig({
-  parts: {
-    link: "the breadcrumb",
-    separator: "the separator between each link",
+const baseStyleLink = {
+  transition: "all 0.15s ease-out",
+  cursor: "pointer",
+  textDecoration: "none",
+  outline: "none",
+  color: "inherit",
+  _hover: {
+    textDecoration: "underline",
   },
-  baseStyle: {
-    link: {
-      transition: "all 0.15s ease-out",
-      cursor: "pointer",
-      textDecoration: "none",
-      outline: "none",
-      color: "inherit",
-      _hover: {
-        textDecoration: "underline",
-      },
-      _focus: {
-        boxShadow: "outline",
-      },
-    },
+  _focus: {
+    boxShadow: "outline",
   },
-})
+}
 
-export default breadcrumb
+const baseStyle = {
+  link: baseStyleLink,
+}
+
+export default {
+  parts,
+  baseStyle,
+}
