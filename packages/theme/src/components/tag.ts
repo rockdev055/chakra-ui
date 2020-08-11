@@ -82,7 +82,7 @@ const tag = multiStyleConfig({
   },
 
   defaultProps: {
-    size: "md",
+    size: "lg",
     variant: "subtle",
     colorScheme: "gray",
   },

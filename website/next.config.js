@@ -5,7 +5,6 @@ const fromUnixTime = require("date-fns/fromUnixTime")
 const format = require("date-fns/format")
 const { getEditUrl, addLeadingSlash } = require("@docusaurus/utils")
 const { Octokit } = require("@octokit/rest")
-const fs = require("fs")
 
 const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN })
 
@@ -49,13 +48,11 @@ async function getLastEdited(filePath) {
       "log",
       "-1",
       "--format=%ct, %an",
-      "--follow",
-      "--",
       filePath,
     ])
     return getTimestampAndAuthor(stdout)
   } catch (error) {
-    // console.error(error)
+    console.error(error)
   }
 }
 
