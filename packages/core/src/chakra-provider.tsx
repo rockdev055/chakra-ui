@@ -7,6 +7,7 @@ import {
   ThemeProvider,
   GlobalStyle,
 } from "@chakra-ui/system"
+import { styleConfig, multiStyleConfig } from "@chakra-ui/theme-tools"
 import defaultTheme from "@chakra-ui/theme"
 import * as React from "react"
 
@@ -45,6 +46,14 @@ export const ChakraProvider: React.FC<ChakraProviderProps> = (props) => {
     throw Error("ChakraProvider: the `theme` prop is required")
   }
 
+  Object.keys(theme.components).forEach((component) => {
+    return theme.components[component].parts
+      ? (theme.components[component] = multiStyleConfig(
+          theme.components[component],
+        ))
+      : (theme.components[component] = styleConfig(theme.components[component]))
+  })
+
   return (
     <ThemeProvider theme={theme}>
       <ColorModeProvider
@@ -52,8 +61,8 @@ export const ChakraProvider: React.FC<ChakraProviderProps> = (props) => {
         useSystemColorMode={theme?.config?.useSystemColorMode}
         storageManager={storageManager}
       >
-        {resetCSS && <CSSReset />}
         <GlobalStyle />
+        {resetCSS && <CSSReset />}
         {portalConfig ? (
           <PortalManager zIndex={portalConfig?.zIndex}>
             {children}
