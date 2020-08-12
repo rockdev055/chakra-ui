@@ -1,7 +1,8 @@
-import { Input } from "./input"
+import { styleConfig } from "@chakra-ui/theme-tools"
+import { inputStyles } from "./input"
 
 const baseStyle = {
-  ...Input.baseStyle?.field,
+  ...inputStyles.baseStyle?.field,
   paddingY: "8px",
   minHeight: "80px",
   lineHeight: "short",
@@ -9,28 +10,37 @@ const baseStyle = {
 
 const variants = {
   outline: (props: Record<string, any>) =>
-    Input.variants?.outline(props)?.field ?? {},
+    inputStyles.variants?.outline(props)?.field ?? {},
   flushed: (props: Record<string, any>) =>
-    Input.variants?.flushed(props)?.field ?? {},
+    inputStyles.variants?.flushed(props)?.field ?? {},
   filled: (props: Record<string, any>) =>
-    Input.variants?.filled(props).field ?? {},
-  unstyled: Input.variants?.unstyled.field,
+    inputStyles.variants?.filled(props).field ?? {},
+  unstyled: inputStyles.variants?.unstyled.field,
 }
 
 const sizes = {
-  sm: Input.sizes?.sm.field,
-  md: Input.sizes?.md.field,
-  lg: Input.sizes?.lg.field,
+  sm: inputStyles.sizes?.sm.field,
+  md: inputStyles.sizes?.md.field,
+  lg: inputStyles.sizes?.lg.field,
 }
 
 const defaultProps = {
   size: "md",
   variant: "outline",
-}
+} as const
 
-export const Textarea = {
+const textarea = styleConfig({
+  baseStyle,
+  sizes,
+  variants,
+  defaultProps,
+})
+
+export const textareaStyles = {
   baseStyle,
   sizes,
   variants,
   defaultProps,
 }
+
+export default textarea

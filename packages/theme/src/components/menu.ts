@@ -1,4 +1,4 @@
-import { mode } from "@chakra-ui/theme-tools"
+import { mode, multiStyleConfig } from "@chakra-ui/theme-tools"
 
 const parts = {
   item: "the menu item button",
@@ -62,7 +62,14 @@ const baseStyle = function (props: Record<string, any>) {
   }
 }
 
-export const Menu = {
+const menu = multiStyleConfig({
+  parts,
+  baseStyle,
+})
+
+export const menuStyles = {
   parts,
   baseStyle,
 }
+
+export default menu
