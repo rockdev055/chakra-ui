@@ -57,12 +57,6 @@ export interface UseTabsProps {
    * The id of the tab
    */
   id?: string
-  /**
-   * Performance 🚀:
-   * If `true`, the TabPanel rendering will be deferred
-   * until it is open.
-   */
-  isLazy?: boolean
 }
 
 /**
@@ -80,7 +74,6 @@ export function useTabs(props: UseTabsProps) {
     onChange,
     index,
     isManual,
-    isLazy,
     orientation = "horizontal",
     ...htmlProps
   } = props
@@ -164,7 +157,6 @@ export function useTabs(props: UseTabsProps) {
     setSelectedIndex,
     setFocusedIndex,
     isManual,
-    isLazy,
     orientation,
     enabledDomContext,
     domContext,
@@ -386,11 +378,8 @@ export function useTabPanels<P extends UseTabPanelsProps>(props: P) {
  */
 export function useTabPanel(props: Dict) {
   const { isSelected, id, ...htmlProps } = props
-  const { isLazy } = useTabsContext()
-
   return {
     ...htmlProps,
-    children: !isLazy || isSelected ? props.children : null,
     role: "tabpanel",
     hidden: !isSelected,
     id,
