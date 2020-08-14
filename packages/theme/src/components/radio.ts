@@ -1,4 +1,5 @@
-import { Checkbox } from "./checkbox"
+import { multiStyleConfig } from "@chakra-ui/theme-tools"
+import { checkboxStyles } from "./checkbox"
 
 const parts = {
   control: "the radio input container",
@@ -6,7 +7,7 @@ const parts = {
 }
 
 const baseStyleControl = function (props: Record<string, any>) {
-  const { control } = Checkbox.baseStyle?.(props) ?? {}
+  const { control } = checkboxStyles.baseStyle?.(props) ?? {}
 
   return {
     ...control,
@@ -29,7 +30,7 @@ const baseStyleControl = function (props: Record<string, any>) {
 
 const baseStyle = function (props: Record<string, any>) {
   return {
-    label: Checkbox.baseStyle?.(props).label ?? {},
+    label: checkboxStyles.baseStyle?.(props).label ?? {},
     control: baseStyleControl(props),
   }
 }
@@ -52,11 +53,20 @@ const sizes = {
 const defaultProps = {
   size: "md",
   colorScheme: "blue",
-}
+} as const
 
-export const Radio = {
+const radio = multiStyleConfig({
+  parts,
+  baseStyle,
+  sizes,
+  defaultProps,
+})
+
+export const radioStyles = {
   parts,
   baseStyle,
   sizes,
   defaultProps,
 }
+
+export default radio

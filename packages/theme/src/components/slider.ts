@@ -1,4 +1,4 @@
-import { mode, orient } from "@chakra-ui/theme-tools"
+import { mode, orient, multiStyleConfig } from "@chakra-ui/theme-tools"
 
 function thumbOrientation(props: Record<string, any>) {
   return orient({
@@ -122,11 +122,20 @@ const sizes = {
 const defaultProps = {
   size: "md",
   colorScheme: "blue",
-}
+} as const
 
-export const Slider = {
+const slider = multiStyleConfig({
+  parts,
+  baseStyle,
+  sizes,
+  defaultProps,
+})
+
+export const sliderStyles = {
   parts,
   sizes,
   baseStyle,
   defaultProps,
 }
+
+export default slider

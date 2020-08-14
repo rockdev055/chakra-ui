@@ -1,4 +1,4 @@
-import { getColor, mode } from "@chakra-ui/theme-tools"
+import { getColor, mode, multiStyleConfig } from "@chakra-ui/theme-tools"
 
 function getDefaults(props: Record<string, any>) {
   const { focusBorderColor: fc, errorBorderColor: ec } = props
@@ -193,12 +193,22 @@ const variants = {
 const defaultProps = {
   size: "md",
   variant: "outline",
-}
+} as const
 
-export const Input = {
+const input = multiStyleConfig({
+  parts,
+  baseStyle,
+  sizes,
+  variants,
+  defaultProps,
+})
+
+export const inputStyles = {
   parts,
   baseStyle,
   sizes,
   variants,
   defaultProps,
 }
+
+export default input

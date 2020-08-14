@@ -1,4 +1,9 @@
-import { generateStripe, getColor, mode } from "@chakra-ui/theme-tools"
+import {
+  generateStripe,
+  getColor,
+  mode,
+  multiStyleConfig,
+} from "@chakra-ui/theme-tools"
 
 function filledStyle(props: Record<string, any>) {
   const { colorScheme: c, theme: t, isIndeterminate, hasStripe } = props
@@ -77,11 +82,20 @@ const sizes = {
 const defaultProps = {
   size: "md",
   colorScheme: "blue",
-}
+} as const
 
-export const Progress = {
+const progress = multiStyleConfig({
+  parts,
+  baseStyle,
+  sizes,
+  defaultProps,
+})
+
+export const progressStyles = {
   parts,
   sizes,
   baseStyle,
   defaultProps,
 }
+
+export default progress

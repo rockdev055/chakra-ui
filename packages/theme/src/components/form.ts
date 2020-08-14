@@ -1,4 +1,4 @@
-import { mode } from "@chakra-ui/theme-tools"
+import { mode, multiStyleConfig } from "@chakra-ui/theme-tools"
 
 const parts = {
   errorText: "the error message",
@@ -45,7 +45,14 @@ const baseStyle = (props: Record<string, any>) => ({
   errorIcon: baseStyleErrorIcon(props),
 })
 
-export const Form = {
+const form = multiStyleConfig({
+  parts,
+  baseStyle,
+})
+
+export const formStyles = {
   parts,
   baseStyle,
 }
+
+export default form

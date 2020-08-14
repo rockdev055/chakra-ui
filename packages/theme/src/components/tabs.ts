@@ -1,10 +1,4 @@
-import { getColor, mode } from "@chakra-ui/theme-tools"
-
-const alignments = {
-  end: "flex-end",
-  center: "center",
-  start: "flex-start",
-}
+import { getColor, mode, multiStyleConfig } from "@chakra-ui/theme-tools"
 
 const parts = {
   tablist: "the tab list or button group",
@@ -188,12 +182,28 @@ const defaultProps = {
   size: "md",
   variant: "line",
   colorScheme: "blue",
+} as const
+
+const tabs = multiStyleConfig({
+  parts,
+  baseStyle,
+  sizes,
+  variants,
+  defaultProps,
+})
+
+const alignments = {
+  end: "flex-end",
+  center: "center",
+  start: "flex-start",
 }
 
-export const Tabs = {
+export const tabsStyles = {
   parts,
   sizes,
   variants,
   baseStyle,
   defaultProps,
 }
+
+export default tabs

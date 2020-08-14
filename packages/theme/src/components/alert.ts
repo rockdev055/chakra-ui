@@ -1,4 +1,9 @@
-import { getColor, mode, transparentize } from "@chakra-ui/theme-tools"
+import {
+  getColor,
+  mode,
+  multiStyleConfig,
+  transparentize,
+} from "@chakra-ui/theme-tools"
 
 function getBg(props: Record<string, any>) {
   const { theme, colorScheme: c } = props
@@ -37,7 +42,7 @@ const baseStyle = {
 
 const defaultProps = {
   variant: "subtle",
-}
+} as const
 
 const variantSubtle = function (props: Record<string, any>) {
   const { colorScheme: c } = props
@@ -94,9 +99,17 @@ const variants = {
   solid: variantSolid,
 }
 
-export const Alert = {
+const alert = multiStyleConfig({
+  parts,
+  baseStyle,
+  variants,
+  defaultProps,
+})
+
+export const alertStyles = {
   parts,
   baseStyle,
   variants,
   defaultProps,
 }
+export default alert
