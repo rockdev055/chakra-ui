@@ -1,4 +1,4 @@
-import { mode } from "@chakra-ui/theme-tools"
+import { mode, styleConfig } from "@chakra-ui/theme-tools"
 
 const baseStyle = function (props: Record<string, any>) {
   const hoverBg = mode(`blackAlpha.100`, `whiteAlpha.100`)(props)
@@ -40,10 +40,18 @@ const sizes = {
 
 const defaultProps = {
   size: "md",
-}
+} as const
 
-export const CloseButton = {
+const closeButton = styleConfig({
+  baseStyle,
+  sizes,
+  defaultProps,
+})
+
+export const closeButtonStyles = {
   baseStyle,
   sizes,
   defaultProps,
 }
+
+export default closeButton

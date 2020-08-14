@@ -1,4 +1,4 @@
-import { mode } from "@chakra-ui/theme-tools"
+import { mode, multiStyleConfig } from "@chakra-ui/theme-tools"
 
 /**
  * Since the `maxWidth` prop references theme.sizes internally,
@@ -93,11 +93,20 @@ const sizes = {
 
 const defaultProps = {
   size: "md",
-}
+} as const
 
-export const Modal = {
+const modal = multiStyleConfig({
+  parts,
+  baseStyle,
+  sizes,
+  defaultProps,
+})
+
+export const modalStyles = {
   parts,
   baseStyle,
   sizes,
   defaultProps,
 }
+
+export default modal

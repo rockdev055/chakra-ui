@@ -1,4 +1,4 @@
-import { mode } from "@chakra-ui/theme-tools"
+import { mode, multiStyleConfig } from "@chakra-ui/theme-tools"
 
 const parts = {
   content: "the popover's content wrapper",
@@ -50,7 +50,14 @@ const baseStyle = function (props: Record<string, any>) {
   }
 }
 
-export const Popover = {
+const popover = multiStyleConfig({
+  parts,
+  baseStyle,
+})
+
+export const popoverStyles = {
   parts,
   baseStyle,
 }
+
+export default popover
