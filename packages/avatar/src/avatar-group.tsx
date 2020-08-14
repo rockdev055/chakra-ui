@@ -99,10 +99,9 @@ export const AvatarGroup = forwardRef<AvatarGroupProps, "div">(
         {...rest}
         className={cx("chakra-avatar__group", props.className)}
       >
-        {excess > 0 && (
+        {excess && (
           <chakra.span
             className="chakra-avatar__excess"
-            data-testid="avatar-excess"
             __css={excessStyles}
             children={`+${excess}`}
           />
