@@ -266,7 +266,7 @@ export function useMenuList(props: UseMenuListProps) {
 
   return {
     ...props,
-    children: !isLazy || isOpen ? props.children : null,
+    children: isLazy ? (isOpen ? props.children : null) : props.children,
     className: cx("chakra-menu__menu-list", props.className),
     ref: mergeRefs(menuRef, popper.ref),
     tabIndex: -1,

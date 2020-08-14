@@ -245,9 +245,7 @@ export function useNumberInput(props: UseNumberInputProps = {}) {
      * - sanitize the value by using parseFloat and some Regex
      * - used to round value to computed precision or decimal points
      */
-    if (counter.value !== next) {
-      counter.cast(next)
-    }
+    counter.cast(next)
   }, [counter, max, min])
 
   const onBlur = useCallback(() => {
