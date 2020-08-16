@@ -1,3 +1,5 @@
+import { styleConfig } from "@chakra-ui/theme-tools"
+
 const sizes = {
   xs: {
     w: "0.75rem",
@@ -23,9 +25,16 @@ const sizes = {
 
 const defaultProps = {
   size: "md",
-}
+} as const
 
-export default {
+const spinner = styleConfig({
+  sizes,
+  defaultProps,
+})
+
+export const spinnerStyles = {
   sizes,
   defaultProps,
 }
+
+export default spinner

@@ -1,3 +1,5 @@
+import { multiStyleConfig } from "@chakra-ui/theme-tools"
+
 const parts = {
   preview: "the editable text preview",
   input: "the editable input field",
@@ -23,7 +25,14 @@ const baseStyle = {
   input: baseStyleInput,
 }
 
-export default {
+const editable = multiStyleConfig({
+  parts,
+  baseStyle,
+})
+
+export const editableStyles = {
   parts,
   baseStyle,
 }
+
+export default editable

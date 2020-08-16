@@ -276,8 +276,6 @@ if (__DEV__) {
   ModalBody.displayName = "ModalBody"
 }
 
-export interface ModalFooterProps extends PropsOf<typeof chakra.footer> {}
-
 /**
  * ModalFooter
  *
@@ -285,27 +283,22 @@ export interface ModalFooterProps extends PropsOf<typeof chakra.footer> {}
  *
  * @see Docs https://chakra-ui.com/components/modal
  */
-export const ModalFooter = forwardRef<ModalFooterProps, "footer">(
-  function ModalFooter(props, ref) {
-    const { className, ...rest } = props
-    const _className = cx("chakra-modal__footer", className)
-    const styles = useStyles()
-    return (
-      <chakra.footer
-        ref={ref}
-        {...rest}
-        __css={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "flex-end",
-          flex: 0,
-          ...styles.footer,
-        }}
-        className={_className}
-      />
-    )
-  },
-)
+export const ModalFooter: React.FC<PropsOf<typeof chakra.footer>> = (props) => {
+  const styles = useStyles()
+  return (
+    <chakra.footer
+      {...props}
+      __css={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "flex-end",
+        flex: 0,
+        ...styles.footer,
+      }}
+      className={cx("chakra-modal__footer", props.className)}
+    />
+  )
+}
 
 if (__DEV__) {
   ModalFooter.displayName = "ModalFooter"

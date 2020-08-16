@@ -1,6 +1,7 @@
-import Badge from "./badge"
+import { styleConfig } from "@chakra-ui/theme-tools"
+import { badgeStyles } from "./badge"
 
-const { variants, defaultProps } = Badge
+const { variants, defaultProps } = badgeStyles
 
 const baseStyle = {
   fontFamily: "mono",
@@ -9,8 +10,16 @@ const baseStyle = {
   borderRadius: "sm",
 }
 
-export default {
+const code = styleConfig({
+  baseStyle,
+  variants,
+  defaultProps,
+})
+
+export const codeStyles = {
   baseStyle,
   variants,
   defaultProps,
 }
+
+export default code

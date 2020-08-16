@@ -1,3 +1,5 @@
+import { styleConfig } from "@chakra-ui/theme-tools"
+
 const baseStyle = {
   fontSize: "md",
   mr: 3,
@@ -10,6 +12,12 @@ const baseStyle = {
   },
 }
 
-export default {
+const label = styleConfig({
+  baseStyle,
+})
+
+export const formLabelStyles = {
   baseStyle,
 }
+
+export default label

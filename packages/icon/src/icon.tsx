@@ -51,11 +51,10 @@ export const Icon = forwardRef<IconProps, "svg">(function Icon(props, ref) {
   const _viewBox = viewBox ?? fallbackIcon.viewBox
 
   /**
-   * If you're using an icon library like `react-icons`.
-   * Note: anyone passing the `as` prop, should manage the `viewBox` from the external component
+   * If you're using an icon library like `react-icons`
    */
   if (element && typeof element !== "string") {
-    return <chakra.svg as={element} {...shared} {...rest} />
+    return <chakra.svg as={element} viewBox={_viewBox} {...shared} {...rest} />
   }
 
   const _path = (children ?? fallbackIcon.path) as React.ReactNode

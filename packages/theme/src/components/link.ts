@@ -1,3 +1,5 @@
+import { styleConfig } from "@chakra-ui/theme-tools"
+
 const baseStyle = {
   transition: `all 0.15s ease-out`,
   cursor: "pointer",
@@ -17,6 +19,12 @@ const baseStyle = {
   },
 }
 
-export default {
+const link = styleConfig({
+  baseStyle,
+})
+
+export const linkStyles = {
   baseStyle,
 }
+
+export default link

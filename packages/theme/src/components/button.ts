@@ -1,22 +1,6 @@
-import { mode, transparentize } from "@chakra-ui/theme-tools"
+import { mode, styleConfig, transparentize } from "@chakra-ui/theme-tools"
 
-type Dict = Record<string, any>
-
-const baseStyle = {
-  lineHeight: "1.2",
-  borderRadius: "md",
-  fontWeight: "semibold",
-  _focus: {
-    boxShadow: "outline",
-  },
-  _disabled: {
-    opacity: 0.4,
-    cursor: "not-allowed",
-    boxShadow: "none",
-  },
-}
-
-function variantGhost(props: Dict) {
+const variantGhost = function (props: Record<string, any>) {
   const { colorScheme: c, theme } = props
 
   if (c === "gray") {
@@ -42,7 +26,7 @@ function variantGhost(props: Dict) {
   }
 }
 
-function variantOutline(props: Dict) {
+const variantOutline = function (props: Record<string, any>) {
   const { colorScheme: c } = props
   const borderColor = mode(`gray.200`, `whiteAlpha.300`)(props)
   return {
@@ -52,7 +36,7 @@ function variantOutline(props: Dict) {
   }
 }
 
-function variantSolid(props: Dict) {
+const variantSolid = function (props: Record<string, any>) {
   const { colorScheme: c } = props
 
   if (c === "gray")
@@ -70,7 +54,7 @@ function variantSolid(props: Dict) {
   }
 }
 
-function variantLink(props: Dict) {
+const variantLink = function (props: Record<string, any>) {
   const { colorScheme: c } = props
   return {
     padding: 0,
@@ -99,6 +83,20 @@ const variants = {
   solid: variantSolid,
   link: variantLink,
   unstyled: variantUnstyled,
+}
+
+const baseStyle = {
+  lineHeight: "1.2",
+  borderRadius: "md",
+  fontWeight: "semibold",
+  _focus: {
+    boxShadow: "outline",
+  },
+  _disabled: {
+    opacity: 0.4,
+    cursor: "not-allowed",
+    boxShadow: "none",
+  },
 }
 
 const sizes = {
@@ -132,11 +130,20 @@ const defaultProps = {
   variant: "solid",
   size: "md",
   colorScheme: "gray",
-}
+} as const
 
-export default {
+const button = styleConfig({
+  baseStyle,
+  variants,
+  sizes,
+  defaultProps,
+})
+
+export const buttonStyles = {
   baseStyle,
   variants,
   sizes,
   defaultProps,
 }
+
+export default button

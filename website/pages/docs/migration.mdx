@@ -270,7 +270,7 @@ const theme = {
   Here's how to add it for Next.js:
 
 ```jsx live=false
-// pages/_document.js
+// pages/_app.js
 import { InitializeColorMode } from "@chakra-ui/core"
 
 export default class Document extends NextDocument {
@@ -351,27 +351,6 @@ with other icons:
 ```jsx live=false
 import { createIcon, MoonIcon, SunIcon } from "@chakra-ui/icons"
 ```
-
-### Icon Button
-
-- We've unified the usage of all icon props to only accept a React element.
-  Update all icon names used in `icon` to the equivalent icon
-  React element.
-
-> Replacement logic: If `icon` is `email`, then replace it with
-> `<EmailIcon/>` from Chakra.
-
-```diff
-import { PhoneIcon } from "@chakra-ui/core"
-
-- <IconButton icon="phone">Call</IconButton>
-+ <IconButton icon={<PhoneIcon />}>Call</IconButton>
-```
-
-**This reduces the effort needed to use custom icons, eliminates TypeScript
-errors, and reduces unused icons bloating your app.**
-
-- Renamed `variantColor` to `colorScheme`
 
 ### Skeleton
 

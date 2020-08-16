@@ -1,6 +1,6 @@
-import { mode } from "@chakra-ui/theme-tools"
+import { mode, styleConfig } from "@chakra-ui/theme-tools"
 
-function baseStyle(props: Record<string, any>) {
+const baseStyle = function (props: Record<string, any>) {
   return {
     px: "8px",
     py: "2px",
@@ -15,6 +15,12 @@ function baseStyle(props: Record<string, any>) {
   }
 }
 
-export default {
+const tooltip = styleConfig({
+  baseStyle,
+})
+
+export const tooltipStyles = {
   baseStyle,
 }
+
+export default tooltip
