@@ -7,7 +7,7 @@ const parts = {
   icon: "the checkmark icon",
 }
 
-function baseStyleControl(props: Record<string, any>) {
+const baseStyleControl = function (props: Record<string, any>) {
   const { colorScheme: c } = props
 
   return {
@@ -91,11 +91,9 @@ const defaultProps = {
   colorScheme: "blue",
 }
 
-const checkbox = {
+export const Checkbox = {
   parts,
   baseStyle,
   sizes,
   defaultProps,
 }
-
-export default checkbox

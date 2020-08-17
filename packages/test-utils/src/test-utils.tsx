@@ -1,30 +1,26 @@
-import { ChakraProvider } from "@chakra-ui/core"
+import theme from "@chakra-ui/theme"
+import { GlobalStyle, ThemeProvider } from "@chakra-ui/system"
+import CSSReset from "@chakra-ui/css-reset"
 import "@testing-library/jest-dom/extend-expect"
-import {
-  render as RTLRender,
-  RenderOptions,
-  fireEvent,
-  RenderResult,
-} from "@testing-library/react"
+import { render, RenderOptions, fireEvent } from "@testing-library/react"
 import * as React from "react"
 import { toHaveNoViolations } from "jest-axe"
 import serializer from "jest-emotion"
 
 expect.addSnapshotSerializer(serializer)
+
 expect.extend(toHaveNoViolations)
 
 const AllProviders: React.FC = ({ children }) => (
-  <ChakraProvider resetCSS>{children}</ChakraProvider>
+  <ThemeProvider theme={theme}>
+    <CSSReset />
+    <GlobalStyle />
+    {children}
+  </ThemeProvider>
 )
 
-export function render(
-  ui: React.ReactElement,
-  options?: Omit<RenderOptions, "queries">,
-): RenderResult
-
-export function render(ui: React.ReactElement, options?: RenderOptions) {
-  return RTLRender(ui, { wrapper: AllProviders, ...options })
-}
+const customRender = (ui: React.ReactElement, options?: RenderOptions) =>
+  render(ui, { wrapper: AllProviders, ...options })
 
 export * from "@testing-library/react"
 
@@ -36,6 +32,8 @@ export {
 } from "@testing-library/react-hooks"
 
 export { default as userEvent } from "@testing-library/user-event"
+
+export { customRender as render }
 
 export * from "jest-axe"
 

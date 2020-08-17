@@ -1,5 +1,19 @@
 import { mode } from "@chakra-ui/theme-tools"
 
+/**
+ * Since the `maxWidth` prop references theme.sizes internally,
+ * we can leverage that to size our modals.
+ */
+function getSize(value: string) {
+  if (value === "full") {
+    return { content: { maxW: "100vw", h: "100vh" } }
+  }
+
+  return {
+    content: { maxW: value },
+  }
+}
+
 const parts = {
   overlay: "the modal overlay",
   content: "the modal content wrapper",
@@ -8,9 +22,7 @@ const parts = {
   footer: "the modal footer action",
 }
 
-type Dict = Record<string, any>
-
-function baseStyleOverlay(props: Dict) {
+const baseStyleOverlay = function (props: Record<string, any>) {
   const { isCentered, scrollBehavior } = props
 
   return {
@@ -22,7 +34,7 @@ function baseStyleOverlay(props: Dict) {
   }
 }
 
-function baseStyleContent(props: Dict) {
+const baseStyleContent = function (props: Record<string, any>) {
   const { scrollBehavior } = props
 
   return {
@@ -42,7 +54,7 @@ const baseStyleHeader = {
   fontWeight: "semibold",
 }
 
-function baseStyleBody(props: Dict) {
+const baseStyleBody = function (props: Record<string, any>) {
   const { scrollBehavior } = props
   return {
     px: 6,
@@ -57,27 +69,13 @@ const baseStyleFooter = {
   py: 4,
 }
 
-const baseStyle = (props: Dict) => ({
+const baseStyle = (props: Record<string, any>) => ({
   overlay: baseStyleOverlay(props),
   content: baseStyleContent(props),
   header: baseStyleHeader,
   body: baseStyleBody(props),
   footer: baseStyleFooter,
 })
-
-/**
- * Since the `maxWidth` prop references theme.sizes internally,
- * we can leverage that to size our modals.
- */
-function getSize(value: string) {
-  if (value === "full") {
-    return { content: { maxW: "100vw", h: "100vh" } }
-  }
-
-  return {
-    content: { maxW: value },
-  }
-}
 
 const sizes = {
   xs: getSize("xs"),
@@ -97,11 +95,9 @@ const defaultProps = {
   size: "md",
 }
 
-const modal = {
+export const Modal = {
   parts,
   baseStyle,
   sizes,
   defaultProps,
 }
-
-export default modal

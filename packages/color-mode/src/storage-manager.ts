@@ -13,32 +13,16 @@ export interface StorageManager {
  */
 export const localStorageManager: StorageManager = {
   get(init?) {
-    try {
-      const exist =
-        isStorageSupported && !!window.localStorage.getItem(storageKey)
+    const exist =
+      isStorageSupported && !!window.localStorage.getItem(storageKey)
 
-      const value = exist ? window.localStorage.getItem(storageKey) : init
+    const value = exist ? window.localStorage.getItem(storageKey) : init
 
-      return value as ColorMode | undefined
-    } catch (err) {
-      console.warn(
-        "localStorage is disabled and color mode might not work as expected.",
-        "Please check your Browser Settings.",
-        err,
-      )
-    }
+    return value as ColorMode | undefined
   },
   set(value) {
-    try {
-      if (isStorageSupported) {
-        window.localStorage.setItem(storageKey, value)
-      }
-    } catch (err) {
-      console.warn(
-        "localStorage is disabled and color mode might not work as expected.",
-        "Please check your Browser Settings.",
-        err,
-      )
+    if (isStorageSupported) {
+      window.localStorage.setItem(storageKey, value)
     }
   },
 }
@@ -55,6 +39,6 @@ export const cookieStorageManager = (cookies = ""): StorageManager => ({
     return value as ColorMode | undefined
   },
   set(value) {
-    document.cookie = `${storageKey}=${value}; max-age=31536000; path=/`
+    document.cookie = `${storageKey}=${value}; max-age=31536000;`
   },
 })

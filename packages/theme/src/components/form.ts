@@ -1,7 +1,5 @@
 import { mode } from "@chakra-ui/theme-tools"
 
-type Dict = Record<string, any>
-
 const parts = {
   errorText: "the error message",
   errorIcon: "the error icon",
@@ -9,7 +7,7 @@ const parts = {
   helperText: "the helper text",
 }
 
-function baseStyleErrorText(props: Dict) {
+const baseStyleErrorText = function (props: Record<string, any>) {
   return {
     color: mode("red.500", "red.300")(props),
     mt: 2,
@@ -17,14 +15,14 @@ function baseStyleErrorText(props: Dict) {
   }
 }
 
-function baseStyleRequiredIndicator(props: Dict) {
+const baseStyleRequiredIndicator = function (props: Record<string, any>) {
   return {
     ml: 1,
     color: mode("red.500", "red.300")(props),
   }
 }
 
-function baseStyleHelperText(props: Dict) {
+const baseStyleHelperText = function (props: Record<string, any>) {
   return {
     mt: 2,
     color: mode("gray.500", "whiteAlpha.600")(props),
@@ -33,23 +31,21 @@ function baseStyleHelperText(props: Dict) {
   }
 }
 
-function baseStyleErrorIcon(props: Dict) {
+const baseStyleErrorIcon = function (props: Record<string, any>) {
   return {
     mr: "0.5em",
     color: mode("red.500", "red.300")(props),
   }
 }
 
-const baseStyle = (props: Dict) => ({
+const baseStyle = (props: Record<string, any>) => ({
   errorText: baseStyleErrorText(props),
   requiredIndicator: baseStyleRequiredIndicator(props),
   helperText: baseStyleHelperText(props),
   errorIcon: baseStyleErrorIcon(props),
 })
 
-const form = {
+export const Form = {
   parts,
   baseStyle,
 }
-
-export default form

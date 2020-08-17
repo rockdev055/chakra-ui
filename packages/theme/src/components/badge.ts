@@ -1,14 +1,14 @@
 import { getColor, mode, transparentize } from "@chakra-ui/theme-tools"
 
 const baseStyle = {
-  px: 1,
+  paddingX: 1,
   textTransform: "uppercase",
   fontSize: "xs",
   borderRadius: "sm",
   fontWeight: "bold",
 }
 
-function variantSolid(props: Record<string, any>) {
+const variantSolid = function (props: Record<string, any>) {
   const { colorScheme: c, theme } = props
   const dark = transparentize(`${c}.500`, 0.6)(theme)
   return {
@@ -17,7 +17,7 @@ function variantSolid(props: Record<string, any>) {
   }
 }
 
-function variantSubtle(props: Record<string, any>) {
+const variantSubtle = function (props: Record<string, any>) {
   const { colorScheme: c, theme } = props
   const darkBg = transparentize(`${c}.200`, 0.16)(theme)
   return {
@@ -26,7 +26,7 @@ function variantSubtle(props: Record<string, any>) {
   }
 }
 
-function variantOutline(props: Record<string, any>) {
+const variantOutline = function (props: Record<string, any>) {
   const { colorScheme: c, theme } = props
   const darkColor = transparentize(`${c}.200`, 0.8)(theme)
   const lightColor = getColor(theme, `${c}.500`)
@@ -49,10 +49,8 @@ const defaultProps = {
   colorScheme: "gray",
 }
 
-const badge = {
+export const Badge = {
   baseStyle,
   variants,
   defaultProps,
 }
-
-export default badge

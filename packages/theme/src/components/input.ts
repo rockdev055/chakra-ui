@@ -1,18 +1,16 @@
 import { getColor, mode } from "@chakra-ui/theme-tools"
 
+function getDefaults(props: Record<string, any>) {
+  const { focusBorderColor: fc, errorBorderColor: ec } = props
+  return {
+    focusBorderColor: fc || mode("blue.500", "blue.300")(props),
+    errorBorderColor: ec || mode("red.500", "red.300")(props),
+  }
+}
+
 const parts = {
   field: "the input field itself",
   addon: "the left and right input addon",
-}
-
-const baseStyle = {
-  field: {
-    width: "100%",
-    outline: 0,
-    position: "relative",
-    appearance: "none",
-    transition: "all 0.2s",
-  },
 }
 
 const size = {
@@ -41,6 +39,16 @@ const size = {
   },
 }
 
+const baseStyle = {
+  field: {
+    width: "100%",
+    outline: 0,
+    position: "relative",
+    appearance: "none",
+    transition: "all 0.2s",
+  },
+}
+
 const sizes = {
   lg: {
     field: size.lg,
@@ -56,15 +64,7 @@ const sizes = {
   },
 }
 
-function getDefaults(props: Record<string, any>) {
-  const { focusBorderColor: fc, errorBorderColor: ec } = props
-  return {
-    focusBorderColor: fc || mode("blue.500", "blue.300")(props),
-    errorBorderColor: ec || mode("red.500", "red.300")(props),
-  }
-}
-
-function variantOutline(props: Record<string, any>) {
+const variantOutline = function (props: Record<string, any>) {
   const { theme } = props
   const { focusBorderColor: fc, errorBorderColor: ec } = getDefaults(props)
 
@@ -102,7 +102,7 @@ function variantOutline(props: Record<string, any>) {
   }
 }
 
-function variantFilled(props: Record<string, any>) {
+const variantFilled = function (props: Record<string, any>) {
   const { theme } = props
   const { focusBorderColor: fc, errorBorderColor: ec } = getDefaults(props)
 
@@ -138,7 +138,7 @@ function variantFilled(props: Record<string, any>) {
   }
 }
 
-function variantFlushed(props: Record<string, any>) {
+const variantFlushed = function (props: Record<string, any>) {
   const { theme } = props
   const { focusBorderColor: fc, errorBorderColor: ec } = getDefaults(props)
 
@@ -195,12 +195,10 @@ const defaultProps = {
   variant: "outline",
 }
 
-const input = {
+export const Input = {
   parts,
   baseStyle,
   sizes,
   variants,
   defaultProps,
 }
-
-export default input

@@ -1,13 +1,5 @@
 import { mode } from "@chakra-ui/theme-tools"
 
-const parts = {
-  overlay: "the overlay or shim",
-  content: "the main content wrapper",
-  header: "the content heading",
-  body: "the main content area",
-  footer: "the action footer",
-}
-
 /**
  * Since the `maxWidth` prop references theme.sizes internally,
  * we can leverage that to size our modals.
@@ -22,11 +14,19 @@ function getSize(value: string) {
   }
 }
 
+const parts = {
+  overlay: "the overlay or shim",
+  content: "the main content wrapper",
+  header: "the content heading",
+  body: "the main content area",
+  footer: "the action footer",
+}
+
 const baseStyleOverlay = {
   bg: "blackAlpha.600",
 }
 
-function baseStyleContent(props: Record<string, any>) {
+const baseStyleContent = function (props: Record<string, any>) {
   const { isFullHeight } = props
 
   return {
@@ -77,11 +77,9 @@ const defaultProps = {
   size: "xs",
 }
 
-const drawer = {
+export const Drawer = {
   parts,
   baseStyle,
   sizes,
   defaultProps,
 }
-
-export default drawer

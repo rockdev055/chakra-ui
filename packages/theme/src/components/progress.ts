@@ -1,13 +1,6 @@
 import { generateStripe, getColor, mode } from "@chakra-ui/theme-tools"
-type Dict = Record<string, any>
 
-const parts = {
-  track: "the linear progress track",
-  filledTrack: "the inner filled track",
-  label: "the value indicator or label",
-}
-
-function filledStyle(props: Dict) {
+function filledStyle(props: Record<string, any>) {
   const { colorScheme: c, theme: t, isIndeterminate, hasStripe } = props
 
   const stripeStyle = mode(
@@ -32,6 +25,12 @@ function filledStyle(props: Dict) {
   }
 }
 
+const parts = {
+  track: "the linear progress track",
+  filledTrack: "the inner filled track",
+  label: "the value indicator or label",
+}
+
 const baseStyleLabel = {
   lineHeight: "1",
   fontSize: "0.25em",
@@ -39,20 +38,20 @@ const baseStyleLabel = {
   color: "white",
 }
 
-function baseStyleTrack(props: Dict) {
+const baseStyleTrack = function (props: Record<string, any>) {
   return {
     bg: mode(`gray.100`, `whiteAlpha.300`)(props),
   }
 }
 
-function baseStyleFilledTrack(props: Dict) {
+const baseStyleFilledTrack = function (props: Record<string, any>) {
   return {
     transition: "all 0.3s",
     ...filledStyle(props),
   }
 }
 
-const baseStyle = function (props: Dict) {
+const baseStyle = function (props: Record<string, any>) {
   return {
     label: baseStyleLabel,
     filledTrack: baseStyleFilledTrack(props),
@@ -80,11 +79,9 @@ const defaultProps = {
   colorScheme: "blue",
 }
 
-const progress = {
+export const Progress = {
   parts,
-  baseStyle,
   sizes,
+  baseStyle,
   defaultProps,
 }
-
-export default progress

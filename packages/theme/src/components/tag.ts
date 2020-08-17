@@ -1,12 +1,10 @@
-import badge from "./badge"
+import { Badge } from "./badge"
 
 const parts = {
   container: "the tag container",
   label: "the tag inner text",
   closeButton: "the close button",
 }
-
-type Dict = Record<string, any>
 
 const baseStyleContainer = {
   fontWeight: "medium",
@@ -77,15 +75,15 @@ const sizes = {
 }
 
 const variants = {
-  subtle: (props: Dict) => ({
-    container: badge.variants.subtle(props),
-  }),
-  solid: (props: Dict) => ({
-    container: badge.variants.solid(props),
-  }),
-  outline: (props: Dict) => ({
-    container: badge.variants.outline(props),
-  }),
+  subtle: function (props: Record<string, any>) {
+    return { container: Badge.variants?.subtle(props) }
+  },
+  solid: function (props: Record<string, any>) {
+    return { container: Badge.variants?.solid(props) }
+  },
+  outline: function (props: Record<string, any>) {
+    return { container: Badge.variants?.outline(props) }
+  },
 }
 
 const defaultProps = {
@@ -94,12 +92,10 @@ const defaultProps = {
   colorScheme: "gray",
 }
 
-const tag = {
+export const Tag = {
   parts,
+  variants,
   baseStyle,
   sizes,
-  variants,
   defaultProps,
 }
-
-export default tag

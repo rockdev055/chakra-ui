@@ -31,8 +31,6 @@ const baseStyle = function (props: Record<string, any>) {
   }
 }
 
-const skeleton = {
+export const Skeleton = {
   baseStyle,
 }
-
-export default skeleton

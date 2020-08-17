@@ -1,6 +1,6 @@
 import { mode } from "@chakra-ui/theme-tools"
 
-function baseStyle(props: Record<string, any>) {
+const baseStyle = function (props: Record<string, any>) {
   const hoverBg = mode(`blackAlpha.100`, `whiteAlpha.100`)(props)
   const activeBg = mode(`blackAlpha.200`, `whiteAlpha.200`)(props)
 
@@ -42,10 +42,8 @@ const defaultProps = {
   size: "md",
 }
 
-const closeButton = {
+export const CloseButton = {
   baseStyle,
   sizes,
   defaultProps,
 }
-
-export default closeButton
