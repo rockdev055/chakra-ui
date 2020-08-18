@@ -23,7 +23,9 @@ const baseStyle = {
   input: baseStyleInput,
 }
 
-export const Editable = {
+const editable = {
   parts,
   baseStyle,
 }
+
+export default editable

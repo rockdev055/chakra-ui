@@ -1,26 +1,25 @@
-import { Input } from "./input"
+import input from "./input"
+
+type Dict = Record<string, any>
 
 const baseStyle = {
-  ...Input.baseStyle?.field,
+  ...input.baseStyle.field,
   paddingY: "8px",
   minHeight: "80px",
   lineHeight: "short",
 }
 
 const variants = {
-  outline: (props: Record<string, any>) =>
-    Input.variants?.outline(props)?.field ?? {},
-  flushed: (props: Record<string, any>) =>
-    Input.variants?.flushed(props)?.field ?? {},
-  filled: (props: Record<string, any>) =>
-    Input.variants?.filled(props).field ?? {},
-  unstyled: Input.variants?.unstyled.field,
+  outline: (props: Dict) => input.variants.outline(props).field,
+  flushed: (props: Dict) => input.variants.flushed(props).field,
+  filled: (props: Dict) => input.variants.filled(props).field,
+  unstyled: input.variants.unstyled.field,
 }
 
 const sizes = {
-  sm: Input.sizes?.sm.field,
-  md: Input.sizes?.md.field,
-  lg: Input.sizes?.lg.field,
+  sm: input.sizes.sm.field,
+  md: input.sizes.md.field,
+  lg: input.sizes.lg.field,
 }
 
 const defaultProps = {
@@ -28,9 +27,11 @@ const defaultProps = {
   variant: "outline",
 }
 
-export const Textarea = {
+const textarea = {
   baseStyle,
   sizes,
   variants,
   defaultProps,
 }
+
+export default textarea

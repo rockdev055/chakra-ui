@@ -21,7 +21,9 @@ const baseStyle = {
   link: baseStyleLink,
 }
 
-export const Breadcrumb = {
+const breadcrumb = {
   parts,
   baseStyle,
 }
+
+export default breadcrumb

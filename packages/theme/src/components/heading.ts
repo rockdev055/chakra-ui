@@ -23,8 +23,10 @@ const defaultProps = {
   size: "xl",
 }
 
-export const Heading = {
+const heading = {
   baseStyle,
   sizes,
   defaultProps,
 }
+
+export default heading

@@ -1,7 +1,8 @@
-import { Input } from "./input"
+import input from "./input"
+type Dict = Record<string, any>
 
 const baseStyle = {
-  ...Input.baseStyle?.field,
+  ...input.baseStyle.field,
   textAlign: "center",
 }
 
@@ -27,20 +28,19 @@ const sizes = {
 }
 
 const variants = {
-  outline: (props: Record<string, any>) =>
-    Input.variants?.outline(props)?.field ?? {},
-  flushed: (props: Record<string, any>) =>
-    Input.variants?.flushed(props)?.field ?? {},
-  filled: (props: Record<string, any>) =>
-    Input.variants?.filled(props).field ?? {},
-  unstyled: Input.variants?.unstyled.field,
+  outline: (props: Dict) => input.variants.outline(props).field,
+  flushed: (props: Dict) => input.variants.flushed(props).field,
+  filled: (props: Dict) => input.variants.filled(props).field,
+  unstyled: input.variants.unstyled.field,
 }
 
-const defaultProps = Input.defaultProps
+const defaultProps = input.defaultProps
 
-export const PinInput = {
+const pinInput = {
   baseStyle,
   sizes,
   variants,
   defaultProps,
 }
+
+export default pinInput

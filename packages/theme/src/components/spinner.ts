@@ -25,7 +25,9 @@ const defaultProps = {
   size: "md",
 }
 
-export const Spinner = {
+const spinner = {
   sizes,
   defaultProps,
 }
+
+export default spinner
