@@ -4,7 +4,6 @@ import {
   omitThemingProps,
   PropsOf,
   StylesProvider,
-  SystemStyleObject,
   ThemingProps,
   useMultiStyleConfig,
   useStyles,
@@ -26,7 +25,7 @@ export interface ProgressLabelProps extends PropsOf<typeof chakra.div> {}
  */
 export const ProgressLabel: React.FC<ProgressLabelProps> = (props) => {
   const styles = useStyles()
-  const labelStyles: SystemStyleObject = {
+  const labelStyles = {
     top: "50%",
     left: "50%",
     width: "100%",
@@ -161,7 +160,7 @@ export const Progress: React.FC<ProgressProps> = (props) => {
     }),
   }
 
-  const trackStyles: SystemStyleObject = {
+  const trackStyles = {
     overflow: "hidden",
     position: "relative",
     ...styles.track,

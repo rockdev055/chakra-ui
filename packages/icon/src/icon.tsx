@@ -1,9 +1,4 @@
-import {
-  chakra,
-  forwardRef,
-  PropsOf,
-  SystemStyleObject,
-} from "@chakra-ui/system"
+import { chakra, forwardRef, PropsOf } from "@chakra-ui/system"
 import { cx, __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
 
@@ -42,7 +37,7 @@ export const Icon = forwardRef<IconProps, "svg">(function Icon(props, ref) {
 
   const _className = cx("chakra-icon", className)
 
-  const styles: SystemStyleObject = {
+  const styles = {
     w: "1em",
     h: "1em",
     display: "inline-block",

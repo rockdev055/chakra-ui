@@ -1,15 +1,14 @@
 import {
   chakra,
-  forwardRef,
-  omitThemingProps,
   PropsOf,
-  StylesProvider,
-  SystemStyleObject,
   ThemingProps,
   useMultiStyleConfig,
+  omitThemingProps,
+  StylesProvider,
   useStyles,
+  forwardRef,
 } from "@chakra-ui/system"
-import { createContext, cx, __DEV__ } from "@chakra-ui/utils"
+import { createContext, __DEV__, cx } from "@chakra-ui/utils"
 import * as React from "react"
 import { useSlider, UseSliderProps, UseSliderReturn } from "./use-slider"
 
@@ -48,7 +47,7 @@ export const Slider = forwardRef<SliderProps, "div">(function Slider(
   const rootProps = getRootProps()
   const inputProps = getInputProps({}, ref)
 
-  const rootStyles: SystemStyleObject = {
+  const rootStyles = {
     display: "inline-block",
     position: "relative",
     cursor: "pointer",
@@ -88,8 +87,7 @@ export const SliderThumb = forwardRef<SliderThumbProps, "div">(
     const { getThumbProps } = useSliderContext()
 
     const styles = useStyles()
-
-    const thumbStyles: SystemStyleObject = {
+    const thumbStyles = {
       display: "flex",
       alignItems: "center",
       justifyContent: "center",

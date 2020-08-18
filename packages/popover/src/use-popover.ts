@@ -146,9 +146,10 @@ export function usePopover(props: UsePopoverProps = {}) {
   const shadowColor = arrowShadowColor ?? fallbackShadowColor
   const arrowColor = useToken("colors", shadowColor, arrowShadowColor)
 
-  const popper = usePopper({
+  const { popper, reference, arrow } = usePopper({
     placement: placementProp,
     gutter,
+    forceUpdate: isOpen,
     arrowSize,
     arrowShadowColor: arrowColor,
     modifiers,
@@ -182,17 +183,21 @@ export function usePopover(props: UsePopoverProps = {}) {
   })
 
   const getPopoverProps: PropGetter = useCallback(
-    (props = {}, _ref = null) => {
+    (props = {}, ref = null) => {
       const popoverProps: HTMLProps = {
         ...props,
         children: isLazy ? (isOpen ? props.children : null) : props.children,
         id: popoverId,
         tabIndex: -1,
-        style: { visibility: isOpen ? "visible" : "hidden" },
+        hidden: !isOpen,
         role: "dialog",
         onKeyDown: callAllHandlers(props.onKeyDown, (event) => {
-          if (closeOnEsc && event.key === "Escape") onClose()
+          if (closeOnEsc && event.key === "Escape") {
+            onClose()
+          }
         }),
+        ref: mergeRefs(popoverRef, popper.ref, ref),
+        style: { ...props.style, ...popper.style },
         "aria-labelledby": hasHeader ? headerId : undefined,
         "aria-describedby": hasBody ? bodyId : undefined,
       }
@@ -208,32 +213,46 @@ export function usePopover(props: UsePopoverProps = {}) {
         })
       }
 
-      return popper.getPopperProps(popoverProps, mergeRefs(popoverRef, _ref))
+      return popoverProps
     },
     [
-      isLazy,
-      isOpen,
       popoverId,
+      isOpen,
+      isLazy,
+      popper.ref,
+      popper.style,
       hasHeader,
       headerId,
       hasBody,
       bodyId,
       trigger,
-      popper,
       closeOnEsc,
       onClose,
       closeDelay,
     ],
   )
 
+  const getArrowProps: PropGetter = useCallback(
+    (props = {}, ref = null) => ({
+      ...props,
+      ref: mergeRefs(arrow.ref, ref),
+      style: {
+        ...props.style,
+        ...arrow.style,
+      },
+    }),
+    [arrow.ref, arrow.style],
+  )
+
   const openTimeout = useRef<number>()
   const closeTimeout = useRef<number>()
 
   const getTriggerProps: PropGetter = useCallback(
-    (props = {}, _ref = null) => {
+    (props = {}, ref = null) => {
       const triggerProps: HTMLProps = {
         ...props,
         id: triggerId,
+        ref: mergeRefs(triggerRef, reference.ref, ref),
         "aria-haspopup": "dialog",
         "aria-expanded": isOpen,
         "aria-controls": popoverId,
@@ -284,26 +303,31 @@ export function usePopover(props: UsePopoverProps = {}) {
         })
       }
 
-      return popper.getReferenceProps(triggerProps, mergeRefs(triggerRef, _ref))
+      return triggerProps
     },
     [
-      triggerId,
-      isOpen,
-      popoverId,
-      trigger,
-      popper,
-      onToggle,
-      onOpen,
-      onClose,
       openDelay,
       closeDelay,
+      isOpen,
+      onToggle,
+      popoverId,
+      reference.ref,
+      triggerId,
+      trigger,
+      onOpen,
+      onClose,
     ],
   )
 
   useEffect(() => {
     return () => {
-      if (openTimeout.current) clearTimeout(openTimeout.current)
-      if (closeTimeout.current) clearTimeout(closeTimeout.current)
+      if (openTimeout.current) {
+        clearTimeout(openTimeout.current)
+      }
+
+      if (closeTimeout.current) {
+        clearTimeout(closeTimeout.current)
+      }
     }
   }, [])
 
@@ -316,8 +340,7 @@ export function usePopover(props: UsePopoverProps = {}) {
     bodyId,
     hasBody,
     setHasBody,
-    getArrowProps: popper.getArrowProps,
-    getArrowWrapperProps: popper.getArrowWrapperProps,
+    getArrowProps,
     getTriggerProps,
     getPopoverProps,
   }

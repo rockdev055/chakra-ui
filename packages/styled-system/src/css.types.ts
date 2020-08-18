@@ -100,6 +100,7 @@ interface AllSystemCSSProperties
 
 export type SystemCSSProperties = {
   [K in keyof AllSystemCSSProperties]:
+    | string
     | ResponsiveValue<AllSystemCSSProperties[K]>
     | ((theme: any) => ResponsiveValue<AllSystemCSSProperties[K]>)
     | SystemStyleObject
@@ -119,8 +120,11 @@ type PseudoStyles = {
 }
 
 export type SystemStyleObject =
-  | (SystemCSSProperties & CSSPseudoStyles & ApplyPropStyles & PseudoStyles)
-  | (SystemCSSProperties & CSSSelectorStyles)
+  | SystemCSSProperties
+  | CSSPseudoStyles
+  | CSSSelectorStyles
+  | ApplyPropStyles
+  | PseudoStyles
 
 export type StyleObjectOrFn =
   | SystemStyleObject

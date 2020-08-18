@@ -79,8 +79,7 @@ export interface AvatarBadgeProps extends PropsOf<typeof chakra.div> {}
 export const AvatarBadge = forwardRef<AvatarBadgeProps, "div">(
   function AvatarBadge(props, ref) {
     const styles = useStyles()
-
-    const badgeStyles: SystemStyleObject = {
+    const badgeStyles = {
       position: "absolute",
       display: "flex",
       alignItems: "center",
@@ -195,7 +194,7 @@ export const Avatar = forwardRef<AvatarProps, "span">(function Avatar(
     ...rest
   } = omitThemingProps(props)
 
-  const avatarStyles: SystemStyleObject = {
+  const avatarStyles = {
     borderRadius,
     borderWidth: showBorder ? "2px" : undefined,
     ...baseStyle,

@@ -50,9 +50,7 @@
     "lint:types": "tsc --noEmit"
   },
   "dependencies": {
-    "@popperjs/core": "2.4.4",
-    "react-popper": "2.2.3",
-    "@chakra-ui/utils": "1.0.0-rc.5"
+    "@popperjs/core": "2.4.4"
   },
   "peerDependencies": {
     "react": "16.x"

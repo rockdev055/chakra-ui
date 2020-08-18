@@ -2,10 +2,9 @@ import { Spinner } from "@chakra-ui/spinner"
 import {
   chakra,
   forwardRef,
-  omitThemingProps,
   PropsOf,
+  omitThemingProps,
   SystemProps,
-  SystemStyleObject,
   ThemingProps,
   useStyleConfig,
 } from "@chakra-ui/system"
@@ -94,7 +93,7 @@ export const Button = forwardRef<ButtonProps, "button">(function Button(
    */
   const _focus = merge({}, styles?.["_focus"] ?? {}, { zIndex: 1 })
 
-  const buttonStyles: SystemStyleObject = {
+  const buttonStyles = {
     display: "inline-flex",
     appearance: "none",
     alignItems: "center",
@@ -182,8 +181,7 @@ const ButtonSpinner: React.FC<ButtonSpinnerProps> = (props) => {
   } = props
 
   const _className = cx("chakra-button__spinner", className)
-
-  const spinnerStyles: SystemStyleObject = {
+  const spinnerStyles = {
     display: "flex",
     alignItems: "center",
     position: label ? "relative" : "absolute",

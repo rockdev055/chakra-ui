@@ -3,21 +3,21 @@ import { Icon, IconProps } from "@chakra-ui/icon"
 import {
   chakra,
   forwardRef,
-  omitThemingProps,
   PropsOf,
+  omitThemingProps,
   StylesProvider,
-  SystemStyleObject,
   ThemingProps,
   useMultiStyleConfig,
   useStyles,
 } from "@chakra-ui/system"
 import {
-  createContext,
   cx,
+  createContext,
   Omit,
   ReactNodeOrRenderProp,
   runIfFn,
   __DEV__,
+  Dict,
 } from "@chakra-ui/utils"
 import * as React from "react"
 import {
@@ -160,7 +160,7 @@ export const AccordionButton = forwardRef<AccordionButtonProps, "button">(
     const buttonProps = getButtonProps(props, ref)
 
     const styles = useStyles()
-    const buttonStyles: SystemStyleObject = {
+    const buttonStyles = {
       display: "flex",
       alignItems: "center",
       width: "100%",
@@ -235,7 +235,7 @@ export const AccordionIcon: React.FC<IconProps> = (props) => {
   const { isOpen, isDisabled } = useAccordionItemContext()
   const { reduceMotion } = useAccordionContext()
 
-  const iconStyles: SystemStyleObject = {
+  const iconStyles = {
     fontSize: "1.25em",
     opacity: isDisabled ? 0.4 : 1,
     transform: isOpen ? "rotate(-180deg)" : undefined,
