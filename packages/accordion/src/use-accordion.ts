@@ -7,13 +7,21 @@ import {
   Dict,
   getNextIndex,
   getPrevIndex,
+  getValidChildren,
   isArray,
   mergeRefs,
   removeItem,
   __DEV__,
   createContext,
 } from "@chakra-ui/utils"
-import { Ref, ReactNode, useCallback, useRef, useState } from "react"
+import {
+  Ref,
+  ReactNode,
+  useCallback,
+  cloneElement,
+  useRef,
+  useState,
+} from "react"
 import * as warn from "./warning"
 
 export type ExpandedIndex = number | number[]
@@ -56,6 +64,7 @@ export function useAccordion(props: UseAccordionProps) {
     index: indexProp,
     allowMultiple,
     allowToggle,
+    children,
     ...htmlProps
   } = props
 
@@ -99,32 +108,40 @@ export function useAccordion(props: UseAccordionProps) {
   })
 
   /**
-   * Gets the `isOpen` and `onChange` props for a child accordion item based on
-   * the child's index.
-   *
-   * @param idx {number} The index of the child accordion item
+   * Filter out invalid children (null, false), in the case
+   * of conditional rendering
    */
-  const getItemProps = (idx: number) => {
-    const isOpen = isArray(index) ? index.includes(idx) : index === idx
-    const onChange = (isOpen: boolean) => {
-      if (allowMultiple && isArray(index)) {
-        const nextState = isOpen ? addItem(index, idx) : removeItem(index, idx)
-        setIndex(nextState)
-      } else {
-        if (isOpen) {
-          setIndex(idx)
-        } else if (allowToggle) {
-          setIndex(-1)
-        }
-      }
-    }
+  const validChildren = getValidChildren(children)
 
-    return { isOpen, onChange }
-  }
+  /**
+   * Clone the accordion items and pass them the `onChange`
+   * and `isOpen`
+   */
+  const _children = validChildren.map((child, idx) => {
+    const isExpanded = isArray(index) ? index.includes(idx) : index === idx
+
+    return cloneElement(child, {
+      isOpen: isExpanded,
+      onChange: (isOpen: boolean) => {
+        if (allowMultiple && isArray(index)) {
+          const nextState = isOpen
+            ? addItem(index, idx)
+            : removeItem(index, idx)
+          setIndex(nextState)
+        } else {
+          if (isOpen) {
+            setIndex(idx)
+          } else if (allowToggle) {
+            setIndex(-1)
+          }
+        }
+      },
+    })
+  })
 
   return {
+    children: _children,
     htmlProps,
-    getItemProps,
     focusedIndex,
     setFocusedIndex,
     domContext,
@@ -149,6 +166,10 @@ export { AccordionProvider, useAccordionContext }
 
 export interface UseAccordionItemProps {
   /**
+   * If `true`, expands the accordion in the controlled mode.
+   */
+  isOpen?: boolean
+  /**
    * If `true`, the accordion item will be disabled.
    */
   isDisabled?: boolean
@@ -160,6 +181,10 @@ export interface UseAccordionItemProps {
    * A unique id for the accordion item.
    */
   id?: string
+  /**
+   * The callback fired when the accordion is expanded/collapsed.
+   */
+  onChange?: (isOpen: boolean) => void
 }
 
 /**
@@ -169,15 +194,18 @@ export interface UseAccordionItemProps {
  * for an accordion item and it's children
  */
 export function useAccordionItem(props: UseAccordionItemProps) {
-  const { isDisabled, isFocusable, id, ...htmlProps } = props
+  const { isDisabled, isFocusable, onChange, isOpen, id, ...htmlProps } = props
 
-  const {
-    getItemProps,
-    domContext,
-    focusedIndex,
-    setFocusedIndex,
-  } = useAccordionContext()
+  const { domContext, focusedIndex, setFocusedIndex } = useAccordionContext()
   const { descendants } = domContext
+
+  const onOpen = () => {
+    onChange?.(true)
+  }
+
+  const onClose = () => {
+    onChange?.(false)
+  }
 
   const buttonRef = useRef<HTMLElement>(null)
 
@@ -198,16 +226,6 @@ export function useAccordionItem(props: UseAccordionItemProps) {
     disabled: isDisabled,
     focusable: isFocusable,
   })
-
-  const { isOpen, onChange } = getItemProps(index)
-
-  const onOpen = () => {
-    onChange?.(true)
-  }
-
-  const onClose = () => {
-    onChange?.(false)
-  }
 
   const shouldFocus = index === focusedIndex
 

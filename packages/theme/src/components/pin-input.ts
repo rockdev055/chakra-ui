@@ -1,8 +1,8 @@
-import { styleConfig } from "@chakra-ui/theme-tools"
-import { inputStyles } from "./input"
+import Input from "./input"
+type Dict = Record<string, any>
 
 const baseStyle = {
-  ...inputStyles.baseStyle?.field,
+  ...Input.baseStyle.field,
   textAlign: "center",
 }
 
@@ -28,29 +28,17 @@ const sizes = {
 }
 
 const variants = {
-  outline: (props: Record<string, any>) =>
-    inputStyles.variants?.outline(props)?.field ?? {},
-  flushed: (props: Record<string, any>) =>
-    inputStyles.variants?.flushed(props)?.field ?? {},
-  filled: (props: Record<string, any>) =>
-    inputStyles.variants?.filled(props).field ?? {},
-  unstyled: inputStyles.variants?.unstyled.field,
+  outline: (props: Dict) => Input.variants.outline(props).field,
+  flushed: (props: Dict) => Input.variants.flushed(props).field,
+  filled: (props: Dict) => Input.variants.filled(props).field,
+  unstyled: Input.variants.unstyled.field,
 }
 
-const defaultProps = inputStyles.defaultProps
+const defaultProps = Input.defaultProps
 
-const pinInput = styleConfig({
-  baseStyle,
-  sizes,
-  variants,
-  defaultProps,
-})
-
-export const pinInputStyles = {
+export default {
   baseStyle,
   sizes,
   variants,
   defaultProps,
 }
-
-export default pinInput
