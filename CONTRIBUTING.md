@@ -159,8 +159,8 @@ the following categories:
 
 - `feat / feature`: all changes that introduce completely new code or new
   features
-- `fix`: changes that fix a bug (ideally you will addtionally reference an issue
-  if present)
+- `fix`: changes that fix a bug (ideally you will additionally reference an
+  issue if present)
 - `refactor`: any code related change that is not a fix nor a feature
 - `docs`: changing existing or creating new documentation (i.e. README, docs for
   usage of a lib or cli usage)
@@ -168,7 +168,7 @@ the following categories:
   dependencies or the addition of new dependencies
 - `test`: all changes regarding tests (adding new tests or changing existing
   ones)
-- `ci`: all changes regarding the configuration of continous integration (i.e.
+- `ci`: all changes regarding the configuration of continuous integration (i.e.
   github actions, ci system)
 - `chore`: all changes to the repository that do not fit into any of the above
   categories
@@ -200,13 +200,23 @@ https://discord.gg/dQHfcWF. We would love to support you anyway we can.
 
 ## Want to help improve the docs?
 
-TODO
-
 By default, the GitHub REST API has an anonymous user rate limit. This can be
 hit during heavy local docs development if the server is frequently restarted.
 
 Creating a GitHub token and storing it as the `GITHUB_TOKEN` environment
 variable allows the user to avoid the limit.
+
+Visit
+https://github.com/settings/tokens/new?description=Chakra+website+development to
+create a new personal access token. Once it's created, be sure to copy the token
+string.
+
+You'll then run the following command in the terminal that you'll start the docs
+from:
+
+```sh
+export GITHUB_TOKEN=<PASTE YOUR TOKEN HERE>
+```
 
 ## License
 
