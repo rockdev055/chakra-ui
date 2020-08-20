@@ -39,15 +39,14 @@ type RenderProps = Pick<
 interface BaseEditableProps
   extends Omit<
     PropsOf<typeof chakra.div>,
-    "onChange" | "value" | "defaultValue" | "onSubmit"
+    "onChange" | "value" | "defaultValue"
   > {}
 
-export interface EditableProps
-  extends UseEditableProps,
-    BaseEditableProps,
-    ThemingProps {
-  children?: ReactNodeOrRenderProp<RenderProps>
-}
+export type EditableProps = UseEditableProps &
+  BaseEditableProps &
+  ThemingProps & {
+    children?: ReactNodeOrRenderProp<RenderProps>
+  }
 
 /**
  * Editable

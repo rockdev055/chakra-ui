@@ -1,6 +1,12 @@
 import { mode } from "@chakra-ui/theme-tools"
 
-const parts = ["overlay", "content", "header", "body", "footer"]
+const parts = {
+  overlay: "the modal overlay",
+  content: "the modal content wrapper",
+  header: "the modal content header",
+  body: "the modal main content area",
+  footer: "the modal footer action",
+}
 
 type Dict = Record<string, any>
 

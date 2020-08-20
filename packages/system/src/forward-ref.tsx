@@ -1,6 +1,5 @@
 /**
- * All credit goes to Chance (Reach UI), and Haz (Reakit) for creating
- * the base type definitions upon which we improved on
+ * All credit goes to Chance (Reach UI), and Haz (Reakit) for this
  */
 import * as React from "react"
 

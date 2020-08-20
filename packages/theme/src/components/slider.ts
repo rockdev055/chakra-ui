@@ -1,6 +1,11 @@
 import { mode, orient } from "@chakra-ui/theme-tools"
 
-const parts = ["container", "thumb", "track", "filledTrack"]
+const parts = {
+  container: "the slider wrapper",
+  thumb: "the slider thumb or handle",
+  track: "the slider outer track",
+  filledTrack: "the slider inner/filled track",
+}
 
 type Dict = Record<string, any>
 

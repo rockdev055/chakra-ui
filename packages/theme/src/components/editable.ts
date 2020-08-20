@@ -1,4 +1,7 @@
-const parts = ["preview", "input"]
+const parts = {
+  preview: "the editable text preview",
+  input: "the editable input field",
+}
 
 const baseStylePreview = {
   borderRadius: "md",

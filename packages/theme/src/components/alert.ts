@@ -1,7 +1,11 @@
 import { getColor, mode, transparentize } from "@chakra-ui/theme-tools"
 type Dict = Record<string, any>
 
-const parts = ["container", "title", "icon"]
+const parts = {
+  container: "the alert container",
+  title: "the alert title",
+  icon: "the alert icon",
+}
 
 const baseStyle = {
   container: {

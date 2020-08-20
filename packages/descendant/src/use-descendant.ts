@@ -57,7 +57,7 @@ export function useDescendant<T extends HTMLElement, P>(
       }
     }
     //eslint-disable-next-line
-  }, [element, disabled, focusable, ...Object.values(rest)])
+  }, [element, ...Object.values(rest)])
 
   const index =
     indexProp ??

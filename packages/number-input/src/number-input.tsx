@@ -82,10 +82,7 @@ export const NumberInput = forwardRef<NumberInputProps, "div">(
           <chakra.div
             ref={ref}
             {...htmlProps}
-            __css={{
-              position: "relative",
-              zIndex: 0
-            }}
+            __css={{ position: "relative" }}
           />
         </StylesProvider>
       </NumberInputProvider>
