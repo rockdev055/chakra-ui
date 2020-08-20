@@ -1,6 +1,9 @@
 import Checkbox from "./checkbox"
 
-const parts = ["control", "label"]
+const parts = {
+  control: "the radio input container",
+  label: "the radio label",
+}
 
 function baseStyleControl(props: Record<string, any>) {
   const { control } = Checkbox.baseStyle(props)

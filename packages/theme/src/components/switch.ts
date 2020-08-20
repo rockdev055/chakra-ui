@@ -1,6 +1,9 @@
 import { mode } from "@chakra-ui/theme-tools"
 
-const parts = ["track", "thumb"]
+const parts = {
+  track: "the switch outer track",
+  thumb: "the switch inner circle",
+}
 
 function baseStyleTrack(props: Record<string, any>) {
   const { colorScheme: c } = props

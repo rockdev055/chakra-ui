@@ -1,6 +1,11 @@
 import { mode } from "@chakra-ui/theme-tools"
 
-const parts = ["content", "header", "body", "footer"]
+const parts = {
+  content: "the popover's content wrapper",
+  header: "the popover heading",
+  body: "the popover main content",
+  footer: "the action footers for popover",
+}
 
 function baseStyleContent(props: Record<string, any>) {
   return {
