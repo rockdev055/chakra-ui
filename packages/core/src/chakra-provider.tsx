@@ -2,6 +2,7 @@ import CSSReset from "@chakra-ui/css-reset"
 import { PortalManager, PortalManagerProps } from "@chakra-ui/portal"
 import {
   ColorModeProvider,
+  StorageManager,
   ThemeProviderProps,
   ThemeProvider,
   GlobalStyle,
@@ -11,30 +12,49 @@ import * as React from "react"
 
 export interface ChakraProviderProps extends Partial<ThemeProviderProps> {
   /**
-   * Common z-index to use for `Portal`
+   * The storage mechanism for the color mode value.
+   * - CSR: We recommend using `localStorage`
+   * - SSR: We recommend using `cookieStorage`
    */
-  portalZIndex?: PortalManagerProps["zIndex"]
+  storageManager?: StorageManager
+  /**
+   * Configuration for the `PortalManager`
+   */
+  portalConfig?: Omit<PortalManagerProps, "children">
   /**
    * If `true`, `CSSReset` component will be mounted to help
    * you reset browser styles
    */
   resetCSS?: boolean
-  children?: React.ReactNode
 }
 
 /**
  * The global provider that must be added to make all Chakra components
  * work correctly
  */
-export const ChakraProvider = (props: ChakraProviderProps) => {
-  const { children, resetCSS, portalZIndex, theme = defaultTheme } = props
+export const ChakraProvider: React.FC<ChakraProviderProps> = ({
+  theme = defaultTheme,
+  ...props
+}) => {
+  const { children, storageManager, resetCSS, portalConfig } = props
+
+  if (!theme) {
+    throw Error("ChakraProvider: the `theme` prop is required")
+  }
+
   return (
     <ThemeProvider theme={theme}>
-      <ColorModeProvider>
+      <ColorModeProvider
+        defaultValue={theme?.config?.initialColorMode}
+        useSystemColorMode={theme?.config?.useSystemColorMode}
+        storageManager={storageManager}
+      >
         {resetCSS && <CSSReset />}
         <GlobalStyle />
-        {portalZIndex !== null ? (
-          <PortalManager zIndex={portalZIndex}>{children}</PortalManager>
+        {portalConfig ? (
+          <PortalManager zIndex={portalConfig?.zIndex}>
+            {children}
+          </PortalManager>
         ) : (
           children
         )}
