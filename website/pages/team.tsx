@@ -37,7 +37,7 @@ function Member({ member }) {
     name,
     twitter_username: twitterUsername,
     blog: websiteUrl,
-    url,
+    html_url: url,
   } = member
 
   return (
