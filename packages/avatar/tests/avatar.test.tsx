@@ -1,44 +1,19 @@
 import * as React from "react"
-import { render, testA11y } from "@chakra-ui/test-utils"
+import { render } from "@chakra-ui/test-utils"
 import { Avatar, AvatarBadge } from "../src"
 
-test("matches snapshot", () => {
+test("Avatar renders correctly", () => {
   const { asFragment } = render(<Avatar />)
   expect(asFragment()).toMatchSnapshot()
 })
 
-it("passes a11y test", async () => {
-  await testA11y(<Avatar />, {
-    axeOptions: {
-      rules: {
-        "svg-img-alt": { enabled: false },
-      },
-    },
-  })
-})
-
-test("matches snapshot with AvatarBadge", () => {
+test("Avatar with AvatarBadge renders correctly", () => {
   const { asFragment } = render(
     <Avatar>
       <AvatarBadge />
     </Avatar>,
   )
   expect(asFragment()).toMatchSnapshot()
-})
-
-it("passes a11y test with AvatarBadge", async () => {
-  await testA11y(
-    <Avatar>
-      <AvatarBadge />
-    </Avatar>,
-    {
-      axeOptions: {
-        rules: {
-          "svg-img-alt": { enabled: false },
-        },
-      },
-    },
-  )
 })
 
 /**

@@ -77,7 +77,6 @@ export function useTooltip(props: UseTooltipProps = {}) {
     arrowSize = 10,
     modifiers,
     isDisabled,
-    ...htmlProps
   } = props
 
   const { isOpen, onOpen, onClose } = useDisclosure({
@@ -167,7 +166,6 @@ export function useTooltip(props: UseTooltipProps = {}) {
 
   const getTooltipProps = useCallback(
     (props: Dict = {}, ref: Ref<any> = null) => ({
-      ...htmlProps,
       ...props,
       id: tooltipId,
       role: "tooltip",
@@ -177,7 +175,7 @@ export function useTooltip(props: UseTooltipProps = {}) {
         ...popper.popper.style,
       },
     }),
-    [htmlProps, popper.popper.ref, popper.popper.style, tooltipId],
+    [popper.popper.ref, popper.popper.style, tooltipId],
   )
 
   const getArrowProps = useCallback(

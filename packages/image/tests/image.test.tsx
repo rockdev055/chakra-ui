@@ -1,6 +1,6 @@
-import { render, act, screen, testA11y } from "@chakra-ui/test-utils"
+import { render, act } from "@chakra-ui/test-utils"
 import * as React from "react"
-import { Image } from "../src"
+import { Image, ImageProps } from "../src"
 
 const src = "https://image.xyz/source"
 const fallbackSrc = "https://image.xyz/placeholder"
@@ -23,37 +23,40 @@ function trackImageOnload() {
   })
 }
 
+function renderComponent(props?: ImageProps) {
+  return render(
+    <Image data-testid="img" src={src} fallbackSrc={fallbackSrc} {...props} />,
+  )
+}
+
 test("creates an instance of Image when mounted", () => {
-  render(<Image src={src} fallbackSrc={fallbackSrc} />)
-
-  expect(screen.getByRole("img")).toBeInstanceOf(HTMLImageElement)
+  const tools = renderComponent()
+  const image = tools.getByTestId("img")
+  expect(image).toBeInstanceOf(HTMLImageElement)
 })
 
-it("passes a11y test", async () => {
-  await testA11y(<Image alt="img" src={src} fallbackSrc={fallbackSrc} />)
-})
-
-test("renders placeholder first, before image load", async () => {
-  render(<Image src={src} fallbackSrc={fallbackSrc} />)
-
-  expect(screen.getByRole("img")).toHaveAttribute("src", fallbackSrc)
+test("should render placeholder first, before image load", async () => {
+  const tools = renderComponent()
+  const image = tools.getByTestId("img")
+  expect(image).toHaveAttribute("src", fallbackSrc)
 })
 
 /**
  * Not sure of the correctness of this test:
  * @see https://www.tfzx.net/article/4859040.html
  */
-test("fires onload", () => {
+test("should fires onload", () => {
   trackImageOnload()
 
   const onLoad = jest.fn()
+  const tools = renderComponent({ onLoad })
 
-  render(<Image src={src} fallbackSrc={fallbackSrc} onLoad={onLoad} />)
+  const image = tools.getByTestId("img")
 
   act(() => {
     imageOnload()
   })
 
-  expect(screen.getByRole("img")).toHaveAttribute("src", src)
+  expect(image).toHaveAttribute("src", src)
   expect(onLoad).toHaveBeenCalled()
 })

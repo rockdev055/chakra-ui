@@ -1,12 +1,19 @@
-import { theme } from "@chakra-ui/core"
-import { runIfFn } from "@chakra-ui/utils"
+import theme from "@chakra-ui/theme"
 import { mode } from "@chakra-ui/theme-tools"
+
+const font =
+  "Inter, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji"
 
 const customTheme = {
   ...theme,
+  fonts: {
+    ...theme.fonts,
+    heading: font,
+    body: font,
+  },
   styles: {
     global: (props) => ({
-      ...runIfFn(theme.styles.global, props),
+      ...theme.styles.global(props),
       color: mode("gray.700", "whiteAlpha.900")(props),
       ".deleted": {
         color: "#ff8383 !important",
@@ -17,28 +24,6 @@ const customTheme = {
         fontStyle: "normal !important",
       },
     }),
-  },
-  textStyles: {
-    heading: {
-      textAlign: "center",
-      fontWeight: "bold",
-      letterSpacing: "-0.015em",
-      lineHeight: "1.24",
-      fontSize: { base: "2.75rem", md: "3.5rem" },
-    },
-    "heading-2": {
-      textAlign: "center",
-      fontWeight: "bold",
-      letterSpacing: "-0.015em",
-      lineHeight: "1.24",
-      fontSize: { base: "2.5rem", md: "2.75rem" },
-    },
-    caps: {
-      textTransform: "uppercase",
-      fontSize: "sm",
-      letterSpacing: "widest",
-      fontWeight: "bold",
-    },
   },
   mdx: {
     h1: {

@@ -20,7 +20,7 @@ export { runIfFn }
 export type Styles = GlobalStyles & JSXElementStyles
 
 export function mode(light: any, dark: any) {
-  return (props: Dict) => (props.colorMode === "dark" ? dark : light)
+  return (props: Dict) => (props.colorMode === "light" ? light : dark)
 }
 
 export function orient(options: {

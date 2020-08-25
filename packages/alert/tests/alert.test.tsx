@@ -1,8 +1,21 @@
 import * as React from "react"
-import { render, testA11y, screen } from "@chakra-ui/test-utils"
+import { render, axe } from "@chakra-ui/test-utils"
 import { Alert, AlertDescription, AlertIcon, AlertTitle } from "../src"
 
-test("matches snapshot", () => {
+test("should have no accessibility issue", async () => {
+  const tools = render(
+    <Alert>
+      <AlertIcon />
+      <AlertTitle>Alert title</AlertTitle>
+      <AlertDescription>Alert description</AlertDescription>
+    </Alert>,
+  )
+
+  const results = await axe(tools.container)
+  expect(results).toHaveNoViolations()
+})
+
+test("should render correctly", () => {
   const tools = render(
     <Alert>
       <AlertIcon />
@@ -13,24 +26,14 @@ test("matches snapshot", () => {
   expect(tools.asFragment()).toMatchSnapshot()
 })
 
-it("passes a11y test", async () => {
-  await testA11y(
-    <Alert>
-      <AlertIcon />
-      <AlertTitle>Alert title</AlertTitle>
-      <AlertDescription>Alert description</AlertDescription>
-    </Alert>,
-  )
-})
-
 test("should have role='alert'", () => {
-  render(
+  const tools = render(
     <Alert>
       <AlertIcon />
       <AlertTitle>Alert title</AlertTitle>
       <AlertDescription>Alert description</AlertDescription>
     </Alert>,
   )
-
-  expect(screen.getByRole("alert")).toBeInTheDocument()
+  const alert = tools.getByRole("alert")
+  expect(alert).toBeInTheDocument()
 })

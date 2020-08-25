@@ -1,18 +1,14 @@
 import * as React from "react"
-import { render, testA11y, screen } from "@chakra-ui/test-utils"
+import { render } from "@chakra-ui/test-utils"
 import { EmailIcon, ArrowForwardIcon } from "@chakra-ui/icons"
 import { Button, ButtonGroup } from "../src"
 
-test("matches snapshot", () => {
-  const { asFragment } = render(<Button>test</Button>)
+test("Button renders correctly", () => {
+  const { asFragment } = render(<Button />)
   expect(asFragment()).toMatchSnapshot()
 })
 
-it("passes a11y test", async () => {
-  await testA11y(<Button>test</Button>)
-})
-
-test("matches snapshot with icons", () => {
+test("Button renders with icons", () => {
   const { asFragment } = render(
     <ButtonGroup>
       <Button leftIcon={<EmailIcon />}>Email</Button>
@@ -23,18 +19,18 @@ test("matches snapshot with icons", () => {
 })
 
 test("shows spinner if isLoading", () => {
-  const { asFragment } = render(<Button isLoading>Email</Button>)
+  const { asFragment, getByText } = render(<Button isLoading>Email</Button>)
   expect(asFragment()).toMatchSnapshot()
 
   // children text is hidden
-  expect(screen.getByText("Email")).not.toBeVisible()
+  expect(getByText("Email")).not.toBeVisible()
 
   // "Loading..." visually hidden label shown
-  screen.getByText("Loading...")
+  getByText("Loading...")
 })
 
 test("shows spinner and loading text if isLoading and loadingText", () => {
-  const { asFragment } = render(
+  const { asFragment, queryByText, getByText } = render(
     <Button isLoading loadingText="Submitting">
       Submit
     </Button>,
@@ -42,15 +38,15 @@ test("shows spinner and loading text if isLoading and loadingText", () => {
   expect(asFragment()).toMatchSnapshot()
 
   // children text is replaced by `loadingText`
-  screen.getByText("Submitting")
-  expect(screen.queryByText("Submit")).toBeNull()
+  getByText("Submitting")
+  expect(queryByText("Submit")).toBeNull()
 })
 
 test("has the proper aria attributes", () => {
-  const { rerender } = render(<Button>Hello</Button>)
+  const { rerender, getByRole } = render(<Button>Hello</Button>)
 
   // button has role="button"
-  const button = screen.getByRole("button")
+  const button = getByRole("button")
   expect(button).not.toHaveAttribute("aria-disabled")
 
   // isLoading sets aria-disabled="true"

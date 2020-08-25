@@ -49,8 +49,8 @@ export const Input = forwardRef<InputProps, "input">(function Input(
   ref,
 ) {
   const styles = useMultiStyleConfig("Input", props)
-  const ownProps = omitThemingProps(props)
-  const input = useFormControl<HTMLInputElement>(ownProps)
+  const realProps = omitThemingProps(props)
+  const input = useFormControl<HTMLInputElement>(realProps)
   const _className = cx("chakra-input", props.className)
 
   return (

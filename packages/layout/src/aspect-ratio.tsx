@@ -1,5 +1,5 @@
 import { cx, __DEV__, mapResponsive } from "@chakra-ui/utils"
-import * as React from "react"
+import React, { Children } from "react"
 import { chakra, PropsOf, ResponsiveValue, forwardRef } from "@chakra-ui/system"
 
 interface AspectRatioOptions {
@@ -26,7 +26,7 @@ export const AspectRatio = forwardRef<AspectRatioProps, "div">(
     const { ratio = 4 / 3, children, className, ...rest } = props
 
     // enforce single child
-    const child = React.Children.only(children)
+    const child = Children.only(children)
 
     const _className = cx("chakra-aspect-ratio", className)
 

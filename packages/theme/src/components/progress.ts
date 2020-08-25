@@ -1,9 +1,57 @@
-import { generateStripe, getColor, mode } from "@chakra-ui/theme-tools"
-type Dict = Record<string, any>
+import {
+  generateStripe,
+  getColor,
+  mode,
+  multiStyleConfig,
+} from "@chakra-ui/theme-tools"
 
-const parts = ["track", "filledTrack", "panel"]
+const progress = multiStyleConfig({
+  parts: {
+    track: "the linear progress track",
+    filledTrack: "the inner filled track",
+    label: "the value indicator or label",
+  },
 
-function filledStyle(props: Dict) {
+  baseStyle: function (props) {
+    return {
+      label: {
+        lineHeight: "1",
+        fontSize: "0.25em",
+        fontWeight: "bold",
+        color: "white",
+      },
+      track: {
+        bg: mode(`gray.100`, `whiteAlpha.300`)(props),
+      },
+      filledTrack: {
+        transition: "all 0.3s",
+        ...filledStyle(props),
+      },
+    }
+  },
+
+  sizes: {
+    xs: {
+      track: { h: "0.25rem" },
+    },
+    sm: {
+      track: { h: "0.5rem" },
+    },
+    md: {
+      track: { h: "0.75rem" },
+    },
+    lg: {
+      track: { h: "1rem" },
+    },
+  },
+
+  defaultProps: {
+    size: "md",
+    colorScheme: "blue",
+  },
+})
+
+function filledStyle(props: Record<string, any>) {
   const { colorScheme: c, theme: t, isIndeterminate, hasStripe } = props
 
   const stripeStyle = mode(
@@ -28,57 +76,4 @@ function filledStyle(props: Dict) {
   }
 }
 
-const baseStyleLabel = {
-  lineHeight: "1",
-  fontSize: "0.25em",
-  fontWeight: "bold",
-  color: "white",
-}
-
-function baseStyleTrack(props: Dict) {
-  return {
-    bg: mode(`gray.100`, `whiteAlpha.300`)(props),
-  }
-}
-
-function baseStyleFilledTrack(props: Dict) {
-  return {
-    transition: "all 0.3s",
-    ...filledStyle(props),
-  }
-}
-
-const baseStyle = function (props: Dict) {
-  return {
-    label: baseStyleLabel,
-    filledTrack: baseStyleFilledTrack(props),
-    track: baseStyleTrack(props),
-  }
-}
-
-const sizes = {
-  xs: {
-    track: { h: "0.25rem" },
-  },
-  sm: {
-    track: { h: "0.5rem" },
-  },
-  md: {
-    track: { h: "0.75rem" },
-  },
-  lg: {
-    track: { h: "1rem" },
-  },
-}
-
-const defaultProps = {
-  size: "md",
-  colorScheme: "blue",
-}
-
-export default {
-  parts,
-  sizes,
-  baseStyle,
-  defaultProps,
-}
+export default progress

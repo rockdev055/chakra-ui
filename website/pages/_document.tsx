@@ -1,7 +1,7 @@
 import React from "react"
 import NextDocument, { Html, Head, Main, NextScript } from "next/document"
 import GAScript from "analytics/ga-script"
-import { ColorModeScript } from "@chakra-ui/core"
+import GoogleFonts from "next-google-fonts"
 
 class Document extends NextDocument {
   static async getInitialProps(ctx) {
@@ -12,9 +12,9 @@ class Document extends NextDocument {
   render() {
     return (
       <Html lang="en">
+        <GoogleFonts href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
         <Head />
         <body>
-          <ColorModeScript />
           <Main />
           <NextScript />
           <GAScript />

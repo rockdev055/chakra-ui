@@ -1,10 +1,9 @@
 import * as React from "react"
-import { render, testA11y } from "@chakra-ui/test-utils"
+import { render, axe } from "@chakra-ui/test-utils"
 import { VisuallyHidden } from "../src"
 
 test("should render correctly", async () => {
   const { getByText } = render(<VisuallyHidden>Click me</VisuallyHidden>)
-
   expect(getByText(/Click me/i)).toMatchInlineSnapshot(`
     .emotion-0 {
       border: 0px;
@@ -28,12 +27,15 @@ test("should render correctly", async () => {
 })
 
 test("should have no accessibility violations", async () => {
-  await testA11y(
+  const { container } = render(
     <button>
       <VisuallyHidden>Click Me</VisuallyHidden>
       <span>Submit</span>
     </button>,
   )
+
+  const results = await axe(container)
+  expect(results).toHaveNoViolations()
 })
 
 test("should render a visually hidden input", async () => {

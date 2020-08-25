@@ -1,5 +1,5 @@
 import {
-  testA11y,
+  axe,
   fireEvent,
   render,
   renderHook,
@@ -38,15 +38,14 @@ function renderComponent(props: NumberInputProps = {}) {
  */
 
 test("should render correctly", () => {
-  const { asFragment } = renderComponent()
-
-  expect(asFragment()).toMatchSnapshot()
+  const tools = renderComponent()
+  expect(tools.asFragment()).toMatchSnapshot()
 })
 
-test("passes a11y test", async () => {
-  const { container } = renderComponent()
-
-  await testA11y(container)
+test("should have no acessibility violations", async () => {
+  const tools = renderComponent()
+  const result = await axe(tools.container)
+  expect(result).toHaveNoViolations()
 })
 
 test("should start with empty string", () => {
@@ -55,10 +54,10 @@ test("should start with empty string", () => {
 })
 
 test("should increment on press increment button", () => {
-  const { getByTestId } = renderComponent()
+  const tools = renderComponent()
 
-  const upBtn = getByTestId("up-btn")
-  const input = getByTestId("input")
+  const upBtn = tools.getByTestId("up-btn")
+  const input = tools.getByTestId("input")
 
   fireEvent.mouseDown(upBtn)
   // since the input's value is empty, this will set it to `step`
@@ -71,9 +70,9 @@ test("should increment on press increment button", () => {
 
 test("should call onChange on value change", () => {
   const onChange = jest.fn()
-  const { getByTestId } = renderComponent({ onChange })
+  const tools = renderComponent({ onChange })
 
-  const upBtn = getByTestId("up-btn")
+  const upBtn = tools.getByTestId("up-btn")
 
   userEvent.click(upBtn)
 
@@ -82,9 +81,9 @@ test("should call onChange on value change", () => {
 })
 
 test("should constrain value onBlur", () => {
-  const { getByTestId } = renderComponent({ max: 30 })
+  const tools = renderComponent({ max: 30 })
 
-  const input = getByTestId("input")
+  const input = tools.getByTestId("input")
 
   userEvent.type(input, "34.55")
 
@@ -95,10 +94,10 @@ test("should constrain value onBlur", () => {
 })
 
 test("should focus input on spin", () => {
-  const { getByTestId } = renderComponent()
+  const tools = renderComponent()
 
-  const input = getByTestId("input")
-  const upBtn = getByTestId("up-btn")
+  const input = tools.getByTestId("input")
+  const upBtn = tools.getByTestId("up-btn")
 
   fireEvent.mouseDown(upBtn)
   expect(input).toHaveValue("1")

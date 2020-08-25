@@ -134,7 +134,7 @@ if (__DEV__) {
 
 export interface StatProps extends PropsOf<typeof chakra.div>, ThemingProps {}
 
-export const Stat = forwardRef<StatProps, "div">(function Stat(props, ref) {
+export const Stat: React.FC<StatProps> = forwardRef((props, ref) => {
   const styles = useMultiStyleConfig("Stat", props)
   const { className, children, ...rest } = omitThemingProps(props)
 
@@ -151,27 +151,24 @@ if (__DEV__) {
   Stat.displayName = "Stat"
 }
 
-type DivProps = PropsOf<typeof chakra.div>
-
-export const StatGroup = forwardRef<DivProps, "div">(function StatGroup(
-  props,
-  ref,
-) {
-  return (
-    <chakra.div
-      {...props}
-      ref={ref}
-      role="group"
-      className={cx("chakra-stat__group", props.className)}
-      __css={{
-        display: "flex",
-        flexWrap: "wrap",
-        justifyContent: "space-around",
-        alignItems: "flex-start",
-      }}
-    />
-  )
-})
+export const StatGroup: React.FC<PropsOf<typeof chakra.div>> = forwardRef(
+  (props, ref) => {
+    return (
+      <chakra.div
+        {...props}
+        ref={ref}
+        role="group"
+        className={cx("chakra-stat__group", props.className)}
+        __css={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "space-around",
+          alignItems: "flex-start",
+        }}
+      />
+    )
+  },
+)
 
 if (__DEV__) {
   StatGroup.displayName = "StatGroup"

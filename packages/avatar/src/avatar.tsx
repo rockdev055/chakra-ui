@@ -12,7 +12,7 @@ import {
   forwardRef,
 } from "@chakra-ui/system"
 import { cx, __DEV__ } from "@chakra-ui/utils"
-import * as React from "react"
+import React, { cloneElement, ReactElement, ReactNode } from "react"
 
 interface AvatarOptions {
   /**
@@ -35,7 +35,7 @@ interface AvatarOptions {
   /**
    * The badge at the bottom right corner of the avatar.
    */
-  children?: React.ReactNode
+  children?: ReactNode
   /**
    * The image url of the `Avatar`
    */
@@ -51,16 +51,16 @@ interface AvatarOptions {
   /**
    * Function called when image failed to load
    */
-  onError?: () => void
+  onError?(): void
   /**
    * The default avatar used as fallback when `name`, and `src`
    * is not specified.
    */
-  icon?: React.ReactElement
+  icon?: ReactElement
   /**
    * Function to get the initials to display
    */
-  getInitials?: (name: string) => string
+  getInitials?(name?: string): string
 }
 
 export interface AvatarBadgeProps extends PropsOf<typeof chakra.div> {}
@@ -104,14 +104,14 @@ function initials(name: string) {
     : firstName.charAt(0)
 }
 
-interface AvatarNameProps
+interface InitialsProps
   extends PropsOf<typeof chakra.div>,
     Pick<AvatarOptions, "name" | "getInitials"> {}
 
 /**
  * The avatar name container
  */
-const AvatarName: React.FC<AvatarNameProps> = (props) => {
+const Initials: React.FC<InitialsProps> = (props) => {
   const { name, getInitials, ...rest } = props
   const styles = useStyles()
 
@@ -217,11 +217,10 @@ if (__DEV__) {
   Avatar.displayName = "Avatar"
 }
 
-interface AvatarImageProps
-  extends Pick<
-    AvatarProps,
-    "src" | "onError" | "name" | "getInitials" | "borderRadius" | "icon"
-  > {}
+type AvatarImageProps = Pick<
+  AvatarProps,
+  "src" | "onError" | "name" | "getInitials" | "borderRadius" | "icon"
+>
 
 const AvatarImage: React.FC<AvatarImageProps> = ({
   src,
@@ -249,13 +248,13 @@ const AvatarImage: React.FC<AvatarImageProps> = ({
 
   if (showFallback) {
     return name ? (
-      <AvatarName
+      <Initials
         className="chakra-avatar__initials"
         getInitials={getInitials}
         name={name}
       />
     ) : (
-      React.cloneElement(icon, { role: "img" })
+      cloneElement(icon, { role: "img" })
     )
   }
 

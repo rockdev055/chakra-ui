@@ -7,7 +7,7 @@ import {
   PropsOf,
 } from "@chakra-ui/system"
 import { createContext, cx, __DEV__ } from "@chakra-ui/utils"
-import * as React from "react"
+import React, { useMemo } from "react"
 
 export interface ButtonGroupProps
   extends PropsOf<typeof chakra.div>,
@@ -56,7 +56,7 @@ export const ButtonGroup = forwardRef<ButtonGroupProps, "div">(
 
     const _className = cx("chakra-button__group", className)
 
-    const context = React.useMemo(
+    const context = useMemo(
       () => ({ size, colorScheme, variant, isDisabled }),
       [size, colorScheme, variant, isDisabled],
     )

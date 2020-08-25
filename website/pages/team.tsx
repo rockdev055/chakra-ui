@@ -10,6 +10,7 @@ import {
   Wrap,
 } from "@chakra-ui/core"
 import { SkipNavContent, SkipNavLink } from "@chakra-ui/skip-nav"
+import { Octokit } from "@octokit/rest"
 import Header from "components/header"
 import SEO from "components/seo"
 import fs from "fs"
@@ -36,7 +37,7 @@ function Member({ member }) {
     name,
     twitter_username: twitterUsername,
     blog: websiteUrl,
-    url,
+    html_url: url,
   } = member
 
   return (
@@ -165,24 +166,32 @@ const sortMembers = (a, b) => {
 
 export async function getStaticProps() {
   /**
-   * Read the profile/bio of each member from `.all-membersrc` file
-   * to avoid overfetching from Github
+   * Read the profile/bio of each member of the Chakra UI team.
+   * @todo consider writing this to a file for caching (e.g .all-membersrc)
    */
-  const membersRcPath = path.resolve("..", ".all-membersrc")
-  const { members } = JSON.parse(fs.readFileSync(membersRcPath, "utf-8"))
+  const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN })
+  const { data: members } = await octokit.orgs.listMembers({ org: "chakra-ui" })
+
+  const membersData: any[] = await Promise.all(
+    members.map(
+      async ({ login }) =>
+        await octokit.users.getByUsername({ username: login }),
+    ),
+  )
+
+  const sortedMembers = membersData.map((m) => m.data).sort(sortMembers)
 
   /**
    * Read contributors from `.all-contributorsrc` file
    * to avoid overfetching from Github
    */
-  const contributorsRcPath = path.resolve("..", ".all-contributorsrc")
-  const { contributors } = JSON.parse(
-    fs.readFileSync(contributorsRcPath, "utf-8"),
-  )
+  const rcPath = path.resolve("..", ".all-contributorsrc")
+  const contributorsRcData = fs.readFileSync(rcPath, "utf-8")
+  const { contributors } = JSON.parse(contributorsRcData)
 
   return {
     props: {
-      members,
+      members: sortedMembers,
       contributors,
     },
   }

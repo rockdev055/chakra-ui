@@ -11,7 +11,6 @@ import {
 } from "@chakra-ui/utils"
 import * as React from "react"
 import { FunctionInterpolation } from "@emotion/core"
-import { ThemingProps } from "./system.types"
 
 /**
  * Carefully selected html elements for chakra components.
@@ -81,9 +80,8 @@ export type DOMElements = UnionStringArray<typeof domElements>
 export const cast = <P = { theme: object }>(arg: any) =>
   arg as FunctionInterpolation<P>
 
-export function omitThemingProps<T extends ThemingProps>(props: T) {
-  return omit(props, ["styleConfig", "size", "variant", "colorScheme"])
-}
+export const omitThemingProps = (props: any) =>
+  omit(props, ["styleConfig", "size", "variant", "colorScheme"]) as any
 
 export function pseudoProps({ theme, ...props }: any) {
   let result = {}

@@ -8,7 +8,7 @@ import {
   forwardRef,
 } from "@chakra-ui/system"
 import { cx, __DEV__, getValidChildren } from "@chakra-ui/utils"
-import * as React from "react"
+import React, { cloneElement, useRef } from "react"
 
 export interface InputGroupProps
   extends PropsOf<typeof chakra.div>,
@@ -20,7 +20,7 @@ export const InputGroup = forwardRef<InputGroupProps, "div">(
     const { children, className, ...rest } = omitThemingProps(props)
 
     const _className = cx("chakra-input__group", className)
-    const stylesRef = React.useRef<InputGroupProps>({})
+    const stylesRef = useRef<InputGroupProps>({})
 
     const validChildren = getValidChildren(children)
 
@@ -51,8 +51,8 @@ export const InputGroup = forwardRef<InputGroupProps, "div">(
       const { pl, paddingLeft, pr, paddingRight } = child.props
 
       return child.type.id !== "Input"
-        ? React.cloneElement(child, theming)
-        : React.cloneElement(child, {
+        ? cloneElement(child, theming)
+        : cloneElement(child, {
             ...theming,
             paddingLeft: pl ?? paddingLeft ?? stylesRef.current?.paddingLeft,
             paddingRight: pr ?? paddingRight ?? stylesRef.current?.paddingRight,

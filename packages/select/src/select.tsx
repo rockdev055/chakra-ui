@@ -8,7 +8,7 @@ import {
   ThemingProps,
   forwardRef,
 } from "@chakra-ui/system"
-import { cx, split, __DEV__, merge } from "@chakra-ui/utils"
+import { cx, split, __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
 
 type Omitted = "disabled" | "required" | "readOnly" | "size"
@@ -89,25 +89,14 @@ export interface SelectProps
 /**
  * React component used to select one item from a list of options.
  */
-export const Select = forwardRef<SelectProps, "select">(function Select(
-  props,
-  ref,
-) {
+export const Select = forwardRef<SelectProps, "select">((props, ref) => {
   const styles = useMultiStyleConfig("Select", props)
 
-  const {
-    rootProps,
-    placeholder,
-    icon,
-    color,
-    height,
-    h,
-    minH,
-    minHeight,
-    ...rest
-  } = omitThemingProps(props)
+  const { rootProps, placeholder, icon, color, ...rest } = omitThemingProps(
+    props,
+  )
 
-  const [layoutProps, otherProps] = split(rest, layoutPropNames as any[])
+  const [layoutProps, otherProps] = split(rest, layoutPropNames as string[])
 
   const rootStyles = {
     width: "100%",
@@ -115,8 +104,6 @@ export const Select = forwardRef<SelectProps, "select">(function Select(
     position: "relative",
     color,
   }
-
-  const fieldStyles = merge({}, styles.field, { _focus: { zIndex: "unset" } })
 
   return (
     <chakra.div
@@ -127,11 +114,9 @@ export const Select = forwardRef<SelectProps, "select">(function Select(
     >
       <SelectField
         ref={ref}
-        height={h ?? height}
-        minH={minH ?? minHeight}
         placeholder={placeholder}
         {...otherProps}
-        __css={fieldStyles}
+        __css={styles.field}
       >
         {props.children}
       </SelectField>

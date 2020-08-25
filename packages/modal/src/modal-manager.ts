@@ -28,9 +28,7 @@ export const manager = new ModalManager()
 
 export function useModalManager(ref: Ref<any>, isOpen?: boolean) {
   useEffect(() => {
-    if (isOpen) {
-      manager.add(ref)
-    }
+    isOpen && manager.add(ref)
     return () => {
       manager.remove(ref)
     }

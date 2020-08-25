@@ -5,14 +5,11 @@ import {
   omitThemingProps,
   SystemStyleObject,
   forwardRef,
-  ThemingProps,
 } from "@chakra-ui/system"
 import { __DEV__, merge } from "@chakra-ui/utils"
 import * as React from "react"
 
-export interface SkipNavLinkProps
-  extends PropsOf<typeof chakra.a>,
-    ThemingProps {}
+export interface SkipNavLinkProps extends PropsOf<typeof chakra.a> {}
 
 const fallbackId = "chakra-skip-nav"
 

@@ -71,7 +71,7 @@ export const Tooltip = forwardRef<TooltipProps, "div">(function Tooltip(
     getTriggerProps,
     getTooltipProps,
     getArrowProps,
-  } = useTooltip(rest)
+  } = useTooltip(ownProps)
 
   const shouldWrap = isString(children) || shouldWrapChildren
 
@@ -93,7 +93,7 @@ export const Tooltip = forwardRef<TooltipProps, "div">(function Tooltip(
 
   const hasAriaLabel = !!ariaLabel
 
-  const _tooltipProps = getTooltipProps({}, ref)
+  const _tooltipProps = getTooltipProps(rest, ref)
   const arrowProps = getArrowProps()
 
   const tooltipProps = hasAriaLabel

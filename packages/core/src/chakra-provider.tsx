@@ -2,40 +2,55 @@ import CSSReset from "@chakra-ui/css-reset"
 import { PortalManager, PortalManagerProps } from "@chakra-ui/portal"
 import {
   ColorModeProvider,
+  StorageManager,
   ThemeProviderProps,
   ThemeProvider,
   GlobalStyle,
 } from "@chakra-ui/system"
-import defaultTheme from "@chakra-ui/theme"
 import * as React from "react"
 
-export interface ChakraProviderProps extends Partial<ThemeProviderProps> {
+export interface ChakraProviderProps extends ThemeProviderProps {
   /**
-   * Common z-index to use for `Portal`
+   * The storage mechanism for the color mode value.
+   * - CSR: We recommend using `localStorage`
+   * - SSR: We recommend using `cookieStorage`
    */
-  portalZIndex?: PortalManagerProps["zIndex"]
+  storageManager?: StorageManager
+  /**
+   * Configuration for the `PortalManager`
+   */
+  portalConfig?: Omit<PortalManagerProps, "children">
   /**
    * If `true`, `CSSReset` component will be mounted to help
    * you reset browser styles
    */
   resetCSS?: boolean
-  children?: React.ReactNode
 }
 
 /**
  * The global provider that must be added to make all Chakra components
  * work correctly
  */
-export const ChakraProvider = (props: ChakraProviderProps) => {
-  const { children, resetCSS, portalZIndex, theme = defaultTheme } = props
+export const ChakraProvider: React.FC<ChakraProviderProps> = (props) => {
+  const { theme, children, storageManager, resetCSS, portalConfig } = props
+
+  if (!theme) {
+    throw Error("ChakraProvider: the `theme` prop is required")
+  }
 
   return (
     <ThemeProvider theme={theme}>
-      <ColorModeProvider>
-        {resetCSS && <CSSReset />}
+      <ColorModeProvider
+        defaultValue={theme?.config?.initialColorMode}
+        useSystemColorMode={theme?.config?.useInitialColorMode}
+        storageManager={storageManager}
+      >
         <GlobalStyle />
-        {portalZIndex ? (
-          <PortalManager zIndex={portalZIndex}>{children}</PortalManager>
+        {resetCSS && <CSSReset />}
+        {portalConfig ? (
+          <PortalManager zIndex={portalConfig?.zIndex}>
+            {children}
+          </PortalManager>
         ) : (
           children
         )}

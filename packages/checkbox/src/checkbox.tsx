@@ -78,10 +78,10 @@ export const Checkbox = forwardRef<CheckboxProps, "input">(function Checkbox(
 ) {
   const group = useCheckboxGroupContext()
 
-  const mergedProps = { ...group, ...props } as CheckboxProps
-  const styles = useMultiStyleConfig("Checkbox", mergedProps)
+  const merged = { ...group, ...props }
+  const styles = useMultiStyleConfig("Checkbox", merged)
+  const ownProps = omitThemingProps(merged)
 
-  const ownProps = omitThemingProps(mergedProps)
   const { spacing = "0.5rem", className, children, ...rest } = ownProps
 
   let isChecked = ownProps.isChecked

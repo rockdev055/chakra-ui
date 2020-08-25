@@ -19,7 +19,7 @@ import {
   __DEV__,
   Dict,
 } from "@chakra-ui/utils"
-import * as React from "react"
+import React, { useMemo } from "react"
 import {
   AccordionProvider,
   useAccordion,
@@ -50,21 +50,21 @@ export interface AccordionProps
  * @see Docs https://chakra-ui.com/components/accordion
  */
 export const Accordion = forwardRef<AccordionProps, "div">(function Accordion(
-  { children, ...props },
+  props,
   ref,
 ) {
   const styles = useMultiStyleConfig("Accordion", props)
-  const ownProps = omitThemingProps(props)
+  const _props = omitThemingProps(props)
 
-  const { htmlProps, ...context } = useAccordion(ownProps)
+  const { children, htmlProps, ...context } = useAccordion(_props)
 
-  const ctx = React.useMemo(
+  const _context = useMemo(
     () => ({ ...context, reduceMotion: !!props.reduceMotion }),
     [context, props.reduceMotion],
   )
 
   return (
-    <AccordionProvider value={ctx}>
+    <AccordionProvider value={_context}>
       <StylesProvider value={styles}>
         <chakra.div
           ref={ref}
@@ -113,7 +113,7 @@ export const AccordionItem = forwardRef<AccordionItemProps, "div">(
     const { htmlProps, ...context } = useAccordionItem(props)
 
     const styles = useStyles()
-    const _context = React.useMemo(() => context, [context])
+    const _context = useMemo(() => context, [context])
 
     return (
       <AccordionItemProvider value={_context}>
@@ -183,7 +183,7 @@ if (__DEV__) {
   AccordionButton.displayName = "AccordionButton"
 }
 
-export interface AccordionPanelProps extends DivProps {}
+export type AccordionPanelProps = DivProps
 
 /**
  * Accordion panel that holds the content for each accordion.
