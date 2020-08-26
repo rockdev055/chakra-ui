@@ -45,7 +45,6 @@ export const AvatarGroup = forwardRef<AvatarGroupProps, "div">(
       borderColor,
       max,
       spacing = "-0.75rem",
-      borderRadius = "full",
       ...rest
     } = omitThemingProps(props)
 
@@ -86,7 +85,7 @@ export const AvatarGroup = forwardRef<AvatarGroupProps, "div">(
     }
 
     const excessStyles = {
-      borderRadius,
+      borderRadius: "full",
       ml: spacing,
       ...baseStyle,
       ...styles.excessLabel,
