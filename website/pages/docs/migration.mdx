@@ -51,9 +51,9 @@ code, you can safely remove them and update Chakra UI to v1.
 ```diff
 "dependencies": {
   "@chakra-ui/core": "next",
+-  "@emotion/core": "10.x",
 -  "@emotion/styled": "10.X",
--  "@emotion/theming": "10.x",
--  "@emotion/core": "10.x"
+-  "emotion-theming": "10.x"
 }
 ```
 
@@ -66,35 +66,7 @@ Chakra moved all icons to a separate package `@chakra-ui/icons`. We recommend
 using `react-icons` in your projects considering it has a robust set of icons.
 However, you can still install this package.
 
-### 2. Adding the default theme
-
-Chakra no longer comes with the default theme pre-installed, so you'll need to
-add it manually. Install the `@chakra-ui/theme` package.
-
-```bash
-npm i @chakra-ui/theme@next
-
-# or
-
-yarn add @chakra-ui/theme@next
-```
-
-2. Update the `ThemeProvider` in your app's root by passing the `theme` prop.
-
-```jsx live=false
-import { ThemeProvider } from "@chakra-ui/core"
-import theme from "@chakra-ui/theme"
-
-function AppRoot() {
-  return (
-    <ThemeProvider theme={theme}>
-      <App />
-    </ThemeProvider>
-  )
-}
-```
-
-### 3. Update the ThemeProvider
+### 2. Update the ThemeProvider
 
 Swap out `ThemeProvider` with `ChakraProvider` to make setup cleaner.
 `ChakraProvider` adds the following providers for you automatically:
@@ -110,7 +82,8 @@ Swap out `ThemeProvider` with `ChakraProvider` to make setup cleaner.
   [Learn more about storage managers](/docs/features/color-mode#changing-the-storagemanager-for-server-side-rendering-ssr-apps).
 
 Optionally via prop:
-- **CSSReset**: Adds Chakras recommended CSSReset. Simply pass `resetCSS`.
+
+- **CSSReset**: To add the recommended `CSSReset`, pass `resetCSS` prop.
 - **PortalManager:** Manages portals and nested portals without using `z-index`
   in your application. Simply pass `portalConfig={{ zIndex: number }}`.
 
@@ -297,7 +270,7 @@ const theme = {
   Here's how to add it for Next.js:
 
 ```jsx live=false
-// pages/_app.js
+// pages/_document.js
 import { InitializeColorMode } from "@chakra-ui/core"
 
 export default class Document extends NextDocument {
@@ -378,6 +351,27 @@ with other icons:
 ```jsx live=false
 import { createIcon, MoonIcon, SunIcon } from "@chakra-ui/icons"
 ```
+
+### Icon Button
+
+- We've unified the usage of all icon props to only accept a React element.
+  Update all icon names used in `icon` to the equivalent icon
+  React element.
+
+> Replacement logic: If `icon` is `email`, then replace it with
+> `<EmailIcon/>` from Chakra.
+
+```diff
+import { PhoneIcon } from "@chakra-ui/core"
+
+- <IconButton icon="phone">Call</IconButton>
++ <IconButton icon={<PhoneIcon />}>Call</IconButton>
+```
+
+**This reduces the effort needed to use custom icons, eliminates TypeScript
+errors, and reduces unused icons bloating your app.**
+
+- Renamed `variantColor` to `colorScheme`
 
 ### Skeleton
 
@@ -501,8 +495,9 @@ Due to accessibility reasons, we've deprecated the `isDisabled` prop for `Link`.
 - Deprecated the `isFullWidth` prop. The `Radio` takes up the width of the
   parent by default.
 
-- Deprecated `RadioButton` component. Use the `useRadio` hook to create custom
+- Deprecated the `RadioButton` component. Use the `useRadio` hook to create custom
   radio buttons.
+  Learn more about [creating custom radio buttons](/docs/form/radio#custom-radio-buttons).
 
 - The `useRadio` hook is exported with state and focus management logic for use
   in creating tailor-made radio component for your application
@@ -511,6 +506,9 @@ Due to accessibility reasons, we've deprecated the `isDisabled` prop for `Link`.
 
 - Deprecated the `isFullWidth` prop. The `RadioGroup` takes up the width of the
   parent by default.
+
+- Deprecated the `RadioButtonGroup` component. Use the `useRadioGroup` hook to control a group of custom radio buttons.
+  Learn more about [creating custom radio buttons](/docs/form/radio#custom-radio-buttons).
 
 - To allow for better Radio group layout, the `RadioGroup` component no longer
   supports every style prop. You can only pass `size`, `variant`, and
@@ -593,6 +591,8 @@ Change `variantColor` prop to `colorScheme`
   <TagCloseButton isDisabled />
 </Tag>
 ```
+
+- Default size was changed to `md` instead of `lg`
 
 ### Toast
 

@@ -12,7 +12,7 @@ import {
   forwardRef,
 } from "@chakra-ui/system"
 import { cx, __DEV__ } from "@chakra-ui/utils"
-import React, { cloneElement, ReactElement, ReactNode } from "react"
+import * as React from "react"
 
 interface AvatarOptions {
   /**
@@ -35,7 +35,7 @@ interface AvatarOptions {
   /**
    * The badge at the bottom right corner of the avatar.
    */
-  children?: ReactNode
+  children?: React.ReactNode
   /**
    * The image url of the `Avatar`
    */
@@ -56,7 +56,7 @@ interface AvatarOptions {
    * The default avatar used as fallback when `name`, and `src`
    * is not specified.
    */
-  icon?: ReactElement
+  icon?: React.ReactElement
   /**
    * Function to get the initials to display
    */
@@ -104,14 +104,14 @@ function initials(name: string) {
     : firstName.charAt(0)
 }
 
-interface InitialsProps
+interface AvatarNameProps
   extends PropsOf<typeof chakra.div>,
     Pick<AvatarOptions, "name" | "getInitials"> {}
 
 /**
  * The avatar name container
  */
-const Initials: React.FC<InitialsProps> = (props) => {
+const AvatarName: React.FC<AvatarNameProps> = (props) => {
   const { name, getInitials, ...rest } = props
   const styles = useStyles()
 
@@ -248,13 +248,13 @@ const AvatarImage: React.FC<AvatarImageProps> = ({
 
   if (showFallback) {
     return name ? (
-      <Initials
+      <AvatarName
         className="chakra-avatar__initials"
         getInitials={getInitials}
         name={name}
       />
     ) : (
-      cloneElement(icon, { role: "img" })
+      React.cloneElement(icon, { role: "img" })
     )
   }
 

@@ -54,12 +54,12 @@ const sidebar = {
           open: true,
           routes: [
             {
-              title: "Introduction",
-              path: "/docs/theming/overview",
+              title: "Modify Components",
+              path: "/docs/theming/modify",
             },
             {
-              title: "Basic",
-              path: "/docs/theming/basic",
+              title: "Create New Components",
+              path: "/docs/theming/create",
             },
             {
               title: "Advanced",
@@ -309,6 +309,49 @@ const sidebar = {
             {
               title: "Tooltip",
               path: "/docs/overlay/tooltip",
+            },
+          ],
+        },
+        {
+          title: "Other Components",
+          path: "/docs/components",
+          open: true,
+          routes: [
+            {
+              title: "Accordion",
+              path: "/docs/components/accordion",
+            },
+            {
+              title: "Breadcrumb",
+              path: "/docs/components/breadcrumb",
+            },
+            {
+              title: "Close Button",
+              path: "/docs/components/close-button",
+            },
+            {
+              title: "Collapse",
+              path: "/docs/components/collapse",
+            },
+            {
+              title: "Icon",
+              path: "/docs/components/icon",
+            },
+            {
+              title: "Link",
+              path: "/docs/components/link",
+            },
+            {
+              title: "Tabs",
+              path: "/docs/components/tabs",
+            },
+            {
+              title: "Transitions",
+              path: "/docs/components/transitions",
+            },
+            {
+              title: "Visually Hidden",
+              path: "/docs/components/visually-hidden",
             },
           ],
         },

@@ -7,9 +7,10 @@ import {
   ThemeProvider,
   GlobalStyle,
 } from "@chakra-ui/system"
+import defaultTheme from "@chakra-ui/theme"
 import * as React from "react"
 
-export interface ChakraProviderProps extends ThemeProviderProps {
+export interface ChakraProviderProps extends Partial<ThemeProviderProps> {
   /**
    * The storage mechanism for the color mode value.
    * - CSR: We recommend using `localStorage`
@@ -31,8 +32,11 @@ export interface ChakraProviderProps extends ThemeProviderProps {
  * The global provider that must be added to make all Chakra components
  * work correctly
  */
-export const ChakraProvider: React.FC<ChakraProviderProps> = (props) => {
-  const { theme, children, storageManager, resetCSS, portalConfig } = props
+export const ChakraProvider: React.FC<ChakraProviderProps> = ({
+  theme = defaultTheme,
+  ...props
+}) => {
+  const { children, storageManager, resetCSS, portalConfig } = props
 
   if (!theme) {
     throw Error("ChakraProvider: the `theme` prop is required")
@@ -42,11 +46,11 @@ export const ChakraProvider: React.FC<ChakraProviderProps> = (props) => {
     <ThemeProvider theme={theme}>
       <ColorModeProvider
         defaultValue={theme?.config?.initialColorMode}
-        useSystemColorMode={theme?.config?.useInitialColorMode}
+        useSystemColorMode={theme?.config?.useSystemColorMode}
         storageManager={storageManager}
       >
-        <GlobalStyle />
         {resetCSS && <CSSReset />}
+        <GlobalStyle />
         {portalConfig ? (
           <PortalManager zIndex={portalConfig?.zIndex}>
             {children}
