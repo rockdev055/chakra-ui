@@ -3,13 +3,9 @@ import * as Chakra from "@chakra-ui/core"
 import * as Icons from "@chakra-ui/icons"
 import * as Formik from "formik"
 import FocusLock from "react-focus-lock"
-import {
-  MdSettings,
-  MdReceipt,
-  MdGroupWork,
-  MdCheckCircle,
-  MdGraphicEq,
-} from "react-icons/md"
+import * as IOIcons from "react-icons/ai"
+import * as FaIcons from "react-icons/fa"
+import * as MDIcons from "react-icons/md"
 import Lorem from "react-lorem-component"
 import * as Loaders from "react-spinners"
 import CircleIcon from "../docs/icon"
@@ -27,13 +23,11 @@ const ReactLiveScope = {
   ...React,
   ...Chakra,
   ...Formik,
+  ...MDIcons,
+  ...IOIcons,
+  ...FaIcons,
   ...Icons,
   ...Loaders,
-  MdSettings,
-  MdReceipt,
-  MdGroupWork,
-  MdCheckCircle,
-  MdGraphicEq,
   StarIcon,
   FocusLock,
   Lorem,

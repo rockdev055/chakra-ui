@@ -19,7 +19,6 @@ import {
   Wrap,
 } from "@chakra-ui/core"
 import { chunk } from "@chakra-ui/utils"
-import mkdirp from "mkdirp"
 import users from "chakra-users"
 import Container from "components/container"
 import DiscordStrip from "components/discord-strip"
@@ -28,7 +27,7 @@ import Header from "components/header"
 import LogoMark from "components/logo-mark"
 import SEO from "components/seo"
 import TweetCard from "components/tweet-card"
-import tweetsConfig from "configs/tweets"
+import tweets from "configs/tweets"
 import fs from "fs"
 import NextLink from "next/link"
 import path from "path"
@@ -39,7 +38,6 @@ import { FaArrowRight, FaDiscord, FaMicrophone } from "react-icons/fa"
 import { FiDownload, FiGithub, FiUsers } from "react-icons/fi"
 import { IoMdMoon } from "react-icons/io"
 import { MdAccessibility, MdGrain, MdPalette } from "react-icons/md"
-import AvatarCache from "utils/avatar-cache"
 
 const Feature = ({ title, icon, children, ...props }) => {
   return (
@@ -60,7 +58,7 @@ const Feature = ({ title, icon, children, ...props }) => {
       >
         <Icon fontSize="24px" color="white" as={icon} />
       </Flex>
-      <Heading as="h3" size="md" fontWeight="semibold" mt="1em" mb="0.5em">
+      <Heading as="h5" size="md" fontWeight="semibold" mt="1em" mb="0.5em">
         {title}
       </Heading>
       <Text fontSize="lg" opacity={0.7}>
@@ -102,7 +100,7 @@ const StatBox = (props: StatBoxProps) => {
   )
 }
 
-const HomePage = ({ members, sponsors, tweets }) => {
+const HomePage = ({ members, sponsors }) => {
   return (
     <>
       <SEO
@@ -181,7 +179,7 @@ const HomePage = ({ members, sponsors, tweets }) => {
             <chakra.p
               fontWeight="500"
               textStyle="caps"
-              color={useColorModeValue("teal.600", "teal.300")}
+              color={useColorModeValue("teal.500", "teal.300")}
               mb="48px"
             >
               Trusted in Production By
@@ -200,7 +198,6 @@ const HomePage = ({ members, sponsors, tweets }) => {
                     <Box bg="white" p="5" rounded="md">
                       <chakra.img
                         key={user.image}
-                        alt={user.name}
                         h="24px"
                         w="auto"
                         src={user.image}
@@ -244,8 +241,7 @@ const HomePage = ({ members, sponsors, tweets }) => {
             >
               <Box
                 as="iframe"
-                tabIndex={-1}
-                src="https://codesandbox.io/embed/chakra-home-page-xqt3d?codemirror=1&fontsize=12&hidenavigation=1&theme=dark"
+                src="https://codesandbox.io/embed/chakra-home-page-xqt3d?fontsize=12&hidenavigation=1&theme=dark"
                 style={{
                   width: "100%",
                   background: "white",
@@ -259,7 +255,7 @@ const HomePage = ({ members, sponsors, tweets }) => {
                 shadow="2xl"
                 title="dazzling-swanson-wne32"
                 allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
-                sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+                sandbox="allow-autoplay allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
               />
             </Box>
           </Container>
@@ -353,7 +349,7 @@ const HomePage = ({ members, sponsors, tweets }) => {
 
             <Box mt="5rem" textAlign="center">
               <chakra.p mb="48px" textStyle="caps">
-                Chakra Heroes 🥇
+                Chakra Heros 🥇
               </chakra.p>
               <Wrap spacing="4" justify="center" maxW="660px" mx="auto">
                 {members.map((i) => (
@@ -361,9 +357,7 @@ const HomePage = ({ members, sponsors, tweets }) => {
                     key={i.login}
                     htmlWidth="80px"
                     rounded="full"
-                    alt={i.name}
                     src={i.avatar_url}
-                    loading="lazy"
                   />
                 ))}
               </Wrap>
@@ -379,7 +373,7 @@ const HomePage = ({ members, sponsors, tweets }) => {
             <SimpleGrid spacing="32px" columns={{ base: 1, md: 3 }}>
               {chunk(tweets, 3).map((tweetList, idx) => (
                 <Stack spacing="6" key={idx}>
-                  {tweetList.map((tweet: any, idx) => (
+                  {tweetList.map((tweet, idx) => (
                     <TweetCard key={idx} {...tweet} />
                   ))}
                 </Stack>
@@ -442,7 +436,6 @@ const HomePage = ({ members, sponsors, tweets }) => {
                   minW="7rem"
                   colorScheme="teal"
                   href="https://opencollective.com/chakra-ui"
-                  rel="noopener"
                   target="_blank"
                 >
                   Sponsor
@@ -494,7 +487,6 @@ const HomePage = ({ members, sponsors, tweets }) => {
                   minW="7rem"
                   colorScheme="teal"
                   href="https://www.patreon.com/segunadebayo"
-                  rel="noopener"
                   target="_blank"
                 >
                   Sponsor
@@ -513,7 +505,6 @@ const HomePage = ({ members, sponsors, tweets }) => {
                     as="a"
                     href={i.website}
                     target="_blank"
-                    rel="noopener"
                     size="80px"
                     bg="white"
                     shadow="lg"
@@ -522,7 +513,6 @@ const HomePage = ({ members, sponsors, tweets }) => {
                       rounded="full"
                       w="56px"
                       h="56px"
-                      alt={i.name}
                       key={i.MemberId}
                       src={i.image}
                     />
@@ -540,7 +530,6 @@ const HomePage = ({ members, sponsors, tweets }) => {
                     w="40px"
                     h="40px"
                     objectFit="cover"
-                    alt={i.name}
                     key={i.MemberId}
                     src={i.image}
                   />
@@ -651,69 +640,15 @@ export async function getStaticProps() {
     "https://opencollective.com/chakra-ui/members/all.json",
   )
   const sponsors = await res.json()
-  const individuals = sponsors.filter(
+  const individualSponsors = sponsors.filter(
     (i) => i.type === "USER" && i.image != null,
   )
-  const companies = sponsors.filter((i) => i.type === "ORGANIZATION")
-
-  const avatarsDir = "public/avatars"
-  await mkdirp(avatarsDir)
-
-  const individualAvatarsCache = new AvatarCache({
-    outputDirectory: avatarsDir,
-    width: 40,
-  })
-  const individualSponsors = await Promise.all(
-    individuals.map(async (individual) => {
-      const filename = await individualAvatarsCache.urlToFile(
-        individual.image,
-        individual.MemberId,
-      )
-      return {
-        ...individual,
-        image: `/avatars/${filename}`,
-      }
-    }),
-  )
-
-  const companyAvatarsCache = new AvatarCache({
-    outputDirectory: avatarsDir,
-  })
-  const companySponsors = await Promise.all(
-    companies.map(async (company) => {
-      const filename = await companyAvatarsCache.urlToFile(
-        company.image,
-        company.MemberId,
-      )
-      return {
-        ...company,
-        image: `/avatars/${filename}`,
-      }
-    }),
-  )
-
-  const tweetAvatarsCache = new AvatarCache({
-    outputDirectory: avatarsDir,
-    width: 50,
-  })
-  const tweets = await Promise.all(
-    tweetsConfig.map(async (tweet) => {
-      const filename = await tweetAvatarsCache.urlToFile(
-        tweet.image,
-        tweet.handle,
-      )
-      return {
-        ...tweet,
-        image: `/avatars/${filename}`,
-      }
-    }),
-  )
+  const companySponsors = sponsors.filter((i) => i.type === "ORGANIZATION")
 
   return {
     props: {
       members,
       contributors,
-      tweets,
       sponsors: {
         individual: individualSponsors,
         company: companySponsors,

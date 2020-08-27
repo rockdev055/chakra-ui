@@ -1,8 +1,4 @@
-const withPlugins = require("next-compose-plugins")
 const withMdx = require("next-mdx-enhanced")
-const withBundleAnalyzer = require("@next/bundle-analyzer")({
-  enabled: process.env.ANALYZE === "true",
-})
 const path = require("path")
 const execa = require("execa")
 const fromUnixTime = require("date-fns/fromUnixTime")
@@ -88,21 +84,7 @@ function fileToPath(str) {
   return addLeadingSlash(str.replace(".mdx", ""))
 }
 
-const defaultConfig = {
-  target: "serverless",
-  webpack: (config) => {
-    return {
-      ...config,
-      externals: [...config.externals, "sharp"],
-    }
-  },
-  experimental: {
-    optimizeFonts: true,
-    optimizeImages: true,
-  },
-}
-
-const mdxConfig = {
+module.exports = withMdx({
   layoutPath: "layouts",
   defaultLayout: true,
   fileExtensions: ["mdx"],
@@ -144,9 +126,4 @@ const mdxConfig = {
       }
     },
   },
-}
-
-module.exports = withPlugins(
-  [withBundleAnalyzer, withMdx(mdxConfig)],
-  defaultConfig,
-)
+})({ target: "serverless" })

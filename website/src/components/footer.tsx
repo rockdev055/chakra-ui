@@ -7,11 +7,10 @@ import { DiGithubBadge } from "react-icons/di"
 type FooterLinkProps = {
   icon?: React.ElementType
   href?: string
-  label?: string
 }
 
-const FooterLink: React.FC<FooterLinkProps> = ({ icon, href, label }) => (
-  <Link display="inline-block" href={href} aria-label={label} isExternal>
+const FooterLink: React.FC<FooterLinkProps> = ({ icon, href }) => (
+  <Link display="inline-block" href={href} isExternal>
     <Icon as={icon} fontSize="xl" color="gray.400" />
   </Link>
 )
@@ -19,22 +18,18 @@ const FooterLink: React.FC<FooterLinkProps> = ({ icon, href, label }) => (
 const links = [
   {
     icon: DiGithubBadge,
-    label: "GitHub",
     url: "https://github.com/segunadebayo",
   },
   {
     icon: IoLogoTwitter,
-    label: "Twitter",
     url: "https://twitter.com/thesegunadebayo",
   },
   {
     icon: IoLogoLinkedin,
-    label: "LinkedIn",
     url: "https://linkedin.com/in/thesegunadebayo/",
   },
   {
     icon: MdEmail,
-    label: "Email",
     url: "mailto:sage@adebayosegun.com",
   },
 ]
@@ -73,7 +68,7 @@ export const Footer = () => (
     </Text>
     <Stack mt={4} direction="row" spacing="12px" justify="center">
       {links.map((link) => (
-        <FooterLink key={link.url} {...link} />
+        <FooterLink key={link.url} href={link.url} icon={link.icon} />
       ))}
     </Stack>
   </Box>
