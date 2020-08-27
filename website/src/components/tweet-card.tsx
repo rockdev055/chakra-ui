@@ -11,14 +11,12 @@ interface TweetCardProps {
 }
 
 function TweetCard(props: TweetCardProps) {
-  const { name, handle, date, content, url } = props
-  const image = `/avatars/${handle}.jpg`
+  const { name, image, handle, date, content, url } = props
   return (
     <Box
       as="a"
       href={url}
       target="_blank"
-      rel="noopener"
       display="flex"
       rounded="lg"
       p="5"

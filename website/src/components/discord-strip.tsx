@@ -41,7 +41,6 @@ function DiscordStrip(props: BoxProps) {
             display="inline-flex"
             alignItems="center"
             href="https://discord.gg/dQHfcWF"
-            rel="noopener"
             target="_blank"
             fontWeight="bold"
             shadow="md"
