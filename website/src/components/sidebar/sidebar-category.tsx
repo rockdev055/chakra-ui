@@ -1,7 +1,7 @@
 import { Icon, chakra, useColorModeValue } from "@chakra-ui/core"
 import { useRef, useState, useEffect, ReactNode, RefObject } from "react"
 
-interface SidebarCategoryProps {
+type SidebarCategoryProps = {
   isMobile?: boolean
   title: string
   opened?: boolean
@@ -20,7 +20,7 @@ const Arrow = (props) => (
   </svg>
 )
 
-interface SidebarState {
+type SidebarState = {
   toggle?: boolean
   shouldScroll?: boolean
 }
@@ -75,7 +75,7 @@ function SidebarCategory(props: SidebarCategoryProps) {
         color={useColorModeValue("gray.700", "inherit")}
         onClick={onClick}
         _hover={{
-          color: useColorModeValue("gray.800", "inherit"),
+          color: "gray.800",
         }}
       >
         {title}

@@ -19,9 +19,8 @@ test("has proper aria and data attributes", async () => {
     )
   }
   const utils = render(<Component name="name" value="" id="id" />)
-
-  let input = utils.getByTestId("input")
-  let checkbox = utils.getByTestId("checkbox")
+  const input = utils.getByTestId("input")
+  const checkbox = utils.getByTestId("checkbox")
 
   expect(input).toHaveAttribute("name", "name")
   expect(input).toHaveAttribute("id", "id")
@@ -40,9 +39,6 @@ test("has proper aria and data attributes", async () => {
   // render with various flags enabled
   utils.rerender(<Component isDisabled isInvalid isReadOnly isRequired />)
 
-  input = utils.getByTestId("input")
-  checkbox = utils.getByTestId("checkbox")
-
   expect(input).toHaveAttribute("aria-required")
   expect(input).toHaveAttribute("aria-invalid")
   expect(input).toHaveAttribute("aria-disabled")
@@ -51,9 +47,6 @@ test("has proper aria and data attributes", async () => {
 
   // input is not truly disabled if focusable
   utils.rerender(<Component isDisabled isFocusable />)
-
-  input = utils.getByTestId("input")
-
   expect(input).not.toBeDisabled()
 })
 

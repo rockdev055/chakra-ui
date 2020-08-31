@@ -50,16 +50,14 @@ test("has the proper aria attributes", () => {
   const { rerender } = render(<Button>Hello</Button>)
 
   // button has role="button"
-  let button = screen.getByRole("button")
+  const button = screen.getByRole("button")
   expect(button).not.toHaveAttribute("aria-disabled")
 
   // isLoading sets aria-disabled="true"
   rerender(<Button isLoading>Hello</Button>)
-  button = screen.getByRole("button")
   expect(button).toHaveAttribute("data-loading", "")
 
   // isDisabled sets aria-disabled="true"
   rerender(<Button isDisabled>Hello</Button>)
-  button = screen.getByRole("button")
   expect(button).toHaveAttribute("disabled", "")
 })

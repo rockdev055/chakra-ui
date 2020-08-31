@@ -1,13 +1,15 @@
-name: Publish to NPM
+name: Build & Test CI
 
 on:
   push:
     branches:
       - master
+      - develop
 
   pull_request:
     branches:
       - master
+      - develop
 
 jobs:
   build:
@@ -17,12 +19,11 @@ jobs:
         name: Get Yarn cache path
         run: echo "::set-output name=dir::$(yarn cache dir)"
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@722adc6
 
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@1c5c137
         with:
-          node-version: "12"
-          registry-url: "https://registry.npmjs.org"
+          node-version: 12.x
 
       - uses: actions/cache@70655ec
         name: Load Yarn cache
@@ -37,17 +38,5 @@ jobs:
 
       - run: yarn build
         name: Build all packages
-
-      - name: Setup CI Git User
-        run: |
-          git config --global user.email "joseshegs@gmail.com"
-          git config --global user.name "Sage"
-
-      - run: yarn version:next -y
-        name: Version all packages
-
-      - run: yarn release:next -y
-        name: Publish new version for all packages
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      # - run: yarn test
+      #   name: Run all tests
