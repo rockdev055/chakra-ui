@@ -54,20 +54,20 @@ const sidebar = {
           open: true,
           routes: [
             {
-              title: "Modify Components",
-              path: "/docs/theming/modify",
+              title: "Default Theme",
+              path: "/docs/theming/theme",
             },
             {
-              title: "Create New Components",
-              path: "/docs/theming/create",
+              title: "Customize",
+              path: "/docs/theming/customize-theme",
+            },
+            {
+              title: "Component Style",
+              path: "/docs/theming/component-style",
             },
             {
               title: "Advanced",
               path: "/docs/theming/advanced",
-            },
-            {
-              title: "Default Theme",
-              path: "/docs/theming/theme",
             },
           ],
         },
@@ -128,8 +128,16 @@ const sidebar = {
               path: "/docs/form/checkbox",
             },
             {
+              title: "Editable",
+              path: "/docs/form/editable",
+            },
+            {
               title: "Form Control",
               path: "/docs/form/form-control",
+            },
+            {
+              title: "Icon Button",
+              path: "/docs/form/icon-button",
             },
             {
               title: "Input",
