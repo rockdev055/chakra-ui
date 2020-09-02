@@ -1,22 +1,25 @@
 ---
-name: Request a feature
-about: Create a feature request for the Chakra UI ecosystem
+name: Feature request
+about: Suggest an idea for a feature or a new component for Chakra UI
+title: Request to add [Component] component
+labels: ""
+assignees: ""
 ---
 
-# Feature request
+**What problem does this feature solve?**
 
-## Is your feature request related to a problem? Please describe.
+<!-- A clear and concise description of the feature, the problem it solves
+and solution you propose. -->
 
-<!-- A clear and concise description of what you want and what your use case is. -->
+**What does the proposed API look like?**
 
-## Describe the solution you'd like
+<!-- Describe how you propose to solve the problem and provide code samples of how
+the API would work once implemented. -->
 
-<!-- A clear and concise description of what you want to happen. -->
+**Describe alternatives you've considered**
 
-## Describe alternatives you've considered
+<!-- List any alternative solutions you've considered. -->
 
-<!-- A clear and concise description of any alternative solutions or features you've considered. -->
-
-## Additional context
+**Additional context**
 
 <!-- Add any other context or screenshots about the feature request here. -->

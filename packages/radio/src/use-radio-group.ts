@@ -113,9 +113,9 @@ export function useRadioGroup(props: UseRadioGroupProps = {}) {
 
   type RadioPropGetter = PropGetter<
     HTMLInputElement,
-    { onChange?: (e: EventOrValue) => void; value?: StringOrNumber } & Omit<
+    { onChange?: (e: EventOrValue) => void } & Omit<
       InputHTMLAttributes<HTMLInputElement>,
-      "onChange" | "size" | "value"
+      "onChange"
     >
   >
 
