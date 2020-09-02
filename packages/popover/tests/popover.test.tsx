@@ -14,6 +14,12 @@ const Component = () => {
   )
 }
 
+test("Popover renders correctly", async () => {
+  const { asFragment } = render(<Component />)
+
+  expect(asFragment()).toMatchSnapshot()
+})
+
 test("has proper aria attributes", async () => {
   const utils = render(<Component />)
   const trigger = utils.getByText(/open/i)
