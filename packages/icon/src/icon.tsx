@@ -26,32 +26,26 @@ export interface IconProps extends PropsOf<typeof chakra.svg> {}
 export const Icon = forwardRef<IconProps, "svg">(function Icon(props, ref) {
   const {
     as: element,
+    boxSize = "1em",
     viewBox,
     color = "currentColor",
     focusable = false,
     children,
     className,
-    __css,
     ...rest
   } = props
 
   const _className = cx("chakra-icon", className)
 
-  const styles = {
-    w: "1em",
-    h: "1em",
-    display: "inline-block",
-    lineHeight: "1em",
-    flexShrink: 0,
-    color,
-    ...__css,
-  }
-
   const shared: IconProps = {
     ref,
+    display: "inline-block",
+    lineHeight: "1em",
+    color,
     focusable,
+    flexShrink: 0,
+    boxSize,
     className: _className,
-    __css: styles,
   }
 
   const _viewBox = viewBox ?? fallbackIcon.viewBox

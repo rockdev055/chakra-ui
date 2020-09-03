@@ -1,5 +1,5 @@
+import { isFunction, isUndefined, valueToPercent } from "@chakra-ui/utils"
 import { keyframes } from "@chakra-ui/system"
-import { isFunction, valueToPercent } from "@chakra-ui/utils"
 
 export const spin = keyframes({
   "0%": {
@@ -41,7 +41,6 @@ export interface GetProgressPropsOptions {
   max: number
   valueText?: string
   getValueText?(value: number, percent: number): string
-  isIndeterminate?: boolean
 }
 
 /**
@@ -49,21 +48,10 @@ export interface GetProgressPropsOptions {
  * progress components.
  */
 export function getProgressProps(options: GetProgressPropsOptions) {
-  const {
-    value = 0,
-    min,
-    max,
-    valueText,
-    getValueText,
-    isIndeterminate,
-  } = options
+  const { value, min, max, valueText, getValueText } = options
 
-  const percent = valueToPercent(value, min, max)
-
-  const getAriaValueText = () => {
-    if (value == null) return
-    return isFunction(getValueText) ? getValueText(value, percent) : valueText
-  }
+  const percent = value != null ? valueToPercent(value, min, max) : undefined
+  const isIndeterminate = isUndefined(value)
 
   return {
     bind: {
@@ -71,9 +59,15 @@ export function getProgressProps(options: GetProgressPropsOptions) {
       "aria-valuemax": max,
       "aria-valuemin": min,
       "aria-valuenow": isIndeterminate ? undefined : value,
-      "aria-valuetext": getAriaValueText(),
+      "aria-valuetext":
+        value == null || percent == null
+          ? undefined
+          : isFunction(getValueText)
+          ? getValueText(value, percent)
+          : valueText,
       role: "progressbar",
     },
     percent,
+    isIndeterminate,
   }
 }
