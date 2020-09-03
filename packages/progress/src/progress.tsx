@@ -1,14 +1,14 @@
 import {
   chakra,
-  ObjectInterpolation,
   omitThemingProps,
   PropsOf,
-  StylesProvider,
   ThemingProps,
   useMultiStyleConfig,
+  StylesProvider,
   useStyles,
+  ObjectInterpolation,
 } from "@chakra-ui/system"
-import { __DEV__ } from "@chakra-ui/utils"
+import { isUndefined, __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
 import {
   getProgressProps,
@@ -54,8 +54,8 @@ export interface ProgressFilledTrackProps
  * @see Docs https://chakra-ui.com/components/progress
  */
 const ProgressFilledTrack: React.FC<ProgressFilledTrackProps> = (props) => {
-  const { min, max, value, isIndeterminate, ...rest } = props
-  const progress = getProgressProps({ value, min, max, isIndeterminate })
+  const { min, max, value, ...rest } = props
+  const progress = getProgressProps({ value, min, max })
 
   const styles = useStyles()
   const trackStyles = {
@@ -66,7 +66,7 @@ const ProgressFilledTrack: React.FC<ProgressFilledTrackProps> = (props) => {
   return (
     <chakra.div
       style={{
-        width: `${progress.percent}%`,
+        width: progress.percent != null ? `${progress.percent}%` : undefined,
         ...rest.style,
       }}
       {...progress.bind}
@@ -100,11 +100,6 @@ interface ProgressOptions {
    * If `true`, and hasStripe is `true`, the stripes will be animated
    */
   isAnimated?: boolean
-  /**
-   * If `true`, the progress will be indeterminate and the `value`
-   * prop will be ignored
-   */
-  isIndeterminate?: boolean
 }
 
 export interface ProgressProps
@@ -132,11 +127,15 @@ export const Progress: React.FC<ProgressProps> = (props) => {
     isAnimated,
     children,
     borderRadius,
-    isIndeterminate,
     ...rest
   } = omitThemingProps(props)
 
-  const styles = useMultiStyleConfig("Progress", props)
+  const styles = useMultiStyleConfig("Progress", {
+    ...props,
+    isIndeterminate: isUndefined(value),
+  })
+
+  const isIndeterminate = isUndefined(value)
 
   const stripAnimation = { animation: `${stripe} 1s linear infinite` }
 
@@ -173,7 +172,6 @@ export const Progress: React.FC<ProgressProps> = (props) => {
           min={min}
           max={max}
           value={value}
-          isIndeterminate={isIndeterminate}
           css={css}
           borderRadius={borderRadius}
         />

@@ -13,10 +13,6 @@ const sidebar = {
           path: "/guides/z-index",
         },
         {
-          title: "The as prop",
-          path: "/guides/as-prop",
-        },
-        {
           title: "Integrations",
           path: "/guides/integrations",
           open: true,

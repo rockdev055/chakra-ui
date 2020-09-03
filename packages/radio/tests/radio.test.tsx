@@ -1,6 +1,11 @@
 import * as React from "react"
 import { render, fireEvent } from "@chakra-ui/test-utils"
-import { useRadio, UseRadioProps } from "../src"
+import { Radio, useRadio, UseRadioProps } from "../src"
+
+test("Radio renders correctly", () => {
+  const { asFragment } = render(<Radio size="lg" colorScheme="blue" />)
+  expect(asFragment()).toMatchSnapshot()
+})
 
 test("has proper aria and data attributes", async () => {
   const Component = (props: UseRadioProps = {}) => {

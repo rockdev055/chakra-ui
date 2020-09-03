@@ -18,7 +18,6 @@ function getSize(value: string) {
 
 const baseStyleOverlay = {
   bg: "blackAlpha.600",
-  zIndex: "overlay",
 }
 
 function baseStyleContent(props: Record<string, any>) {
@@ -26,7 +25,6 @@ function baseStyleContent(props: Record<string, any>) {
 
   return {
     ...(isFullHeight && { height: "100vh" }),
-    zIndex: "modal",
     bg: mode("white", "gray.700")(props),
     color: "inherit",
     boxShadow: mode("lg", "dark-lg")(props),

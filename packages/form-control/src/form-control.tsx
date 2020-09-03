@@ -68,10 +68,7 @@ interface FormControlContext extends FormControlOptions {
   id?: string
 }
 
-type ControlContext = Omit<
-  ReturnType<typeof useFormControlProvider>,
-  "htmlProps"
->
+type ControlContext = Omit<ReturnType<typeof useProvider>, "htmlProps">
 
 const [FormControlProvider, useFormControlContext] = createContext<
   ControlContext
@@ -82,7 +79,7 @@ const [FormControlProvider, useFormControlContext] = createContext<
 
 export { useFormControlContext }
 
-function useFormControlProvider(props: FormControlContext) {
+function useProvider(props: FormControlContext) {
   const {
     id: idProp,
     isRequired,
@@ -147,7 +144,7 @@ export const FormControl = forwardRef<FormControlProps, "div">(
   function FormControl(props, ref) {
     const styles = useMultiStyleConfig("Form", props)
     const ownProps = omitThemingProps(props)
-    const { htmlProps, ...context } = useFormControlProvider(ownProps)
+    const { htmlProps, ...context } = useProvider(ownProps)
 
     const _className = cx("chakra-form-control", props.className)
 
@@ -263,6 +260,8 @@ export const FormHelperText = forwardRef<HelpTextProps, "div">(
   function FormHelperText(props, ref) {
     const field = useFormControlContext()
     const styles = useStyles()
+
+    if (field?.isInvalid) return null
 
     /**
      * Notify the field context when the help text is rendered on

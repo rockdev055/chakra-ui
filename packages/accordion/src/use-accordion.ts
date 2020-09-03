@@ -5,14 +5,14 @@ import {
   callAllHandlers,
   createContext,
   createOnKeyDown,
+  Dict,
   getNextIndex,
   getPrevIndex,
   isArray,
   mergeRefs,
-  PropGetter,
   removeItem,
 } from "@chakra-ui/utils"
-import { useCallback, useRef, useState } from "react"
+import { Ref, useCallback, useRef, useState } from "react"
 import * as warn from "./warning"
 
 export type ExpandedIndex = number | number[]
@@ -257,8 +257,8 @@ export function useAccordionItem(props: UseAccordionItemProps) {
     setFocusedIndex,
   ])
 
-  const getButtonProps: PropGetter<HTMLButtonElement> = useCallback(
-    (props = {}, ref = null) => ({
+  const getButtonProps = useCallback(
+    (props: Dict = {}, ref: Ref<any> = null) => ({
       ...props,
       ref: mergeRefs(buttonRef, ref),
       id: buttonId,
@@ -272,8 +272,8 @@ export function useAccordionItem(props: UseAccordionItemProps) {
     [buttonId, isDisabled, isOpen, onClick, onFocus, onKeyDown, panelId],
   )
 
-  const getPanelProps: PropGetter = useCallback(
-    (props = {}, ref = null) => ({
+  const getPanelProps = useCallback(
+    (props: Dict = {}, ref: Ref<any> = null) => ({
       ...props,
       ref,
       role: "region",

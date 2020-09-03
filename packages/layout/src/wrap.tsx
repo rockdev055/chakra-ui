@@ -63,7 +63,7 @@ export const Wrap = forwardRef<WrapProps, "div">(function Wrap(props, ref) {
   const validChildren = getValidChildren(children)
 
   const clones = validChildren.map((child, index) => (
-    <chakra.li key={index} margin={itemSpacing}>
+    <chakra.li key={index} margin={itemSpacing} display="inline-flex">
       {child}
     </chakra.li>
   ))

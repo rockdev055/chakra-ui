@@ -1,49 +1,45 @@
 ---
-name: Report a bug
-about: Create a bug report for the Chakra UI ecosystem
+name: Bug report
+about: Create a report to help make Chakra UI better
+title: "[Component] A concise description of bug"
+labels: ""
+assignees: ""
 ---
 
-# Bug report
+**Describe the bug** A clear and concise description of what the bug is.
 
-## Describe the bug
+<!-- If applicable, add screenshots/videos to help explain the problem. -->
 
-<!-- A clear and concise description of what the bug is. -->
+**Expected Behavior** A clear and concise description of what you expected to
+happen.
 
-## To reproduce
+<!-- A clear and concise description of what you expected to happen. -->
 
-<!-- Clear and concise reproduction instructions are important for us to be
-able to triage your issue in a timely manner. -->
+**Link to minimal reproduction** Please provide a codesandbox link or GitHub
+repo with a minimal reproduction of the issue.
+
+- JavaScript CodeSandbox template:
+  https://codesandbox.io/s/github/chakra-ui/codesandbox-react-js-template/tree/master
+- TypeScript CodeSandbox template:
+  https://codesandbox.io/s/github/chakra-ui/codesandbox-react-ts-template/tree/master
+
+**Steps to Reproduce** Clear and concise reproduction instructions are important
+for us to be able to triage your issue in a timely manner.
 
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
 4. See error
 
-## Minimal reproduction
+**Suggested solution(s)**
 
-<!-- Please provide a codesandbox link or GitHub repo with a minimal
-reproduction of the bug.
+<!-- How could we solve this bug? What changes would need to be made? -->
 
-Official Chakra CodeSandbox templates:
-- [JavaScript CodeSandbox template](https://codesandbox.io/s/github/chakra-ui/codesandbox-react-js-template/tree/master)
-- [TypeScript CodeSandbox template](https://codesandbox.io/s/github/chakra-ui/codesandbox-react-ts-template/tree/master)
--->
+**Desktop (please complete the following information):**
 
-## Expected behavior
+- OS: [e.g. iOS]
+- Browser [e.g. chrome, safari]
+- Version [e.g. 22]
 
-<!-- A clear and concise description of what you expected to happen. -->
-
-## Screenshots
-
-<!-- If applicable, add screenshots to help explain your problem. -->
-
-## System information
-
-- OS: [e.g. macOS, Windows]
-- Browser (if applies): [e.g. Chrome, Safari]
-- Version of @chakra-ui/core: [e.g. 1.0.0-rc.3]
-- Version of Node.js: [e.g. 12.11.1]
-
-## Additional context
-
-<!-- Add any other context about the problem here. -->
+**Additional context** Add any other context about the problem here, or some
+background information of how you ran into this bug.

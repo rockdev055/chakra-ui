@@ -1,36 +1,28 @@
 import { isFocusable, isTabbable, isHTMLElement } from "./tabbable"
 
-const focusableElList = [
-  "input:not([disabled])",
-  "select:not([disabled])",
-  "textarea:not([disabled])",
-  "embed",
-  "iframe",
-  "object",
+const selectors = [
+  "input",
+  "select",
+  "textarea",
   "a[href]",
   "area[href]",
-  "button:not([disabled])",
+  "button",
   "[tabindex]",
   "audio[controls]",
   "video[controls]",
-  "*[tabindex]:not([aria-disabled])",
-  "*[contenteditable]",
+  "[contenteditable]:not([contenteditable=false])",
 ]
 
-const focusableElSelector = focusableElList.join()
+const selector = selectors.join()
 
 export const isRightClick = <E extends MouseEvent | React.MouseEvent>(
   event: E,
 ) => event.button != 0
 
 export function getAllFocusable<T extends Element>(container: T) {
-  const focusableEls = Array.from(
-    container.querySelectorAll<T>(focusableElSelector),
-  )
-  focusableEls.unshift(container)
-  return focusableEls
-    .filter(isFocusable)
-    .filter((el) => window.getComputedStyle(el).display !== "none")
+  const allFocusable = Array.from(container.querySelectorAll<T>(selector))
+  allFocusable.unshift(container)
+  return allFocusable.filter(isFocusable)
 }
 
 export function getFirstFocusable<T extends Element>(container: T) {
@@ -42,9 +34,7 @@ export function getAllTabbable<T extends Element>(
   container: T,
   fallbackToFocusable?: boolean,
 ) {
-  const allFocusable = Array.from(
-    container.querySelectorAll<T>(focusableElSelector),
-  )
+  const allFocusable = Array.from(container.querySelectorAll<T>(selector))
   const allTabbable = allFocusable.filter(isTabbable)
 
   if (isTabbable(container)) {
