@@ -222,7 +222,7 @@ export function useNumberInput(props: UseNumberInputProps = {}) {
    * @see https://www.w3.org/TR/wai-aria-practices-1.1/#wai-aria-roles-states-and-properties-18
    * @see https://www.w3.org/TR/wai-aria-1.1/#aria-valuetext
    */
-  const ariaValueText = getAriaValueText?.(counter.value) ?? counter.value
+  const ariaValueText = getAriaValueText?.(counter.value)
 
   /**
    * Function that clamps the input's value on blur
@@ -311,7 +311,7 @@ export function useNumberInput(props: UseNumberInputProps = {}) {
       role: "button",
       tabIndex: -1,
       [pointerDown]: callAllHandlers(props[pointerDown], spinDown),
-      onMouseLeave: callAllHandlers(props.onMouseUp, spinner.stop),
+      onMouseLeave: callAllHandlers(props.onMouseLeave, spinner.stop),
       onMouseUp: callAllHandlers(props.onMouseUp, spinner.stop),
       onTouchEnd: callAllHandlers(props.onTouchEnd, spinner.stop),
       disabled: keepWithinRange && counter.isAtMin,
