@@ -1,6 +1,5 @@
 import { Omit, Dict } from "./types"
 import merge from "lodash.merge"
-import mergeWith from "lodash.mergewith"
 
 export function omit<T extends Dict, K extends keyof T>(object: T, keys: K[]) {
   const result: Dict = {}
@@ -69,7 +68,7 @@ export function getWithDefault(path: any, scale: any) {
   return get(scale, path, path)
 }
 
-export { merge, mergeWith }
+export { merge }
 
 export function filterUndefined(object: Dict) {
   const result = { ...object }
