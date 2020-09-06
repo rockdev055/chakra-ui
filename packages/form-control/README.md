@@ -6,7 +6,7 @@ form fields accessible by default.
 
 - **FormControl** - the top level component that provides context.
 - **FormLabel** - the visible form control label.
-- **FormHelperText** - the from control's assistive text that guides the user.
+- **FormHelperText** - the form control's assistive text that guides the user.
   If added, it hides when there's an error in the field.
 - **FormErrorMessage** - the form control's error feedback. If there's a help
   text visible when the control is invalid, it replaces the help text, to
@@ -50,7 +50,7 @@ component to be fully accessible.
   // automatically gets `id` and `aria-*` properties
   <Input placeholder="Enter your first name..." />
   // automatically gets `id` and hides if `isInvalid` is passed to `FormControl`
-  <FormHelpText>Keep your first name short</FormHelpText>
+  <FormHelperText>Keep your first name short</FormHelperText>
   // automatically gets `id` and shows if `isInvalid` is passed to `FormControl`
   <FormErrorMessage>First name is invalid</FormErrorMessage>
 </FormControl>
