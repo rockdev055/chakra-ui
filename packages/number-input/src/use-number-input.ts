@@ -5,7 +5,6 @@ import {
   callAllHandlers,
   focus,
   isBrowser,
-  isNull,
   maxSafeInteger,
   mergeRefs,
   minSafeInteger,
@@ -237,18 +236,8 @@ export function useNumberInput(props: UseNumberInputProps = {}) {
    * @see https://www.w3.org/TR/wai-aria-practices-1.1/#wai-aria-roles-states-and-properties-18
    * @see https://www.w3.org/TR/wai-aria-1.1/#aria-valuetext
    */
-  const _getAriaValueText = () => {
-    const text = getAriaValueText?.(counter.value)
-    if (!isNull(text)) {
-      return text
-    }
-
-    const defaultText = counter.value.toString()
-    // empty string is an invalid ARIA attribute value
-    return !defaultText ? undefined : defaultText
-  }
-
-  const ariaValueText = _getAriaValueText()
+  const ariaValueText =
+    getAriaValueText?.(counter.value) ?? counter.value.toString()
 
   /**
    * Function that clamps the input's value on blur
