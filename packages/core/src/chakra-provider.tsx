@@ -5,35 +5,20 @@ import {
   ThemeProviderProps,
   ThemeProvider,
   GlobalStyle,
-  ColorModeProviderProps,
 } from "@chakra-ui/system"
 import defaultTheme from "@chakra-ui/theme"
 import * as React from "react"
 
-export interface ChakraProviderProps {
-  /**
-   * a theme. if omitted, uses the default theme provided by chakra
-   */
-  theme?: ThemeProviderProps["theme"]
+export interface ChakraProviderProps extends Partial<ThemeProviderProps> {
   /**
    * Common z-index to use for `Portal`
-   *
-   * @default undefined
    */
   portalZIndex?: PortalManagerProps["zIndex"]
   /**
    * If `true`, `CSSReset` component will be mounted to help
    * you reset browser styles
-   *
-   * @default undefined
    */
   resetCSS?: boolean
-  /**
-   * the storage to persist the theme in
-   *
-   * @default localStorageManager
-   */
-  storageManager?: ColorModeProviderProps["storageManager"]
   children?: React.ReactNode
 }
 
@@ -42,21 +27,11 @@ export interface ChakraProviderProps {
  * work correctly
  */
 export const ChakraProvider = (props: ChakraProviderProps) => {
-  const {
-    children,
-    resetCSS,
-    portalZIndex,
-    theme = defaultTheme,
-    storageManager,
-  } = props
+  const { children, resetCSS, portalZIndex, theme = defaultTheme } = props
 
   return (
     <ThemeProvider theme={theme}>
-      <ColorModeProvider
-        storageManager={storageManager}
-        defaultValue={theme.config?.initialColorMode}
-        useSystemColorMode={theme.config?.useSystemColorMode}
-      >
+      <ColorModeProvider>
         {resetCSS && <CSSReset />}
         <GlobalStyle />
         {portalZIndex ? (
