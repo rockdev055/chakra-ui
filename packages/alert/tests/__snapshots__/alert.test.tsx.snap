@@ -8,10 +8,10 @@ exports[`matches snapshot 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
   position: relative;
   overflow: hidden;
   padding-left: 1rem;
@@ -24,7 +24,7 @@ exports[`matches snapshot 1`] = `
 .emotion-1 {
   margin-right: 0.75rem;
   width: 1.25rem;
-  height: 1.5rem;
+  height: 1.25rem;
   color: #3182ce;
   display: inherit;
 }
@@ -42,15 +42,12 @@ exports[`matches snapshot 1`] = `
 }
 
 .emotion-2 {
-  display: inline-block;
   font-weight: 700;
-  line-height: 1.5rem;
-  margin-right: 0.5rem;
+  line-height: normal;
 }
 
 .emotion-3 {
-  display: inline;
-  line-height: 1.5rem;
+  display: inline-block;
 }
 
 <div
