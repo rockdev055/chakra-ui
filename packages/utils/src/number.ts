@@ -92,7 +92,7 @@ export function clampValue(value: number, min: number, max: number) {
 
   warn({
     condition: max < min,
-    message: "clamp: max cannot be less than min",
+    message: "[Chakra UI] clamp: max cannot be less than min",
   })
 
   return Math.min(Math.max(value, min), max)
