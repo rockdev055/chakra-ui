@@ -1,58 +1,52 @@
-import { isNumber, isCustomBreakpoint } from "@chakra-ui/utils"
+import { Dict, isNumber, breakpoints as bps } from "@chakra-ui/utils"
 import calculateMeasurement from "calculate-measurement"
-
-function createMediaQueries(breakpoints: string[]): MediaQuery[] {
-  /**
-   * Get the non-number breakpoint keys from the provided breakpoints
-   *
-   * reverse to begin with the largest
-   */
-  const keys = Object.keys(breakpoints).filter(isCustomBreakpoint).reverse()
-
-  /**
-   * create a min-max media query string
-   */
-  return keys.map((breakpoint, index) => {
-    const minWidth = breakpoints[breakpoint]
-
-    const next = keys[index - 1]
-    const maxWidth = next ? breakpoints[next] : undefined
-
-    const query = createMediaQueryString(minWidth, maxWidth)
-
-    return {
-      breakpoint,
-      maxWidth,
-      minWidth,
-      query,
-    }
-  })
-}
 
 /**
  * Create a media query string from the breakpoints,
  * using a combination of `min-width` and `max-width`.
  */
-function createMediaQueryString(minWidth: string, maxWidth?: string) {
-  const hasMinWidth = parseInt(minWidth) >= 0
+function createMediaQueries(breakpoints: Dict) {
+  /**
+   * Get the non-number breakpoint keys from the provided breakpoints
+   */
+  const keys = Object.keys(breakpoints)
 
-  if (!hasMinWidth && !maxWidth) {
-    return ""
-  }
+  /**
+   * Use only the keys matching the official breakpoints names, and sort them in
+   * largest to smallest order
+   */
+  const sorted = bps.filter((bp) => keys.includes(bp)).reverse()
 
-  let query = `(min-width: ${toMediaString(minWidth)})`
+  /**
+   * create a min-max media query string
+   */
+  return sorted.map((breakpoint, index) => {
+    const minWidth = breakpoints[breakpoint]
+    const next = sorted[index - 1] as string | undefined
+    const maxWidth = next ? breakpoints[next] : undefined
 
-  if (!maxWidth) {
-    return query
-  }
+    let query = ""
 
-  if (query) {
-    query += " and "
-  }
+    if (parseInt(minWidth) >= 0) {
+      query = `(min-width: ${toMediaString(minWidth)})`
+    }
 
-  query += `(max-width: ${toMediaString(subtract(maxWidth))})`
+    if (maxWidth) {
+      if (query) {
+        query += " and "
+      }
+      query += `(max-width: ${toMediaString(subtract(maxWidth))})`
+    }
 
-  return query
+    const mediaQuery: MediaQuery = {
+      breakpoint,
+      maxWidth,
+      minWidth,
+      query,
+    }
+
+    return mediaQuery
+  })
 }
 
 interface MediaQuery {
