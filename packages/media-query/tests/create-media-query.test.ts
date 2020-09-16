@@ -4,16 +4,10 @@ import createMediaQueries from "../src/create-media-query"
 test("creates media queries for each named breakpoint", () => {
   expect(createMediaQueries(breakpoints)).toEqual([
     {
-      breakpoint: "customBreakpoint",
-      maxWidth: undefined,
-      minWidth: "500px",
-      query: "(min-width: 500px)",
-    },
-    {
       breakpoint: "xl",
-      maxWidth: "500px",
+      maxWidth: undefined,
       minWidth: "400px",
-      query: "(min-width: 400px) and (max-width: 499.99px)",
+      query: "(min-width: 400px)",
     },
     {
       breakpoint: "lg",
