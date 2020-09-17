@@ -58,7 +58,6 @@ const HeaderContent = () => {
           <NavLink href="/docs/getting-started">Docs</NavLink>
           <NavLink href="/guides/integrations/with-cra">Guides</NavLink>
           <NavLink href="/team">Team</NavLink>
-          <NavLink href="/enterprise-support"> Support</NavLink>
         </HStack>
       </Flex>
 
@@ -114,7 +113,7 @@ const Header = (props) => {
       width="full"
       {...props}
     >
-      <chakra.div height="4.5rem" mx="auto" maxW="1200px">
+      <chakra.div height="4.5rem" mx="auto" maxW="1024px">
         <HeaderContent />
       </chakra.div>
     </chakra.header>

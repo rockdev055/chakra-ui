@@ -3,6 +3,7 @@ import { useRouter } from "next/router"
 import * as React from "react"
 import SidebarCategory from "./sidebar-category"
 import SidebarLink from "./sidebar-link"
+// import Search from "components/algolia-search"
 
 const Sidebar = ({ routes }: any) => {
   const { pathname } = useRouter()
@@ -37,7 +38,7 @@ const Sidebar = ({ routes }: any) => {
             {c1.routes.map((c2) => {
               if (!c2.routes) {
                 return (
-                  <SidebarLink mt="3" key={c2.path} href={c2.path}>
+                  <SidebarLink mt="18px" key={c2.path} href={c2.path}>
                     {c2.title}
                   </SidebarLink>
                 )
@@ -54,7 +55,7 @@ const Sidebar = ({ routes }: any) => {
                   selected={selected}
                   opened={opened}
                 >
-                  <Stack spacing="3">
+                  <Stack spacing="18px">
                     {c2.routes.map((c3) => (
                       <SidebarLink key={c3.path} href={c3.path}>
                         {c3.title}

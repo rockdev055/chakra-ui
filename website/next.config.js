@@ -13,29 +13,25 @@ const { Octokit } = require("@octokit/rest")
 const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN })
 
 async function getUserData(username) {
-  try {
-    const { data } = await octokit.users.getByUsername({ username })
+  const { data } = await octokit.users.getByUsername({ username })
 
-    const {
-      avatar_url: avatarUrl,
-      html_url: githubUrl,
-      blog: websiteUrl,
-      bio,
-      name,
-      twitter_username: twitterUsername,
-    } = data
+  const {
+    avatar_url: avatarUrl,
+    html_url: githubUrl,
+    blog: websiteUrl,
+    bio,
+    name,
+    twitter_username: twitterUsername,
+  } = data
 
-    return {
-      login: username,
-      avatarUrl,
-      githubUrl,
-      websiteUrl,
-      bio,
-      name,
-      twitterUsername,
-    }
-  } catch {
-    // given a user no longer exists, octokit will error
+  return {
+    login: username,
+    avatarUrl,
+    githubUrl,
+    websiteUrl,
+    bio,
+    name,
+    twitterUsername,
   }
 }
 

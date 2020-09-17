@@ -1,7 +1,7 @@
-import type { Omit, Dict } from "./types"
-export { default as merge } from "lodash.merge"
-export { default as mergeWith } from "lodash.mergewith"
-export { default as objectAssign } from "object-assign"
+import { Omit, Dict } from "./types"
+import merge from "lodash.merge"
+import mergeWith from "lodash.mergewith"
+import assign from "object-assign"
 
 export function omit<T extends Dict, K extends keyof T>(object: T, keys: K[]) {
   const result: Dict = {}
@@ -98,3 +98,5 @@ export const filterUndefined = (object: Dict) =>
 
 export const objectKeys = <T extends Dict>(obj: T) =>
   (Object.keys(obj) as unknown) as (keyof T)[]
+
+export { merge, mergeWith, assign as objectAssign }

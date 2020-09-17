@@ -10,7 +10,6 @@ import {
   getPrevIndex,
   chunk,
   getNextItemFromSearch,
-  isCustomBreakpoint,
 } from "../src"
 
 const array = [1, 2, 3, 4, 5, 6, 7, 8]
@@ -120,22 +119,4 @@ test("get next item based on search", () => {
     currentItem,
   )
   expect(result).toEqual({ value: "Vue" })
-})
-
-test.each([
-  ["base", true],
-  ["sm", true],
-  ["md", true],
-  ["lg", true],
-  ["xl", true],
-  ["xxl", true],
-  ["custom", true],
-  ["0", false],
-  ["1", false],
-  ["2", false],
-  ["3", false],
-  ["4", false],
-  ["5", false],
-])("given %s, returns %s", (given, expected) => {
-  expect(isCustomBreakpoint(given)).toBe(expected)
 })

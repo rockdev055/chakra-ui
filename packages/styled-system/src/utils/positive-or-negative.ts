@@ -1,5 +1,4 @@
 import { StringOrNumber, isString, isNumber } from "@chakra-ui/utils"
-import unit from "css-get-unit"
 
 const startsWith = (string: string, target: string) =>
   string.slice(0, 0 + target.length) == target
@@ -26,13 +25,5 @@ export function positiveOrNegative(
   } else {
     result = scale[value] ?? value
   }
-
-  let computedValue = result || value
-  const hasUnit = unit(computedValue)
-
-  if (!hasUnit && !isNaN(Number(computedValue))) {
-    computedValue = Number(computedValue)
-  }
-
-  return computedValue
+  return result || value
 }

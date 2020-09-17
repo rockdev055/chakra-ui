@@ -1,14 +1,14 @@
 import { FormControlOptions, useFormControl } from "@chakra-ui/form-control"
 import {
   chakra,
-  forwardRef,
   layoutPropNames,
   omitThemingProps,
   PropsOf,
-  ThemingProps,
   useMultiStyleConfig,
+  ThemingProps,
+  forwardRef,
 } from "@chakra-ui/system"
-import { cx, merge, split, __DEV__ } from "@chakra-ui/utils"
+import { cx, split, __DEV__, merge } from "@chakra-ui/utils"
 import * as React from "react"
 
 type Omitted = "disabled" | "required" | "readOnly" | "size"
@@ -22,12 +22,13 @@ export interface SelectFieldProps
 export const SelectField = forwardRef<SelectFieldProps, "select">(
   function SelectField(props, ref) {
     const { children, placeholder, className, ...rest } = props
-    const ownProps = useFormControl<HTMLSelectElement>(rest)
+    const select = useFormControl<HTMLSelectElement>(rest)
 
     return (
       <chakra.select
-        {...ownProps}
+        {...select}
         ref={ref}
+        paddingRight="2rem"
         className={cx("chakra-select", className)}
       >
         {placeholder && <option value="">{placeholder}</option>}
@@ -69,14 +70,6 @@ interface SelectOptions extends FormControlOptions {
    * ```
    */
   placeholder?: string
-  /**
-   * The size (width and height) of the icon
-   */
-  iconSize?: string
-  /**
-   * The color of the icon
-   */
-  iconColor?: string
 }
 
 export interface SelectProps
@@ -111,8 +104,6 @@ export const Select = forwardRef<SelectProps, "select">(function Select(
     h,
     minH,
     minHeight,
-    iconColor,
-    iconSize,
     ...rest
   } = omitThemingProps(props)
 
@@ -125,10 +116,7 @@ export const Select = forwardRef<SelectProps, "select">(function Select(
     color,
   }
 
-  const fieldStyles = merge({}, styles.field, {
-    pr: "2rem",
-    _focus: { zIndex: "unset" },
-  })
+  const fieldStyles = merge({}, styles.field, { _focus: { zIndex: "unset" } })
 
   return (
     <chakra.div
@@ -151,9 +139,8 @@ export const Select = forwardRef<SelectProps, "select">(function Select(
       <SelectIcon
         data-disabled={props.isDisabled}
         children={icon}
-        color={iconColor || color}
+        color={color}
         __css={styles.icon}
-        {...(iconSize && { fontSize: iconSize })}
       />
     </chakra.div>
   )
@@ -209,7 +196,7 @@ const SelectIcon: React.FC<SelectIconProps> = (props) => {
     <IconWrapper
       {...rest}
       className="chakra-select__icon-wrapper"
-      children={React.isValidElement(children) ? clone : null}
+      children={clone}
     />
   )
 }
