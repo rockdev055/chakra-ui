@@ -6,7 +6,7 @@ import { ChakraProvider } from "@chakra-ui/core"
 
 render(
   <StrictMode>
-    <ChakraProvider>
+    <ChakraProvider resetCSS>
       <App />
     </ChakraProvider>
   </StrictMode>,
