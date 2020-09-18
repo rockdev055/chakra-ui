@@ -1,19 +1,10 @@
 import * as React from "react"
 
-function setScript() {
-  try {
-    const mode = localStorage.getItem("chakra-ui-color-mode")
-    if (mode) {
-      const root = document.documentElement
-      document.body.classList.add("chakra-ui-" + mode)
-      root.style.setProperty("--chakra-ui-color-mode", mode)
-    }
-  } catch (e) {
-    console.log(
-      "Chakra UI: localStorage is not available. Color mode persistence might not work as expected",
-    )
-  }
-}
+const noFlash = `(function() { try {
+  var mode = localStorage.getItem('chakra-ui-color-mode');
+  if (!mode) return
+  document.body.classList.add('chakra-ui-' + mode);
+} catch (e) {} })();`
 
 /**
  * Script to add to the root of your application to help prevent
@@ -22,5 +13,5 @@ function setScript() {
  * This is particular useful for SSG in Gatsby or Next.js
  */
 export const ColorModeScript = () => (
-  <script dangerouslySetInnerHTML={{ __html: `(${String(setScript)})()` }} />
+  <script dangerouslySetInnerHTML={{ __html: noFlash }} />
 )
