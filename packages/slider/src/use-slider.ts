@@ -103,11 +103,6 @@ export interface UseSliderProps {
    */
   getAriaValueText?(value: number): string
   /**
-   * If `false`, the slider handle will not capture focus when value changes.
-   * @default true
-   */
-  focusThumbOnChange?: boolean
-  /**
    * The static string to use used for `aria-valuetext`
    */
   "aria-valuetext"?: string
@@ -154,7 +149,6 @@ export function useSlider(props: UseSliderProps) {
     "aria-label": ariaLabel,
     "aria-labelledby": ariaLabelledBy,
     name,
-    focusThumbOnChange = true,
     ...htmlProps
   } = props
 
@@ -380,7 +374,7 @@ export function useSlider(props: UseSliderProps) {
   }
 
   useUpdateEffect(() => {
-    if (thumbRef.current && focusThumbOnChange) {
+    if (thumbRef.current) {
       focus(thumbRef.current)
     }
   }, [value])
