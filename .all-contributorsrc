@@ -1231,6 +1231,24 @@
         "code",
         "design"
       ]
+    },
+    {
+      "login": "frontendwizard",
+      "name": "Juliano Farias",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1124448?v=4",
+      "profile": "http://frontendwizard.dev",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "joe-bell",
+      "name": "Joe Bell",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/7349341?v=4",
+      "profile": "https://joebell.co.uk",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,

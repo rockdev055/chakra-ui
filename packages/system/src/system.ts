@@ -5,7 +5,13 @@ import {
   SystemProps,
   SystemStyleObject,
 } from "@chakra-ui/styled-system"
-import { get, objectFilter, objectAssign, Dict } from "@chakra-ui/utils"
+import {
+  get,
+  objectFilter,
+  objectAssign,
+  Dict,
+  isFunction,
+} from "@chakra-ui/utils"
 import createStyled, {
   CSSObject,
   FunctionInterpolation,
@@ -82,13 +88,11 @@ export const styleResolver: StyleResolver = ({ baseStyle }) => (props) => {
       WebkitBoxOrient: "vertical",
       WebkitLineClamp: noOfLines,
     }
-  } else {
-    if (isTruncated) {
-      truncateStyle = {
-        overflow: "hidden",
-        textOverflow: "ellipsis",
-        whiteSpace: "nowrap",
-      }
+  } else if (isTruncated) {
+    truncateStyle = {
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      whiteSpace: "nowrap",
     }
   }
 
@@ -112,9 +116,12 @@ export const styleResolver: StyleResolver = ({ baseStyle }) => (props) => {
   const computedCSS = css(finalStyles)(props.theme)
 
   // Merge the computed css object with styles in css prop
-  const cssObject = objectAssign(computedCSS, cssProp)
+  const cssObject: Interpolation<StyleResolverProps> = objectAssign(
+    computedCSS,
+    isFunction(cssProp) ? cssProp(theme) : cssProp,
+  )
 
-  return cssObject as Interpolation<StyleResolverProps>
+  return cssObject
 }
 
 interface StyledOptions {
@@ -126,7 +133,7 @@ interface StyledOptions {
 export function styled<T extends As, P = {}>(
   component: T,
   options?: StyledOptions,
-) {
+): ChakraComponent<T, P> {
   const { baseStyle, ...styledOptions } = options ?? {}
   const opts = { ...styledOptions, shouldForwardProp }
 
@@ -134,7 +141,7 @@ export function styled<T extends As, P = {}>(
   const interpolation = styleResolver({ baseStyle })
   const StyledComponent = _styled(interpolation)
 
-  return StyledComponent as ChakraComponent<T, P>
+  return StyledComponent
 }
 
 type ChakraJSXElements = {
@@ -152,6 +159,6 @@ export const chakra = (styled as unknown) as CreateChakraComponent &
   ChakraJSXElements
 
 domElements.forEach((tag) => {
-  //@ts-ignore
+  // @ts-expect-error
   chakra[tag] = chakra(tag)
 })
