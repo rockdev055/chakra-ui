@@ -1,68 +1,99 @@
-import { noop, __DEV__ } from "@chakra-ui/utils"
+import { noop, __DEV__, isBrowser } from "@chakra-ui/utils"
 import * as React from "react"
-import { ColorMode } from "./color-mode.utils"
-import { useColorModeState } from "./use-color-mode-state"
-import { localStorageManager, StorageManager } from "./storage-manager"
+import { useSafeLayoutEffect } from "@chakra-ui/hooks"
 
-export type { ColorMode }
+export type ColorMode = "light" | "dark"
 
-interface ColorModeContextType {
-  colorMode: ColorMode
-  toggleColorMode: () => void
-}
-
-export const ColorModeContext = React.createContext<ColorModeContextType>({
-  colorMode: "light",
-  toggleColorMode: noop,
-})
+export const ColorModeContext = React.createContext({} as ColorModeContextType)
 
 if (__DEV__) {
   ColorModeContext.displayName = "ColorModeContext"
 }
 
-/**
- * React hook that reads from `ColorModeProvider` context
- * Returns the color mode and function to toggle it
- */
-export function useColorMode() {
-  return React.useContext(ColorModeContext)
+interface ColorModeContextType {
+  colorMode: ColorMode
+  toggleColorMode: () => void
+  setColorMode: (value: ColorMode) => void
 }
 
-export interface ColorModeProviderProps {
-  value?: ColorMode
-  children?: React.ReactNode
-  useSystemColorMode?: boolean
-  defaultValue?: ColorMode
-  colorModeManager?: StorageManager
+const classNames = {
+  light: "chakra-ui-light",
+  dark: "chakra-ui-dark",
 }
 
-/**
- * Provides context for the color mode based on config in `theme`
- * Returns the color mode and function to toggle the color mode
- */
-export function ColorModeProvider(props: ColorModeProviderProps) {
-  const {
-    value,
-    children,
-    useSystemColorMode = false,
-    defaultValue = "light",
-    colorModeManager = localStorageManager,
-  } = props
+export const useColorMode = () => React.useContext(ColorModeContext)
 
-  const { mode, toggleColorMode } = useColorModeState({
-    useSystemColorMode,
-    initialColorMode: defaultValue,
-    colorModeManager,
-  })
+const ssrBody = {
+  classList: {
+    add: () => {},
+    remove: () => {},
+  },
+}
 
-  const context = {
-    colorMode: value ?? mode,
-    // presence of `value` indicates a controlled context
-    toggleColorMode: value ? noop : toggleColorMode,
-  }
+const body = isBrowser ? document?.body : ssrBody
+
+export const ColorModeProvider: React.FC = (props) => {
+  const { children } = props
+  const [colorMode, rawSetColorMode] = React.useState<ColorMode>()
+
+  useSafeLayoutEffect(() => {
+    const root = document.documentElement
+    const mode = root.style.getPropertyValue(
+      "--chakra-ui-color-mode",
+    ) as ColorMode
+    rawSetColorMode(mode)
+  }, [])
+
+  useSafeLayoutEffect(() => {
+    const dark = colorMode === "dark"
+    body.classList.add(dark ? classNames.dark : classNames.light)
+    body.classList.remove(dark ? classNames.light : classNames.dark)
+  }, [colorMode])
+
+  const ctx = React.useMemo(() => {
+    const setColorMode = (mode: ColorMode) => {
+      const root = document.documentElement
+      root.style.setProperty("--chakra-ui-color-mode", mode)
+      localStorage.setItem("chakra-ui-color-mode", mode)
+      rawSetColorMode(mode)
+    }
+
+    const toggleColorMode = () => {
+      setColorMode(colorMode === "light" ? "dark" : "light")
+    }
+
+    return {
+      colorMode: colorMode as ColorMode,
+      setColorMode,
+      toggleColorMode,
+    }
+  }, [colorMode, rawSetColorMode])
+
+  const shouldRunRef = React.useRef(false)
+
+  React.useEffect(() => {
+    if (!window.hasOwnProperty("matchMedia")) return
+
+    const mq = window.matchMedia("(prefers-color-scheme: dark)")
+
+    const listener = () => {
+      if (shouldRunRef.current) {
+        ctx.setColorMode(!!mq.matches ? "dark" : "light")
+      }
+      shouldRunRef.current = true
+    }
+
+    listener()
+    mq.addListener(listener)
+
+    return () => {
+      mq.removeListener(listener)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
-    <ColorModeContext.Provider value={context}>
+    <ColorModeContext.Provider value={ctx}>
       {children}
     </ColorModeContext.Provider>
   )
@@ -72,13 +103,10 @@ if (__DEV__) {
   ColorModeProvider.displayName = "ColorModeProvider"
 }
 
-/**
- * Locks the color mode to `dark`, without any way to change it.
- */
-export const DarkMode: React.FC = (props) => (
+export const DarkMode: React.FC = ({ children }) => (
   <ColorModeContext.Provider
-    value={{ colorMode: "dark", toggleColorMode: noop }}
-    {...props}
+    value={{ colorMode: "dark", toggleColorMode: noop, setColorMode: noop }}
+    children={children}
   />
 )
 
@@ -86,13 +114,10 @@ if (__DEV__) {
   DarkMode.displayName = "DarkMode"
 }
 
-/**
- * Locks the color mode to `light` without any way to change it.
- */
-export const LightMode: React.FC = (props) => (
+export const LightMode: React.FC = ({ children }) => (
   <ColorModeContext.Provider
-    value={{ colorMode: "light", toggleColorMode: noop }}
-    {...props}
+    value={{ colorMode: "light", toggleColorMode: noop, setColorMode: noop }}
+    children={children}
   />
 )
 
@@ -112,10 +137,7 @@ if (__DEV__) {
  * const Icon = useColorModeValue(MoonIcon, SunIcon)
  * ```
  */
-export function useColorModeValue<TLight = unknown, TDark = unknown>(
-  light: TLight,
-  dark: TDark,
-) {
+export function useColorModeValue(light: any, dark: any) {
   const { colorMode } = useColorMode()
-  return colorMode === "light" ? light : dark
+  return colorMode === "dark" ? dark : light
 }

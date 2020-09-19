@@ -1,3 +1,5 @@
+import { ChakraProvider } from "@chakra-ui/core"
+import theme from "theme"
 import { trackPageview } from "analytics/track-event"
 import { DefaultSeo } from "next-seo"
 import Head from "next/head"
@@ -21,8 +23,10 @@ const App = ({ Component, pageProps }) => {
         <link rel="preconnect" href="https://static.cloudflareinsights.com" />
         <meta name="theme-color" content="#319795" />
       </Head>
-      <DefaultSeo {...siteConfig.seo} />
-      <Component {...pageProps} />
+      <ChakraProvider resetCSS theme={theme} portalZIndex={40}>
+        <DefaultSeo {...siteConfig.seo} />
+        <Component {...pageProps} />
+      </ChakraProvider>
       <style jsx global>
         {`
           @font-face {
