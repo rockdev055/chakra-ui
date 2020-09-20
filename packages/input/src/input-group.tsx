@@ -29,11 +29,11 @@ export const InputGroup = forwardRef<InputGroupProps, "div">(
     validChildren.forEach((child: any) => {
       if (!styles) return
 
-      if (input && child.type.id === "InputLeftElement") {
+      if (child.type.id === "InputLeftElement") {
         stylesRef.current.paddingLeft = input.height ?? input.h
       }
 
-      if (input && child.type.id === "InputRightElement") {
+      if (child.type.id === "InputRightElement") {
         stylesRef.current.paddingRight = input.height ?? input.h
       }
 
