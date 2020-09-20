@@ -9,7 +9,7 @@ test("should render portal", () => {
     </PortalManager>,
   )
 
-  expect(tools.baseElement.innerHTML).toMatchSnapshot()
+  expect(tools.baseElement).toMatchSnapshot()
 })
 
 test("should render nested portal", () => {
