@@ -22,12 +22,7 @@ function variantGhost(props: Dict) {
   if (c === "gray") {
     return {
       color: mode(`inherit`, `whiteAlpha.900`)(props),
-      _hover: {
-        bg: mode(`gray.100`, `whiteAlpha.200`)(props),
-        _disabled: {
-          bg: "transparent",
-        },
-      },
+      _hover: { bg: mode(`gray.100`, `whiteAlpha.200`)(props) },
       _active: { bg: mode(`gray.200`, `whiteAlpha.300`)(props) },
     }
   }
@@ -40,9 +35,6 @@ function variantGhost(props: Dict) {
     bg: "transparent",
     _hover: {
       bg: mode(`${c}.50`, darkHoverBg)(props),
-      _disabled: {
-        bg: "transparent",
-      },
     },
     _active: {
       bg: mode(`${c}.100`, darkActiveBg)(props),
@@ -89,12 +81,7 @@ function variantSolid(props: Dict) {
   if (c === "gray")
     return {
       bg: mode(`gray.100`, `whiteAlpha.200`)(props),
-      _hover: {
-        bg: mode(`gray.200`, `whiteAlpha.300`)(props),
-        _disabled: {
-          bg: mode(`gray.100`, `whiteAlpha.200`)(props),
-        },
-      },
+      _hover: { bg: mode(`gray.200`, `whiteAlpha.300`)(props) },
       _active: { bg: mode(`gray.300`, `whiteAlpha.400`)(props) },
     }
 
@@ -107,12 +94,7 @@ function variantSolid(props: Dict) {
   return {
     bg: mode(bg, `${c}.200`)(props),
     color: mode(color, `gray.800`)(props),
-    _hover: {
-      bg: mode(hoverBg, `${c}.300`)(props),
-      _disabled: {
-        bg: mode(bg, `${c}.200`)(props),
-      },
-    },
+    _hover: { bg: mode(hoverBg, `${c}.300`)(props) },
     _active: { bg: mode(activeBg, `${c}.400`)(props) },
   }
 }
@@ -124,12 +106,7 @@ function variantLink(props: Dict) {
     height: "auto",
     lineHeight: "normal",
     color: mode(`${c}.500`, `${c}.200`)(props),
-    _hover: {
-      textDecoration: "underline",
-      _disabled: {
-        textDecoration: "none",
-      },
-    },
+    _hover: { textDecoration: "underline" },
     _active: {
       color: mode(`${c}.700`, `${c}.500`)(props),
     },
