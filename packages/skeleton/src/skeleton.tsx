@@ -119,7 +119,6 @@ export interface SkeletonTextProps extends SkeletonProps {
   skeletonHeight?: SkeletonProps["height"]
   startColor?: SkeletonProps["startColor"]
   endColor?: SkeletonProps["endColor"]
-  isLoaded?: SkeletonProps["isLoaded"]
 }
 
 export const SkeletonText: React.FC<SkeletonTextProps> = (props) => {
@@ -130,8 +129,6 @@ export const SkeletonText: React.FC<SkeletonTextProps> = (props) => {
     className,
     startColor,
     endColor,
-    isLoaded,
-    children,
     ...rest
   } = props
 
@@ -148,19 +145,16 @@ export const SkeletonText: React.FC<SkeletonTextProps> = (props) => {
 
   return (
     <chakra.div className={_className} {...rest}>
-      {isLoaded
-        ? children
-        : numbers.map((number) => (
-            <Skeleton
-              key={number}
-              height={skeletonHeight}
-              mb={number === numbers.length ? "0" : spacing}
-              width={getWidth(number)}
-              startColor={startColor}
-              endColor={endColor}
-              isLoaded={isLoaded}
-            />
-          ))}
+      {numbers.map((number) => (
+        <Skeleton
+          key={number}
+          height={skeletonHeight}
+          mb={number === numbers.length ? "0" : spacing}
+          width={getWidth(number)}
+          startColor={startColor}
+          endColor={endColor}
+        />
+      ))}
     </chakra.div>
   )
 }
