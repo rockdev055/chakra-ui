@@ -152,7 +152,7 @@ export const InsideScroll = () => {
               <Lorem size={5} />
             </ModalBody>
             <ModalFooter>
-              <Button onClick={onClose}>Close</Button>
+              <Button>Close</Button>
             </ModalFooter>
           </ModalContent>
         </ModalOverlay>
