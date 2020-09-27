@@ -2,6 +2,7 @@ import { Icon, IconProps } from "@chakra-ui/icon"
 import * as React from "react"
 
 export interface CheckboxIconProps extends IconProps {
+  isChecked?: boolean
   isIndeterminate?: boolean
 }
 
@@ -12,7 +13,7 @@ export interface CheckboxIconProps extends IconProps {
  * @todo allow users pass their own icon svgs
  */
 export const CheckboxIcon: React.FC<CheckboxIconProps> = (props) => {
-  const { isIndeterminate, ...rest } = props
+  const { isIndeterminate, isChecked, ...rest } = props
   return (
     <Icon {...rest}>
       {isIndeterminate ? (

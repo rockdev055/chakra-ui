@@ -1,9 +1,6 @@
 import { breakpoints } from "@chakra-ui/utils"
 
-export function getClosestValue<T = any>(
-  values: Record<string, T>,
-  breakpoint: string,
-): T | undefined {
+export function getClosestValue(values: any, breakpoint: string) {
   let index = Object.keys(values).indexOf(breakpoint)
 
   if (index !== -1) {

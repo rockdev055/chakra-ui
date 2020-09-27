@@ -1,6 +1,6 @@
 import { getClosestValue } from "./media-query.utils"
 import { useBreakpoint } from "./use-breakpoint"
-import { isArray, arrayToObjectNotation, fromEntries } from "@chakra-ui/utils"
+import { isArray, arrayToObjectNotation } from "@chakra-ui/utils"
 import { useTheme } from "@chakra-ui/system"
 
 /**
@@ -10,9 +10,7 @@ import { useTheme } from "@chakra-ui/system"
  * @example
  * const width = useBreakpointValue({ base: '150px', md: '250px' })
  */
-export function useBreakpointValue<T = any>(
-  values: Record<string, T> | T[],
-): T | undefined {
+export function useBreakpointValue<T = any>(values: Record<string, T> | T[]) {
   const breakpoint = useBreakpoint()
   const { breakpoints } = useTheme()
 
@@ -21,12 +19,14 @@ export function useBreakpointValue<T = any>(
   }
 
   const obj = isArray(values)
-    ? fromEntries<Record<string, T>>(
+    ? Object.fromEntries(
         Object.entries(
           arrayToObjectNotation(values, breakpoints),
         ).map(([_, value]) => [value, value]),
       )
     : values
 
-  return getClosestValue(obj, breakpoint)
+  const closest = getClosestValue(obj, breakpoint)
+
+  return closest
 }
