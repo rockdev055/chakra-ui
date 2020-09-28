@@ -20,22 +20,22 @@ const links = [
   {
     icon: DiGithubBadge,
     label: "GitHub",
-    href: "https://github.com/segunadebayo",
+    url: "https://github.com/segunadebayo",
   },
   {
     icon: IoLogoTwitter,
     label: "Twitter",
-    href: "https://twitter.com/thesegunadebayo",
+    url: "https://twitter.com/thesegunadebayo",
   },
   {
     icon: IoLogoLinkedin,
     label: "LinkedIn",
-    href: "https://linkedin.com/in/thesegunadebayo/",
+    url: "https://linkedin.com/in/thesegunadebayo/",
   },
   {
     icon: MdEmail,
     label: "Email",
-    href: "mailto:sage@adebayosegun.com",
+    url: "mailto:sage@adebayosegun.com",
   },
 ]
 
