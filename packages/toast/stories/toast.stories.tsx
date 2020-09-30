@@ -1,6 +1,6 @@
 import * as React from "react"
 import useToast from "../src"
-import { Button, ButtonGroup } from "@chakra-ui/button"
+import { Button } from "@chakra-ui/button"
 import { chakra, useColorMode } from "@chakra-ui/system"
 import { Alert } from "@chakra-ui/alert"
 
@@ -19,7 +19,7 @@ export function ToastExample() {
   const toast = useToast()
   const id = "login-error-toast"
   return (
-    <ButtonGroup>
+    <>
       <Button
         onClick={() => {
           if (toast.isActive(id)) return
@@ -38,8 +38,8 @@ export function ToastExample() {
       >
         Show Toast
       </Button>
-      <Button onClick={() => toast.closeAll()}>Close all</Button>
-      <Button
+      <button onClick={toast.closeAll}>Close all</button>
+      <button
         onClick={() =>
           toast.update(id, {
             title: "Hooray 🥳🥳🥳!!!",
@@ -50,9 +50,9 @@ export function ToastExample() {
         }
       >
         Update
-      </Button>
-      <Button onClick={() => toast.close(id)}>Close One</Button>
-    </ButtonGroup>
+      </button>
+      <button onClick={() => toast.close(id)}>Close One</button>
+    </>
   )
 }
 
@@ -147,7 +147,7 @@ export const AllSides = () => {
 
   return (
     <>
-      <Button
+      <button
         onClick={() => {
           positions.forEach((p) => {
             toast({ position: p, title: p })
@@ -155,10 +155,7 @@ export const AllSides = () => {
         }}
       >
         Trigger
-      </Button>
-
-      <hr />
-      <Button onClick={() => toast.closeAll()}>close all</Button>
+      </button>
     </>
   )
 }
