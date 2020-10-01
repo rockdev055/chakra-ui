@@ -48,8 +48,9 @@ class Toaster {
     this.isToastActive = methods.isActive
   }
 
-  notify = (message: ToastMessage, options: Partial<ToastOptions> = {}) =>
-    this.createToast?.(message, options)
+  notify = (message: ToastMessage, options: Partial<ToastOptions> = {}) => {
+    return this.createToast?.(message, options)
+  }
 
   close = (id: ToastId) => {
     this.closeToast?.(id)
@@ -65,7 +66,9 @@ class Toaster {
     window.scrollBy({ top: -10 })
   }
 
-  isActive = (id: ToastId) => this.isToastActive?.(id)
+  isActive = (id: ToastId) => {
+    return this.isToastActive?.(id)
+  }
 }
 
 export const toast = new Toaster()
