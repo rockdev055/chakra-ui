@@ -103,7 +103,6 @@ const defaultConfig = {
   experimental: {
     optimizeFonts: true,
     optimizeImages: true,
-    modern: true,
   },
   redirects: require("./next-redirect"),
 }
