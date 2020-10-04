@@ -149,6 +149,7 @@ export function usePopover(props: UsePopoverProps = {}) {
   const { popper, reference, arrow } = usePopper({
     placement: placementProp,
     gutter,
+    forceUpdate: isOpen,
     arrowSize,
     arrowShadowColor: arrowColor,
     modifiers,

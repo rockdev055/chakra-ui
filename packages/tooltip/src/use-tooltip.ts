@@ -82,6 +82,7 @@ export function useTooltip(props: UseTooltipProps = {}) {
   })
 
   const popper = usePopper({
+    forceUpdate: isOpen,
     placement,
     arrowSize,
     modifiers,

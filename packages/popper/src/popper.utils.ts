@@ -1,5 +1,43 @@
-import type { CSSProperties } from "react"
 import { Placement } from "@popperjs/core"
+
+const oppositeDirections = {
+  top: "bottom",
+  bottom: "top",
+  right: "left",
+  left: "right",
+}
+
+type Direction = keyof typeof oppositeDirections
+
+export const getOppositePosition = (position: Direction) =>
+  oppositeDirections[position]
+
+const splitPlacement = (placement: Placement) =>
+  placement.split("-") as Direction[]
+
+export function getArrowStyles(
+  placement: Placement | undefined,
+  arrowSize: number,
+  arrowShadowColor?: string,
+): React.CSSProperties {
+  if (typeof placement !== "string") return {}
+
+  const [position] = splitPlacement(placement)
+  const oppositePosition = getOppositePosition(position)
+
+  if (!oppositePosition) return {}
+
+  return {
+    [oppositePosition]: `-${arrowSize / 2}px`,
+    width: arrowSize,
+    height: arrowSize,
+    position: "absolute",
+    transform: "rotate(45deg)",
+    boxShadow: arrowShadowColor
+      ? getBoxShadow(placement, arrowShadowColor)
+      : undefined,
+  }
+}
 
 export function getBoxShadow(placement: Placement, color: string) {
   if (placement.includes("top")) {
@@ -39,37 +77,3 @@ const transformEnum = {
 
 export const toTransformOrigin = (placement: Placement) =>
   transformEnum[placement]
-
-interface ArrowStyleArguments {
-  arrowSize: number
-  popperArrowStyles: CSSProperties
-  placement: Placement
-}
-
-export const getArrowStyles = ({
-  arrowSize,
-  popperArrowStyles = {},
-  placement,
-}: ArrowStyleArguments): CSSProperties => {
-  const offsetAdjust = -(arrowSize / 2)
-
-  const bottom = placement.startsWith("top") ? offsetAdjust : undefined
-  const top = placement.startsWith("bottom") ? offsetAdjust : undefined
-  const left = placement.startsWith("right") ? offsetAdjust : undefined
-  const right = placement.startsWith("left") ? offsetAdjust : undefined
-
-  return {
-    ...popperArrowStyles,
-    zIndex: -1,
-    width: arrowSize,
-    height: arrowSize,
-    // necessary for the correct angle of the arrow
-    transform: [popperArrowStyles.transform, "rotate(45deg)"]
-      .filter(Boolean)
-      .join(" "),
-    bottom,
-    top,
-    left,
-    right,
-  }
-}
