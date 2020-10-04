@@ -143,6 +143,7 @@ export function useMenu(props: UseMenuProps) {
   const { placement, popper, reference } = usePopper({
     placement: placementProp,
     fixed,
+    forceUpdate: isOpen,
     gutter,
     preventOverflow,
     modifiers,
@@ -243,7 +244,6 @@ export function useMenuList(props: UseMenuListProps) {
   const onKeyDown = useCallback(
     (event: React.KeyboardEvent) => {
       const eventKey = normalizeEventKey(event)
-
       const keyMap: EventKeyMap = {
         Escape: onClose,
         ArrowDown: () => {
@@ -256,33 +256,32 @@ export function useMenuList(props: UseMenuListProps) {
         },
       }
 
-      const navigationHandler = keyMap[eventKey]
+      const action = keyMap[eventKey]
 
-      if (navigationHandler) {
+      if (action) {
         event.preventDefault()
-        navigationHandler(event)
-        return
+        action(event)
+      } else {
+        const action = onCharacterPress((character) => {
+          /**
+           * Typeahead: Based on current character pressed,
+           * find the next item to be selected
+           */
+          const nextItem = getNextItemFromSearch(
+            descendants,
+            character,
+            (node) => node.element?.textContent || "",
+            descendants[focusedIndex],
+          )
+
+          if (nextItem) {
+            const index = descendants.indexOf(nextItem)
+            setFocusedIndex(index)
+          }
+        })
+
+        action(event)
       }
-
-      const characterHandler = onCharacterPress((character) => {
-        /**
-         * Typeahead: Based on current character pressed,
-         * find the next item to be selected
-         */
-        const nextItem = getNextItemFromSearch(
-          descendants,
-          character,
-          (node) => node.element?.textContent || "",
-          descendants[focusedIndex],
-        )
-
-        if (nextItem) {
-          const index = descendants.indexOf(nextItem)
-          setFocusedIndex(index)
-        }
-      })
-
-      characterHandler(event)
     },
     [descendants, focusedIndex, onCharacterPress, onClose, setFocusedIndex],
   )
