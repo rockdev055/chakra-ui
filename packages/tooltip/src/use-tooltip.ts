@@ -82,6 +82,7 @@ export function useTooltip(props: UseTooltipProps = {}) {
   })
 
   const popper = usePopper({
+    forceUpdate: isOpen,
     placement,
     arrowSize,
     modifiers,
@@ -137,36 +138,52 @@ export function useTooltip(props: UseTooltipProps = {}) {
     }
   }, [])
 
-  const getTriggerProps: PropGetter = (props = {}, ref = null) => ({
-    ...props,
-    ref: mergeRefs(ref, triggerRef),
-    onMouseLeave: callAllHandlers(props.onMouseLeave, closeWithDelay),
-    onMouseEnter: callAllHandlers(props.onMouseEnter, openWithDelay),
-    onClick: callAllHandlers(props.onClick, onClick),
-    onMouseDown: callAllHandlers(props.onMouseDown, onMouseDown),
-    onFocus: callAllHandlers(props.onFocus, openWithDelay),
-    onBlur: callAllHandlers(props.onBlur, closeWithDelay),
-    "aria-describedby": isOpen ? tooltipId : undefined,
-  })
+  const getTriggerProps: PropGetter = useCallback(
+    (props = {}, ref = null) => ({
+      ...props,
+      ref: mergeRefs(ref, triggerRef),
+      onMouseLeave: callAllHandlers(props.onMouseLeave, closeWithDelay),
+      onMouseEnter: callAllHandlers(props.onMouseEnter, openWithDelay),
+      onClick: callAllHandlers(props.onClick, onClick),
+      onMouseDown: callAllHandlers(props.onMouseDown, onMouseDown),
+      onFocus: callAllHandlers(props.onFocus, openWithDelay),
+      onBlur: callAllHandlers(props.onBlur, closeWithDelay),
+      "aria-describedby": isOpen ? tooltipId : undefined,
+    }),
+    [
+      closeWithDelay,
+      isOpen,
+      onClick,
+      onMouseDown,
+      openWithDelay,
+      tooltipId,
+      triggerRef,
+    ],
+  )
 
-  const getTooltipProps: PropGetter = (props = {}, ref = null) => ({
-    ...htmlProps,
-    ...props,
-    id: tooltipId,
-    role: "tooltip",
-    ref: mergeRefs(ref, popper.popper.ref),
-    style: {
-      ...props.style,
-      ...popper.popper.style,
-    },
-  })
+  const getTooltipProps: PropGetter = useCallback(
+    (props = {}, ref = null) => ({
+      ...htmlProps,
+      ...props,
+      id: tooltipId,
+      role: "tooltip",
+      ref: mergeRefs(ref, popper.popper.ref),
+      style: {
+        ...props.style,
+        ...popper.popper.style,
+      },
+    }),
+    [htmlProps, popper.popper.ref, popper.popper.style, tooltipId],
+  )
 
-  const getArrowProps: PropGetter = (props = {}, ref = null) => ({
-    ...props,
-    children: popper.arrow.children,
-    ref: mergeRefs(ref, popper.arrow.ref),
-    style: { ...props.style, ...popper.arrow.style },
-  })
+  const getArrowProps: PropGetter = useCallback(
+    (props = {}, ref = null) => ({
+      ...props,
+      ref: mergeRefs(ref, popper.arrow.ref),
+      style: { ...props.style, ...popper.arrow.style },
+    }),
+    [popper.arrow.ref, popper.arrow.style],
+  )
 
   return {
     isOpen,
