@@ -1,130 +1,97 @@
-/**@jsx jsx */
 import { useDisclosure } from "@chakra-ui/hooks"
-import { jsx } from "@chakra-ui/system"
-import {
-  HiddenTransition,
-  TransitionConfig,
-  transitionConfigToCSS,
-} from "@chakra-ui/transition"
 import * as React from "react"
 import { usePopper } from "../src"
-
-const scale: TransitionConfig = {
-  timeout: { enter: 100, exit: 75 },
-  enter: {
-    transition: {
-      easing: "ease-out",
-      duration: "100ms",
-      property: "transform, opacity",
-    },
-    from: {
-      opacity: 0,
-      transform: "scale(0.95)",
-    },
-    to: {
-      opacity: 1,
-      transform: "scale(1)",
-    },
-  },
-  exit: {
-    transition: {
-      easing: "ease-in",
-      duration: "75ms",
-      property: "transform, opacity",
-    },
-    from: {
-      opacity: 1,
-      transform: "scale(1)",
-    },
-    to: {
-      opacity: 0,
-      transform: "scale(0.95)",
-    },
-  },
-}
+import { motion, AnimatePresence, Variants } from "framer-motion"
 
 export default {
   title: "Popper",
 }
 
 export const Basic = () => {
-  const disclosure = useDisclosure()
+  const { isOpen, onToggle } = useDisclosure()
 
-  const { popper, reference } = usePopper({
-    placement: "bottom-end",
-    forceUpdate: disclosure.isOpen,
+  const { popper, reference, arrow, transformOrigin } = usePopper({
+    placement: "bottom-start",
+    matchWidth: true,
   })
 
   return (
-    <React.Fragment>
-      <button
-        onClick={disclosure.onToggle}
-        style={{ margin: 400 }}
-        {...reference}
-      >
+    <>
+      <button onClick={onToggle} style={{ margin: 400 }} {...reference}>
         Reference Tooltip Trigger
       </button>
-      <HiddenTransition
-        nodeRef={popper.ref}
-        in={disclosure.isOpen}
-        timeout={scale.timeout}
-        classNames="tooltip"
-      >
-        <div
-          hidden={!disclosure.isOpen}
-          className="tooltip"
-          {...popper}
-          style={{
-            ...popper.style,
-            width: 250,
-            background: "white",
-            boxShadow:
-              "0 10px 15px -3px rgba(0,0,0,.1), 0 4px 6px -2px rgba(0,0,0,.05)",
-            border: "1px solid #d2d6dc",
-            padding: 15,
-            borderRadius: 6,
-          }}
-          sx={transitionConfigToCSS(scale, "tooltip")}
-        >
-          Popper
-        </div>
-      </HiddenTransition>
-    </React.Fragment>
-  )
-}
 
-export const Conditional = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
-
-  const { popper, reference, arrow } = usePopper({
-    placement: "bottom-start",
-    forceUpdate: isOpen,
-  })
-
-  return (
-    <React.Fragment>
-      <button
-        onMouseOver={onOpen}
-        onMouseLeave={onClose}
-        style={{ margin: 40 }}
-        {...reference}
-      >
-        Reference
-      </button>
       {isOpen && (
         <div
           {...popper}
           style={{
             ...popper.style,
+            width: 250,
             background: "red",
             padding: 15,
-            minWidth: 200,
+            borderRadius: 6,
+            transformOrigin,
+            // visibility: disclosure.isOpen ? "visible" : "hidden",
           }}
         >
-          <div {...arrow} style={{ ...arrow.style, background: "inherit" }} />
           Popper
+          <div
+            {...arrow}
+            style={{
+              ...arrow.style,
+              color: "red",
+            }}
+          />
         </div>
       )}
-    </React.Fragment>
+    </>
+  )
+}
+
+export const WithTransition = () => {
+  const { isOpen, onToggle } = useDisclosure()
+
+  const { popper, reference, arrow, transformOrigin } = usePopper({
+    placement: "bottom-start",
+  })
+
+  const slide: Variants = {
+    exit: { y: -2, opacity: 0 },
+    enter: { y: 0, opacity: 1 },
+  }
+
+  const bg = "red"
+
+  return (
+    <>
+      <button {...reference} onClick={onToggle}>
+        Toggle
+      </button>
+      <div {...popper}>
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              transition={{
+                type: "spring",
+                duration: 0.3,
+              }}
+              variants={slide}
+              initial="exit"
+              animate="enter"
+              exit="exit"
+              style={{
+                background: bg,
+                width: 200,
+                padding: transformOrigin,
+                borderRadius: 4,
+              }}
+            >
+              Testing
+              <div {...arrow} style={{ ...arrow.style, color: bg }} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </>
   )
 }
