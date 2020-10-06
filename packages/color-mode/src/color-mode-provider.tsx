@@ -83,14 +83,14 @@ export function ColorModeProvider(props: ColorModeProviderProps) {
      */
     if (isBrowser && colorModeManager.type === "localStorage") {
       const mode = useSystemColorMode
-        ? getColorScheme(initialColorMode)
+        ? getColorScheme()
         : root.get() || colorModeManager.get()
 
       if (mode) {
         rawSetColorMode(mode)
       }
     }
-  }, [colorModeManager, useSystemColorMode, initialColorMode])
+  }, [colorModeManager, useSystemColorMode])
 
   React.useEffect(() => {
     const isDark = colorMode === "dark"

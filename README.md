@@ -20,8 +20,8 @@
 </p>
 <br />
 
-Chakra UI provides a set of accessible, reusable and composable React components
-that make it super easy to create websites and apps.
+Chakra UI provides a set of accessible, reusable, and composable React
+components that make it super easy to create websites and apps.
 
 ## Looking for the documentation? 📝
 
@@ -36,8 +36,8 @@ Latest version (pre-release) => https://next.chakra-ui.com
   [Learn more](https://chakra-ui.com/style-props)
 - Flexible & composable: Chakra UI components are built on top of a React UI
   Primitive for endless composability.
-- Accessible. Chakra UI components follows the WAI-ARIA guidelines
-  specifications and have the right `aria-*` attributes.
+- Accessible. Chakra UI components follow the WAI-ARIA guidelines specifications
+  and have the right `aria-*` attributes.
 - Dark Mode 😍: Most components in Chakra UI are dark mode compatible.
 
 ## Support Chakra UI 💖
@@ -123,7 +123,7 @@ function App({ children }) {
 ```
 
 Optionally, you can wrap your application with the `ColorModeProvider` so you
-can toggle beween light and dark mode within your app.
+can toggle between light and dark mode within your app.
 
 2. Now you can start using components like so!:
 
@@ -342,12 +342,12 @@ Thanks goes to these wonderful people
     <td align="center"><a href="https://github.com/Zaynex"><img src="https://avatars0.githubusercontent.com/u/13745971?v=4" width="64px;" alt=""/><br /><sub><b>Vincent</b></sub></a><br /><a href="https://github.com/chakra-ui/chakra-ui/commits?author=Zaynex" title="Documentation">📖</a></td>
     <td align="center"><a href="http://www.candiceczech.com"><img src="https://avatars0.githubusercontent.com/u/25373313?v=4" width="64px;" alt=""/><br /><sub><b>Candice</b></sub></a><br /><a href="#design-candicecz" title="Design">🎨</a> <a href="https://github.com/chakra-ui/chakra-ui/issues?q=author%3Acandicecz" title="Bug reports">🐛</a></td>
     <td align="center"><a href="http://davebauman.io"><img src="https://avatars3.githubusercontent.com/u/3084806?v=4" width="64px;" alt=""/><br /><sub><b>Dave Bauman</b></sub></a><br /><a href="https://github.com/chakra-ui/chakra-ui/commits?author=baumandm" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://github.com/TimKolberger"><img src="https://avatars2.githubusercontent.com/u/16899513?v=4" width="64px;" alt=""/><br /><sub><b>TimKolberger</b></sub></a><br /><a href="https://github.com/chakra-ui/chakra-ui/issues?q=author%3ATimKolberger" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
