@@ -154,7 +154,7 @@ export const Stack = forwardRef<StackProps, "div">(function Stack(props, ref) {
     : validChildren.map((child, index) => {
         const isLast = index + 1 === validChildren.length
         const _child = shouldWrapChildren ? (
-          <StackItem key={index}>{child}</StackItem>
+          <StackItem children={child} />
         ) : (
           child
         )
