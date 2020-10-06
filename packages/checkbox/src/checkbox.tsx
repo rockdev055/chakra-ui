@@ -4,7 +4,6 @@ import {
   omitThemingProps,
   PropsOf,
   SystemProps,
-  SystemStyleObject,
   ThemingProps,
   useMultiStyleConfig,
 } from "@chakra-ui/system"
@@ -135,7 +134,7 @@ export const Checkbox = forwardRef<CheckboxProps, "input">(function Checkbox(
   const labelProps = getLabelProps()
   const checkboxProps = getCheckboxProps()
 
-  const iconStyles: SystemStyleObject = {
+  const iconStyles = {
     opacity: state.isChecked || state.isIndeterminate ? 1 : 0,
     transform:
       state.isChecked || state.isIndeterminate ? "scale(1)" : "scale(0.95)",

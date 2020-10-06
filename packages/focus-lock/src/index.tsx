@@ -1,22 +1,17 @@
 import * as React from "react"
 import ReactFocusLock from "react-focus-lock"
-import {
-  __DEV__,
-  getAllFocusable,
-  focus,
-  FocusableElement,
-} from "@chakra-ui/utils"
+import { __DEV__, getAllFocusable, focus } from "@chakra-ui/utils"
 
 export interface FocusLockProps {
   /**
    * `ref` of the element to receive focus initially
    */
-  initialFocusRef?: React.RefObject<FocusableElement>
+  initialFocusRef?: React.RefObject<HTMLElement>
   /**
    * `ref` of the element to return focus to when `FocusLock`
    * unmounts
    */
-  finalFocusRef?: React.RefObject<FocusableElement>
+  finalFocusRef?: React.RefObject<HTMLElement>
   /**
    * The `ref` of the wrapper for which the focus-lock wraps
    */

@@ -1,115 +1,130 @@
+/**@jsx jsx */
 import { useDisclosure } from "@chakra-ui/hooks"
+import { jsx } from "@chakra-ui/system"
+import {
+  HiddenTransition,
+  TransitionConfig,
+  transitionConfigToCSS,
+} from "@chakra-ui/transition"
 import * as React from "react"
 import { usePopper } from "../src"
-import { motion, AnimatePresence, Variants } from "framer-motion"
+
+const scale: TransitionConfig = {
+  timeout: { enter: 100, exit: 75 },
+  enter: {
+    transition: {
+      easing: "ease-out",
+      duration: "100ms",
+      property: "transform, opacity",
+    },
+    from: {
+      opacity: 0,
+      transform: "scale(0.95)",
+    },
+    to: {
+      opacity: 1,
+      transform: "scale(1)",
+    },
+  },
+  exit: {
+    transition: {
+      easing: "ease-in",
+      duration: "75ms",
+      property: "transform, opacity",
+    },
+    from: {
+      opacity: 1,
+      transform: "scale(1)",
+    },
+    to: {
+      opacity: 0,
+      transform: "scale(0.95)",
+    },
+  },
+}
 
 export default {
   title: "Popper",
 }
 
 export const Basic = () => {
-  const { isOpen, onToggle } = useDisclosure()
+  const disclosure = useDisclosure()
 
-  const {
-    getReferenceProps,
-    getPopperProps,
-    getArrowWrapperProps,
-    getArrowProps,
-    transformOrigin,
-  } = usePopper({
-    placement: "bottom-start",
-    matchWidth: true,
+  const { popper, reference } = usePopper({
+    placement: "bottom-end",
+    forceUpdate: disclosure.isOpen,
   })
 
   return (
-    <>
+    <React.Fragment>
       <button
-        {...getReferenceProps({
-          style: { margin: 400 },
-          onClick: onToggle,
-        })}
+        onClick={disclosure.onToggle}
+        style={{ margin: 400 }}
+        {...reference}
       >
         Reference Tooltip Trigger
       </button>
-
-      {isOpen && (
+      <HiddenTransition
+        nodeRef={popper.ref}
+        in={disclosure.isOpen}
+        timeout={scale.timeout}
+        classNames="tooltip"
+      >
         <div
-          {...getPopperProps({
-            style: {
-              width: 250,
-              background: "red",
-              padding: 15,
-              borderRadius: 6,
-              transformOrigin,
-            },
-          })}
+          hidden={!disclosure.isOpen}
+          className="tooltip"
+          {...popper}
+          style={{
+            ...popper.style,
+            width: 250,
+            background: "white",
+            boxShadow:
+              "0 10px 15px -3px rgba(0,0,0,.1), 0 4px 6px -2px rgba(0,0,0,.05)",
+            border: "1px solid #d2d6dc",
+            padding: 15,
+            borderRadius: 6,
+          }}
+          sx={transitionConfigToCSS(scale, "tooltip")}
         >
           Popper
-          <div {...getArrowWrapperProps()}>
-            <div {...getArrowProps({ style: { background: "red" } })} />
-          </div>
         </div>
-      )}
-    </>
+      </HiddenTransition>
+    </React.Fragment>
   )
 }
 
-export const WithTransition = () => {
-  const { isOpen, onToggle } = useDisclosure()
+export const Conditional = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const {
-    getPopperProps,
-    getReferenceProps,
-    getArrowWrapperProps,
-    getArrowProps,
-    transformOrigin,
-  } = usePopper({
+  const { popper, reference, arrow } = usePopper({
     placement: "bottom-start",
+    forceUpdate: isOpen,
   })
 
-  const slide: Variants = {
-    exit: { y: -2, opacity: 0 },
-    enter: { y: 0, opacity: 1 },
-  }
-
-  const bg = "red"
-
   return (
-    <>
+    <React.Fragment>
       <button
-        {...getReferenceProps({
-          onClick: onToggle,
-        })}
+        onMouseOver={onOpen}
+        onMouseLeave={onClose}
+        style={{ margin: 40 }}
+        {...reference}
       >
-        Toggle
+        Reference
       </button>
-      <div {...getPopperProps()}>
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              transition={{
-                duration: 0.15,
-                easings: "easeInOut",
-              }}
-              variants={slide}
-              initial="exit"
-              animate="enter"
-              exit="exit"
-              style={{
-                background: bg,
-                width: 200,
-                padding: transformOrigin,
-                borderRadius: 4,
-              }}
-            >
-              Testing
-              <div {...getArrowWrapperProps()}>
-                <div {...getArrowProps({ style: { background: bg } })} />
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </>
+      {isOpen && (
+        <div
+          {...popper}
+          style={{
+            ...popper.style,
+            background: "red",
+            padding: 15,
+            minWidth: 200,
+          }}
+        >
+          <div {...arrow} style={{ ...arrow.style, background: "inherit" }} />
+          Popper
+        </div>
+      )}
+    </React.Fragment>
   )
 }

@@ -5,7 +5,6 @@ import {
   layoutPropNames,
   omitThemingProps,
   PropsOf,
-  SystemStyleObject,
   ThemingProps,
   useMultiStyleConfig,
 } from "@chakra-ui/system"
@@ -119,14 +118,14 @@ export const Select = forwardRef<SelectProps, "select">(function Select(
 
   const [layoutProps, otherProps] = split(rest, layoutPropNames as any[])
 
-  const rootStyles: SystemStyleObject = {
+  const rootStyles = {
     width: "100%",
     height: "fit-content",
     position: "relative",
     color,
   }
 
-  const fieldStyles: SystemStyleObject = merge({}, styles.field, {
+  const fieldStyles = merge({}, styles.field, {
     pr: "2rem",
     _focus: { zIndex: "unset" },
   })

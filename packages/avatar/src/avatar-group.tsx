@@ -1,18 +1,17 @@
 import {
   chakra,
-  forwardRef,
-  omitThemingProps,
   PropsOf,
   SystemProps,
-  SystemStyleObject,
   ThemingProps,
   useMultiStyleConfig,
+  omitThemingProps,
+  forwardRef,
 } from "@chakra-ui/system"
 import {
-  cx,
-  filterUndefined,
   getValidChildren,
   __DEV__,
+  cx,
+  filterUndefined,
 } from "@chakra-ui/utils"
 import * as React from "react"
 import { baseStyle } from "./avatar"
@@ -86,14 +85,14 @@ export const AvatarGroup = forwardRef<AvatarGroupProps, "div">(
       return React.cloneElement(child, filterUndefined(childProps))
     })
 
-    const groupStyles: SystemStyleObject = {
+    const groupStyles = {
       display: "flex",
       alignItems: "center",
       justifyContent: "flex-end",
       flexDirection: "row-reverse",
     }
 
-    const excessStyles: SystemStyleObject = {
+    const excessStyles = {
       borderRadius,
       ml: spacing,
       ...baseStyle,

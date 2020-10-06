@@ -1,12 +1,11 @@
 import { Icon, IconProps } from "@chakra-ui/icon"
 import {
   chakra,
-  forwardRef,
   omitThemingProps,
-  PropsOf,
-  SystemStyleObject,
-  ThemingProps,
   useStyleConfig,
+  ThemingProps,
+  forwardRef,
+  PropsOf,
 } from "@chakra-ui/system"
 import { __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
@@ -40,7 +39,7 @@ export const CloseButton = forwardRef<CloseButtonProps, "button">(
     const styles = useStyleConfig("CloseButton", props)
     const { children, isDisabled, ...rest } = omitThemingProps(props)
 
-    const baseStyle: SystemStyleObject = {
+    const baseStyle = {
       outline: 0,
       display: "flex",
       alignItems: "center",

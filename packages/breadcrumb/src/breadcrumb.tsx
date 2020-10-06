@@ -1,11 +1,10 @@
 import {
   chakra,
   forwardRef,
-  omitThemingProps,
   PropsOf,
+  omitThemingProps,
   StylesProvider,
   SystemProps,
-  SystemStyleObject,
   ThemingProps,
   useMultiStyleConfig,
   useStyles,
@@ -25,7 +24,7 @@ export const BreadcrumbSeparator = forwardRef<BreadcrumbSeparatorProps, "span">(
     const { spacing, ...rest } = props
 
     const styles = useStyles()
-    const separatorStyles: SystemStyleObject = {
+    const separatorStyles = {
       mx: spacing,
       ...styles.separator,
     }
