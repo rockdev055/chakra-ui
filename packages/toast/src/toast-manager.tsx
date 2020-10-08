@@ -1,8 +1,7 @@
 import { objectKeys } from "@chakra-ui/utils"
 import * as React from "react"
 import { Toast } from "./toast"
-import type {
-  CloseAllToastsOptions,
+import {
   ToastId,
   ToastMessage,
   ToastOptions,
@@ -10,16 +9,16 @@ import type {
 } from "./toast.types"
 import { findToast, getToastPosition } from "./toast.utils"
 
-export interface ToastMethods {
+export interface Methods {
   notify: (message: ToastMessage, options: CreateToastOptions) => ToastId
-  closeAll: (options?: CloseAllToastsOptions) => void
+  closeAll: () => void
   close: (id: ToastId) => void
   update: (id: ToastId, options: CreateToastOptions) => void
   isActive: (id: ToastId) => boolean
 }
 
 interface Props {
-  notify: (methods: ToastMethods) => void
+  notify: (methods: Methods) => void
 }
 
 type State = { [K in ToastPosition]: ToastOptions[] }
@@ -120,14 +119,13 @@ export class ToastManager extends React.Component<Props, State> {
   }
 
   /**
-   * Close all toasts at once.
-   * If given positions, will only close those.
+   * Close all toasts at once
    */
-  closeAll = ({ positions }: CloseAllToastsOptions = {}) => {
+  closeAll = () => {
     // only one setState here for perf reasons
     // instead of spamming this.closeToast
     this.setState((prev) => {
-      const allPositions: ToastPosition[] = [
+      const positions: ToastPosition[] = [
         "bottom",
         "bottom-right",
         "bottom-left",
@@ -136,9 +134,7 @@ export class ToastManager extends React.Component<Props, State> {
         "top-right",
       ]
 
-      const positionsToClose = positions ?? allPositions
-
-      return positionsToClose.reduce((carry, position) => {
+      return positions.reduce((carry, position) => {
         carry[position] = prev[position].map((toast) => ({
           ...toast,
           requestClose: true,

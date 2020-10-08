@@ -105,25 +105,18 @@ describe("with object", () => {
 })
 
 describe("with array", () => {
-  const values = [
-    "baseValue",
-    "value2",
-    "value3",
-    "value4",
-    "anotherValue",
-    "customBreakpoint",
-  ]
+  const values = ["base", "sm", "md", "lg", "xl", "customBreakpoint"]
 
   test("uses base value if smaller than sm", () => {
     renderWithQuery(values, queries.base)
-    expect(screen.getByText("baseValue")).toBeInTheDocument()
+    expect(screen.getByText("base")).toBeInTheDocument()
   })
 
   test("sm", () => {
     renderWithQuery(values, queries.sm)
 
     values.forEach((value) => {
-      if (value === "value2") {
+      if (value === "sm") {
         expect(screen.getByText(value)).toBeInTheDocument()
       } else {
         expect(screen.queryByText(value)).not.toBeInTheDocument()
@@ -135,7 +128,7 @@ describe("with array", () => {
     renderWithQuery(values, queries.md)
 
     values.forEach((value) => {
-      if (value === "value3") {
+      if (value === "md") {
         expect(screen.getByText(value)).toBeInTheDocument()
       } else {
         expect(screen.queryByText(value)).not.toBeInTheDocument()
@@ -147,7 +140,7 @@ describe("with array", () => {
     renderWithQuery(values, queries.lg)
 
     values.forEach((value) => {
-      if (value === "value4") {
+      if (value === "lg") {
         expect(screen.getByText(value)).toBeInTheDocument()
       } else {
         expect(screen.queryByText(value)).not.toBeInTheDocument()
@@ -159,7 +152,7 @@ describe("with array", () => {
     renderWithQuery(values, queries.xl)
 
     values.forEach((value) => {
-      if (value === "anotherValue") {
+      if (value === "xl") {
         expect(screen.getByText(value)).toBeInTheDocument()
       } else {
         expect(screen.queryByText(value)).not.toBeInTheDocument()
@@ -180,8 +173,8 @@ describe("with array", () => {
   })
 
   test("uses base value if no breakpoint matches", () => {
-    renderWithQuery(["baseValue"], queries.sm)
-    expect(screen.getByText("baseValue")).toBeInTheDocument()
+    renderWithQuery(["base"], queries.sm)
+    expect(screen.getByText("base")).toBeInTheDocument()
   })
 })
 

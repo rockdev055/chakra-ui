@@ -96,9 +96,6 @@ function Example() {
   }
 
   function closeAll() {
-    // you may optionally pass an object of positions to exclusively close
-    // keeping other positions opened
-    // e.g. `{ positions: ['bottom'] }`
     toast.closeAll()
   }
 
@@ -217,26 +214,6 @@ function PositionExample() {
     </Button>
   )
 }
-```
-
-## Standalone
-
-Use `createStandaloneToast` to create toasts from outside of your React
-Components.
-
-```js
-import { createStandaloneToast } from "@chakra-ui/core"
-
-const toast = createStandaloneToast()
-// const customToast = createStandaloeToast({ theme: yourCustomTheme })
-
-toast({
-  title: "An error occurred.",
-  description: "Unable to create user account.",
-  status: "error",
-  duration: 9000,
-  isClosable: true,
-})
 ```
 
 ## Props
