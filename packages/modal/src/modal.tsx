@@ -17,7 +17,6 @@ import {
   createContext,
   FocusableElement,
 } from "@chakra-ui/utils"
-import { AnimatePresence, motion } from "framer-motion"
 import * as React from "react"
 import { RemoveScroll } from "react-remove-scroll"
 import { useModal, UseModalProps, UseModalReturn } from "./use-modal"
@@ -89,6 +88,7 @@ export interface ModalProps extends UseModalProps, ModalOptions, ThemingProps {
    * @default "outside"
    */
   scrollBehavior?: "inside" | "outside"
+
   /**
    * Function that will be called to get the parent element
    * that the modal will be attached to.
@@ -108,8 +108,12 @@ const [ModalContextProvider, useModalContext] = createContext<ModalContext>({
 export { ModalContextProvider, useModalContext }
 
 /**
- * Modal component provides context, theming, and accessibility properties
- * to its sub-components. It doesn't render any DOM node.
+ * Modal
+ *
+ * React component that provides context, theming, and accessbility properties
+ * to all other modal components.
+ *
+ * It doesn't render any DOM node.
  */
 export const Modal: React.FC<ModalProps> = (props) => {
   const {
@@ -140,15 +144,13 @@ export const Modal: React.FC<ModalProps> = (props) => {
     preserveScrollBarGap,
   }
 
+  if (!context.isOpen) return null
+
   return (
     <ModalContextProvider value={context}>
-      <StylesProvider value={styles}>
-        <AnimatePresence>
-          {context.isOpen && (
-            <Portal getContainer={getContainer}>{children}</Portal>
-          )}
-        </AnimatePresence>
-      </StylesProvider>
+      <Portal getContainer={getContainer}>
+        <StylesProvider value={styles}>{children}</StylesProvider>
+      </Portal>
     </ModalContextProvider>
   )
 }
@@ -168,38 +170,6 @@ if (__DEV__) {
 
 export interface ModalContentProps extends PropsOf<typeof chakra.section> {}
 
-const variants = {
-  defaultProps: {
-    initial: "hide",
-    animate: "show",
-    exit: "hide",
-  },
-  overlay: {
-    hide: { opacity: 0 },
-    show: {
-      opacity: 0.85,
-      transition: { duration: 0.2 },
-    },
-  },
-  content: {
-    hide: {
-      scale: 0.95,
-      opacity: 0,
-      transition: { duration: 0.1 },
-    },
-    show: {
-      scale: 1,
-      opacity: 1,
-      transition: {
-        duration: 0.25,
-        easings: "easeInOut",
-      },
-    },
-  },
-}
-
-const MotionSection = chakra(motion.section)
-
 /**
  * ModalContent
  *
@@ -208,48 +178,30 @@ const MotionSection = chakra(motion.section)
  */
 export const ModalContent = forwardRef<ModalContentProps, "section">(
   function ModalContent(props, ref) {
-    const { className, children, ...rest } = props
+    const { className, children, ...otherProps } = props
 
-    const { getDialogProps, getDialogContainerProps } = useModalContext()
+    const { getContentProps } = useModalContext()
 
-    const content = getDialogProps(rest, ref)
+    const content = getContentProps(otherProps, ref)
     const _className = cx("chakra-modal__content", className)
 
     const styles = useStyles()
 
     return (
-      <chakra.div
-        {...getDialogContainerProps()}
+      <chakra.section
         className={_className}
+        {...content}
         __css={{
           display: "flex",
-          width: "100vw",
-          height: "100vh",
-          position: "fixed",
-          left: 0,
-          top: 0,
-          ...styles.dialogContainer,
+          flexDirection: "column",
+          position: "relative",
+          width: "100%",
+          outline: 0,
+          ...styles.content,
         }}
       >
-        <ModalFocusOn>
-          <MotionSection
-            {...variants.defaultProps}
-            variants={variants.content}
-            className={_className}
-            {...(content as any)}
-            __css={{
-              display: "flex",
-              flexDirection: "column",
-              position: "relative",
-              width: "100%",
-              outline: 0,
-              ...styles.dialog,
-            }}
-          >
-            {children}
-          </MotionSection>
-        </ModalFocusOn>
-      </chakra.div>
+        {children}
+      </chakra.section>
     )
   },
 )
@@ -258,47 +210,7 @@ if (__DEV__) {
   ModalContent.displayName = "ModalContent"
 }
 
-interface ModalFocusOnProps {
-  children: React.ReactElement
-}
-
-export function ModalFocusOn(props: ModalFocusOnProps) {
-  const {
-    autoFocus,
-    trapFocus,
-    dialogRef,
-    initialFocusRef,
-    blockScrollOnMount,
-    allowPinchZoom,
-    finalFocusRef,
-    returnFocusOnClose,
-    preserveScrollBarGap,
-  } = useModalContext()
-
-  return (
-    <FocusLock
-      autoFocus={autoFocus}
-      isDisabled={!trapFocus}
-      initialFocusRef={initialFocusRef}
-      finalFocusRef={finalFocusRef}
-      restoreFocus={returnFocusOnClose}
-      contentRef={dialogRef}
-    >
-      <RemoveScroll
-        removeScrollBar={!preserveScrollBarGap}
-        allowPinchZoom={allowPinchZoom}
-        enabled={blockScrollOnMount}
-        forwardProps
-      >
-        {props.children}
-      </RemoveScroll>
-    </FocusLock>
-  )
-}
-
-const MotionDiv = chakra(motion.div)
-
-export interface ModalOverlayProps extends PropsOf<typeof MotionDiv> {}
+export interface ModalOverlayProps extends PropsOf<typeof chakra.div> {}
 
 /**
  * ModalOverlay
@@ -310,23 +222,56 @@ export interface ModalOverlayProps extends PropsOf<typeof MotionDiv> {}
  */
 export const ModalOverlay = forwardRef<ModalOverlayProps, "div">(
   function ModalOverlay(props, ref) {
+    const { className, children, ...rest } = props
+
+    const {
+      getOverlayProps,
+      autoFocus,
+      trapFocus,
+      dialogRef,
+      initialFocusRef,
+      blockScrollOnMount,
+      allowPinchZoom,
+      finalFocusRef,
+      returnFocusOnClose,
+      preserveScrollBarGap,
+    } = useModalContext()
+
+    const overlay = getOverlayProps(rest, ref)
+    const _className = cx("chakra-modal__overlay", className)
+
     const styles = useStyles()
+
     return (
-      <MotionDiv
-        {...variants.defaultProps}
-        variants={variants.overlay}
-        __css={{
-          pos: "fixed",
-          left: "0",
-          top: "0",
-          w: "100vw",
-          h: "100vh",
-          ...styles.overlay,
-        }}
-        ref={ref}
-        {...(props as any)}
-        className={cx("chakra-modal__overlay", props.className)}
-      />
+      <FocusLock
+        autoFocus={autoFocus}
+        isDisabled={!trapFocus}
+        initialFocusRef={initialFocusRef}
+        finalFocusRef={finalFocusRef}
+        restoreFocus={returnFocusOnClose}
+        contentRef={dialogRef}
+      >
+        <RemoveScroll
+          removeScrollBar={!preserveScrollBarGap}
+          allowPinchZoom={allowPinchZoom}
+          enabled={blockScrollOnMount}
+        >
+          <chakra.div
+            {...overlay}
+            className={_className}
+            __css={{
+              width: "100vw",
+              height: "100vh",
+              position: "fixed",
+              left: 0,
+              top: 0,
+              ...styles.overlay,
+            }}
+          >
+            {children}
+          </chakra.div>
+        </RemoveScroll>
+      </FocusLock>
     )
   },
 )
