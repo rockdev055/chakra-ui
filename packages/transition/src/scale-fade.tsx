@@ -1,45 +1,77 @@
+import { forwardRef, PropsOf } from "@chakra-ui/system"
+import { cx, __DEV__ } from "@chakra-ui/utils"
+import { AnimatePresence, motion } from "framer-motion"
 import * as React from "react"
-import { __DEV__ } from "@chakra-ui/utils"
-import { Transition, TransitionProps } from "./transition"
+import { MotionVariants } from "./__utils"
 
-function getTransitionStyles(initialScale: number) {
-  return {
-    init: {
-      opacity: 0,
-      transform: `scale(${initialScale})`,
+export const ScaleFadeMotionVariants: MotionVariants<"enter" | "exit"> = {
+  exit: (props: ScaleFadeOptions) => ({
+    opacity: 0,
+    ...(props.reverse
+      ? { scale: props.initialScale }
+      : { transitionEnd: { scale: props.initialScale } }),
+    transition: {
+      duration: 0.1,
+      easings: "easeOut",
     },
-    entered: {
-      opacity: 1,
-      transform: `scale(1)`,
+  }),
+  enter: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.25,
+      ease: [0.4, 0, 0.2, 1],
     },
-    exiting: {
-      opacity: 0,
-      transform: `scale(${initialScale})`,
-    },
-  }
+  },
 }
 
-export type ScaleFadeProps = Omit<TransitionProps, "styles" | "timeout"> & {
-  /** The initial scale to animate from */
+export interface ScaleFadeOptions {
+  /**
+   * If `true`, the collapse will unmount when `isOpen={false}` and animation is done
+   */
+  unmountOnExit?: boolean
+  /**
+   * If `true`, the content will slide in
+   */
+  in?: boolean
+  /**
+   * The offset on the horizontal or `x` axis
+   */
   initialScale?: number
-  /** The transition timeout */
-  timeout?: number
+  reverse?: boolean
 }
 
-export const ScaleFade: React.FC<ScaleFadeProps> = (props) => {
-  const { initialScale = 0.9, timeout = 150, ...rest } = props
-  const styles = getTransitionStyles(initialScale)
+interface ScaleFadeProps extends PropsOf<typeof motion.div>, ScaleFadeOptions {}
+
+export const ScaleFade = forwardRef<ScaleFadeProps, "div">((props, ref) => {
+  const {
+    unmountOnExit,
+    in: isOpen,
+    reverse = true,
+    className,
+    initialScale = 0.95,
+    ...rest
+  } = props
+
+  const shouldExpand = unmountOnExit ? isOpen && unmountOnExit : true
 
   return (
-    <Transition
-      styles={styles}
-      transition={`all ${timeout}ms cubic-bezier(0.45, 0, 0.40, 1)`}
-      timeout={{ enter: 0, exit: timeout }}
-      unmountOnExit
-      {...rest}
-    />
+    <AnimatePresence custom={{ initialScale, reverse }}>
+      {shouldExpand && (
+        <motion.div
+          ref={ref}
+          initial="exit"
+          className={cx("chakra-offset-slide", className)}
+          animate={isOpen || unmountOnExit ? "enter" : "exit"}
+          exit="exit"
+          variants={ScaleFadeMotionVariants}
+          custom={{ initialScale, reverse }}
+          {...rest}
+        />
+      )}
+    </AnimatePresence>
   )
-}
+})
 
 if (__DEV__) {
   ScaleFade.displayName = "ScaleFade"
