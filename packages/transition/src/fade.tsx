@@ -1,48 +1,28 @@
-import { forwardRef, PropsOf } from "@chakra-ui/system"
-import { cx, __DEV__ } from "@chakra-ui/utils"
-import { AnimatePresence, motion } from "framer-motion"
+import { __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
-import { MotionVariants } from "./__utils"
+import { Transition, TransitionProps, TransitionStyles } from "./transition"
 
-export const fadeMotionVariants: MotionVariants<"enter" | "exit"> = {
-  exit: { opacity: 0 },
-  enter: { opacity: 1 },
+export type FadeProps = Omit<TransitionProps, "styles" | "timeout"> & {
+  timeout?: number
 }
 
-export interface FadeOptions {
-  /**
-   * If `true`, the collapse will unmount when `isOpen={false}` and animation is done
-   */
-  unmountOnExit?: boolean
-  /**
-   * If `true`, the content will slide in
-   */
-  in?: boolean
+const styles: TransitionStyles = {
+  init: { opacity: 0 },
+  entered: { opacity: 1 },
+  exiting: { opacity: 0 },
 }
 
-interface FadeProps extends PropsOf<typeof motion.div>, FadeOptions {}
-
-export const Fade = forwardRef<FadeProps, "div">((props, ref) => {
-  const { unmountOnExit, in: isOpen, className, ...rest } = props
-  const shouldExpand = unmountOnExit ? isOpen && unmountOnExit : true
-
+export const Fade: React.FC<FadeProps> = (props) => {
+  const { timeout = 150, ...rest } = props
   return (
-    <AnimatePresence>
-      {shouldExpand && (
-        <motion.div
-          ref={ref}
-          initial="exit"
-          transition={{ duration: 0.225, ease: [0.4, 0, 0.2, 1] }}
-          className={cx("chakra-fade", className)}
-          animate={isOpen || unmountOnExit ? "enter" : "exit"}
-          exit="exit"
-          variants={fadeMotionVariants}
-          {...rest}
-        />
-      )}
-    </AnimatePresence>
+    <Transition
+      transition={`all ${timeout}ms cubic-bezier(0.175, 0.885, 0.320, 1.175)`}
+      styles={styles}
+      timeout={{ enter: 0, exit: timeout }}
+      {...rest}
+    />
   )
-})
+}
 
 if (__DEV__) {
   Fade.displayName = "Fade"

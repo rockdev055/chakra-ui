@@ -1,34 +1,23 @@
 import { mode } from "@chakra-ui/theme-tools"
 
-const parts = [
-  "overlay",
-  "dialogContainer",
-  "dialog",
-  "header",
-  "body",
-  "footer",
-]
-
-const baseStyleOverlay = {
-  bg: "blackAlpha.600",
-  zIndex: "overlay",
-}
+const parts = ["overlay", "content", "header", "body", "footer"]
 
 type Dict = Record<string, any>
 
-function baseStyleDialogContainer(props: Dict) {
+function baseStyleOverlay(props: Dict) {
   const { isCentered, scrollBehavior } = props
 
   return {
+    bg: "blackAlpha.600",
     display: "flex",
-    zIndex: "modal",
+    zIndex: "overlay",
     justifyContent: "center",
     alignItems: isCentered ? "center" : "flex-start",
     overflow: scrollBehavior === "inside" ? "hidden" : "auto",
   }
 }
 
-function baseStyleDialog(props: Dict) {
+function baseStyleContent(props: Dict) {
   const { scrollBehavior } = props
 
   return {
@@ -65,9 +54,8 @@ const baseStyleFooter = {
 }
 
 const baseStyle = (props: Dict) => ({
-  overlay: baseStyleOverlay,
-  dialogContainer: baseStyleDialogContainer(props),
-  dialog: baseStyleDialog(props),
+  overlay: baseStyleOverlay(props),
+  content: baseStyleContent(props),
   header: baseStyleHeader,
   body: baseStyleBody(props),
   footer: baseStyleFooter,
@@ -79,11 +67,11 @@ const baseStyle = (props: Dict) => ({
  */
 function getSize(value: string) {
   if (value === "full") {
-    return { dialog: { maxW: "100vw", h: "100vh" } }
+    return { content: { maxW: "100vw", h: "100vh" } }
   }
 
   return {
-    dialog: { maxW: value },
+    content: { maxW: value },
   }
 }
 

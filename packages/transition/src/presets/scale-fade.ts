@@ -1,4 +1,6 @@
-export const scaleFade = {
+import { TransitionConfig } from "../transition-config"
+
+export const scaleFade: TransitionConfig = {
   timeout: { enter: 100, exit: 75 },
   enter: {
     transition: {
