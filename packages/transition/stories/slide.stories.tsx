@@ -1,25 +1,24 @@
 import { useBoolean } from "@chakra-ui/hooks"
 import * as React from "react"
-import { SlideFade } from "../src/slide-fade"
+import { Slide } from "../src/slide"
 
 export default {
-  title: "Transition / Offset Slide",
+  title: "Transition / Slide",
 }
 
-export const Basic = () => {
+const SlideExample = (props: any) => {
   const [open, { toggle }] = useBoolean(false)
   return (
     <>
       <button onClick={toggle}>Toggle Slide</button>
-      <SlideFade
-        in={open}
-        offsetY={-8}
-        reverse={false}
+      <Slide
         style={{
           maxWidth: 400,
           background: "red",
           padding: 30,
         }}
+        in={open}
+        {...props}
       >
         Lorem Ipsum is simply dummy text of the printing and typesetting
         industry. Lorem Ipsum has been the industry's standard dummy text ever
@@ -30,7 +29,9 @@ export const Basic = () => {
         of Letraset sheets containing Lorem Ipsum passages, and more recently
         with desktop publishing software like Aldus PageMaker including versions
         of Lorem Ipsum.
-      </SlideFade>
+      </Slide>
     </>
   )
 }
+
+export const Basic = () => <SlideExample />
