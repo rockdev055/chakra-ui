@@ -1,3 +1,5 @@
+import { TransitionConfig } from "../transition-config"
+
 export type SlidePlacement = "left" | "right" | "bottom" | "top"
 
 const placements = {
@@ -41,7 +43,9 @@ const trans = (placement: SlidePlacement, value: string) => {
   return `translate3d(${value}, 0, 0)`
 }
 
-export const createSlideConfig = (placement: SlidePlacement) => ({
+export const createSlideConfig = (
+  placement: SlidePlacement,
+): Partial<TransitionConfig> => ({
   enter: {
     from: { transform: trans(placement, offset[placement]) },
     to: { transform: trans(placement, "0%") },
