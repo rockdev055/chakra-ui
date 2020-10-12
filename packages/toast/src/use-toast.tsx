@@ -85,6 +85,7 @@ const Toast: React.FC<any> = (props) => {
       alignItems="start"
       borderRadius="md"
       boxShadow="lg"
+      margin={2}
       paddingRight={8}
       textAlign="left"
       width="auto"
