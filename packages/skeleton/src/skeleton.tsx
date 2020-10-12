@@ -8,7 +8,6 @@ import {
   omitThemingProps,
 } from "@chakra-ui/system"
 import { cx, __DEV__ } from "@chakra-ui/utils"
-import { useBreakpointValue } from "@chakra-ui/media-query";
 import * as React from "react"
 
 export interface SkeletonOptions {
@@ -55,10 +54,12 @@ const StyledSkeleton = chakra("div", {
 
 export type ISkeleton = SkeletonOptions
 
+type OmitNoOfLines<T> = Omit<T, "noOfLines">
+
 export interface SkeletonProps
-  extends PropsOf<typeof StyledSkeleton>,
+  extends OmitNoOfLines<PropsOf<typeof StyledSkeleton>>,
     SkeletonOptions,
-    ThemingProps {}
+    OmitNoOfLines<ThemingProps> {}
 
 const fade = keyframes({
   from: { opacity: 0 },
@@ -115,6 +116,7 @@ function range(count: number) {
 }
 
 export interface SkeletonTextProps extends SkeletonProps {
+  noOfLines?: number
   spacing?: SkeletonProps["margin"]
   skeletonHeight?: SkeletonProps["height"]
   startColor?: SkeletonProps["startColor"]
@@ -122,11 +124,9 @@ export interface SkeletonTextProps extends SkeletonProps {
   isLoaded?: SkeletonProps["isLoaded"]
 }
 
-const defaultNoOfLines = 3;
-
 export const SkeletonText: React.FC<SkeletonTextProps> = (props) => {
   const {
-    noOfLines = defaultNoOfLines,
+    noOfLines = 3,
     spacing = "0.5rem",
     skeletonHeight = "0.5rem",
     className,
@@ -137,11 +137,10 @@ export const SkeletonText: React.FC<SkeletonTextProps> = (props) => {
     ...rest
   } = props
 
-  const noOfLinesValue = useBreakpointValue(typeof noOfLines === 'number' ? [noOfLines] : noOfLines) || defaultNoOfLines;
-  const numbers = range(noOfLinesValue)
+  const numbers = range(noOfLines)
 
   const getWidth = (index: number) => {
-    if (noOfLinesValue > 1) {
+    if (noOfLines > 1) {
       return index === numbers.length ? "80%" : "100%"
     }
     return "100%"
@@ -155,7 +154,7 @@ export const SkeletonText: React.FC<SkeletonTextProps> = (props) => {
         ? children
         : numbers.map((number) => (
             <Skeleton
-              key={numbers.length.toString() + number}
+              key={number}
               height={skeletonHeight}
               mb={number === numbers.length ? "0" : spacing}
               width={getWidth(number)}
