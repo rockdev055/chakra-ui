@@ -35,7 +35,7 @@ based on color mode.
 ```jsx live=false
 // theme.js
 import theme from "@chakra-ui/theme"
-import { mergeWith } from "@chakra-ui/utils"
+import { merge } from "@chakra-ui/utils"
 
 const overrides = {
   components: {
@@ -54,7 +54,7 @@ const overrides = {
   },
 }
 
-export default mergeWith(theme, overrides)
+export default merge(theme, overrides)
 
 // MyBadge.js
 function MyBadge(props) {
