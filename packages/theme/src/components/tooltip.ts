@@ -12,7 +12,6 @@ function baseStyle(props: Record<string, any>) {
     fontSize: "sm",
     boxShadow: "md",
     maxW: "320px",
-    zIndex: "tooltip",
   }
 }
 

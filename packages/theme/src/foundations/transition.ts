@@ -25,7 +25,7 @@ const transitionDuration = {
 
 const transition = {
   property: transitionProperty,
-  easing: transitionTimingFunction,
+  timingFunction: transitionTimingFunction,
   duration: transitionDuration,
 }
 

@@ -59,35 +59,20 @@ export function ToastExample() {
 export function CustomRender() {
   const toast = useToast()
   return (
-    <>
-      <Button
-        onClick={() =>
-          toast({
-            duration: null,
-            position: "top-right",
-            render: () => (
-              <chakra.div rounded="md" color="white" p={3} bg="blue.500">
-                Hello World
-              </chakra.div>
-            ),
-          })
-        }
-      >
-        Show Toast
-      </Button>
-      <Button
-        colorScheme="pink"
-        onClick={() =>
-          toast({
-            position: "bottom-right",
-            title: "Testing",
-            description: "This toast is working well",
-          })
-        }
-      >
-        Show Toastify
-      </Button>
-    </>
+    <Button
+      onClick={() =>
+        toast({
+          position: "top-right",
+          render: () => (
+            <chakra.div m={2} color="white" p={3} bg="blue.500">
+              Hello World
+            </chakra.div>
+          ),
+        })
+      }
+    >
+      Show Toast
+    </Button>
   )
 }
 
@@ -97,15 +82,11 @@ export function SuccessToast() {
     <Button
       onClick={() =>
         toast({
-          position: "bottom",
           title: "Account created.",
           description: "We've created your account for you.",
           status: "success",
-          duration: 3000,
+          duration: 9000,
           isClosable: true,
-          onCloseComplete: () => {
-            console.log("close")
-          },
         })
       }
     >
@@ -176,9 +157,8 @@ export const AllSides = () => {
         Trigger
       </Button>
 
-      <Button ml="40px" onClick={() => toast.closeAll()}>
-        Close all
-      </Button>
+      <hr />
+      <Button onClick={() => toast.closeAll()}>close all</Button>
     </>
   )
 }
@@ -221,7 +201,7 @@ export const CloseAllTopLeftToasts = () => {
       <Button
         onClick={() => {
           positions.forEach((position) => {
-            toast({ position, title: position })
+            toast({ position, title: p })
           })
         }}
       >

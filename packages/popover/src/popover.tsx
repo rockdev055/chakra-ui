@@ -17,32 +17,8 @@ import {
   runIfFn,
   __DEV__,
 } from "@chakra-ui/utils"
-import { motion, Variants } from "framer-motion"
 import * as React from "react"
 import { usePopover, UsePopoverProps, UsePopoverReturn } from "./use-popover"
-
-const scaleVariants: Variants = {
-  exit: {
-    opacity: 0,
-    scale: 0.95,
-    transition: {
-      duration: 0.1,
-      ease: [0.4, 0, 1, 1],
-    },
-    transitionEnd: {
-      visibility: "hidden",
-    },
-  },
-  enter: {
-    visibility: "visible",
-    scale: 1,
-    opacity: 1,
-    transition: {
-      duration: 0.15,
-      ease: [0, 0, 0.2, 1],
-    },
-  },
-}
 
 const [PopoverProvider, usePopoverContext] = createContext<UsePopoverReturn>({
   name: "PopoverContext",
@@ -106,17 +82,14 @@ if (__DEV__) {
 
 export interface PopoverContentProps extends PropsOf<typeof chakra.section> {}
 
-const StyledSection = chakra(motion.section)
-
+/**
+ * PopoverContent includes all accessibility
+ * requirements for a popover
+ */
 export const PopoverContent = forwardRef<PopoverContentProps, "section">(
   function PopoverContent(props, ref) {
-    const {
-      isOpen,
-      refocusPopover,
-      getPopoverProps,
-      getPopoverWrapperProps,
-      transformOrigin,
-    } = usePopoverContext()
+    const { getPopoverProps } = usePopoverContext()
+    const popoverProps = getPopoverProps(props, ref)
 
     const styles = useStyles()
     const contentStyles: SystemStyleObject = {
@@ -126,23 +99,12 @@ export const PopoverContent = forwardRef<PopoverContentProps, "section">(
       ...styles.content,
     }
 
-    const popoverProps = getPopoverProps(
-      { ...props, style: { ...props.style, transformOrigin } },
-      ref,
-    ) as any
-
     return (
-      <div {...getPopoverWrapperProps()}>
-        <StyledSection
-          {...popoverProps}
-          className={cx("chakra-popover__content")}
-          __css={contentStyles}
-          variants={scaleVariants}
-          initial={false}
-          animate={isOpen ? "enter" : "exit"}
-          onAnimationComplete={refocusPopover}
-        />
-      </div>
+      <chakra.section
+        className={cx("chakra-popover__content")}
+        {...popoverProps}
+        __css={contentStyles}
+      />
     )
   },
 )
