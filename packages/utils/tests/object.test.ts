@@ -24,10 +24,6 @@ test("should get value of specified path in object or return path as default if 
 })
 
 test("should filter undefined values in object", () => {
-  const result = filterUndefined({
-    size: null,
-    variant: undefined,
-    colorScheme: "red",
-  })
-  expect(result).toStrictEqual({ colorScheme: "red" })
+  const result = filterUndefined({ variant: undefined, colorScheme: "red" })
+  expect(result).toMatchObject({ colorScheme: "red" })
 })
