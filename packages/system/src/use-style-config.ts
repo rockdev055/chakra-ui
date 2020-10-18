@@ -2,7 +2,7 @@ import { SystemStyleObject } from "@chakra-ui/styled-system"
 import {
   filterUndefined,
   memoizedGet as get,
-  mergeWith,
+  merge,
   runIfFn,
   omit,
 } from "@chakra-ui/utils"
@@ -30,7 +30,7 @@ export function useStyleConfig(themeKey: any, props: any, opts: any) {
   const themeStyleConfig = get(theme, `components.${themeKey}`)
   const styleConfig = styleConfigProp || themeStyleConfig
 
-  const mergedProps = mergeWith(
+  const mergedProps = merge(
     { theme, colorMode },
     styleConfig?.defaultProps ?? {},
     filterUndefined(omit(rest, ["children"])),
@@ -56,7 +56,7 @@ export function useStyleConfig(themeKey: any, props: any, opts: any) {
         mergedProps,
       )
 
-      const styles = mergeWith({}, baseStyles, sizes, variants)
+      const styles = merge({}, baseStyles, sizes, variants)
 
       if (opts?.isMultiPart && styleConfig.parts) {
         for (const part of styleConfig.parts) {

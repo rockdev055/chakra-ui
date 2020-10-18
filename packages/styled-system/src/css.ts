@@ -5,7 +5,7 @@ import {
   isObject,
   isResponsiveObjectLike,
   memoizedGet as get,
-  mergeWith,
+  merge,
   objectToArrayNotation,
   runIfFn,
 } from "@chakra-ui/utils"
@@ -151,7 +151,7 @@ export const css = (args: StyleObjectOrFn = {}) => (
 
     if (key === "apply") {
       const apply = css(get(theme, val))(theme)
-      computedStyles = mergeWith({}, computedStyles, apply)
+      computedStyles = merge({}, computedStyles, apply)
       continue
     }
 
