@@ -16,7 +16,6 @@ import {
   runIfFn,
   __DEV__,
 } from "@chakra-ui/utils"
-import { motion, Variants } from "framer-motion"
 import * as React from "react"
 import {
   MenuProvider,
@@ -28,10 +27,9 @@ import {
   useMenuOption,
   useMenuOptionGroup,
   UseMenuOptionGroupProps,
+  UseMenuOptionProps,
   UseMenuProps,
   UseMenuOptionOptions,
-  useMenuListWrapper,
-  useMenuContext,
 } from "./use-menu"
 
 export interface MenuProps extends UseMenuProps, ThemingProps {
@@ -126,64 +124,22 @@ if (__DEV__) {
 
 export interface MenuListProps extends PropsOf<typeof chakra.div> {}
 
-const menuMotionVariants: Variants = {
-  enter: {
-    visibility: "visible",
-    opacity: 1,
-    scale: 1,
-    transition: {
-      duration: 0.2,
-      ease: [0.4, 0, 0.2, 1],
-    },
-  },
-  exit: {
-    transitionEnd: {
-      visibility: "hidden",
-    },
-    opacity: 0,
-    scale: 0.8,
-    transition: {
-      duration: 0.1,
-      easings: "easeOut",
-    },
-  },
-}
-
 export const MenuList = forwardRef<MenuListProps, "div">(function MenuList(
   props,
   ref,
 ) {
-  const { isOpen, popper, refocus } = useMenuContext()
-
   const ownProps = useMenuList(props)
-  const wrapperProps = useMenuListWrapper()
-
   const styles = useStyles()
   return (
     <chakra.div
-      {...wrapperProps}
+      {...ownProps}
+      ref={mergeRefs(ownProps.ref, ref)}
+      className={cx("chakra-menu__menu-list", ownProps.className)}
       __css={{
-        zIndex: styles.list?.zIndex,
-        visibility: isOpen ? "visible" : "hidden",
+        outline: 0,
+        ...styles.list,
       }}
-    >
-      <motion.div
-        onAnimationStart={refocus}
-        variants={menuMotionVariants}
-        animate={isOpen ? "enter" : "exit"}
-        style={{ transformOrigin: popper.transformOrigin }}
-      >
-        <chakra.div
-          ref={mergeRefs(ownProps.ref, ref)}
-          {...ownProps}
-          className={cx("chakra-menu__menu-list", ownProps.className)}
-          __css={{
-            outline: 0,
-            ...styles.list,
-          }}
-        />
-      </motion.div>
-    </chakra.div>
+    />
   )
 })
 

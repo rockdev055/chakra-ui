@@ -1,4 +1,3 @@
-import { Button } from "@chakra-ui/button"
 import { Image } from "@chakra-ui/image"
 import { Portal } from "@chakra-ui/portal"
 import { chakra } from "@chakra-ui/system"
@@ -19,7 +18,9 @@ import {
   MenuItemOption,
   MenuList,
   MenuOptionGroup,
+  MenuTransition,
 } from "../src"
+import { Button } from "@chakra-ui/button"
 
 const words = [
   "About Visual Studio Code",
@@ -40,7 +41,7 @@ function logEvents(e: React.MouseEvent | React.KeyboardEvent | undefined) {
 
 export const Basic = () => (
   <div style={{ minHeight: 4000 }}>
-    <Menu>
+    <Menu isLazy>
       <MenuButton
         as={Button}
         variant="solid"
@@ -196,6 +197,24 @@ export const WithPortal = () => (
   </Menu>
 )
 
+export const WithTransition = () => (
+  <Menu>
+    <MenuButton as={Button} variant="solid" colorScheme="green" size="sm">
+      Open menu
+    </MenuButton>
+    <MenuTransition>
+      {(styles) => (
+        <MenuList sx={styles}>
+          <MenuItem>Menu 1</MenuItem>
+          <MenuItem>Menu 2</MenuItem>
+          <MenuItem>Menu 3</MenuItem>
+          <MenuItem>Menu 4</MenuItem>
+        </MenuList>
+      )}
+    </MenuTransition>
+  </Menu>
+)
+
 export const withGroupedItems = () => (
   <Menu>
     <MenuButton as={Button} variant="solid" colorScheme="green" size="sm">
@@ -339,11 +358,15 @@ export const SplitButton = () => (
       >
         <FaChevronDown />
       </MenuButton>
-      <MenuList minW="160px">
-        <MenuItem fontSize="14px">Menu 1</MenuItem>
-        <MenuItem fontSize="14px">Menu 2</MenuItem>
-        <MenuItem fontSize="14px">Menu 3</MenuItem>
-      </MenuList>
+      <MenuTransition>
+        {(styles) => (
+          <MenuList minW="160px" css={styles as any}>
+            <MenuItem fontSize="14px">Menu 1</MenuItem>
+            <MenuItem fontSize="14px">Menu 2</MenuItem>
+            <MenuItem fontSize="14px">Menu 3</MenuItem>
+          </MenuList>
+        )}
+      </MenuTransition>
     </Menu>
   </chakra.div>
 )

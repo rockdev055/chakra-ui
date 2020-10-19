@@ -172,38 +172,7 @@ export function useMenu(props: UseMenuProps) {
    */
   const [buttonId, menuId] = useIds(id, `menu-button`, `menu-list`)
 
-  const openAndFocusMenu = useCallback(() => {
-    onOpen()
-    if (menuRef.current) {
-      focus(menuRef.current)
-    }
-  }, [onOpen, menuRef])
-
-  const openAndFocusFirstItem = useCallback(() => {
-    onOpen()
-    setFocusedIndex(0)
-  }, [onOpen, setFocusedIndex])
-
-  const openAndFocusLastItem = useCallback(() => {
-    onOpen()
-    const lastIndex = domContext.descendants.length - 1
-    setFocusedIndex(lastIndex)
-  }, [onOpen, setFocusedIndex, domContext.descendants])
-
-  const refocus = () => {
-    if (isOpen && !menuRef.current?.contains(document.activeElement)) {
-      const nodeToFocus = domContext.descendants[focusedIndex]?.element
-      requestAnimationFrame(() => {
-        nodeToFocus?.focus({ preventScroll: true })
-      })
-    }
-  }
-
   return {
-    openAndFocusMenu,
-    openAndFocusFirstItem,
-    openAndFocusLastItem,
-    refocus,
     domContext,
     popper,
     buttonId,
@@ -252,6 +221,7 @@ export function useMenuList(props: UseMenuListProps) {
     menuRef,
     isOpen,
     onClose,
+    popper,
     menuId,
     domContext: { descendants },
     isLazy,
@@ -314,22 +284,16 @@ export function useMenuList(props: UseMenuListProps) {
 
   const menulistProps: any = {
     ...props,
-    ref: menuRef,
     children: !isLazy || isOpen ? props.children : null,
     tabIndex: -1,
     role: "menu",
     id: menuId,
-    // style: { visibility: isOpen ? "visible" : "hidden" },
+    style: { visibility: isOpen ? "visible" : "hidden" },
     "aria-orientation": "vertical" as React.AriaAttributes["aria-orientation"],
     onKeyDown: callAllHandlers(props.onKeyDown, onKeyDown),
   }
 
-  return menulistProps
-}
-
-export function useMenuListWrapper(props: any = {}) {
-  const { popper } = useMenuContext()
-  return popper.getPopperProps(props)
+  return popper.getPopperProps(menulistProps, menuRef)
 }
 
 /**
@@ -347,14 +311,33 @@ export function useMenuButton(props: UseMenuButtonProps) {
   const menu = useMenuContext()
 
   const {
+    setFocusedIndex,
+    onOpen,
     isOpen,
     onClose,
     autoSelect,
+    menuRef,
     popper,
-    openAndFocusFirstItem,
-    openAndFocusLastItem,
-    openAndFocusMenu,
+    domContext: { descendants },
   } = menu
+
+  const openAndFocusMenu = useCallback(() => {
+    onOpen()
+    if (menuRef.current) {
+      focus(menuRef.current)
+    }
+  }, [onOpen, menuRef])
+
+  const openAndFocusFirstItem = useCallback(() => {
+    onOpen()
+    setFocusedIndex(0)
+  }, [onOpen, setFocusedIndex])
+
+  const openAndFocusLastItem = useCallback(() => {
+    onOpen()
+    const lastIndex = descendants.length - 1
+    setFocusedIndex(lastIndex)
+  }, [onOpen, setFocusedIndex, descendants])
 
   const onClick = useCallback(() => {
     if (isOpen) {
@@ -472,10 +455,14 @@ export function useMenuItem(props: UseMenuItemProps) {
   const trulyDisabled = isDisabled && !isFocusable
 
   useUpdateEffect(() => {
-    if (isFocused && !trulyDisabled && ref.current) {
-      focus(ref.current)
-    } else if (document.activeElement !== menuRef.current) {
-      menuRef.current?.focus()
+    if (isFocused && !trulyDisabled) {
+      if (ref.current) {
+        focus(ref.current)
+      }
+    } else {
+      if (document.activeElement !== menuRef.current) {
+        menuRef.current?.focus()
+      }
     }
   }, [isFocused, trulyDisabled, menuRef])
 

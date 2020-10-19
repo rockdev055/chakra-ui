@@ -110,17 +110,9 @@ export function useAccordion(props: UseAccordionProps) {
    *
    * @param idx {number} The index of the child accordion item
    */
-  const getAccordionItemProps = (idx: number | null) => {
-    const isOpen =
-      idx !== null
-        ? isArray(index)
-          ? index.includes(idx)
-          : index === idx
-        : false
-
+  const getItemProps = (idx: number) => {
+    const isOpen = isArray(index) ? index.includes(idx) : index === idx
     const onChange = (isOpen: boolean) => {
-      if (idx === null) return
-
       if (allowMultiple && isArray(index)) {
         const nextState = isOpen ? addItem(index, idx) : removeItem(index, idx)
         setIndex(nextState)
@@ -140,7 +132,7 @@ export function useAccordion(props: UseAccordionProps) {
     index,
     setIndex,
     htmlProps,
-    getAccordionItemProps,
+    getItemProps,
     focusedIndex,
     setFocusedIndex,
     domContext,
@@ -188,12 +180,11 @@ export function useAccordionItem(props: UseAccordionItemProps) {
   const { isDisabled, isFocusable, id, ...htmlProps } = props
 
   const {
-    getAccordionItemProps,
+    getItemProps,
     domContext,
     focusedIndex,
     setFocusedIndex,
   } = useAccordionContext()
-
   const { descendants } = domContext
 
   const buttonRef = useRef<HTMLElement>(null)
@@ -216,9 +207,7 @@ export function useAccordionItem(props: UseAccordionItemProps) {
     focusable: isFocusable,
   })
 
-  const { isOpen, onChange } = getAccordionItemProps(
-    index === -1 ? null : index,
-  )
+  const { isOpen, onChange } = getItemProps(index)
 
   const onOpen = () => {
     onChange?.(true)

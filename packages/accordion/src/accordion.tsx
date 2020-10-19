@@ -1,3 +1,4 @@
+import { Collapse } from "@chakra-ui/collapse"
 import { Icon, IconProps } from "@chakra-ui/icon"
 import {
   chakra,
@@ -28,7 +29,6 @@ import {
   UseAccordionItemReturn,
   UseAccordionProps,
 } from "./use-accordion"
-import { Collapse } from "@chakra-ui/transition"
 
 interface DivProps extends PropsOf<typeof chakra.div> {}
 
@@ -207,11 +207,16 @@ export const AccordionPanel = forwardRef<AccordionPanelProps, "div">(
     }
 
     const child = (
-      <chakra.div {...panelProps} __css={styles.panel} className={_className} />
+      <chakra.div
+        {...panelProps}
+        __css={styles.panel}
+        className={_className}
+        transition="height 150ms ease-in-out, opacity 150ms ease-in-out, transform 150ms ease-in-out"
+      />
     )
 
     if (!reduceMotion) {
-      return <Collapse in={isOpen}>{child}</Collapse>
+      return <Collapse isOpen={isOpen}>{child}</Collapse>
     }
 
     return child
