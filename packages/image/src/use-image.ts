@@ -126,7 +126,7 @@ export function useImage(props: UseImageProps) {
      * If user opts out of the fallback/placeholder
      * logic, let's bail out.
      */
-    if (ignoreFallback) return undefined
+    if (ignoreFallback) return
 
     if (status === "loading") {
       load()

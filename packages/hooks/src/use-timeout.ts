@@ -11,18 +11,12 @@ export function useTimeout(callback: Function, delay: number | null) {
   const savedCallback = useLatestRef(callback)
 
   React.useEffect(() => {
-    if (delay == null) return undefined
+    if (delay == null) return
 
-    let timeoutId: number | null = null
-
-    timeoutId = window.setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       savedCallback.current?.()
     }, delay)
 
-    return () => {
-      if (timeoutId) {
-        window.clearTimeout(timeoutId)
-      }
-    }
+    return () => clearTimeout(timeoutId)
   }, [delay, savedCallback])
 }

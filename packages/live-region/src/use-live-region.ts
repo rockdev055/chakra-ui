@@ -1,8 +1,10 @@
 import * as React from "react"
-import { LiveRegion, LiveRegionOptions } from "./live-region"
+import LiveRegion, { LiveRegionOptions } from "./live-region"
 
 export function useLiveRegion(options?: LiveRegionOptions) {
-  const [liveRegion] = React.useState(() => new LiveRegion(options))
+  const [liveRegion] = React.useState(() => {
+    return new LiveRegion(options)
+  })
 
   React.useEffect(() => {
     return () => {

@@ -115,26 +115,6 @@ export function useModal(props: UseModalProps) {
     [closeOnEsc, onClose, onEsc],
   )
 
-  const [headerMounted, setHeaderMounted] = useState(false)
-  const [bodyMounted, setBodyMounted] = useState(false)
-
-  const getDialogProps: PropGetter = useCallback(
-    (props = {}, ref = null) => ({
-      role: "dialog",
-      ...props,
-      ref: mergeRefs(ref, dialogRef),
-      id: dialogId,
-      tabIndex: -1,
-      "aria-modal": true,
-      "aria-labelledby": headerMounted ? headerId : undefined,
-      "aria-describedby": bodyMounted ? bodyId : undefined,
-      onClick: callAllHandlers(props.onClick, (event: MouseEvent) =>
-        event.stopPropagation(),
-      ),
-    }),
-    [bodyId, bodyMounted, dialogId, headerId, headerMounted],
-  )
-
   const onOverlayClick = useCallback(
     (event: MouseEvent) => {
       event.stopPropagation()
@@ -151,18 +131,37 @@ export function useModal(props: UseModalProps) {
       /**
        * When you click on the overlay, we want to remove only the topmost modal
        */
-      if (!manager.isTopModal(dialogRef)) return
-
-      if (closeOnOverlayClick) {
-        onClose?.()
+      if (manager.isTopModal(dialogRef)) {
+        if (closeOnOverlayClick) {
+          onClose?.()
+        }
+        onOverlayClickProp?.()
       }
-
-      onOverlayClickProp?.()
     },
     [onClose, closeOnOverlayClick, onOverlayClickProp],
   )
 
-  const getDialogContainerProps: PropGetter = useCallback(
+  const [headerMounted, setHeaderMounted] = useState(false)
+  const [bodyMounted, setBodyMounted] = useState(false)
+
+  const getContentProps: PropGetter = useCallback(
+    (props = {}, ref = null) => ({
+      role: "dialog",
+      ...props,
+      ref: mergeRefs(ref, dialogRef),
+      id: dialogId,
+      tabIndex: -1,
+      "aria-modal": true,
+      "aria-labelledby": headerMounted ? headerId : undefined,
+      "aria-describedby": bodyMounted ? bodyId : undefined,
+      onClick: callAllHandlers(props.onClick, (event: MouseEvent) =>
+        event.stopPropagation(),
+      ),
+    }),
+    [bodyId, bodyMounted, dialogId, headerId, headerMounted],
+  )
+
+  const getOverlayProps: PropGetter = useCallback(
     (props = {}, ref = null) => ({
       ...props,
       ref: mergeRefs(ref, overlayRef),
@@ -182,8 +181,8 @@ export function useModal(props: UseModalProps) {
     setHeaderMounted,
     dialogRef,
     overlayRef,
-    getDialogProps,
-    getDialogContainerProps,
+    getContentProps,
+    getOverlayProps,
   }
 }
 
@@ -203,7 +202,7 @@ export function useAriaHidden(
   shouldHide: boolean,
 ) {
   useEffect(() => {
-    if (!ref.current) return undefined
+    if (!ref.current) return
 
     let undo: Undo | null = null
 

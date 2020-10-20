@@ -217,7 +217,7 @@ export function useSlider(props: UseSliderProps) {
    */
   const getValueFromPointer = useCallback(
     (event) => {
-      if (!trackRef.current) return undefined
+      if (!trackRef.current) return
 
       const trackRect = getBox(trackRef.current).borderBox
       const { clientX, clientY } = event.touches?.[0] ?? event

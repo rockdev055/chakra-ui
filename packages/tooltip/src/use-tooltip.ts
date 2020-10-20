@@ -1,11 +1,6 @@
 import { useDisclosure, useEventListener, useId } from "@chakra-ui/hooks"
 import { Placement, usePopper, UsePopperProps } from "@chakra-ui/popper"
-import {
-  callAllHandlers,
-  mergeRefs,
-  mergeWith,
-  PropGetter,
-} from "@chakra-ui/utils"
+import { callAllHandlers, mergeRefs, PropGetter } from "@chakra-ui/utils"
 import { useCallback, useEffect, useRef } from "react"
 
 export interface UseTooltipProps
@@ -166,24 +161,15 @@ export function useTooltip(props: UseTooltipProps = {}) {
   }
 
   const getTooltipProps: PropGetter = (props = {}, _ref = null) => {
-    const tooltipProps = {
-      ref: _ref,
+    const popperProps = {
       ...htmlProps,
       ...props,
       id: tooltipId,
       role: "tooltip",
     }
 
-    return tooltipProps
+    return popper.getPopperProps(popperProps, _ref)
   }
-
-  const getTooltipWrapperProps: PropGetter = (props = {}, _ref = null) =>
-    popper.getPopperProps(
-      mergeWith(props, {
-        style: { transformOrigin: popper.transformOrigin },
-      }),
-      _ref,
-    )
 
   return {
     isOpen,
@@ -191,7 +177,6 @@ export function useTooltip(props: UseTooltipProps = {}) {
     hide: closeWithDelay,
     getTriggerProps,
     getTooltipProps,
-    getTooltipWrapperProps,
     transformOrigin: popper.transformOrigin,
     placement: popper.placement,
     getArrowWrapperProps: popper.getArrowWrapperProps,

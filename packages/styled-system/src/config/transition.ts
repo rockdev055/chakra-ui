@@ -14,7 +14,7 @@ const config: Config = {
   },
   transitionTimingFunction: {
     property: "transitionTimingFunction",
-    scale: "transition.easing",
+    scale: "transition.timingFunction",
   },
 }
 

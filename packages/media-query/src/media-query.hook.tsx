@@ -21,5 +21,4 @@ export function useColorModePreference(): "dark" | "light" | undefined {
 
   if (isLight) return "light"
   if (isDark) return "dark"
-  return undefined
 }

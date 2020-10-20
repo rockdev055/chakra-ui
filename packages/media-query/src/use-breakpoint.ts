@@ -1,6 +1,6 @@
 import { useTheme } from "@chakra-ui/system"
-import React from "react"
 import createMediaQueries from "./create-media-query"
+import React from "react"
 
 interface Listener {
   mediaQuery: MediaQueryList

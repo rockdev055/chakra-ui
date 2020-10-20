@@ -20,10 +20,8 @@ const NativeImage = React.forwardRef(function NativeImage(
   props: NativeImageProps,
   ref: React.Ref<any>,
 ) {
-  const { htmlWidth, htmlHeight, alt, ...rest } = props
-  return (
-    <img width={htmlWidth} height={htmlHeight} ref={ref} alt={alt} {...rest} />
-  )
+  const { htmlWidth, htmlHeight, ...rest } = props
+  return <img width={htmlWidth} height={htmlHeight} ref={ref} {...rest} />
 })
 
 interface ImageOptions extends NativeImageOptions {

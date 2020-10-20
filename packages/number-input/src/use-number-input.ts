@@ -1,5 +1,5 @@
 import { useCounter, UseCounterProps } from "@chakra-ui/counter"
-import { useBoolean, useEventListener } from "@chakra-ui/hooks"
+import { useBoolean } from "@chakra-ui/hooks"
 import {
   ariaAttr,
   callAllHandlers,
@@ -315,15 +315,13 @@ export function useNumberInput(props: UseNumberInputProps = {}) {
       ? "onTouchStart"
       : "onMouseDown"
 
-  useEventListener(
-    "wheel",
-    function onWheel(event) {
-      const isInputFocused = document.activeElement === inputRef.current
-      if (!allowMouseWheel || !isInputFocused) return
+  const onWheel = useCallback(
+    (event: React.WheelEvent) => {
+      if (!allowMouseWheel) return
 
       event.preventDefault()
-
-      const stepFactor = getStepFactor(event as any) * stepProp
+      event.stopPropagation()
+      const stepFactor = getStepFactor(event) * stepProp
       const direction = Math.sign(event.deltaY)
 
       if (direction === -1) {
@@ -332,7 +330,7 @@ export function useNumberInput(props: UseNumberInputProps = {}) {
         decrement(stepFactor)
       }
     },
-    inputRef.current,
+    [increment, decrement, stepProp, allowMouseWheel],
   )
 
   const getIncrementButtonProps: PropGetter = useCallback(
@@ -380,7 +378,7 @@ export function useNumberInput(props: UseNumberInputProps = {}) {
       "aria-valuemin": min,
       "aria-valuemax": max,
       "aria-disabled": isDisabled,
-      "aria-valuenow": Number.isNaN(counter.valueAsNumber)
+      "aria-valuenow": isNaN(counter.valueAsNumber)
         ? undefined
         : counter.valueAsNumber,
       "aria-invalid": isInvalid || counter.isOutOfRange,
@@ -393,6 +391,7 @@ export function useNumberInput(props: UseNumberInputProps = {}) {
       onKeyDown: callAllHandlers(props.onKeyDown, onKeyDown),
       onFocus: callAllHandlers(props.onFocus, setFocused.on),
       onBlur: callAllHandlers(props.onBlur, onBlur),
+      onWheel: callAllHandlers(props.onWheel, onWheel),
     }),
     [
       inputMode,
@@ -410,6 +409,7 @@ export function useNumberInput(props: UseNumberInputProps = {}) {
       onBlur,
       onChange,
       onKeyDown,
+      onWheel,
       setFocused.on,
     ],
   )

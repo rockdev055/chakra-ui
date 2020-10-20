@@ -218,11 +218,10 @@ export function usePinInputField(props: UsePinInputFieldProps = {}) {
     (currentValue: string, eventValue: string) => {
       let nextValue = eventValue
       if (currentValue && currentValue.length > 0) {
-        const [firstValue, secondValue] = eventValue
-        if (currentValue[0] === firstValue) {
-          nextValue = secondValue
-        } else if (currentValue[0] === secondValue) {
-          nextValue = firstValue
+        if (currentValue[0] === eventValue[0]) {
+          nextValue = eventValue[1]
+        } else if (currentValue[0] === eventValue[1]) {
+          nextValue = eventValue[0]
         }
       }
       return nextValue
@@ -247,7 +246,7 @@ export function usePinInputField(props: UsePinInputFieldProps = {}) {
       if (eventValue.length > 2) {
         // see if we can use the string to fill out our values
         if (eventValue.match(/^[0-9]+$/)) {
-          const { length } = descendants
+          const length = descendants.length
           // ensure the value matches the number of inputs
           const nextValue = eventValue.split("").filter((_, i) => i < length)
           setValues(nextValue)

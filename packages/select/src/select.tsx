@@ -151,12 +151,11 @@ export const Select = forwardRef<SelectProps, "select">(function Select(
 
       <SelectIcon
         data-disabled={props.isDisabled}
+        children={icon}
         color={iconColor || color}
         __css={styles.icon}
         {...(iconSize && { fontSize: iconSize })}
-      >
-        {icon}
-      </SelectIcon>
+      />
     </chakra.div>
   )
 })
@@ -208,9 +207,11 @@ const SelectIcon: React.FC<SelectIconProps> = (props) => {
   })
 
   return (
-    <IconWrapper {...rest} className="chakra-select__icon-wrapper">
-      {React.isValidElement(children) ? clone : null}
-    </IconWrapper>
+    <IconWrapper
+      {...rest}
+      className="chakra-select__icon-wrapper"
+      children={React.isValidElement(children) ? clone : null}
+    />
   )
 }
 

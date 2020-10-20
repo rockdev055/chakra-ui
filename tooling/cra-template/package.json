@@ -28,6 +28,7 @@
     "template.json"
   ],
   "scripts": {
-    "lint": "eslint template/src"
+    "lint": "concurrently yarn:lint:*",
+    "lint:src": "eslint template/src --ext .js,.jsx --config ../../.eslintrc"
   }
 }

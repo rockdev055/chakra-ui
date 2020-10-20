@@ -75,6 +75,8 @@ if (__DEV__) {
   Slider.displayName = "Slider"
 }
 
+///////////////////////////////////////////////////////////////////////////
+
 export interface SliderThumbProps extends PropsOf<typeof chakra.div> {}
 
 /**
@@ -112,6 +114,8 @@ if (__DEV__) {
   SliderThumb.displayName = "SliderThumb"
 }
 
+///////////////////////////////////////////////////////////////////////////
+
 export interface SliderTrackProps extends PropsOf<typeof chakra.div> {}
 
 export const SliderTrack = forwardRef<SliderTrackProps, "div">(
@@ -139,6 +143,8 @@ export const SliderTrack = forwardRef<SliderTrackProps, "div">(
 if (__DEV__) {
   SliderTrack.displayName = "SliderTrack"
 }
+
+///////////////////////////////////////////////////////////////////////////
 
 export interface SliderInnerTrackProps extends PropsOf<typeof chakra.div> {}
 
@@ -168,6 +174,8 @@ export const SliderFilledTrack = forwardRef<SliderInnerTrackProps, "div">(
 if (__DEV__) {
   SliderFilledTrack.displayName = "SliderFilledTrack"
 }
+
+///////////////////////////////////////////////////////////////////////////
 
 export interface SliderMarkProps extends PropsOf<typeof chakra.div> {
   value: number

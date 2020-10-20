@@ -123,22 +123,21 @@ export const Button = forwardRef<ButtonProps, "button">(function Button(
       {...rest}
     >
       {leftIcon && !isLoading && (
-        <ButtonIcon mr={iconSpacing}>{leftIcon}</ButtonIcon>
+        <ButtonIcon mr={iconSpacing} children={leftIcon} />
       )}
       {isLoading && (
         <ButtonSpinner
           __css={{ fontSize: "1em", lineHeight: "normal" }}
           spacing={iconSpacing}
           label={loadingText}
-        >
-          {spinner}
-        </ButtonSpinner>
+          children={spinner}
+        />
       )}
       {isLoading
-        ? loadingText || <chakra.span opacity={0}>{children}</chakra.span>
+        ? loadingText || <chakra.span opacity={0} children={children} />
         : children}
       {rightIcon && !isLoading && (
-        <ButtonIcon ml={iconSpacing}>{rightIcon}</ButtonIcon>
+        <ButtonIcon ml={iconSpacing} children={rightIcon} />
       )}
     </chakra.button>
   )
@@ -160,11 +159,7 @@ const ButtonIcon: React.FC<PropsOf<typeof chakra.span>> = (props) => {
 
   const _className = cx("chakra-button__icon", className)
 
-  return (
-    <chakra.span {...rest} className={_className}>
-      {_children}
-    </chakra.span>
-  )
+  return <chakra.span {...rest} className={_className} children={_children} />
 }
 
 if (__DEV__) {
@@ -197,9 +192,12 @@ const ButtonSpinner: React.FC<ButtonSpinnerProps> = (props) => {
   }
 
   return (
-    <chakra.div className={_className} {...rest} __css={spinnerStyles}>
-      {children}
-    </chakra.div>
+    <chakra.div
+      className={_className}
+      {...rest}
+      __css={spinnerStyles}
+      children={children}
+    />
   )
 }
 

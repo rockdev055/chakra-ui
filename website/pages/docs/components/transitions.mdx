@@ -3,8 +3,8 @@ title: Transitions
 package: "@chakra-ui/transition"
 image: "components/transition.svg"
 description:
-  Chakra exports four components `Fade`, `ScaleFade`, `Slide`, and `SlideFade`
-  to provide simple transitions.
+  Chakra exports four components `Fade`, `ScaleFade`, `Slide`, and `SlideFade` to
+  provide simple transitions.
 ---
 
 import ComponentLinks from "../../../src/components/component-links"
@@ -22,15 +22,13 @@ provide simple transitions.
 
 ## Import
 
-Most transition components are made using `framer-motion`. They accept the
-following props:
-
-- Common props from framer's `motion` elements
-- `in` prop used to trigger the transition
-- `unmountOnExit` prop used to unmount the component when it's not visible.
-
 ```js
-import { Fade, ScaleFade, Slide, SlideFade } from "@chakra-ui/transition"
+import { 
+  Fade, 
+  ScaleFade, 
+  Slide, 
+  SlideFade 
+} from "@chakra-ui/transition"
 ```
 
 ## Usage
@@ -38,23 +36,18 @@ import { Fade, ScaleFade, Slide, SlideFade } from "@chakra-ui/transition"
 ### Fade transition
 
 ```jsx
-function FadeEx() {
+function FadeTransitionExample() {
   const { isOpen, onToggle } = useDisclosure()
 
   return (
     <>
       <Button onClick={onToggle}>Click Me</Button>
-      <Fade in={isOpen}>
-        <Box
-          p="40px"
-          color="white"
-          mt="4"
-          bg="teal.500"
-          rounded="md"
-          shadow="md"
-        >
-          Fade
-        </Box>
+      <Fade timeout={150} in={isOpen}>
+        {(styles) => (
+         <Box style={styles}>
+            <Lorem count={1} />
+         </Box>
+        )}
       </Fade>
     </>
   )
@@ -64,23 +57,18 @@ function FadeEx() {
 ### ScaleFade transition
 
 ```jsx
-function ScaleFadeEx() {
+function ScaleFadeTransitionExample() {
   const { isOpen, onToggle } = useDisclosure()
 
   return (
     <>
       <Button onClick={onToggle}>Click Me</Button>
-      <ScaleFade initialScale={0.9} in={isOpen}>
-        <Box
-          p="40px"
-          color="white"
-          mt="4"
-          bg="teal.500"
-          rounded="md"
-          shadow="md"
-        >
-          Fade
-        </Box>
+      <ScaleFade initialScale={0.9} timeout={150} in={isOpen}>
+        {(styles) => (
+         <Box style={styles}>
+            <Lorem count={1} />
+         </Box>
+        )}
       </ScaleFade>
     </>
   )
@@ -90,76 +78,54 @@ function ScaleFadeEx() {
 ### Slide transition
 
 ```jsx
-function SlideEx() {
+function SlideTransitionExample() {
   const { isOpen, onToggle } = useDisclosure()
 
   return (
     <>
       <Button onClick={onToggle}>Click Me</Button>
-      <Slide direction="bottom" in={isOpen} style={{ zIndex: 10 }}>
-        <Box
-          p="40px"
-          color="white"
-          mt="4"
-          bg="teal.500"
-          rounded="md"
-          shadow="md"
-        >
-          <Lorem count={2} />
-        </Box>
+      <Slide placement="bottom" timeout={150} in={isOpen}>
+        {(styles) => (
+         <Box style={{...styles, position: "static"}}>
+            <Lorem count={2} />
+         </Box>
+        )}
       </Slide>
     </>
   )
 }
 ```
 
-### Slide Fade transition
+
+### SlideFade transition
 
 ```jsx
-function SlideFadeEx() {
-  const { isOpen, onToggle } = useDisclosure()
+function SlideFadeTransitionExample() {
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
     <>
-      <Button onClick={onToggle}>Click Me</Button>
-      <SlideFade in={isOpen} offsetY="20px">
-        <Box
-          p="40px"
-          color="white"
-          mt="4"
-          bg="teal.500"
-          rounded="md"
-          shadow="md"
-        >
-          <Lorem count={1} />
-        </Box>
-      </SlideFade>
-    </>
-  )
-}
-```
-
-### Collapse transition
-
-```jsx
-function CollapseEx() {
-  const { isOpen, onToggle } = useDisclosure()
-
-  return (
-    <>
-      <Button onClick={onToggle}>Click Me</Button>
-      <Collapse in={isOpen} animateOpacity>
-        <Box
-          p="40px"
-          color="white"
-          mt="4"
-          bg="teal.500"
-          rounded="md"
-          shadow="md"
-        >
-          <Lorem count={1} />
-        </Box>
-      </Collapse>
+      <Button onClick={onOpen}>Open Modal</Button>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay>
+          <SlideFade initialOffset="20px" timeout={150} in={isOpen}>
+            {(styles) => (
+              <ModalContent style={styles}>
+                <ModalHeader>Modal Title</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                  <Lorem count={2} />
+                </ModalBody>
+                <ModalFooter>
+                  <Button colorScheme="blue" mr={3} onClick={onClose}>
+                    Close
+                  </Button>
+                </ModalFooter>
+              </ModalContent>
+            )}
+          </SlideFade>
+        </ModalOverlay>
+      </Modal>
     </>
   )
 }
@@ -167,33 +133,35 @@ function CollapseEx() {
 
 ## Props
 
-The transition components extends the
-[framer-motion](https://www.framer.com/api/motion/component/).
+The transition components extends the [react-transition-group](https://reactcommunity.org/react-transition-group/transition) `Transition` component, so you can pass all `TransitionProps` in addition to these:
 
 ### Fade Props
 
-| Name | Type      | Default | Description                                           |
-| ---- | --------- | ------- | ----------------------------------------------------- |
-| in   | `boolean` | false   | Show the component; triggers the enter or exit states |
+| Name             | Type                 | Default | Description                                                                                                              |
+| ---------------- | -------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------ |
+| in               | `boolean`            |  false  | Show the component; triggers the enter or exit states                                                                    |
+| timeout          | `number`             |  150    | The duration of the transition, in milliseconds                                                                          |
 
 ### ScaleFade Props
 
-| Name         | Type      | Default | Description                                           |
-| ------------ | --------- | ------- | ----------------------------------------------------- |
-| in           | `boolean` | false   | Show the component; triggers the enter or exit states |
-| initialScale | `number`  | 0.9     | The initial scale to animate from                     |
+| Name             | Type                 | Default | Description                                                                                                              |
+| ---------------- | -------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------ |
+| in               | `boolean`            |  false  | Show the component; triggers the enter or exit states                                                                    |
+| initialScale     | `number`             |  0.9    | The initial scale to animate from                                                                                        |
+| timeout          | `number`             |  150    | The duration of the transition, in milliseconds                                                                          |
 
 ### Slide Props
 
-| Name      | Type      | Default  | Description                                           |
-| --------- | --------- | -------- | ----------------------------------------------------- |
-| in        | `boolean` | false    | Show the component; triggers the enter or exit states |
-| placement | `string`  | 'bottom' | The direction to slide drawer from                    |
+| Name             | Type                 | Default    | Description                                                                                                              |
+| ---------------- | -------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------ |
+| in               | `boolean`            |  false     | Show the component; triggers the enter or exit states                                                                    |
+| placement        | `string`             |  'bottom'  | The direction to slide drawer from                                                                                     |
+| timeout          | `number`             |  150       | The duration of the transition, in milliseconds                                                                          |
 
 ### SlideFade Props
 
-| Name    | Type      | Default | Description                                           |
-| ------- | --------- | ------- | ----------------------------------------------------- |
-| in      | `boolean` | false   | Show the component; triggers the enter or exit states |
-| offsetX | `string`  | '20px'  | The initial offset to slide from                      |
-| offsetY | `string`  | '20px'  | The initial offset to slide from                      |
+| Name             | Type                 | Default | Description                                                                                                              |
+| ---------------- | -------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------ |
+| in               | `boolean`            |  false  | Show the component; triggers the enter or exit states                                                                    |
+| initialOffset    | `string`             |  '20px' | The initial offset to slide from                                                                                     |
+| timeout          | `number`             |  150    | The duration of the transition, in milliseconds                                                                          |

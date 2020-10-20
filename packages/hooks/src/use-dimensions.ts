@@ -16,7 +16,7 @@ export function useDimensions(
   const rafId = React.useRef<number>()
 
   useSafeLayoutEffect(() => {
-    if (!ref.current) return undefined
+    if (!ref.current) return
 
     const node = ref.current
 
@@ -32,14 +32,17 @@ export function useDimensions(
     if (observe) {
       window.addEventListener("resize", measure)
       window.addEventListener("scroll", measure)
-    }
 
-    return () => {
-      if (observe) {
+      return () => {
+        if (rafId.current) {
+          cancelAnimationFrame(rafId.current)
+        }
         window.removeEventListener("resize", measure)
         window.removeEventListener("scroll", measure)
       }
+    }
 
+    return () => {
       if (rafId.current) {
         cancelAnimationFrame(rafId.current)
       }

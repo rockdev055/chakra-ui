@@ -13,7 +13,6 @@ import {
 import { SkipNavContent, SkipNavLink } from "@chakra-ui/skip-nav"
 import Container from "components/container"
 import Header from "components/header"
-import PageTransition from "components/page-transition"
 import SEO from "components/seo"
 import fs from "fs"
 import path from "path"
@@ -98,85 +97,80 @@ function Team({ members, contributors }: TeamProps) {
 
       <Box mt="120px" mb="60px">
         <SkipNavContent />
-        <PageTransition>
-          <Container py="80px" textAlign="center">
-            <chakra.h1
-              color="teal.400"
-              textStyle="heading"
-              mb="5"
-              fontWeight="semibold"
-            >
-              Chakra UI Team &amp; Contributors
-            </chakra.h1>
-            <Text maxW="60ch" mx="auto" fontSize="lg">
-              The people listed on this page have contributed time, effort, and
-              thought to Chakra UI. Without them, this project would not be
-              possible.
-            </Text>
-          </Container>
+        <Container py="80px" textAlign="center">
+          <chakra.h1
+            color="teal.400"
+            textStyle="heading"
+            mb="5"
+            fontWeight="semibold"
+          >
+            Chakra UI Team &amp; Contributors
+          </chakra.h1>
+          <Text maxW="60ch" mx="auto" fontSize="lg">
+            The people listed on this page have contributed time, effort, and
+            thought to Chakra UI. Without them, this project would not be
+            possible.
+          </Text>
+        </Container>
 
-          <Container>
-            <Stack spacing={8}>
-              <Heading size="lg">Core Team 🤝</Heading>
-              <SimpleGrid columns={[1, 1, 2]} spacing="40px" pt="3">
-                {members.map((member) => (
-                  <Member key={member.login} member={member} />
-                ))}
-              </SimpleGrid>
-            </Stack>
+        <Container>
+          <Stack spacing={8}>
+            <Heading size="lg">Core Team 🤝</Heading>
+            <SimpleGrid columns={[1, 1, 2]} spacing="40px" pt="3">
+              {members.map((member) => (
+                <Member key={member.login} member={member} />
+              ))}
+            </SimpleGrid>
+          </Stack>
 
-            <Stack py="48px" spacing={8}>
-              <Heading size="lg">Our Sponsors 💰</Heading>
-              <Box mt="8">
-                <Text
-                  textStyle="caps"
-                  mb="4"
-                  textTransform="uppercase"
-                  opacity="0.7"
-                >
-                  Individuals
-                </Text>
-                <a href="https://opencollective.com/chakra-ui">
-                  <img src="https://opencollective.com/chakra-ui/individuals.svg?width=890" />
-                </a>
-              </Box>
-              <Box>
-                <Text
-                  textStyle="caps"
-                  mb="4"
-                  textTransform="uppercase"
-                  opacity="0.7"
-                >
-                  Organizations
-                </Text>
-                <Wrap>
-                  {new Array(9).fill("").map((_, idx) => (
-                    <a
-                      key={idx}
-                      href={`https://opencollective.com/chakra-ui/organization/${idx}/website`}
-                    >
-                      <img
-                        src={`https://opencollective.com/chakra-ui/organization/${idx}/avatar.svg?avatarHeight=130`}
-                      />
-                    </a>
-                  ))}
-                </Wrap>
-              </Box>
-            </Stack>
-
-            <Stack spacing={8} mt="100px">
-              <Heading size="lg">Project Contributors 💖</Heading>
-              <Wrap spacing="3">
-                {contributorsWithoutTeam.map((contributor) => (
-                  <Avatar
-                    key={contributor.login}
-                    src={contributor.avatar_url}
-                  />
+          <Stack py="48px" spacing={8}>
+            <Heading size="lg">Our Sponsors 💰</Heading>
+            <Box mt="8">
+              <Text
+                textStyle="caps"
+                mb="4"
+                textTransform="uppercase"
+                opacity="0.7"
+              >
+                Individuals
+              </Text>
+              <a href="https://opencollective.com/chakra-ui">
+                <img src="https://opencollective.com/chakra-ui/individuals.svg?width=890" />
+              </a>
+            </Box>
+            <Box>
+              <Text
+                textStyle="caps"
+                mb="4"
+                textTransform="uppercase"
+                opacity="0.7"
+              >
+                Organizations
+              </Text>
+              <Wrap>
+                {new Array(9).fill("").map((_, idx) => (
+                  <a
+                    key={idx}
+                    href={`https://opencollective.com/chakra-ui/organization/${idx}/website`}
+                  >
+                    <img
+                      src={`https://opencollective.com/chakra-ui/organization/${idx}/avatar.svg?avatarHeight=130`}
+                    />
+                  </a>
                 ))}
               </Wrap>
-            </Stack>
-          </Container>
-        </PageTransition>
+            </Box>
+          </Stack>
+
+          <Stack spacing={8} mt="100px">
+            <Heading size="lg">Project Contributors 💖</Heading>
+            <Wrap spacing="3">
+              {contributorsWithoutTeam.map((contributor) => (
+                <Avatar key={contributor.login} src={contributor.avatar_url} />
+              ))}
+            </Wrap>
+          </Stack>
+        </Container>
       </Box>
     </>
   )

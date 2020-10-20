@@ -1,3 +1,4 @@
+import * as React from "react"
 import type { AlertStatus } from "@chakra-ui/alert"
 import {
   Alert,
@@ -8,16 +9,16 @@ import {
 import { CloseButton } from "@chakra-ui/close-button"
 import {
   chakra,
-  ColorMode,
   ColorModeContext,
   ThemeProvider,
   useChakra,
+  ColorMode,
 } from "@chakra-ui/system"
-import defaultTheme from "@chakra-ui/theme"
 import { isFunction, noop } from "@chakra-ui/utils"
-import * as React from "react"
+import defaultTheme from "@chakra-ui/theme"
 import { toast } from "./toast.class"
 import { RenderProps, ToastId, ToastOptions } from "./toast.types"
+import { PropsWithChildren } from "react"
 
 export interface UseToastOptions {
   /**
@@ -84,6 +85,7 @@ const Toast: React.FC<any> = (props) => {
       alignItems="start"
       borderRadius="md"
       boxShadow="lg"
+      margin={2}
       paddingRight={8}
       textAlign="left"
       width="auto"
@@ -136,7 +138,7 @@ export function createStandaloneToast({
   setColorMode = defaultStandaloneParam.setColorMode,
 }: CreateStandAloneToastParam = defaultStandaloneParam) {
   const renderWithProviders = (
-    props: React.PropsWithChildren<RenderProps>,
+    props: PropsWithChildren<RenderProps>,
     options: UseToastOptions,
   ) => (
     <ThemeProvider theme={theme}>
@@ -152,7 +154,7 @@ export function createStandaloneToast({
     </ThemeProvider>
   )
 
-  const toastImpl = (options: UseToastOptions) => {
+  const toastImpl = function (options: UseToastOptions) {
     const opts = { ...defaults, ...options }
 
     const Message: React.FC<RenderProps> = (props) =>

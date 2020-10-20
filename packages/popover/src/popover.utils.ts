@@ -5,7 +5,7 @@ import {
   FocusableElement,
   isFocusable,
 } from "@chakra-ui/utils"
-import { RefObject, useEffect, useRef } from "react"
+import { RefObject, useRef } from "react"
 
 export interface UseFocusOnHideOptions {
   focusRef: RefObject<FocusableElement>
@@ -30,7 +30,7 @@ export function useFocusOnHide(
 
   const shouldFocus = autoFocus && !visible && trigger === "click"
 
-  const onPointerDown = (event: MouseEvent | TouchEvent) => {
+  const onPointerDown = (event: MouseEvent) => {
     if (!options.visible) return
     const target = event.target as HTMLElement
 
@@ -77,13 +77,6 @@ interface UseFocusOnShowOptions {
   trigger?: "hover" | "click"
 }
 
-export function focusPopover(ref: any) {
-  if (ref.current) {
-    const firstTabbable = getFirstTabbableIn(ref.current, true)
-    focus(firstTabbable ?? ref.current)
-  }
-}
-
 /**
  * Popover hook to manage the focus when the popover opens.
  *
@@ -101,7 +94,7 @@ export function useFocusOnShow(
    * Using updateEffect here to allow effect to run only when
    * `options.visible` changes, not on mount
    */
-  useEffect(() => {
+  useUpdateEffect(() => {
     if (trigger === "hover") return
 
     // if `autoFocus` is false, move focus to the `PopoverContent`
@@ -111,12 +104,17 @@ export function useFocusOnShow(
     }
 
     const shouldFocus = visible && autoFocus
+
     if (!shouldFocus) return
 
     if (focusRef?.current) {
       focus(focusRef.current)
-    } else {
-      focusPopover(popoverRef)
+      return
+    }
+
+    if (popoverRef.current) {
+      const firstTabbable = getFirstTabbableIn(popoverRef.current, true)
+      focus(firstTabbable ?? popoverRef.current)
     }
   }, [visible, autoFocus, popoverRef, focusRef])
 }

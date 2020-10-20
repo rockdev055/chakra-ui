@@ -21,11 +21,7 @@ function baseStyleExcessLabel(props: Record<string, any>) {
 function baseStyleContainer(props: Record<string, any>) {
   const { name, theme } = props
   const bg = name ? randomColor({ string: name }) : "gray.400"
-  const isBgDark = isDark(bg)(theme)
-
-  let color = "white"
-  if (!isBgDark) color = "gray.800"
-
+  const color = name ? (isDark(bg)(theme) ? "white" : "gray.800") : "white"
   const borderColor = mode("white", "gray.800")(props)
 
   return {

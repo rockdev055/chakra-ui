@@ -1,5 +1,5 @@
-import { createBreakpoints } from "@chakra-ui/theme-tools"
 import { css } from "../src"
+import { createBreakpoints } from "@chakra-ui/theme-tools"
 
 test("should handle array interpolations", () => {
   const customBreakpoints = createBreakpoints({

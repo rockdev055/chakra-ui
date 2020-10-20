@@ -1,16 +1,16 @@
+import { TriangleDownIcon, TriangleUpIcon } from "./icons"
 import {
   chakra,
-  forwardRef,
-  omitThemingProps,
   PropsOf,
+  forwardRef,
   StylesProvider,
-  ThemingProps,
-  useMultiStyleConfig,
   useStyles,
+  omitThemingProps,
+  useMultiStyleConfig,
+  ThemingProps,
 } from "@chakra-ui/system"
 import { createContext, __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
-import { TriangleDownIcon, TriangleUpIcon } from "./icons"
 import {
   useNumberInput,
   UseNumberInputProps,

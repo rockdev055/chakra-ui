@@ -61,7 +61,7 @@ export function getProgressProps(options: GetProgressPropsOptions) {
   const percent = valueToPercent(value, min, max)
 
   const getAriaValueText = () => {
-    if (value == null) return undefined
+    if (value == null) return
     return isFunction(getValueText) ? getValueText(value, percent) : valueText
   }
 

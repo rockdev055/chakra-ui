@@ -130,10 +130,10 @@ export function usePopper(props: UsePopperProps = {}) {
     modifiers: customMofidiers.concat(modifiers),
   })
 
-  const finalPlacement = popperJS.state?.placement ?? placement
+  const _placement = popperJS.state?.placement ?? placement
 
   const arrowStyles = getArrowStyles({
-    placement: finalPlacement,
+    placement: _placement,
     popperArrowStyles: popperJS.styles.arrow,
     arrowSize,
   })
@@ -166,9 +166,8 @@ export function usePopper(props: UsePopperProps = {}) {
   const getArrowProps: PropGetter = (props = {}, _ref = null) => {
     return {
       ...props,
-      ref: _ref,
       style: {
-        boxShadow: getBoxShadow(finalPlacement, arrowShadowColor),
+        boxShadow: getBoxShadow(_placement, arrowShadowColor),
         ...props.style,
         position: "absolute",
         zIndex: -1,
@@ -180,7 +179,7 @@ export function usePopper(props: UsePopperProps = {}) {
   }
 
   return {
-    transformOrigin: toTransformOrigin(finalPlacement),
+    transformOrigin: toTransformOrigin(_placement),
     getReferenceProps,
     getPopperProps,
     getArrowWrapperProps,
@@ -188,7 +187,7 @@ export function usePopper(props: UsePopperProps = {}) {
     state: popperJS.state,
     forceUpdate: popperJS.forceUpdate,
     update: popperJS.update,
-    placement: finalPlacement,
+    placement: _placement,
   }
 }
 

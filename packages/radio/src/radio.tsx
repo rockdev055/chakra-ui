@@ -45,8 +45,6 @@ export const Radio = forwardRef<RadioProps, "input">(function Radio(
   props,
   ref,
 ) {
-  const { onChange: onChangeProp, value: valueProp } = props
-
   const group = useRadioGroupContext()
   const styles = useMultiStyleConfig("Radio", { ...group, ...props })
 
@@ -58,12 +56,12 @@ export const Radio = forwardRef<RadioProps, "input">(function Radio(
   } = omitThemingProps(props)
 
   let isChecked = props.isChecked || false
-  if (group?.value && valueProp) {
-    isChecked = group.value === valueProp
+  if (group?.value && props.value) {
+    isChecked = group.value === props.value
   }
 
-  let onChange = onChangeProp
-  if (group?.onChange && valueProp) {
+  let onChange = props.onChange
+  if (group?.onChange && props.value) {
     onChange = group.onChange
   }
 
@@ -121,9 +119,8 @@ export const Radio = forwardRef<RadioProps, "input">(function Radio(
           className="chakra-radio__label"
           {...labelProps}
           __css={labelStyles}
-        >
-          {children}
-        </chakra.div>
+          children={children}
+        />
       )}
     </chakra.label>
   )

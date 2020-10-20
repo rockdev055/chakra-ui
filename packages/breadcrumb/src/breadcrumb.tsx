@@ -139,9 +139,7 @@ export const BreadcrumbItem = forwardRef<BreadcrumbItemProps, "li">(
       >
         {clones}
         {!isLastChild && (
-          <BreadcrumbSeparator spacing={spacing}>
-            {separator}
-          </BreadcrumbSeparator>
+          <BreadcrumbSeparator spacing={spacing} children={separator} />
         )}
       </chakra.li>
     )

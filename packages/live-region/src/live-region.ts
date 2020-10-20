@@ -1,5 +1,3 @@
-import { isBrowser } from "@chakra-ui/utils"
-
 export interface LiveRegionOptions {
   /**
    * A unique id for the created live region element
@@ -42,47 +40,39 @@ export interface LiveRegionOptions {
 }
 
 export class LiveRegion {
-  region: HTMLElement | null
+  region: HTMLElement
   options: Required<LiveRegionOptions>
   parentNode: HTMLElement
 
   constructor(options?: LiveRegionOptions) {
-    this.options = getOptions(options) as any
+    this.options = getOptions(options)
     this.region = getRegion(this.options)
     this.parentNode = this.options.parentNode
-    if (this.region) {
-      this.parentNode.appendChild(this.region)
-    }
+    this.parentNode.appendChild(this.region)
   }
 
   public speak(message: string) {
     this.clear()
-    if (this.region) {
-      this.region.innerText = message
-    }
+    this.region.innerText = message
   }
 
   public destroy() {
-    if (this.region) {
-      this.region.parentNode?.removeChild(this.region)
-    }
+    this.region.parentNode?.removeChild(this.region)
   }
 
   public clear() {
-    if (this.region) {
-      this.region.innerText = ""
-    }
+    this.region.innerText = ""
   }
 }
 
 function getOptions(options?: LiveRegionOptions) {
-  const defaultOptions: LiveRegionOptions = {
+  const defaultOptions: Required<LiveRegionOptions> = {
     "aria-live": "polite",
     "aria-atomic": "true",
     "aria-relevant": "all",
     role: "status",
     id: "chakra-a11y-live-region",
-    parentNode: isBrowser ? document.body : undefined,
+    parentNode: document.body,
   }
   if (options) {
     return Object.assign(defaultOptions, options)
@@ -91,16 +81,14 @@ function getOptions(options?: LiveRegionOptions) {
 }
 
 function getRegion(options: Required<LiveRegionOptions>) {
-  let region = isBrowser ? document.getElementById(options.id) : null
-
-  if (region) return region
-
-  if (isBrowser) {
+  let region = document.getElementById(options.id)
+  if (region) {
+    return region
+  } else {
     region = document.createElement("div")
     setup(region, options)
+    return region
   }
-
-  return region
 }
 
 function setup(region: HTMLElement, options: Required<LiveRegionOptions>) {
@@ -122,3 +110,5 @@ function setup(region: HTMLElement, options: Required<LiveRegionOptions>) {
     position: "absolute",
   })
 }
+
+export default LiveRegion

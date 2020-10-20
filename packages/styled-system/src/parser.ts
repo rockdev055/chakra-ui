@@ -1,21 +1,21 @@
-import { compose } from "@styled-system/core"
 import {
   backgroundParser,
   borderParser,
   colorParser,
   flexboxParser,
   gridParser,
-  layoutParser,
-  listParser,
   othersParser,
-  outlineParser,
   positionParser,
   shadowParser,
   spaceParser,
+  typographyParser,
+  layoutParser,
+  outlineParser,
   transformParser,
   transitionParser,
-  typographyParser,
+  listParser,
 } from "./config"
+import { compose } from "@styled-system/core"
 
 export const parser = compose(
   backgroundParser,
