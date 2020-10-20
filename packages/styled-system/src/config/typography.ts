@@ -47,7 +47,7 @@ export interface TypographyProps {
    */
   lineHeight?: ResponsiveValue<CSS.Property.LineHeight<Length>>
   /**
-   * The CSS `letter-spacing` property
+   * The CSS `line-height` property
    */
   letterSpacing?: ResponsiveValue<CSS.Property.LetterSpacing<Length>>
   /**
