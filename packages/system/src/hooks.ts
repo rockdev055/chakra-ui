@@ -20,12 +20,25 @@ export function useChakra<T extends Dict = Dict>() {
   return { ...colorModeResult, theme }
 }
 
-export function useToken(
+export function useToken<T extends StringOrNumber>(
   scale: string,
-  token: StringOrNumber,
-  fallback?: StringOrNumber,
+  token: T | T[],
+  fallback?: T | T[],
 ) {
   const theme = useTheme()
+
+  if (Array.isArray(token)) {
+    let fallbackArr: T[] = []
+    if (fallback) {
+      fallbackArr = Array.isArray(fallback) ? fallback : [fallback]
+    }
+
+    return token.map((token, index) => {
+      const path = `${scale}.${token}`
+      return get(theme, path, fallbackArr[index] ?? token)
+    })
+  }
+
   const path = `${scale}.${token}`
   return get(theme, path, fallback ?? token)
 }
