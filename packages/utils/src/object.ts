@@ -1,3 +1,4 @@
+import memoizeOne from "memoize-one"
 import type { Dict, Omit } from "./types"
 
 export { default as merge, default as mergeWith } from "lodash.mergewith"
@@ -42,69 +43,27 @@ export function split<T extends Dict, K extends keyof T>(object: T, keys: K[]) {
 }
 
 /**
- * Get value from a deeply nested object using a string path.
- * Memoizes the value.
+ * Get value from a deeply nested object using a string path
  * @param obj - the object
  * @param path - the string path
  * @param def  - the fallback value
  */
 export function get(
-  obj: object,
+  obj: any,
   path: string | number,
   fallback?: any,
   index?: number,
 ) {
-  const key = typeof path === "string" ? path.split(".") : [path]
-
-  for (index = 0; index < key.length; index += 1) {
-    if (!obj) {
-      break
-    }
-
-    obj = obj[key[index]]
+  // @ts-ignore
+  path = (path?.split?.(".") ?? [path]) as string
+  for (index = 0; index < path.length; index += 1) {
+    obj = obj ? obj[path[index]] : undefined
   }
-
   return obj === undefined ? fallback : obj
 }
 
-type Handler = (
-  obj: Readonly<object>,
-  path: string | number,
-  fallback?: any,
-  index?: number,
-) => any
-
-const memoize = (fn: Handler) => {
-  const cache = new WeakMap()
-
-  const memoizedFn: Handler = (
-    obj: object,
-    path: string | number,
-    fallback?: any,
-    index?: number,
-  ) => {
-    if (!cache.has(obj)) {
-      cache.set(obj, new Map())
-    }
-
-    const map = cache.get(obj)
-    const key = typeof path === "string" ? path.split(".") : [path]
-
-    if (map.has(key)) {
-      return map.get(key)
-    }
-
-    const value = fn(obj, path, fallback, index)
-
-    map.set(key, value)
-
-    return value
-  }
-
-  return memoizedFn
-}
-
-export const memoizedGet = memoize(get)
+// Just a memoized version of `get`
+export const memoizedGet = memoizeOne(get)
 
 /**
  * Get value from deeply nested object, based on path

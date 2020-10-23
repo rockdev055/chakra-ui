@@ -203,10 +203,6 @@ const sidebar = {
               path: "/docs/hooks/use-theme",
             },
             {
-              title: "useToken",
-              path: "/docs/hooks/use-token",
-            },
-            {
               title: "usePrefersReducedMotion",
               path: "/docs/hooks/use-prefers-reduced-motion",
             },
