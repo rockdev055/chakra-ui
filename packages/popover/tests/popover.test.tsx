@@ -6,7 +6,7 @@ const Component = () => {
   const {
     getTriggerProps,
     getPopoverProps,
-    getPopoverPositionerProps,
+    getPopoverWrapperProps,
     onClose,
   } = usePopover()
 
@@ -15,7 +15,7 @@ const Component = () => {
       <button type="button" {...getTriggerProps()}>
         Open
       </button>
-      <div {...getPopoverPositionerProps()}>
+      <div {...getPopoverWrapperProps()}>
         <div {...getPopoverProps()}>Popover content</div>
       </div>
       <button type="button" onClick={onClose}>
