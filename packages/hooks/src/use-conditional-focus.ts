@@ -25,13 +25,7 @@ export function useConditionalFocus<T extends HTMLElement>(
   const autoFocus = shouldFocus && visible
 
   const onFocus = () => {
-    if (
-      !element ||
-      !autoFocus ||
-      element.contains(document.activeElement) ||
-      element === document.activeElement
-    )
-      return
+    if (!element || !autoFocus) return
 
     if (focusRef?.current) {
       focus(focusRef.current, { preventScroll })
@@ -42,12 +36,11 @@ export function useConditionalFocus<T extends HTMLElement>(
       }
     }
   }
-
   const onFocusRef = useLatestRef(onFocus)
 
   React.useEffect(() => {
     onFocusRef.current()
-  }, [])
+  }, [onFocusRef, autoFocus])
 
   useEventListener("transitionend", onFocus, element)
 }

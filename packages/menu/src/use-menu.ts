@@ -287,9 +287,6 @@ export function useMenuList(
       const eventKey = normalizeEventKey(event)
 
       const keyMap: EventKeyMap = {
-        Tab: (event) => {
-          event.preventDefault()
-        },
         Escape: onClose,
         ArrowDown: () => {
           const nextIndex = getNextIndex(focusedIndex, descendants.length)
@@ -301,11 +298,11 @@ export function useMenuList(
         },
       }
 
-      const handler = keyMap[eventKey]
+      const navigationHandler = keyMap[eventKey]
 
-      if (handler) {
+      if (navigationHandler) {
         event.preventDefault()
-        handler(event)
+        navigationHandler(event)
         return
       }
 
