@@ -8,7 +8,6 @@ import { ThemingProps } from "./system.types"
  */
 export const domElements = [
   "a",
-  "b",
   "article",
   "aside",
   "blockquote",
@@ -51,7 +50,6 @@ export const domElements = [
   "svg",
   "section",
   "select",
-  "strong",
   "small",
   "span",
   "sub",
