@@ -5,7 +5,7 @@ import type {
   SystemProps,
   SystemStyleObject,
   ThemingProps,
-  HTMLChakraProps,
+  WithChakraProps,
 } from "@chakra-ui/system"
 import {
   chakra,
@@ -71,7 +71,7 @@ interface AvatarOptions {
   getInitials?: (name: string) => string
 }
 
-export interface AvatarBadgeProps extends HTMLChakraProps<"div"> {}
+export interface AvatarBadgeProps extends WithChakraProps<"div"> {}
 
 /**
  * AvatarBadge used to show extra badge to the top-right
@@ -114,7 +114,7 @@ function initials(name: string) {
 }
 
 interface AvatarNameProps
-  extends HTMLChakraProps<"div">,
+  extends WithChakraProps<"div">,
     Pick<AvatarOptions, "name" | "getInitials"> {}
 
 /**
@@ -168,7 +168,7 @@ export const baseStyle: SystemStyleObject = {
 }
 
 export interface AvatarProps
-  extends Omit<HTMLChakraProps<"span">, "onError">,
+  extends Omit<WithChakraProps<"span">, "onError">,
     AvatarOptions,
     ThemingProps {}
 

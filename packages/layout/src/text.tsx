@@ -5,12 +5,12 @@ import {
   SystemProps,
   ThemingProps,
   useStyleConfig,
-  HTMLChakraProps,
+  WithChakraProps,
 } from "@chakra-ui/system"
 import { cx, __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
 
-export interface TextProps extends HTMLChakraProps<"p">, ThemingProps {
+export interface TextProps extends WithChakraProps<"p">, ThemingProps {
   /**
    * The CSS `text-align` property
    */

@@ -6,7 +6,7 @@ import {
   SystemStyleObject,
   ThemingProps,
   useStyleConfig,
-  HTMLChakraProps,
+  WithChakraProps,
 } from "@chakra-ui/system"
 import { __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
@@ -21,7 +21,7 @@ const CloseIcon: React.FC<IconProps> = (props) => (
 )
 
 export interface CloseButtonProps
-  extends HTMLChakraProps<"button">,
+  extends WithChakraProps<"button">,
     ThemingProps {
   /**
    * If `true`, the close button will be disabled.
