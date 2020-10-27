@@ -7,7 +7,7 @@ import {
   ThemingProps,
   useMultiStyleConfig,
   useStyles,
-  HTMLChakraProps,
+  WithChakraProps,
 } from "@chakra-ui/system"
 import {
   createContext,
@@ -38,7 +38,7 @@ type RenderProps = Pick<
 
 interface BaseEditableProps
   extends Omit<
-    HTMLChakraProps<"div">,
+    WithChakraProps<"div">,
     "onChange" | "value" | "defaultValue" | "onSubmit"
   > {}
 
@@ -102,7 +102,7 @@ const commonStyles: SystemStyleObject = {
   bg: "transparent",
 }
 
-export interface EditablePreviewProps extends HTMLChakraProps<"div"> {}
+export interface EditablePreviewProps extends WithChakraProps<"div"> {}
 
 /**
  * EditablePreview
@@ -136,7 +136,7 @@ if (__DEV__) {
   EditablePreview.displayName = "EditablePreview"
 }
 
-export interface EditableInputProps extends HTMLChakraProps<"input"> {}
+export interface EditableInputProps extends WithChakraProps<"input"> {}
 
 /**
  * EditableInput
