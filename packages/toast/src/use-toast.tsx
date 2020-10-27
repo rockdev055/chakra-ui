@@ -117,7 +117,7 @@ const defaults = {
 export type CreateStandAloneToastParam = Partial<
   {
     setColorMode: (value: ColorMode) => void
-  } & ReturnType<typeof useChakra> & { defaultOptions: UseToastOptions }
+  } & ReturnType<typeof useChakra>
 >
 
 export const defaultStandaloneParam: Required<CreateStandAloneToastParam> = {
@@ -125,7 +125,6 @@ export const defaultStandaloneParam: Required<CreateStandAloneToastParam> = {
   colorMode: "light",
   toggleColorMode: noop,
   setColorMode: noop,
-  defaultOptions: defaults,
 }
 /**
  * Create a toast from outside of React Components
@@ -135,7 +134,6 @@ export function createStandaloneToast({
   colorMode = defaultStandaloneParam.colorMode,
   toggleColorMode = defaultStandaloneParam.toggleColorMode,
   setColorMode = defaultStandaloneParam.setColorMode,
-  defaultOptions = defaultStandaloneParam.defaultOptions,
 }: CreateStandAloneToastParam = defaultStandaloneParam) {
   const renderWithProviders = (
     props: React.PropsWithChildren<RenderProps>,
@@ -154,8 +152,8 @@ export function createStandaloneToast({
     </ThemeProvider>
   )
 
-  const toastImpl = (options?: UseToastOptions) => {
-    const opts = { ...defaultOptions, ...options }
+  const toastImpl = (options: UseToastOptions) => {
+    const opts = { ...defaults, ...options }
 
     const Message: React.FC<RenderProps> = (props) =>
       renderWithProviders(props, opts)
@@ -189,7 +187,7 @@ export function createStandaloneToast({
  * React hook used to create a function that can be used
  * to show toasts in an application.
  */
-export function useToast(options?: UseToastOptions) {
+export function useToast() {
   const { theme, setColorMode, toggleColorMode, colorMode } = useChakra()
   return React.useMemo(
     () =>
@@ -198,9 +196,8 @@ export function useToast(options?: UseToastOptions) {
         colorMode,
         setColorMode,
         toggleColorMode,
-        defaultOptions: options,
       }),
-    [theme, setColorMode, toggleColorMode, colorMode, options],
+    [theme, setColorMode, toggleColorMode, colorMode],
   )
 }
 
