@@ -1,26 +1,21 @@
-import {
-  contains,
-  focus,
-  FocusableElement,
-  getAllFocusable,
-} from "@chakra-ui/utils"
+import { focus, FocusableElement, getAllFocusable } from "@chakra-ui/utils"
 import * as React from "react"
 import { useEventListener } from "./use-event-listener"
-import { useUpdateEffect } from "./use-update-effect"
+import { useLatestRef } from "./use-latest-ref"
 
-export interface UseFocusOnShowOptions {
+export interface UseConditionalFocusOptions {
   visible?: boolean
   shouldFocus?: boolean
   preventScroll?: boolean
   focusRef?: React.RefObject<FocusableElement>
 }
 
-const defaultOptions: UseFocusOnShowOptions = {
+const defaultOptions: UseConditionalFocusOptions = {
   preventScroll: true,
   shouldFocus: false,
 }
 
-export function useFocusOnShow<T extends HTMLElement>(
+export function useConditionalFocus<T extends HTMLElement>(
   target: React.RefObject<T> | T,
   options = defaultOptions,
 ) {
@@ -29,10 +24,14 @@ export function useFocusOnShow<T extends HTMLElement>(
 
   const autoFocus = shouldFocus && visible
 
-  const onFocus = React.useCallback(() => {
-    if (!element || !autoFocus) return
-
-    if (contains(element, document.activeElement as HTMLElement)) return
+  const onFocus = () => {
+    if (
+      !element ||
+      !autoFocus ||
+      element.contains(document.activeElement) ||
+      element === document.activeElement
+    )
+      return
 
     if (focusRef?.current) {
       focus(focusRef.current, { preventScroll })
@@ -42,11 +41,13 @@ export function useFocusOnShow<T extends HTMLElement>(
         focus(tabbableEls[0], { preventScroll })
       }
     }
-  }, [autoFocus, preventScroll])
+  }
 
-  useUpdateEffect(() => {
-    onFocus()
-  }, [onFocus])
+  const onFocusRef = useLatestRef(onFocus)
+
+  React.useEffect(() => {
+    onFocusRef.current()
+  }, [])
 
   useEventListener("transitionend", onFocus, element)
 }

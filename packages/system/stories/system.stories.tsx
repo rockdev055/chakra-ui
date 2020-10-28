@@ -14,23 +14,18 @@ export default {
   title: "styled",
 }
 
-const ChakraMotionDiv = motion.custom(chakra.div)
+const ChakraMotionDiv = chakra(motion.div)
 
 /**
  * Made this to test that chakra can infer types correctly from framer-motion
  */
 const WithChakraFactory = () => (
-  <>
-    <ChakraMotionDiv
-      mt="30px"
-      mb="30px"
-      transition={{ easings: "backInOut", duration: 300 }}
-      initial="testing"
-    />
-    <chakra.div as="a" transition="ease">
-      sdfdsf
-    </chakra.div>
-  </>
+  <ChakraMotionDiv
+    mt="30px"
+    mb="30px"
+    transition={{ easings: "backInOut", duration: 300 }}
+    initial="testing"
+  />
 )
 
 const MotionBox = motion.custom(chakra.div)

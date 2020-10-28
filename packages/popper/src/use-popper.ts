@@ -130,18 +130,6 @@ export function usePopper(props: UsePopperProps = {}) {
     modifiers: customMofidiers.concat(modifiers),
   })
 
-  /**
-   * Ensure the popper will be correctly positioned with an extra update
-   */
-  React.useEffect(() => {
-    const id = requestAnimationFrame(() => {
-      popperJS.forceUpdate?.()
-    })
-    return () => {
-      cancelAnimationFrame(id)
-    }
-  }, [])
-
   const finalPlacement = popperJS.state?.placement ?? placement
 
   const arrowStyles = getArrowStyles({

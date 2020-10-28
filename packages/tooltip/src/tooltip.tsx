@@ -5,7 +5,7 @@ import {
   omitThemingProps,
   ThemingProps,
   useStyleConfig,
-  HTMLChakraProps,
+  WithChakraProps,
 } from "@chakra-ui/system"
 import { isString, omit, pick, __DEV__ } from "@chakra-ui/utils"
 import { VisuallyHidden } from "@chakra-ui/visually-hidden"
@@ -14,7 +14,7 @@ import * as React from "react"
 import { useTooltip, UseTooltipProps } from "./use-tooltip"
 
 export interface TooltipProps
-  extends HTMLChakraProps<"div">,
+  extends WithChakraProps<"div">,
     ThemingProps,
     UseTooltipProps {
   /**
@@ -174,7 +174,7 @@ export const Tooltip = forwardRef<TooltipProps, "div">(function Tooltip(
                     {...tooltip.getArrowWrapperProps()}
                   >
                     <chakra.div
-                      className="chakra-tooltip__arrow"
+                      className="chakra-toolip__arrow"
                       {...tooltip.getArrowProps()}
                       __css={{ bg: styles.bg }}
                     />

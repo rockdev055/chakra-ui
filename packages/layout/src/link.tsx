@@ -4,12 +4,12 @@ import {
   omitThemingProps,
   ThemingProps,
   useStyleConfig,
-  HTMLChakraProps,
+  WithChakraProps,
 } from "@chakra-ui/system"
 import { cx, __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
 
-export interface LinkProps extends HTMLChakraProps<"a">, ThemingProps {
+export interface LinkProps extends WithChakraProps<"a">, ThemingProps {
   /**
    *  If `true`, the link will open in new tab
    */

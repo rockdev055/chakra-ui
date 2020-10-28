@@ -10,7 +10,7 @@ import {
   ThemingProps,
   useMultiStyleConfig,
   useStyles,
-  HTMLChakraProps,
+  WithChakraProps,
 } from "@chakra-ui/system"
 import { fadeConfig } from "@chakra-ui/transition"
 import {
@@ -194,7 +194,7 @@ if (__DEV__) {
   Modal.displayName = "Modal"
 }
 
-export interface ModalContentProps extends HTMLChakraProps<"section"> {}
+export interface ModalContentProps extends WithChakraProps<"section"> {}
 
 const Motion = chakra(motion.div)
 
@@ -350,7 +350,7 @@ if (__DEV__) {
   ModalOverlay.displayName = "ModalOverlay"
 }
 
-export interface ModalHeaderProps extends HTMLChakraProps<"header"> {}
+export interface ModalHeaderProps extends WithChakraProps<"header"> {}
 
 /**
  * ModalHeader
@@ -398,7 +398,7 @@ if (__DEV__) {
   ModalHeader.displayName = "ModalHeader"
 }
 
-export interface ModalBodyProps extends HTMLChakraProps<"div"> {}
+export interface ModalBodyProps extends WithChakraProps<"div"> {}
 
 /**
  * ModalBody
@@ -441,7 +441,7 @@ if (__DEV__) {
   ModalBody.displayName = "ModalBody"
 }
 
-export interface ModalFooterProps extends HTMLChakraProps<"footer"> {}
+export interface ModalFooterProps extends WithChakraProps<"footer"> {}
 
 /**
  * ModalFooter houses the action buttons of the modal.
