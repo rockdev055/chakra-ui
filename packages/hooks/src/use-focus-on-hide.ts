@@ -1,30 +1,12 @@
-import {
-  contains,
-  focus,
-  FocusableElement,
-  getActiveElement,
-  isTabbable,
-} from "@chakra-ui/utils"
-import { RefObject } from "react"
+import { focus, FocusableElement, isFocusable } from "@chakra-ui/utils"
+import { RefObject, useRef } from "react"
+import { useEventListener } from "./use-event-listener"
 import { useUpdateEffect } from "./use-update-effect"
 
 export interface UseFocusOnHideOptions {
   focusRef: RefObject<FocusableElement>
   shouldFocus?: boolean
   visible?: boolean
-}
-
-function preventReturnFocus(containerRef: React.RefObject<HTMLElement>) {
-  const el = containerRef.current
-  if (!el) return false
-
-  const activeElement = getActiveElement(el)
-
-  if (!activeElement) return false
-  if (contains(el, activeElement)) return false
-  if (isTabbable(activeElement)) return true
-
-  return false
 }
 
 /**
@@ -35,24 +17,57 @@ function preventReturnFocus(containerRef: React.RefObject<HTMLElement>) {
  * element in the viewport.
  */
 export function useFocusOnHide(
-  containerRef: RefObject<HTMLElement>,
+  popoverRef: RefObject<HTMLElement>,
   options: UseFocusOnHideOptions,
 ) {
-  const { shouldFocus: shouldFocusProp, visible, focusRef } = options
+  const isFocusableRef = useRef(false)
+  const { focusRef, shouldFocus, visible } = options
 
-  const shouldFocus = shouldFocusProp && !visible
+  const autoFocus = shouldFocus && !visible
+
+  const onPointerDown = (event: MouseEvent | TouchEvent) => {
+    if (!options.visible) return
+    const target = event.target as HTMLElement
+
+    const prevent =
+      isFocusable(target) &&
+      target !== focusRef.current &&
+      !(popoverRef.current as HTMLElement).contains(target)
+
+    if (prevent) {
+      isFocusableRef.current = true
+    }
+  }
+
+  useEventListener("mousedown", onPointerDown)
+  useEventListener("touchstart", onPointerDown)
 
   useUpdateEffect(() => {
-    if (!shouldFocus) return
-
-    if (preventReturnFocus(containerRef)) {
-      return
+    return () => {
+      if (!visible) {
+        isFocusableRef.current = false
+      }
     }
+  }, [visible])
 
-    const el = focusRef?.current || containerRef.current
+  useEventListener(
+    "transitionend",
+    () => {
+      if (!visible && focusRef.current && !isFocusableRef.current) {
+        focus(focusRef.current)
+      }
+    },
+    popoverRef.current,
+  )
 
-    if (el) {
-      focus(el)
+  /**
+   * Using updateEffect here to allow effect to run only when
+   * `options.visible` changes, not on mount
+   */
+  useUpdateEffect(() => {
+    if (!autoFocus || !popoverRef.current || isFocusableRef.current) return
+    if (focusRef.current) {
+      focus(focusRef.current)
     }
-  }, [shouldFocus, containerRef, focusRef])
+  }, [autoFocus, focusRef, visible, popoverRef])
 }

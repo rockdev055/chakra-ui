@@ -19,17 +19,6 @@ export default {
   ],
 }
 
-export const SliderBug = () => {
-  return (
-    <Slider defaultValue={10} min={0} max={20} step={5}>
-      <SliderTrack bg="red.100">
-        <SliderFilledTrack bg="tomato" />
-      </SliderTrack>
-      <SliderThumb boxSize={6} />
-    </Slider>
-  )
-}
-
 export function HorizontalSlider() {
   return (
     <Slider colorScheme="red" onChangeEnd={console.log}>
@@ -37,9 +26,7 @@ export function HorizontalSlider() {
         <SliderFilledTrack />
       </SliderTrack>
       <SliderThumb />
-      <SliderMark value={90} top="20px">
-        "90%"
-      </SliderMark>
+      <SliderMark value={90} children="90%" top="20px" />
     </Slider>
   )
 }

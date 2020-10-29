@@ -2,7 +2,7 @@ import {
   chakra,
   forwardRef,
   ResponsiveValue,
-  HTMLChakraProps,
+  WithChakraProps,
 } from "@chakra-ui/system"
 import { cx, mapResponsive, __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
@@ -17,7 +17,7 @@ interface AspectRatioOptions {
 }
 
 export interface AspectRatioProps
-  extends HTMLChakraProps<"div">,
+  extends WithChakraProps<"div">,
     AspectRatioOptions {}
 
 /**

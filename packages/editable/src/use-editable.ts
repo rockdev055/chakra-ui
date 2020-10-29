@@ -96,6 +96,7 @@ export function useEditable(props: UseEditableProps = {}) {
     defaultValue: defaultValue || "",
     value: valueProp,
     onChange: onChangeProp,
+    shouldUpdate: (prev, next) => prev !== next,
   })
 
   /**

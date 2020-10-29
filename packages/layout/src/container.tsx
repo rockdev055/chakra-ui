@@ -3,7 +3,7 @@ import {
   forwardRef,
   SystemStyleObject,
   useTheme,
-  HTMLChakraProps,
+  WithChakraProps,
 } from "@chakra-ui/system"
 import {
   cx,
@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/utils"
 import * as React from "react"
 
-export interface ContainerProps extends HTMLChakraProps<"div"> {
+export interface ContainerProps extends WithChakraProps<"div"> {
   /**
    * If `true`, container will center it's children
    * regardless of their width.

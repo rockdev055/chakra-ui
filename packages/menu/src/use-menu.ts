@@ -3,6 +3,7 @@ import { useDescendant, useDescendants } from "@chakra-ui/descendant"
 import {
   useControllableState,
   useDisclosure,
+  useEventListener,
   useFocusOnHide,
   useId,
   useIds,
@@ -24,8 +25,8 @@ import {
   getValidChildren,
   isArray,
   isString,
+  merge,
   mergeRefs,
-  mergeWith,
   normalizeEventKey,
   removeItem,
 } from "@chakra-ui/utils"
@@ -165,11 +166,7 @@ export function useMenu(props: UseMenuProps) {
     }
   }, [isOpen])
 
-  useFocusOnHide(menuRef, {
-    focusRef: buttonRef,
-    visible: isOpen,
-    shouldFocus: true,
-  })
+  useFocusOnHide(menuRef, { focusRef: buttonRef, visible: isOpen })
 
   /**
    * Generate unique ids for menu's list and button
@@ -194,18 +191,32 @@ export function useMenu(props: UseMenuProps) {
   const refocus = () => {
     const hasFocusWithin = menuRef.current?.contains(document.activeElement)
     const shouldRefocus = isOpen && !hasFocusWithin
-
     if (!shouldRefocus) return
+    requestAnimationFrame(() => {
+      const el = domContext.descendants[focusedIndex]?.element
+      el?.focus({ preventScroll: true })
+    })
+  }
 
-    const el = domContext.descendants[focusedIndex]?.element
-    el?.focus({ preventScroll: true })
+  useEventListener("transitionend", refocus, menuRef.current)
+
+  const onTransitionEnd = () => {
+    /**
+     * If we use CSS for transitioning this component, there would be no
+     * need to dispatch a custom event. This is only useful for JS only
+     * motion libraries like `framer-motion` to `react-spring`.
+     *
+     * They usually provide an `onRest` or `onAnimationComplete` callback we can
+     * use to trigger the custom `transitionend` event.
+     */
+    menuRef.current?.dispatchEvent(new Event("transitionend"))
   }
 
   return {
     openAndFocusMenu,
     openAndFocusFirstItem,
     openAndFocusLastItem,
-    onTransitionEnd: refocus,
+    onTransitionEnd,
     domContext,
     popper,
     buttonId,
@@ -341,7 +352,7 @@ export function useMenuList(
 
 export function useMenuPositioner(props: any = {}) {
   const { popper, isOpen } = useMenuContext()
-  return mergeWith(popper.getPopperProps(props), {
+  return merge(popper.getPopperProps(props), {
     style: { visibility: isOpen ? "visible" : "hidden" },
   })
 }
@@ -446,7 +457,6 @@ export function useMenuItem(
     closeOnSelect,
     onClose,
     menuRef,
-    isOpen,
   } = menu
 
   const ref = useRef<HTMLDivElement>(null)
@@ -496,13 +506,12 @@ export function useMenuItem(
   const trulyDisabled = isDisabled && !isFocusable
 
   useUpdateEffect(() => {
-    if (!isOpen) return
     if (isFocused && !trulyDisabled && ref.current) {
       focus(ref.current)
     } else if (document.activeElement !== menuRef.current) {
       menuRef.current?.focus()
     }
-  }, [isFocused, trulyDisabled, menuRef, isOpen])
+  }, [isFocused, trulyDisabled, menuRef])
 
   const tabbable = useClickable({
     onClick,
@@ -573,7 +582,7 @@ export function useMenuOptionGroup(props: UseMenuOptionGroupProps) {
     type = "radio",
     value: valueProp,
     defaultValue,
-    onChange: onChangeProp,
+    onChange,
     ...htmlProps
   } = props
 
@@ -584,10 +593,10 @@ export function useMenuOptionGroup(props: UseMenuOptionGroupProps) {
   const [value, setValue] = useControllableState({
     defaultValue: defaultValue ?? fallback,
     value: valueProp,
-    onChange: onChangeProp,
+    onChange,
   })
 
-  const onChange = useCallback(
+  const handleChange = useCallback(
     (selectedValue: string) => {
       if (type === "radio" && isString(value)) {
         setValue(selectedValue)
@@ -617,7 +626,7 @@ export function useMenuOptionGroup(props: UseMenuOptionGroupProps) {
     if ((child.type as any).id !== "MenuItemOption") return child
 
     const onClick = (event: MouseEvent) => {
-      onChange(child.props.value)
+      handleChange(child.props.value)
       child.props.onClick?.(event)
     }
 
