@@ -5,7 +5,6 @@ import {
   useEventCallback,
   useEventListener,
   useIds,
-  useUnmountEffect,
   useUpdateEffect,
 } from "@chakra-ui/hooks"
 import {
@@ -26,7 +25,14 @@ import {
   roundValueToStep,
   valueToPercent,
 } from "@chakra-ui/utils"
-import { CSSProperties, useCallback, useMemo, useRef, useState } from "react"
+import {
+  CSSProperties,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
 
 export interface UseSliderProps {
   /**
@@ -165,6 +171,7 @@ export function useSlider(props: UseSliderProps) {
     value: valueProp,
     defaultValue: defaultValue ?? getDefaultValue(min, max),
     onChange,
+    shouldUpdate: (prev, next) => prev !== next,
   })
 
   /**
@@ -418,8 +425,7 @@ export function useSlider(props: UseSliderProps) {
 
     const run = (event: MouseEvent) => {
       const nextValue = getValueFromPointer(event)
-
-      if (nextValue != null) {
+      if (nextValue != null && nextValue !== value) {
         setEventSource("mouse")
         setValue(nextValue)
       }
@@ -455,7 +461,7 @@ export function useSlider(props: UseSliderProps) {
     const run = (event: TouchEvent) => {
       const nextValue = getValueFromPointer(event)
 
-      if (nextValue != null) {
+      if (nextValue != null && nextValue !== value) {
         setEventSource("touch")
         setValue(nextValue)
       }
@@ -495,10 +501,14 @@ export function useSlider(props: UseSliderProps) {
   /**
    * Ensure we clean up listeners when slider unmounts
    */
-  useUnmountEffect(detach)
+  useEffect(() => {
+    return () => detach()
+  }, [])
 
   useUpdateEffect(() => {
-    if (!isDragging) detach()
+    if (!isDragging) {
+      detach()
+    }
   }, [isDragging])
 
   cleanUpRef.current.mousedown = useEventListener(

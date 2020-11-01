@@ -167,7 +167,7 @@ export const Stack = forwardRef<StackProps, "div">(function Stack(props, ref) {
         const cloneDivider = isLast
           ? null
           : React.cloneElement(divider as any, {
-              sx: { "&": dividerStyles, ...divider?.props.sx },
+              __css: { "&": dividerStyles },
             })
 
         return (

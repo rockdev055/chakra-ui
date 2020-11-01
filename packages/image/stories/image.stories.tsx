@@ -6,11 +6,7 @@ export default {
 }
 
 export const Basic = () => (
-  <Image
-    width={["100px", "200px"]}
-    src="https://bit.ly/dan-abramov"
-    alt="welcome"
-  />
+  <Image src="https://bit.ly/dan-abramov" alt="welcome" />
 )
 
 /**

@@ -59,8 +59,7 @@ export interface PopoverProps extends UsePopoverProps, ThemingProps {
    */
   children?: MaybeRenderProp<{
     isOpen: boolean
-    onClose: () => void
-    forceUpdate: (() => void) | null
+    onClose(): void
   }>
 }
 
@@ -80,7 +79,6 @@ export const Popover: React.FC<PopoverProps> = (props) => {
         {runIfFn(children, {
           isOpen: context.isOpen,
           onClose: context.onClose,
-          forceUpdate: context.forceUpdate,
         })}
       </StylesProvider>
     </PopoverProvider>
@@ -134,7 +132,7 @@ export const PopoverContent = forwardRef<PopoverContentProps, "section">(
         <Motion
           {...popoverProps}
           onUpdate={onTransitionEnd}
-          className={cx("chakra-popover__content", props.className)}
+          className={cx("chakra-popover__content")}
           __css={contentStyles}
           variants={motionVariants}
           initial={false}
