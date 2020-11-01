@@ -1,7 +1,7 @@
 import { mergeRefs, PropGetter } from "@chakra-ui/utils"
 import type { Modifier, Placement } from "@popperjs/core"
 import * as React from "react"
-import { usePopper as useBasePopper } from "./react-popper"
+import { usePopper as useBasePopper } from "react-popper"
 import { getArrowStyles, getBoxShadow, toTransformOrigin } from "./popper.utils"
 
 export type { Placement }
@@ -52,7 +52,7 @@ export function usePopper(props: UsePopperProps = {}) {
    * recommended via popper docs
    * @see https://popper.js.org/react-popper/v2/faq/#why-i-get-render-loop-whenever-i-put-a-function-inside-the-popper-configuration
    */
-  const customModifiers = React.useMemo<Partial<Modifier<any, unknown>>[]>(
+  const customMofidiers = React.useMemo<Partial<Modifier<any, unknown>>[]>(
     () => [
       // @see https://popper.js.org/docs/v2/modifiers/offset/
       {
@@ -124,10 +124,10 @@ export function usePopper(props: UsePopperProps = {}) {
     ],
   )
 
-  const popperJS = useBasePopper(referenceNode as any, popperNode as any, {
+  const popperJS = useBasePopper(referenceNode, popperNode, {
     placement,
     strategy: fixed ? "fixed" : "absolute",
-    modifiers: customModifiers.concat(modifiers),
+    modifiers: customMofidiers.concat(modifiers),
   })
 
   /**
