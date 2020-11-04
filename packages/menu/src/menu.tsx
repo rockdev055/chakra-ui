@@ -1,15 +1,15 @@
 import {
   chakra,
   forwardRef,
-  HTMLChakraProps,
   omitThemingProps,
   PropsOf,
   StylesProvider,
   SystemProps,
-  SystemStyleObject,
   ThemingProps,
   useMultiStyleConfig,
   useStyles,
+  HTMLChakraProps,
+  SystemStyleObject,
 } from "@chakra-ui/system"
 import { cx, MaybeRenderProp, runIfFn, __DEV__ } from "@chakra-ui/utils"
 import { motion, Variants } from "framer-motion"
@@ -31,11 +31,7 @@ import {
 } from "./use-menu"
 
 export interface MenuProps extends UseMenuProps, ThemingProps {
-  children: MaybeRenderProp<{
-    isOpen: boolean
-    onClose: () => void
-    forceUpdate: (() => void) | null
-  }>
+  children: MaybeRenderProp<{ isOpen: boolean; onClose(): void }>
 }
 
 /**
@@ -51,12 +47,12 @@ export const Menu: React.FC<MenuProps> = (props) => {
   const ctx = useMenu(ownProps)
   const context = React.useMemo(() => ctx, [ctx])
 
-  const { isOpen, onClose, forceUpdate } = context
+  const { isOpen, onClose } = context
 
   return (
     <MenuProvider value={context}>
       <StylesProvider value={styles}>
-        {runIfFn(children, { isOpen, onClose, forceUpdate })}
+        {runIfFn(children, { isOpen, onClose })}
       </StylesProvider>
     </MenuProvider>
   )
@@ -189,7 +185,7 @@ export interface StyledMenuItemProps extends HTMLChakraProps<"button"> {}
 
 const StyledMenuItem = forwardRef<StyledMenuItemProps, "button">(
   function StyledMenuItem(props, ref) {
-    const { type, ...rest } = props
+    const { as, type, ...rest } = props
     const styles = useStyles()
 
     /**
@@ -197,7 +193,7 @@ const StyledMenuItem = forwardRef<StyledMenuItemProps, "button">(
      * Else, use no type to avoid invalid html, e.g. <a type="button" />
      * Else, fall back to "button"
      */
-    const btnType = rest.as ? type ?? undefined : "button"
+    const btnType = as ? type ?? undefined : "button"
 
     const buttonStyles: SystemStyleObject = {
       textDecoration: "none",

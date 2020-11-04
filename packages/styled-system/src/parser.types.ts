@@ -54,7 +54,7 @@ export interface DefaultTheme {
   }
 }
 
-export interface ChakraStyleProps
+interface AllProps
   extends SpaceProps,
     ColorProps,
     TransitionProps,
@@ -71,6 +71,4 @@ export interface ChakraStyleProps
     OutlineProps,
     OtherProps {}
 
-export interface SystemProps
-  extends ChakraStyleProps,
-    PseudoProps<ChakraStyleProps> {}
+export interface SystemProps extends AllProps, PseudoProps<AllProps> {}

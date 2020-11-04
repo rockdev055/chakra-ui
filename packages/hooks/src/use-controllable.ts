@@ -20,7 +20,11 @@ export interface UseControllableStateProps<T> {
   /**
    * The callback fired when the value changes
    */
-  onChange?: (value: T) => void
+  onChange?: (nextValue: T) => void
+  /**
+   * The condition to update the state
+   */
+  shouldUpdate?: (prevState: T, state: T) => boolean
   /**
    * The component name (for warnings)
    */
@@ -33,9 +37,9 @@ export interface UseControllableStateProps<T> {
    * contextual warning messages
    */
   propsMap?: {
-    value: string
-    defaultValue: string
-    onChange: string
+    value?: string
+    defaultValue?: string
+    onChange?: string
   }
 }
 
@@ -54,6 +58,7 @@ export function useControllableState<T>(props: UseControllableStateProps<T>) {
     value: valueProp,
     defaultValue,
     onChange,
+    shouldUpdate = () => true,
     name = "Component",
     propsMap = defaultPropsMap,
   } = props
@@ -79,11 +84,11 @@ export function useControllableState<T>(props: UseControllableStateProps<T>) {
     })
   }, [valueProp, isControlled, name])
 
-  const { current: initialDefaultValue } = React.useRef(defaultValue)
+  const { current: initialValue } = React.useRef(defaultValue)
 
   React.useEffect(() => {
     warn({
-      condition: initialDefaultValue !== defaultValue,
+      condition: initialValue !== defaultValue,
       message:
         `Warning: A component is changing the default value of an uncontrolled ${name} after being initialized. ` +
         `To suppress this warning opt to use a controlled ${name}.`,
@@ -95,10 +100,17 @@ export function useControllableState<T>(props: UseControllableStateProps<T>) {
   const updateValue = React.useCallback(
     (next: React.SetStateAction<T>) => {
       const nextValue = runIfFn(next, value)
-      if (!isControlled) setValue(nextValue)
+      const shouldUpdateState = shouldUpdate(value, nextValue)
+
+      if (!shouldUpdateState) return
+
+      if (!isControlled) {
+        setValue(next)
+      }
+
       onChange?.(nextValue)
     },
-    [onChange],
+    [onChange, shouldUpdate, isControlled, value],
   )
 
   return [value, updateValue] as [T, React.Dispatch<React.SetStateAction<T>>]
