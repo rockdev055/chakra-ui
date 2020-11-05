@@ -6,7 +6,6 @@ import {
   useSafeLayoutEffect,
 } from "@chakra-ui/hooks"
 import {
-  ariaAttr,
   callAllHandlers,
   createContext,
   Dict,
@@ -16,7 +15,19 @@ import {
   mergeRefs,
   normalizeEventKey,
 } from "@chakra-ui/utils"
-import * as React from "react"
+import {
+  ButtonHTMLAttributes,
+  cloneElement,
+  CSSProperties,
+  KeyboardEventHandler,
+  ReactElement,
+  ReactNode,
+  Ref,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react"
 
 export interface UseTabsProps {
   /**
@@ -87,7 +98,7 @@ export function useTabs(props: UseTabsProps) {
    *
    * This is why we need to keep track of the `focusedIndex` and `selectedIndex`
    */
-  const [focusedIndex, setFocusedIndex] = React.useState(defaultIndex ?? 0)
+  const [focusedIndex, setFocusedIndex] = useState(defaultIndex ?? 0)
 
   const [selectedIndex, setSelectedIndex] = useControllableState({
     defaultValue: defaultIndex ?? 0,
@@ -103,7 +114,7 @@ export function useTabs(props: UseTabsProps) {
   /**
    * Sync focused `index` with controlled `selectedIndex` (which is the `props.index`)
    */
-  React.useEffect(() => {
+  useEffect(() => {
     if (!isUndefined(index)) {
       setFocusedIndex(index)
     }
@@ -172,12 +183,12 @@ const [TabsProvider, useTabsContext] = createContext<UseTabsReturn>({
 
 export { TabsProvider }
 
-type Child = React.ReactElement<any>
+type Child = ReactElement<any>
 
 export interface UseTabListProps {
-  children?: React.ReactNode
-  onKeyDown?: React.KeyboardEventHandler
-  ref?: React.Ref<any>
+  children?: ReactNode
+  onKeyDown?: KeyboardEventHandler
+  ref?: Ref<any>
 }
 
 /**
@@ -199,7 +210,7 @@ export function useTabList<P extends UseTabListProps>(props: P) {
   /**
    * Function to update the selected tab index
    */
-  const setIndex = React.useCallback(
+  const setIndex = useCallback(
     (index: number) => {
       const tab = enabledDomContext.descendants[index]
       if (tab?.element) {
@@ -210,7 +221,7 @@ export function useTabList<P extends UseTabListProps>(props: P) {
     [enabledDomContext.descendants, setFocusedIndex],
   )
 
-  const onKeyDown = React.useCallback(
+  const onKeyDown = useCallback(
     (event: React.KeyboardEvent) => {
       const nextTab = () => setIndex((focusedIndex + 1) % count)
       const prevTab = () => setIndex((focusedIndex - 1 + count) % count)
@@ -270,7 +281,9 @@ export interface UseTabProps
  * A tab can be disabled and focusable, or both,
  * hence the use of `useClickable` to handle this scenario
  */
-export function useTab<P extends UseTabProps>(props: P) {
+export function useTab<P extends UseTabProps>(
+  props: P,
+): ButtonHTMLAttributes<any> {
   const { isDisabled, isFocusable, ...htmlProps } = props
 
   const {
@@ -283,7 +296,7 @@ export function useTab<P extends UseTabProps>(props: P) {
     selectedIndex,
   } = useTabsContext()
 
-  const ref = React.useRef<HTMLElement>(null)
+  const ref = useRef<HTMLElement>(null)
 
   /**
    * Think of `useDescendant` as the function that registers tab node
@@ -322,7 +335,7 @@ export function useTab<P extends UseTabProps>(props: P) {
     }
   }
 
-  const clickableProps = useClickable({
+  const clickable = useClickable({
     ...htmlProps,
     ref: mergeRefs(ref, props.ref),
     isDisabled,
@@ -333,19 +346,19 @@ export function useTab<P extends UseTabProps>(props: P) {
   const type: "button" | "submit" | "reset" = "button"
 
   return {
-    ...clickableProps,
+    ...clickable,
     id: makeTabId(id, index),
     role: "tab",
     tabIndex: isSelected ? 0 : -1,
     type,
-    "aria-selected": ariaAttr(isSelected),
+    "aria-selected": isSelected ? true : undefined,
     "aria-controls": makeTabPanelId(id, index),
     onFocus: isDisabled ? undefined : callAllHandlers(props.onFocus, onFocus),
   }
 }
 
 export interface UseTabPanelsProps {
-  children?: React.ReactNode
+  children?: ReactNode
 }
 
 /**
@@ -364,12 +377,12 @@ export function useTabPanels<P extends UseTabPanelsProps>(props: P) {
 
   const validChildren = getValidChildren(props.children)
 
-  const children = validChildren.map((child, index) => {
-    return React.cloneElement(child as Child, {
+  const children = validChildren.map((child, index) =>
+    cloneElement(child as Child, {
       isSelected: index === selectedIndex,
       id: makeTabPanelId(id, index),
-    })
-  })
+    }),
+  )
 
   return { ...props, children }
 }
@@ -401,7 +414,7 @@ export function useTabPanel(props: Dict) {
  * of the active tab, and return that as CSS style for
  * the indicator.
  */
-export function useTabIndicator(): React.CSSProperties {
+export function useTabIndicator(): CSSProperties {
   const context = useTabsContext()
 
   const { selectedIndex, orientation, domContext } = context
@@ -410,13 +423,13 @@ export function useTabIndicator(): React.CSSProperties {
   const isVertical = orientation === "vertical"
 
   // Get the clientRect of the selected tab
-  const [rect, setRect] = React.useState(() => {
+  const [rect, setRect] = useState(() => {
     if (isHorizontal) return { left: 0, width: 0 }
     if (isVertical) return { top: 0, height: 0 }
     return undefined
   })
 
-  const [hasMeasured, setHasMeasured] = React.useState(false)
+  const [hasMeasured, setHasMeasured] = useState(false)
 
   // Update the selected tab rect when the selectedIndex changes
   useSafeLayoutEffect(() => {
@@ -439,13 +452,13 @@ export function useTabIndicator(): React.CSSProperties {
 
     // Prevent unwanted transition from 0 to measured rect
     // by setting the measured state in the next tick
-    const id = requestAnimationFrame(() => {
+    const frameId = requestAnimationFrame(() => {
       setHasMeasured(true)
     })
 
     return () => {
-      if (id) {
-        cancelAnimationFrame(id)
+      if (frameId) {
+        cancelAnimationFrame(frameId)
       }
     }
   }, [selectedIndex, isHorizontal, isVertical, domContext.descendants])

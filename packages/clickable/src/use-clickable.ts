@@ -1,8 +1,15 @@
 import { dataAttr, isRightClick, mergeRefs } from "@chakra-ui/utils"
-import * as React from "react"
-import { useEventListeners } from "./use-event-listeners"
+import {
+  ButtonHTMLAttributes,
+  HTMLAttributes,
+  KeyboardEvent,
+  MouseEvent,
+  Ref,
+  useCallback,
+  useState,
+} from "react"
 
-export interface UseClickableProps extends React.HTMLAttributes<HTMLElement> {
+export interface UseClickableProps extends HTMLAttributes<Element> {
   /**
    * If `true`, the element will be disabled.
    * It will set the `disabled` HTML attribute
@@ -21,22 +28,13 @@ export interface UseClickableProps extends React.HTMLAttributes<HTMLElement> {
    * Whether or not trigger click on pressing `Space`.
    */
   clickOnSpace?: boolean
-  /**
-   * The ref for the element
-   */
-  ref?: React.Ref<HTMLElement>
-}
-
-function isValidElement(event: KeyboardEvent): boolean {
-  const element = event.target as HTMLElement
-  const { tagName, isContentEditable } = element
-  return (
-    tagName !== "INPUT" && tagName !== "TEXTAREA" && isContentEditable !== true
-  )
+  ref?: Ref<HTMLElement>
 }
 
 /**
- * useClickable implements all the interactions of a native `button`
+ * useClickable
+ *
+ * React hook that implements all the interactions of a native `button`
  * component with support for making it focusable even if it's disabled.
  *
  * It can be used with both native button elements or other elements (like `div`).
@@ -55,37 +53,33 @@ export function useClickable(props: UseClickableProps = {}) {
     onKeyUp,
     tabIndex: tabIndexProp,
     onMouseOver,
-    onMouseLeave,
     ...htmlProps
   } = props
   /**
    * We'll use this to track if the element is a button element
    */
-  const [isButton, setIsButton] = React.useState(true)
+  const [isButton, setIsButton] = useState(true)
 
   /**
    * For custom button implementation, we'll use this to track when
    * we mouse down on the button, to enable use style it's ":active" style
    */
-  const [isPressed, setIsPressed] = React.useState(false)
-
-  const listeners = useEventListeners()
+  const [isActive, setIsActive] = useState(false)
 
   /**
    * The ref callback that fires as soon as the dom node is ready
    */
-  const refCallback = (node: any) => {
-    if (!node) return
-    if (node.tagName !== "BUTTON") {
+  const refCallback = useCallback((node) => {
+    if (node?.tagName !== "BUTTON") {
       setIsButton(false)
     }
-  }
+  }, [])
 
   const tabIndex = isButton ? tabIndexProp : tabIndexProp || 0
   const trulyDisabled = isDisabled && !isFocusable
 
-  const handleClick = React.useCallback(
-    (event: React.MouseEvent<HTMLElement>) => {
+  const handleClick = useCallback(
+    (event: MouseEvent) => {
       if (isDisabled) {
         event.stopPropagation()
         event.preventDefault()
@@ -99,59 +93,43 @@ export function useClickable(props: UseClickableProps = {}) {
     [isDisabled, onClick],
   )
 
-  const onDocumentKeyUp = (e: KeyboardEvent) => {
-    if (isPressed && isValidElement(e)) {
-      e.preventDefault()
-      e.stopPropagation()
-
-      setIsPressed(false)
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      listeners.remove(document, "keyup", onDocumentKeyUp, false)
-    }
-  }
-
-  const handleKeyDown = React.useCallback(
-    (event: React.KeyboardEvent<HTMLElement>) => {
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
       onKeyDown?.(event)
 
       if (isDisabled || event.defaultPrevented || event.metaKey) {
         return
       }
 
-      if (!isValidElement(event.nativeEvent) || isButton) return
-
       const shouldClickOnEnter = clickOnEnter && event.key === "Enter"
       const shouldClickOnSpace = clickOnSpace && event.key === " "
 
-      if (shouldClickOnSpace) {
+      if (!isButton && shouldClickOnSpace) {
         event.preventDefault()
-        setIsPressed(true)
+        setIsActive(true)
+        return
       }
 
-      if (shouldClickOnEnter) {
+      if (!isButton && shouldClickOnEnter) {
         event.preventDefault()
         const self = event.currentTarget as HTMLElement
         self.click()
       }
-
-      listeners.add(document, "keyup", onDocumentKeyUp, false)
     },
     [isDisabled, isButton, onKeyDown, clickOnEnter, clickOnSpace],
   )
 
-  const handleKeyUp = React.useCallback(
-    (event: React.KeyboardEvent<HTMLElement>) => {
+  const handleKeyUp = useCallback(
+    (event: KeyboardEvent) => {
       onKeyUp?.(event)
 
       if (isDisabled || event.defaultPrevented || event.metaKey) return
 
-      if (!isValidElement(event.nativeEvent) || isButton) return
-
       const shouldClickOnSpace = clickOnSpace && event.key === " "
 
-      if (shouldClickOnSpace) {
+      if (!isButton && shouldClickOnSpace) {
         event.preventDefault()
-        setIsPressed(false)
+        setIsActive(false)
 
         const self = event.currentTarget as HTMLElement
         self.click()
@@ -160,14 +138,12 @@ export function useClickable(props: UseClickableProps = {}) {
     [clickOnSpace, isButton, isDisabled, onKeyUp],
   )
 
-  const onDocumentMouseUp = (event: MouseEvent) => {
-    if (event.button !== 0) return
-    setIsPressed(false)
-    listeners.remove(document, "mouseup", onDocumentMouseUp, false)
-  }
-
-  const handleMouseDown = React.useCallback(
-    (event: React.MouseEvent<HTMLElement>) => {
+  const handleMouseDown = useCallback(
+    (event: MouseEvent) => {
+      /**
+       * Prevent right-click from triggering the
+       * active state.
+       */
       if (isRightClick(event)) return
 
       if (isDisabled) {
@@ -177,25 +153,18 @@ export function useClickable(props: UseClickableProps = {}) {
       }
 
       if (!isButton) {
-        setIsPressed(true)
+        setIsActive(true)
       }
-
-      const target = event.currentTarget as HTMLElement
-      target.focus({ preventScroll: true })
-
-      listeners.add(document, "mouseup", onDocumentMouseUp, false)
 
       onMouseDown?.(event)
     },
     [isDisabled, isButton, onMouseDown],
   )
 
-  const handleMouseUp = React.useCallback(
-    (event: React.MouseEvent<HTMLElement>) => {
-      if (isRightClick(event)) return
-
+  const handleMouseUp = useCallback(
+    (event: MouseEvent) => {
       if (!isButton) {
-        setIsPressed(false)
+        setIsActive(false)
       }
 
       onMouseUp?.(event)
@@ -203,8 +172,8 @@ export function useClickable(props: UseClickableProps = {}) {
     [onMouseUp, isButton],
   )
 
-  const handleMouseOver = React.useCallback(
-    (event: React.MouseEvent<HTMLElement>) => {
+  const handleMouseOver = useCallback(
+    (event: MouseEvent) => {
       if (isDisabled) {
         event.preventDefault()
         return
@@ -215,24 +184,13 @@ export function useClickable(props: UseClickableProps = {}) {
     [isDisabled, onMouseOver],
   )
 
-  const handleMouseLeave = React.useCallback(
-    (event: React.MouseEvent<HTMLElement>) => {
-      if (isPressed) {
-        event.preventDefault()
-        setIsPressed(false)
-      }
-      onMouseLeave?.(event)
-    },
-    [isPressed],
-  )
-
   const ref = mergeRefs(htmlRef, refCallback)
 
   if (isButton) {
     return {
       ...htmlProps,
       ref,
-      type: "button" as React.ButtonHTMLAttributes<any>["type"],
+      type: "button" as ButtonHTMLAttributes<any>["type"],
       "aria-disabled": trulyDisabled ? undefined : isDisabled,
       disabled: trulyDisabled,
       onClick: handleClick,
@@ -241,7 +199,6 @@ export function useClickable(props: UseClickableProps = {}) {
       onKeyUp,
       onKeyDown,
       onMouseOver,
-      onMouseLeave,
     }
   }
 
@@ -249,8 +206,8 @@ export function useClickable(props: UseClickableProps = {}) {
     ...htmlProps,
     ref,
     role: "button",
-    "data-active": dataAttr(isPressed),
-    "aria-disabled": isDisabled ? "true" : undefined,
+    "data-active": dataAttr(isActive),
+    "aria-disabled": !!isDisabled,
     tabIndex: trulyDisabled ? undefined : tabIndex,
     onClick: handleClick,
     onMouseDown: handleMouseDown,
@@ -258,7 +215,6 @@ export function useClickable(props: UseClickableProps = {}) {
     onKeyUp: handleKeyUp,
     onKeyDown: handleKeyDown,
     onMouseOver: handleMouseOver,
-    onMouseLeave: handleMouseLeave,
   }
 }
 

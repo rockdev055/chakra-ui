@@ -2,10 +2,10 @@ import { Portal } from "@chakra-ui/portal"
 import {
   chakra,
   forwardRef,
-  HTMLChakraProps,
   omitThemingProps,
   ThemingProps,
   useStyleConfig,
+  HTMLChakraProps,
 } from "@chakra-ui/system"
 import { isString, omit, pick, __DEV__ } from "@chakra-ui/utils"
 import { VisuallyHidden } from "@chakra-ui/visually-hidden"
@@ -101,9 +101,7 @@ export const Tooltip = forwardRef<TooltipProps, "div">(function Tooltip(
     ...rest
   } = ownProps
 
-  if (bg) {
-    styles.bg = bg
-  }
+  if (bg) styles.bg = bg
 
   const tooltip = useTooltip(rest)
 
@@ -155,7 +153,7 @@ export const Tooltip = forwardRef<TooltipProps, "div">(function Tooltip(
         {tooltip.isOpen && (
           <Portal>
             <chakra.div
-              {...tooltip.getTooltipPositionerProps()}
+              {...tooltip.getTooltipWrapperProps()}
               __css={{ zIndex: styles.zIndex }}
             >
               <StyledTooltip

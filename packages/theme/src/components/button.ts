@@ -14,11 +14,6 @@ const baseStyle = {
     cursor: "not-allowed",
     boxShadow: "none",
   },
-  _hover: {
-    _disabled: {
-      bg: "initial",
-    },
-  },
 }
 
 function variantGhost(props: Dict) {
@@ -27,9 +22,7 @@ function variantGhost(props: Dict) {
   if (c === "gray") {
     return {
       color: mode(`inherit`, `whiteAlpha.900`)(props),
-      _hover: {
-        bg: mode(`gray.100`, `whiteAlpha.200`)(props),
-      },
+      _hover: { bg: mode(`gray.100`, `whiteAlpha.200`)(props) },
       _active: { bg: mode(`gray.200`, `whiteAlpha.300`)(props) },
     }
   }
@@ -85,20 +78,12 @@ const accessibleColorMap: { [key: string]: AccessibleColor } = {
 function variantSolid(props: Dict) {
   const { colorScheme: c } = props
 
-  if (c === "gray") {
-    const bg = mode(`gray.100`, `whiteAlpha.200`)(props)
-
+  if (c === "gray")
     return {
-      bg,
-      _hover: {
-        bg: mode(`gray.200`, `whiteAlpha.300`)(props),
-        _disabled: {
-          bg,
-        },
-      },
+      bg: mode(`gray.100`, `whiteAlpha.200`)(props),
+      _hover: { bg: mode(`gray.200`, `whiteAlpha.300`)(props) },
       _active: { bg: mode(`gray.300`, `whiteAlpha.400`)(props) },
     }
-  }
 
   const {
     bg = `${c}.500`,
@@ -106,18 +91,10 @@ function variantSolid(props: Dict) {
     hoverBg = `${c}.600`,
     activeBg = `${c}.700`,
   } = accessibleColorMap[c] || {}
-
-  const background = mode(bg, `${c}.200`)(props)
-
   return {
-    bg: background,
+    bg: mode(bg, `${c}.200`)(props),
     color: mode(color, `gray.800`)(props),
-    _hover: {
-      bg: mode(hoverBg, `${c}.300`)(props),
-      _disabled: {
-        bg: background,
-      },
-    },
+    _hover: { bg: mode(hoverBg, `${c}.300`)(props) },
     _active: { bg: mode(activeBg, `${c}.400`)(props) },
   }
 }
@@ -129,12 +106,7 @@ function variantLink(props: Dict) {
     height: "auto",
     lineHeight: "normal",
     color: mode(`${c}.500`, `${c}.200`)(props),
-    _hover: {
-      textDecoration: "underline",
-      _disabled: {
-        textDecoration: "none",
-      },
-    },
+    _hover: { textDecoration: "underline" },
     _active: {
       color: mode(`${c}.700`, `${c}.500`)(props),
     },

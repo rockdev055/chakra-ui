@@ -14,14 +14,16 @@ const StyledLink = React.forwardRef(function StyledLink(
       aria-current={isActive ? "page" : undefined}
       width="100%"
       px="3"
-      py="2"
+      py="1"
       rounded="md"
       ref={ref}
       fontSize="sm"
+      fontWeight="medium"
       color={useColorModeValue("gray.700", "whiteAlpha.900")}
       transition="all 0.2s"
       _hover={{
-        bg: useColorModeValue("gray.100", "whiteAlpha.100"),
+        color: useColorModeValue("gray.900", "whiteAlpha.900"),
+        transform: isActive ? undefined : "translateX(2px)",
       }}
       _activeLink={{
         bg: useColorModeValue("teal.100", "rgba(48, 140, 122, 0.3)"),
