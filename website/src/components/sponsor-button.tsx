@@ -1,9 +1,9 @@
 import React from "react"
-import { Box, BoxProps, Icon } from "@chakra-ui/core"
+import { Box, Icon } from "@chakra-ui/core"
 import { FaHeart } from "react-icons/fa"
 import siteConfig from "configs/site-config"
 
-const SponsorButton = (props: BoxProps) => (
+const SponsorButton = (props) => (
   <Box
     display={{ base: "none", md: "flex" }}
     alignItems="center"

@@ -1,15 +1,15 @@
 import {
   chakra,
   forwardRef,
-  HTMLChakraProps,
   omitThemingProps,
   PropsOf,
   StylesProvider,
   SystemProps,
-  SystemStyleObject,
   ThemingProps,
   useMultiStyleConfig,
   useStyles,
+  HTMLChakraProps,
+  SystemStyleObject,
 } from "@chakra-ui/system"
 import { cx, MaybeRenderProp, runIfFn, __DEV__ } from "@chakra-ui/utils"
 import { motion, Variants } from "framer-motion"
@@ -222,12 +222,10 @@ interface MenuItemOptions
   extends Pick<UseMenuItemProps, "isDisabled" | "isFocusable"> {
   /**
    * The icon to render before the menu item's label.
-   * @type React.ReactElement
    */
   icon?: React.ReactElement
   /**
    * The spacing between the icon and menu item's label
-   * @type SystemProps["mr"]
    */
   iconSpacing?: SystemProps["mr"]
   /**
@@ -246,7 +244,7 @@ export const MenuItem = forwardRef<MenuItemProps, "button">(function MenuItem(
 ) {
   const { icon, iconSpacing = "0.75rem", command, children, ...rest } = props
 
-  const menuItemProps = useMenuItem(rest, ref) as MenuItemProps
+  const menuItemProps = useMenuItem(rest, ref)
 
   const shouldWrap = icon || command
 
@@ -278,6 +276,13 @@ if (__DEV__) {
   MenuItem.displayName = "MenuItem"
 }
 
+export interface MenuItemOptionProps
+  extends UseMenuOptionOptions,
+    Omit<MenuItemProps, keyof UseMenuOptionOptions> {
+  icon?: React.ReactElement
+  iconSpacing?: SystemProps["mr"]
+}
+
 const CheckIcon: React.FC<PropsOf<"svg">> = (props) => (
   <svg viewBox="0 0 14 14" width="1em" height="1em" {...props}>
     <polygon
@@ -287,24 +292,11 @@ const CheckIcon: React.FC<PropsOf<"svg">> = (props) => (
   </svg>
 )
 
-export interface MenuItemOptionProps
-  extends UseMenuOptionOptions,
-    Omit<MenuItemProps, keyof UseMenuOptionOptions> {
-  /**
-   * @type React.ReactElement
-   */
-  icon?: React.ReactElement
-  /**
-   * @type SystemProps["mr"]
-   */
-  iconSpacing?: SystemProps["mr"]
-}
-
 export const MenuItemOption = forwardRef<MenuItemOptionProps, "button">(
   function MenuItemOption(props, ref) {
     const { icon, iconSpacing = "0.75rem", ...rest } = props
 
-    const optionProps = useMenuOption(rest, ref) as StyledMenuItemProps
+    const optionProps = useMenuOption(rest, ref)
 
     return (
       <StyledMenuItem

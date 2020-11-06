@@ -1,17 +1,17 @@
+import * as React from "react"
 import {
   chakra,
   forwardRef,
-  HTMLChakraProps,
   omitThemingProps,
+  PropsOf,
   ThemingProps,
   useStyleConfig,
   useStyles,
 } from "@chakra-ui/system"
 import { cx, dataAttr, Dict, __DEV__ } from "@chakra-ui/utils"
-import * as React from "react"
 import { useFormControlContext } from "./form-control"
 
-export function useFieldLabel(props: Dict) {
+export function useFormControlLabel(props: Dict) {
   const field = useFormControlContext()
   return {
     ...props,
@@ -25,12 +25,9 @@ export function useFieldLabel(props: Dict) {
   }
 }
 
-export interface FormLabelProps extends HTMLChakraProps<"label">, ThemingProps {
-  /**
-   * @type React.ReactElement
-   */
-  requiredIndicator?: React.ReactElement
-}
+export interface FormLabelProps
+  extends PropsOf<typeof chakra.label>,
+    ThemingProps {}
 
 /**
  * Used to enhance the usability of form controls.
@@ -41,20 +38,13 @@ export interface FormLabelProps extends HTMLChakraProps<"label">, ThemingProps {
  * ♿️ Accessibility: Every form field should have a form label.
  */
 export const FormLabel = forwardRef<FormLabelProps, "label">(function FormLabel(
-  passedProps,
+  props,
   ref,
 ) {
-  const styles = useStyleConfig("FormLabel", passedProps)
-  const props = omitThemingProps(passedProps)
+  const styles = useStyleConfig("FormLabel", props)
+  const { className, children, ...rest } = omitThemingProps(props)
 
-  const {
-    className,
-    children,
-    requiredIndicator = <RequiredIndicator />,
-    ...rest
-  } = props
-
-  const ownProps = useFieldLabel(rest)
+  const ownProps = useFormControlLabel(rest)
   const field = useFormControlContext()
 
   return (
@@ -69,7 +59,7 @@ export const FormLabel = forwardRef<FormLabelProps, "label">(function FormLabel(
       {...ownProps}
     >
       {children}
-      {field?.isRequired ? requiredIndicator : null}
+      {field?.isRequired && <RequiredIndicator />}
     </chakra.label>
   )
 })
@@ -78,7 +68,7 @@ if (__DEV__) {
   FormLabel.displayName = "FormLabel"
 }
 
-export interface RequiredIndicatorProps extends HTMLChakraProps<"span"> {}
+export interface RequiredIndicatorProps extends PropsOf<typeof chakra.span> {}
 
 /**
  * Used to show a "required" text or an asterisks (*) to indicate that

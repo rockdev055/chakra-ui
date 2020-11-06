@@ -24,7 +24,6 @@ export interface RadioProps
   /**
    * The spacing between the checkbox and it's label text
    * @default 0.5rem
-   * @type SystemProps["marginLeft"]
    */
   spacing?: SystemProps["marginLeft"]
   /**

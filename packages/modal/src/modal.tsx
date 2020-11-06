@@ -262,9 +262,6 @@ if (__DEV__) {
 }
 
 interface ModalFocusScopeProps {
-  /**
-   * @type React.ReactElement
-   */
   children: React.ReactElement
 }
 

@@ -62,7 +62,6 @@ export interface CheckboxProps
   /**
    * The spacing between the checkbox and it's label text
    * @default 0.5rem
-   * @type SystemProps["marginLeft"]
    */
   spacing?: SystemProps["marginLeft"]
   /**
@@ -76,7 +75,6 @@ export interface CheckboxProps
   /**
    * The checked icon to use
    *
-   * @type React.ReactElement
    * @default CheckboxIcon
    */
   icon?: React.ReactElement

@@ -22,7 +22,6 @@ export interface ButtonGroupProps extends HTMLChakraProps<"div">, ThemingProps {
   /**
    * The spacing between the buttons
    * @default '0.5rem'
-   * @type SystemProps["marginRight"]
    */
   spacing?: SystemProps["marginRight"]
 }

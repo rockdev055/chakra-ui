@@ -1,6 +1,3 @@
-/**
- * @todo add Roadmap.sh here
- */
 interface User {
   name: string
   image: string

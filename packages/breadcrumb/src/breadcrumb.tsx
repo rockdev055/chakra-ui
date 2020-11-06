@@ -14,9 +14,6 @@ import { cx, getValidChildren, __DEV__ } from "@chakra-ui/utils"
 import * as React from "react"
 
 export interface BreadcrumbSeparatorProps extends HTMLChakraProps<"div"> {
-  /**
-   * @type SystemProps["mx"]
-   */
   spacing?: SystemProps["mx"]
 }
 
@@ -158,12 +155,10 @@ if (__DEV__) {
 export interface BreadcrumbOptions {
   /**
    * The visual separator between each breadcrumb item
-   * @type string | React.ReactElement
    */
   separator?: string | React.ReactElement
   /**
    * The left and right margin applied to the separator
-   * @type SystemProps["mx"]
    */
   spacing?: SystemProps["mx"]
 }

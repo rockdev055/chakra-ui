@@ -4,7 +4,6 @@ import CarbonAd from "./carbon-ad"
 import CodeBlock from "./codeblock/codeblock"
 import ComponentLinks from "./component-links"
 import IconsList from "./icons-list"
-import PropsTable from "./props-table"
 
 const Pre = (props) => <chakra.div my="2em" borderRadius="sm" {...props} />
 
@@ -115,7 +114,6 @@ const MDXComponents = {
   "carbon-ad": CarbonAd,
   ComponentLinks,
   IconsList,
-  PropsTable,
 }
 
 export default MDXComponents

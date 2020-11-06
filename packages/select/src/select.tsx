@@ -91,7 +91,6 @@ export interface SelectProps
   rootProps?: RootProps
   /**
    * The icon element to use in the select
-   * @type React.ReactElement
    */
   icon?: React.ReactElement<any>
 }

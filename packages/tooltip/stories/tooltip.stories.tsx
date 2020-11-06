@@ -19,7 +19,7 @@ export default {
 const HookTooltip = ({ children }: any) => {
   const {
     getTriggerProps,
-    getTooltipPositionerProps,
+    getTooltipWrapperProps,
     getTooltipProps,
     getArrowProps,
     getArrowWrapperProps,
@@ -33,7 +33,7 @@ const HookTooltip = ({ children }: any) => {
   return (
     <>
       <button {...getTriggerProps()}>Hover me</button>
-      <div {...getTooltipPositionerProps()}>
+      <div {...getTooltipWrapperProps()}>
         <div
           {...getTooltipProps({
             style: {
@@ -67,7 +67,7 @@ export const MultipleTooltips = () => (
 export const WithTransition = () => {
   const {
     getTriggerProps,
-    getTooltipPositionerProps,
+    getTooltipWrapperProps,
     getTooltipProps,
     getArrowProps,
     getArrowWrapperProps,
@@ -83,7 +83,7 @@ export const WithTransition = () => {
       <AnimatePresence>
         {isOpen && (
           <Portal>
-            <div {...getTooltipPositionerProps()}>
+            <div {...getTooltipWrapperProps()}>
               <motion.div
                 initial="exit"
                 animate="enter"

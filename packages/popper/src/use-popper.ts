@@ -1,8 +1,8 @@
 import { mergeRefs, PropGetter } from "@chakra-ui/utils"
-import { Modifier, Placement } from "@popperjs/core"
+import type { Modifier, Placement } from "@popperjs/core"
 import * as React from "react"
-import { getArrowStyles, getBoxShadow, toTransformOrigin } from "./popper.utils"
 import { usePopper as useBasePopper } from "./react-popper"
+import { getArrowStyles, getBoxShadow, toTransformOrigin } from "./popper.utils"
 
 export type { Placement }
 
@@ -34,7 +34,7 @@ export function usePopper(props: UsePopperProps = {}) {
     arrowShadowColor,
     gutter = 8,
     arrowPadding = 4,
-    offset: offsetProp,
+    offset,
     matchWidth,
     modifiers = [],
   } = props
@@ -47,14 +47,12 @@ export function usePopper(props: UsePopperProps = {}) {
     null,
   )
   const [arrowNode, setArrowNode] = React.useState<HTMLDivElement | null>(null)
-  const offset = offsetProp ?? [0, gutter]
 
   /**
    * recommended via popper docs
    * @see https://popper.js.org/react-popper/v2/faq/#why-i-get-render-loop-whenever-i-put-a-function-inside-the-popper-configuration
    */
-  type Modifiers = Partial<Modifier<any, unknown>>[]
-  const customModifiers = React.useMemo<Modifiers>(
+  const customModifiers = React.useMemo<Partial<Modifier<any, unknown>>[]>(
     () => [
       // @see https://popper.js.org/docs/v2/modifiers/offset/
       {
@@ -136,8 +134,13 @@ export function usePopper(props: UsePopperProps = {}) {
    * Ensure the popper will be correctly positioned with an extra update
    */
   React.useEffect(() => {
-    popperJS.forceUpdate?.()
-  })
+    const id = requestAnimationFrame(() => {
+      popperJS.forceUpdate?.()
+    })
+    return () => {
+      cancelAnimationFrame(id)
+    }
+  }, [])
 
   const finalPlacement = popperJS.state?.placement ?? placement
 
@@ -147,58 +150,46 @@ export function usePopper(props: UsePopperProps = {}) {
     arrowSize,
   })
 
-  const getReferenceProps: PropGetter = React.useCallback(
-    (props = {}, _ref = null) => {
-      return {
-        ...props,
-        ref: mergeRefs(setReferenceNode, _ref),
-      }
-    },
-    [],
-  )
+  const getReferenceProps: PropGetter = (props = {}, _ref = null) => {
+    return {
+      ...props,
+      ref: mergeRefs(setReferenceNode, _ref),
+    }
+  }
 
-  const getPopperProps: PropGetter = React.useCallback(
-    (props = {}, _ref = null) => {
-      return {
-        ...props,
-        ...popperJS.attributes.popper,
-        ref: mergeRefs(setPopperNode, _ref),
-        style: { ...props.style, ...popperJS.styles?.popper },
-      }
-    },
-    [popperJS.attributes, popperJS.styles],
-  )
+  const getPopperProps: PropGetter = (props = {}, _ref = null) => {
+    return {
+      ...props,
+      ...popperJS.attributes.popper,
+      ref: mergeRefs(setPopperNode, _ref),
+      style: { ...props.style, ...popperJS.styles?.popper },
+    }
+  }
 
-  const getArrowWrapperProps: PropGetter = React.useCallback(
-    (props = {}, _ref = null) => {
-      return {
-        ...props,
-        ...popperJS.attributes.arrow,
-        ref: mergeRefs(setArrowNode, _ref),
-        style: { ...props.style, ...arrowStyles },
-      }
-    },
-    [popperJS.attributes, arrowStyles],
-  )
+  const getArrowWrapperProps: PropGetter = (props = {}, _ref = null) => {
+    return {
+      ...props,
+      ...popperJS.attributes.arrow,
+      ref: mergeRefs(setArrowNode, _ref),
+      style: { ...props.style, ...arrowStyles },
+    }
+  }
 
-  const getArrowProps: PropGetter = React.useCallback(
-    (props = {}, _ref = null) => {
-      return {
-        ...props,
-        ref: _ref,
-        style: {
-          boxShadow: getBoxShadow(finalPlacement, arrowShadowColor),
-          ...props.style,
-          position: "absolute",
-          zIndex: -1,
-          width: "100%",
-          height: "100%",
-          transform: "rotate(45deg)",
-        },
-      }
-    },
-    [finalPlacement, arrowShadowColor],
-  )
+  const getArrowProps: PropGetter = (props = {}, _ref = null) => {
+    return {
+      ...props,
+      ref: _ref,
+      style: {
+        boxShadow: getBoxShadow(finalPlacement, arrowShadowColor),
+        ...props.style,
+        position: "absolute",
+        zIndex: -1,
+        width: "100%",
+        height: "100%",
+        transform: "rotate(45deg)",
+      },
+    }
+  }
 
   return {
     transformOrigin: toTransformOrigin(finalPlacement),

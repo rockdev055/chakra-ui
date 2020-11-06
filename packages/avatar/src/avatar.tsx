@@ -54,7 +54,6 @@ interface AvatarOptions {
   loading?: "eager" | "lazy"
   /**
    * The border color of the avatar
-   * @type SystemProps["borderColor"]
    */
   borderColor?: SystemProps["borderColor"]
   /**
@@ -64,7 +63,6 @@ interface AvatarOptions {
   /**
    * The default avatar used as fallback when `name`, and `src`
    * is not specified.
-   * @type React.ReactElement
    */
   icon?: React.ReactElement
   /**
