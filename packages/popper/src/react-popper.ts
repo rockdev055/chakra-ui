@@ -7,8 +7,8 @@ import {
   Options as PopperOptions,
   VirtualElement,
 } from "@popperjs/core"
-import * as React from "react"
 import { dequal } from "dequal"
+import * as React from "react"
 
 type Options = Partial<PopperOptions> & {
   createPopper?: typeof defaultCreatePopper
@@ -113,7 +113,9 @@ export function usePopper(
   }, [popperOptions])
 
   useSafeLayoutEffect(() => {
-    if (referenceElement == null && popperElement == null) return
+    if (referenceElement == null || popperElement == null) {
+      return
+    }
 
     const createPopper = options.createPopper || defaultCreatePopper
     const popperInstance = createPopper(
