@@ -140,13 +140,7 @@ export const Stat = forwardRef<StatProps, "div">(function Stat(props, ref) {
 
   return (
     <StylesProvider value={styles}>
-      <chakra.div
-        className={cx("chakra-stat", className)}
-        ref={ref}
-        position="relative"
-        flex="1 1 0%"
-        {...rest}
-      >
+      <chakra.div className={cx("chakra-stat", className)} ref={ref} {...rest}>
         <dl>{children}</dl>
       </chakra.div>
     </StylesProvider>
